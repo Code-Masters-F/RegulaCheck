@@ -1,0 +1,20 @@
+# Build
+target/
+build/
+# Segredos e configuracao local
+.env
+.env.*
+!.env.example
+application-secret*.yml
+*.pem
+*.key
+# Uploads privados e dados locais
+uploads/
+storage/
+*.log
+# IDE / SO
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
