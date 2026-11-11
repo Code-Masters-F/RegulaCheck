@@ -3,9 +3,11 @@
 Verificador de completude documental de encaminhamentos (MVP acadêmico, **dados sintéticos**, submissão **simulada**). O sistema não diagnostica, não define urgência e não autoriza atendimento.
 
 ## Estado real da preparação
-Somente a **fundação do backend** foi criada e verificada (Java 21 / Spring Boot 4.1.2 / Maven Wrapper): build, testes e health OK. Banco (PostgreSQL) e mobile (Android/Kotlin) estão decididos, mas ainda não implementados; IA/extração, sensores e segurança **não** estão implementados nem decididos (ver [docs/decisoes.md](docs/decisoes.md)).
+Somente a **fundação do backend** foi criada e verificada (Java 21 / Spring Boot 4.1.2 / Maven Wrapper): build, testes e health OK. O backend já conecta ao PostgreSQL 18.6 (Docker) via JPA, sem entidades ainda. Mobile (Android/Kotlin) decidido, não criado; IA (Gemini provável)/extração, sensores e segurança **não** estão implementados nem decididos (ver [docs/decisoes.md](docs/decisoes.md)).
 
-## Executar (a partir de `backend/`)
+## Executar
+1. Banco: veja [database/README.md](database/README.md) (Docker) e exporte `DB_PASSWORD`.
+2. Backend, a partir de `backend/`:
 - Windows: `.\mvnw.cmd clean verify` e `.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"`
 - Linux/macOS: `./mvnw clean verify` e `./mvnw spring-boot:run -Dspring-boot.run.profiles=local`
 

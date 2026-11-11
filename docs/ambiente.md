@@ -17,11 +17,15 @@ Linux/macOS:
 ```
 Health: `GET http://localhost:8080/actuator/health` -> 200 `{"status":"UP"}`. Não comprova banco, IA, mobile ou sensores.
 
+## Banco
+Suba o PostgreSQL conforme `database/README.md` e exporte `DB_PASSWORD` (e, se necessário, `DB_URL`/`DB_USERNAME`) antes de rodar o backend; sem `DB_PASSWORD` o app não inicia. Os testes (`verify`) não usam o banco.
+
 ## Variáveis
-Ver `.env.example`. O Spring Boot não lê `.env` sozinho: exporte no shell (`$env:SERVER_PORT="8081"` no PowerShell; `export SERVER_PORT=8081` no Unix) ou configure a IDE. Só `SERVER_PORT` é usada agora.
+Ver `.env.example`. O Spring Boot não lê `.env` sozinho: exporte no shell (`$env:SERVER_PORT="8081"` no PowerShell; `export SERVER_PORT=8081` no Unix) ou configure a IDE. `SERVER_PORT` e `DB_*` são usadas agora.
 
 ## Problemas comuns
 - Porta 8080 ocupada: defina `SERVER_PORT`.
 - Java incompatível: use JDK 21 ou superior.
+- Docker não responde: abra o Docker Desktop e aguarde.
 - Download do Maven falha: verifique rede/proxy.
 - Mobile: emulador Android padrão -> `http://10.0.2.2:8080`; dispositivo físico -> IP do computador na rede. Não use `localhost` no app.

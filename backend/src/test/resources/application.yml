@@ -1,0 +1,9 @@
+# Testes tecnicos da fundacao nao precisam de PostgreSQL: datasource/JPA desativados aqui.
+# Testes de persistencia (futuros) devem usar PostgreSQL real, nao H2.
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration
