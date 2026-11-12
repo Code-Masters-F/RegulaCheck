@@ -4,10 +4,10 @@ Monolito modular em Java puro: um processo, um módulo Maven (`backend/`), pacot
 
 ## Tecnologia (exigência da disciplina, decisão de 12/11/2026)
 - **Sem Spring e sem JPA/Hibernate ORM no código de produção.** Exceção: Spring Boot pode ser usado apenas em testes automatizados (escopo `test` no Maven). A camada HTTP usa Jakarta Servlet em servidor embutido (Jetty ou Tomcat); os controllers são servlets.
-- **Banco Oracle fornecido pela faculdade**, acessado por JDBC com SQL parametrizado. Os repositories executam o SQL diretamente; o esquema vem dos scripts em `database/scripts/`.
+- **Banco Oracle fornecido pela faculdade**, acessado por JDBC com SQL parametrizado. Os repositories executam o SQL diretamente; o esquema vem dos scripts em `database/scripts/` (modelo e dicionário em [modelo-de-dados.md](modelo-de-dados.md); tabelas com prefixo `RC_`).
 - Sem container de injeção de dependência: as dependências são montadas manualmente por construtor em uma classe de composição (`config`).
 - **Telemetria IoT:** o script em `simulador-iot/` simula os dois sensores e envia leituras em JSON por HTTP POST; o módulo `iot` do backend valida (credencial, sessão de captura, faixa, atualidade) e persiste. Sem broker de mensagens.
-- **Migração concluída para a base técnica** (RC-02): Jetty 12.1.15 e Servlet em Java puro, sem Spring/JPA; o acesso a dados por JDBC/Oracle ainda será implementado (RC-03). Ver [decisoes.md](decisoes.md).
+- **Migração concluída para a base técnica** (RC-02): Jetty 12.1.15 e Servlet em Java puro, sem Spring/JPA; o esquema Oracle e os scripts SQL foram entregues na RC-03; o acesso a dados por JDBC ainda será implementado na história que ligar a API ao banco. Ver [decisoes.md](decisoes.md).
 
 ## Módulos
 config, auth, usuario, solicitacao, documento, extracao, protocolo, analise, validacao (model, regra), integracao/ia, integracao/extracao, armazenamento, iot, submissao, indicador, common/exception.

@@ -26,7 +26,7 @@ Não precisa de banco nem de variável alguma. Opcionais: `SERVER_PORT` (padrão
 - Android 9+ bloqueia HTTP sem TLS por padrão: ao criar o app, habilitar tráfego em texto claro **somente em desenvolvimento** (configuração de segurança de rede restrita aos endereços acima). Execução remota autenticada exige HTTPS.
 
 ## Banco
-**Oracle fornecido pela faculdade**, acesso por JDBC. Os dados de conexão (host, porta, service name, usuário, necessidade de VPN/rede) ainda **não foram informados**. Nunca versione credenciais: exporte `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` no shell/IDE. O PostgreSQL/Docker da fundação antiga foi removido.
+**Oracle fornecido pela faculdade**, acesso por JDBC. Host `oracle.fiap.com.br`, porta `1521`, SID `orcl` (URL `jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl`). Verificado em 12/11/2026: conexão JDBC funcionando a partir da máquina de desenvolvimento com o driver `ojdbc11` 23.26.4.0.0; servidor Oracle Database 19c Enterprise Edition, charset AL32UTF8, usuário com CREATE TABLE e CREATE SEQUENCE e quota ilimitada. Tabelas do RegulaCheck usam o prefixo `RC_`. Usuário e senha individuais ficam só no `.env` local. Nunca versione credenciais: exporte `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` no shell/IDE. O PostgreSQL/Docker da fundação antiga foi removido.
 
 ## Variáveis
 Ver `.env.example`. A aplicação não lê `.env` sozinha: exporte no shell (`$env:SERVER_PORT="8081"` no PowerShell; `export SERVER_PORT=8081` no Unix) ou configure a IDE. Variáveis de IA (`AI_*`) não são necessárias: a IA e a extração são mockadas.
