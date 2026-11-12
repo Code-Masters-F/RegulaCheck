@@ -1,5 +1,7 @@
 ## Contrato mínimo de API proposto
 
+Situação em 12/11/2026: apenas `GET /health` está implementado (fora desta tabela); as rotas abaixo estão **planejadas**. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
+
 As rotas são uma proposta para manter um domínio só e orientar a implementação; ajustar nomes sem perder comportamentos.
 
 | Método | Recurso                                               | Acesso e finalidade                        |

@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: RegulaCheck API (acadêmica, dados sintéticos)
+  version: 0.1.0
+  description: >
+    Documentação escrita à mão. Nesta etapa só GET /health está implementado;
+    os demais caminhos estão em CONTRATO_API.md e nos contratos Markdown.
+    O sistema não diagnostica, não define urgência nem autoriza atendimento.
+servers:
+  - url: http://localhost:8080
+    description: Computador de desenvolvimento
+  - url: http://10.0.2.2:8080
+    description: Emulador Android apontando para o computador
+paths:
+  /health:
+    get:
+      summary: Estado técnico da API
+      responses:
+        "200":
+          description: API em execução
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Saude"
+        "404":
+          description: Rota inexistente em outras URLs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+components:
+  schemas:
+    Saude:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [UP]
+    Erro:
+      type: object
+      required: [codigo, mensagem]
+      properties:
+        codigo: { type: string, example: NAO_ENCONTRADO }
+        mensagem: { type: string, example: Recurso não encontrado. }
+        idRastreamento: { type: string }
+        detalhes:
+          type: array
+          items:
+            type: object
+            required: [campo, mensagem]
+            properties:
+              campo: { type: string }
+              mensagem: { type: string }

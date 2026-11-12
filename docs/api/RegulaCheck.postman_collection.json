@@ -7,7 +7,7 @@
   "item": [
     {
       "name": "Health tecnico",
-      "request": { "method": "GET", "url": "{{baseUrl}}/actuator/health" }
+      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
     }
   ]
 }

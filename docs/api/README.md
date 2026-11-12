@@ -1,5 +1,18 @@
 # API
 
-Contrato proposto: [../../CONTRATO_API.md](../../CONTRATO_API.md). Nesta etapa existe apenas o health da fundacao antiga (`GET /actuator/health`); na stack nova a rota prevista e `GET /health`. Formato de documentacao: Postman Collection do health (`RegulaCheck.postman_collection.json`); Swagger/OpenAPI fica para quando houver endpoints de negocio; como nao ha Spring, a documentacao sera Postman ou OpenAPI escrito a mao.
+Documentação à mão (a stack não usa Spring, então não há Swagger gerado). Dados exclusivamente sintéticos; o sistema não diagnostica, não define urgência nem autoriza atendimento.
 
-Contratos a respeitar (ver [../arquitetura.md](../arquitetura.md)): isolamento por dona da solicitacao; upload ate 3 arquivos, 5 MB cada, PDF ate 5 paginas, JPEG/PNG, so material sintetico; resultado por regra (atende, pendente, nao verificavel, nao aplicavel); submissao idempotente e simulada; telemetria enviada em JSON por HTTP pelo simulador Java, com sessao, tipo, valor, unidade e data; resumo de IA e extracao mockados e identificados como simulados.
+| Documento | Conteúdo |
+|---|---|
+| [../../CONTRATO_API.md](../../CONTRATO_API.md) | Mapa de rotas (proposta) |
+| [contratos-dados.md](contratos-dados.md) | Solicitação, upload, análise, pendência, submissão simulada |
+| [erros.md](erros.md) | Formato padrão e catálogo de erros |
+| [estados-e-revisoes.md](estados-e-revisoes.md) | 7 estados, transições e regra de revisão |
+| [openapi.yaml](openapi.yaml) | OpenAPI escrito à mão (hoje cobre `/health` e o formato de erro) |
+| [RegulaCheck.postman_collection.json](RegulaCheck.postman_collection.json) | Coleção Postman (hoje só o health) |
+
+## Situação das rotas
+- **Implementada e verificada:** `GET /health` (200 `{"status":"UP"}`, só estado técnico; não consulta banco, logo UP não prova que o banco está acessível nem que o MVP está completo). Rota inexistente devolve 404 e método não permitido devolve 405, ambos no formato padrão de erro.
+- **Planejadas (contrato definido, sem implementação):** todas as demais rotas de [CONTRATO_API.md](../../CONTRATO_API.md).
+
+Regras a respeitar: isolamento por dona da solicitação; upload até 3 arquivos, 5 MB cada, PDF até 5 páginas, JPEG/PNG, só material sintético; resultado por regra e geral conforme [protocolo-academico.md](../protocolo-academico.md); submissão idempotente e simulada; telemetria em JSON por HTTP pelo simulador Java; resumo de IA e extração mockados e identificados como simulados. Arquitetura: [../arquitetura.md](../arquitetura.md).

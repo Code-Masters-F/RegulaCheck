@@ -6,18 +6,18 @@ Registro do que o demonstrador usa, do que é simulado e do que ele não faz. De
 
 | Item | Status | Observação |
 |---|---|---|
-| Java sem Spring e sem JPA/Hibernate em produção | Adotada (migração pendente) | Exigência da disciplina. O código atual em `backend/` ainda é Spring Boot 4.1.2/JPA/PostgreSQL e será migrado |
-| Spring Boot em testes automatizados | Adotada (somente escopo `test`) | Única exceção permitida |
-| Jakarta Servlet + Jetty ou Tomcat embutido | Adotada (a implementar) | Servidor ainda a escolher entre Jetty e Tomcat |
+| Java sem Spring e sem JPA/Hibernate em produção | Adotada e aplicada na base (RC-02) | Exigência da disciplina. `backend/` já é Java puro, verificado por teste que proíbe Spring/JPA em `src/main` e no `pom.xml` |
+| Spring Boot em testes automatizados | Permitida (escopo `test`), hoje não usada | Única exceção permitida; os testes atuais usam JUnit e o cliente HTTP do Java |
+| Jakarta Servlet + Jetty embutido | Adotada e implementada (12.1.15) | Escolha do Jetty registrada na RC-02 |
 | JDBC com SQL parametrizado, sem ORM | Adotada (a implementar) | Repositories executam o SQL diretamente |
-| Banco Oracle da faculdade | Adotada | Dados de conexão pendentes; scripts SQL precisam ser portados do PostgreSQL |
+| Banco Oracle da faculdade | Adotada | Dados de conexão pendentes; scripts SQL a criar/portar (RC-03). A API ainda não conecta ao banco |
 | Maven Wrapper | Adotada | Versões fixadas |
 | Mobile Android nativo em Kotlin | Adotada (não criado) | Consome a API; sem acesso a banco ou IA |
 | Resumo de pendências por IA | **Simulada** | Dados mockados atrás de contrato e adaptador; sempre identificado como simulado; não é integração real |
 | Extração/OCR de documentos | **Simulada** | Dados mockados atrás de contrato e adaptador; sempre identificado como simulado |
 | Dois sensores (luminosidade em lux, distância em cm) | **Simulada** | Script Java (`java.net.http.HttpClient`) envia JSON por HTTP à API |
 | MQTT | Descartada | Substituído por HTTP com JSON |
-| Docker/PostgreSQL local | Descartada para o produto final | Resquício da fundação antiga |
+| Docker/PostgreSQL local | Descartada e removida (RC-02) | Resquício da fundação antiga |
 | Provedor de IA real | Descartada | Sem chave nem chamada externa |
 
 ## Limitações do protótipo
@@ -33,8 +33,8 @@ Registro do que o demonstrador usa, do que é simulado e do que ele não faz. De
 | Categoria | Itens |
 |---|---|
 | Documentado | Recorte, protocolo v0.1, catálogo de regras, decisões de tecnologia |
-| Implementado | Fundação técnica antiga (Spring/JPA/PostgreSQL), a ser migrada; nada do negócio |
+| Implementado | Base técnica em Java puro (Jetty/Servlet) com `GET /health`, erros padronizados e testes; nada de negócio |
 | Simulado (a implementar) | IA, extração/OCR, sensores |
-| Pendente | Migração da stack, conexão Oracle, portabilidade dos scripts SQL, autenticação, mobile |
-| Verificação pendente | Aplicação em papel dos 5 casos e confirmação do grupo (ver [protocolo-academico.md](protocolo-academico.md#verificação)) |
+| Pendente | Conexão Oracle e scripts SQL, autenticação, mobile, simulador, motor de regras |
+| Não verificado (dispensado) | Aplicação em papel dos 5 casos e validação pelo grupo, dispensadas por decisão do responsável em 12/11/2026 (ver [protocolo-academico.md](protocolo-academico.md#verificação)) |
 | Fora do escopo | Integração real com SUS, IA real, OCR real, microsserviços, mensageria |
