@@ -1,6 +1,9 @@
 package br.com.regulacheck.config;
 
+import br.com.regulacheck.auth.repository.SessaoRepositoryJdbc;
+import br.com.regulacheck.usuario.repository.UsuarioRepositoryJdbc;
 import java.io.IOException;
+import java.time.Clock;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ErrorHandler;
@@ -18,19 +21,42 @@ public final class Servidor {
 
     private final Server servidor;
     private final ServerConnector conector;
+    private final BancoDados banco;
 
-    private Servidor(Server servidor, ServerConnector conector) {
+    private Servidor(Server servidor, ServerConnector conector, BancoDados banco) {
         this.servidor = servidor;
         this.conector = conector;
+        this.banco = banco;
     }
 
     /**
-     * Prepara o servidor sem inicia-lo.
+     * Prepara o servidor com as dependencias reais (Oracle por JDBC, relogio do sistema) sem inicia-lo.
+     * O banco so e acessado quando uma rota que o usa for chamada; sem {@code DB_*}, a API sobe e essas
+     * rotas respondem 503.
      *
-     * @param configuracao host e porta de escuta ({@code 0} escolhe uma porta livre)
+     * @param configuracao host, porta, dados do banco e validade da sessao ({@code 0} escolhe porta livre)
      * @return servidor pronto para {@link #iniciar()}
      */
     public static Servidor criar(Configuracao configuracao) {
+        BancoDados banco = BancoDados.criar(configuracao.banco());
+        Dependencias reais = new Dependencias(new UsuarioRepositoryJdbc(banco), new SessaoRepositoryJdbc(banco),
+                Clock.systemUTC());
+        return montar(configuracao, reais, banco);
+    }
+
+    /**
+     * Prepara o servidor com dependencias fornecidas, sem banco (usado em testes com repositorios em
+     * memoria).
+     *
+     * @param configuracao host, porta e validade da sessao
+     * @param dependencias repositorios e relogio
+     * @return servidor pronto para {@link #iniciar()}
+     */
+    public static Servidor criar(Configuracao configuracao, Dependencias dependencias) {
+        return montar(configuracao, dependencias, null);
+    }
+
+    private static Servidor montar(Configuracao configuracao, Dependencias dependencias, BancoDados banco) {
         Server servidor = new Server();
         ServerConnector conector = new ServerConnector(servidor);
         conector.setHost(configuracao.host());
@@ -41,8 +67,8 @@ public final class Servidor {
         erros.setShowStacks(false);
         servidor.setErrorHandler(erros);
 
-        servidor.setHandler(Composicao.montar());
-        return new Servidor(servidor, conector);
+        servidor.setHandler(Composicao.montar(configuracao, dependencias));
+        return new Servidor(servidor, conector, banco);
     }
 
     /**
@@ -77,6 +103,9 @@ public final class Servidor {
      */
     public void parar() throws Exception {
         servidor.stop();
+        if (banco != null) {
+            banco.fechar();
+        }
     }
 
     /** Bloqueia a thread atual ate o servidor parar. */

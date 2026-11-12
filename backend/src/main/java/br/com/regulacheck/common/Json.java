@@ -2,8 +2,10 @@ package br.com.regulacheck.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import java.io.IOException;
 
 /**
  * Acesso unico ao {@link ObjectMapper} da aplicacao.
@@ -16,9 +18,34 @@ public final class Json {
     private static final ObjectMapper MAPPER = JsonMapper.builder()
             // Aviso de depreciacao conhecido do Jackson 2.23: a opcao funciona e e coberta pelos testes.
             .serializationInclusion(JsonInclude.Include.NON_NULL)
+            // Entrada: campos desconhecidos sao ignorados, mas lixo depois do JSON e recusado.
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
             .build();
 
     private Json() {
+    }
+
+    /**
+     * Le um JSON de entrada para um DTO.
+     *
+     * @param bytes conteudo JSON em UTF-8
+     * @param tipo classe do DTO de destino
+     * @param <T> tipo do DTO
+     * @return DTO preenchido (nunca {@code null})
+     * @throws IllegalArgumentException se o JSON for ilegivel, nao corresponder ao tipo ou for
+     *     {@code null}; a mensagem nao reproduz o conteudo recebido
+     */
+    public static <T> T ler(byte[] bytes, Class<T> tipo) {
+        try {
+            T valor = MAPPER.readValue(bytes, tipo);
+            if (valor == null) {
+                throw new IllegalArgumentException("JSON sem conteudo.");
+            }
+            return valor;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("JSON ilegivel.");
+        }
     }
 
     /**

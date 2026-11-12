@@ -1,6 +1,6 @@
 # Contratos de dados: solicitação, upload, análise e pendência
 
-Formato JSON, campos em camelCase, instantes em ISO-8601 UTC. Todos os exemplos são fictícios. A paciente é identificada pela sessão autenticada, nunca por campo no corpo. Rotas completas em [`CONTRATO_API.md`](../../CONTRATO_API.md); apenas `GET /health` existe nesta história, as demais são planejadas.
+Formato JSON, campos em camelCase, instantes em ISO-8601 UTC. Todos os exemplos são fictícios. A paciente é identificada pela sessão autenticada, nunca por campo no corpo. Rotas completas em [`CONTRATO_API.md`](../../CONTRATO_API.md); além de `GET /health`, só as rotas `/auth/*` (RC-04) estão implementadas; as demais são planejadas.
 
 ## Solicitação
 `POST /solicitacoes` (201) · `GET /solicitacoes/{id}` (200)

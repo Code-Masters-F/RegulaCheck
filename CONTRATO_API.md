@@ -1,12 +1,14 @@
 ## Contrato mínimo de API proposto
 
-Situação em 12/11/2026: apenas `GET /health` está implementado (fora desta tabela); as rotas abaixo estão **planejadas**. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
+Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas; as demais rotas abaixo estão **planejadas**. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
 
 As rotas são uma proposta para manter um domínio só e orientar a implementação; ajustar nomes sem perder comportamentos.
 
 | Método | Recurso                                               | Acesso e finalidade                        |
 | ------ | ----------------------------------------------------- | ------------------------------------------ |
-| POST   | /auth/login                                           | Autenticar conta demonstrativa             |
+| POST   | /auth/login                                           | Autenticar conta demonstrativa (**implementada**, RC-04) |
+| GET    | /auth/sessao                                          | Identidade e expiração da sessão atual (**implementada**, RC-04) |
+| POST   | /auth/logout                                          | Encerrar a sessão do token enviado (**implementada**, RC-04) |
 | GET    | /protocolos                                           | Paciente autenticada consulta opção ativa  |
 | GET    | /solicitacoes                                         | Lista somente pedidos próprios             |
 | POST   | /solicitacoes                                         | Cria rascunho                              |

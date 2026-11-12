@@ -1,11 +1,13 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.1.0
+  version: 0.2.0
   description: >
-    Documentação escrita à mão. Nesta etapa só GET /health está implementado;
-    os demais caminhos estão em CONTRATO_API.md e nos contratos Markdown.
-    O sistema não diagnostica, não define urgência nem autoriza atendimento.
+    Documentação escrita à mão. Nesta etapa estão implementados GET /health e as rotas de
+    autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
+    caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
+    dependem do banco Oracle: sem DB_* configuradas respondem 503. O sistema não diagnostica,
+    não define urgência nem autoriza atendimento.
 servers:
   - url: http://localhost:8080
     description: Computador de desenvolvimento
@@ -28,7 +30,105 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Erro"
+  /auth/login:
+    post:
+      summary: Autentica a conta e abre uma sessão
+      description: >
+        Senha errada, e-mail inexistente, conta desativada e senha acima de 72 bytes devolvem a
+        mesma resposta 401. O token só aparece nesta resposta.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Sessão aberta (prazo padrão de 30 minutos)
+          headers:
+            Cache-Control:
+              schema: { type: string, example: no-store }
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Corpo ilegível, ou e-mail/senha ausentes ou fora do tamanho (REQUISICAO_INVALIDA)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+        "401":
+          description: Credenciais inválidas (CREDENCIAIS_INVALIDAS)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+        "415":
+          description: Content-Type diferente de application/json (TIPO_NAO_SUPORTADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+        "503":
+          description: Banco indisponível ou não configurado (DEPENDENCIA_INDISPONIVEL)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+  /auth/sessao:
+    get:
+      summary: Identidade e expiração da sessão atual
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Sessão válida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessaoResponse"
+        "401":
+          description: >
+            Token ausente, malformado, desconhecido, expirado ou encerrado, ou conta desativada
+            (NAO_AUTENTICADO); a resposta é a mesma em todos os casos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+        "503":
+          description: Banco indisponível (DEPENDENCIA_INDISPONIVEL)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+  /auth/logout:
+    post:
+      summary: Encerra a sessão do token enviado
+      description: As outras sessões da mesma conta continuam válidas. Repetir com o mesmo token devolve 401.
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Sessão encerrada; o token deixa de valer imediatamente
+        "401":
+          description: Sessão ausente, expirada ou já encerrada (NAO_AUTENTICADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+        "503":
+          description: Banco indisponível (DEPENDENCIA_INDISPONIVEL)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Token recebido em POST /auth/login, enviado em Authorization (Bearer).
   schemas:
     Saude:
       type: object
@@ -37,6 +137,51 @@ components:
         status:
           type: string
           enum: [UP]
+    LoginRequest:
+      type: object
+      required: [email, senha]
+      properties:
+        email:
+          type: string
+          maxLength: 254
+          example: paciente.a@exemplo.invalid
+        senha:
+          type: string
+          description: Até 72 bytes em UTF-8; nunca é registrada em log.
+          writeOnly: true
+    UsuarioResumo:
+      type: object
+      required: [nome, perfil]
+      properties:
+        nome: { type: string, example: Paciente A (fictícia) }
+        perfil:
+          type: string
+          enum: [PACIENTE, ADMINISTRADOR]
+    LoginResponse:
+      type: object
+      required: [token, tipo, expiraEm, usuario]
+      properties:
+        token:
+          type: string
+          description: 43 caracteres (base64url); só aparece nesta resposta.
+        tipo:
+          type: string
+          enum: [Bearer]
+        expiraEm:
+          type: string
+          format: date-time
+          example: "2026-11-12T22:30:00Z"
+        usuario:
+          $ref: "#/components/schemas/UsuarioResumo"
+    SessaoResponse:
+      type: object
+      required: [usuario, expiraEm]
+      properties:
+        usuario:
+          $ref: "#/components/schemas/UsuarioResumo"
+        expiraEm:
+          type: string
+          format: date-time
     Erro:
       type: object
       required: [codigo, mensagem]

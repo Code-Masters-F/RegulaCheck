@@ -12,9 +12,10 @@ Scripts para **Oracle 19c** (SQL Developer, SQLcl ou SQL*Plus). `;` encerra inst
 | 2 | [`02_carga_sintetica.sql`](02_carga_sintetica.sql) | Insere 3 contas, o protocolo v0.1, as 6 regras e 4 pedidos de exemplo | Só insere; bloco único, tudo ou nada |
 | 3 | [`03_consultas_uso.sql`](03_consultas_uso.sql) | 6 consultas com junção e agregação | Somente leitura |
 | 4 | [`04_testes_restricoes.sql`](04_testes_restricoes.sql) | Tenta 12 violações e confere que o banco recusa | Não deixa dados (`ROLLBACK`) |
-| 90 | [`90_limpeza_DESTRUTIVA.sql`](90_limpeza_DESTRUTIVA.sql) | **Apaga** as tabelas `RC_*` | **DESTRUTIVO**; só roda com confirmação explícita |
+| 5 | [`05_sessao_login.sql`](05_sessao_login.sql) | (RC-04) Cria `RC_SESSAO_LOGIN`, onde a API guarda as sessões de login (só o hash do token) | Só cria; exige o `01_`; falha com ORA-00955 se já existir |
+| 90 | [`90_limpeza_DESTRUTIVA.sql`](90_limpeza_DESTRUTIVA.sql) | **Apaga** as tabelas `RC_*` (as 12 da RC-03 e `RC_SESSAO_LOGIN`) | **DESTRUTIVO**; só roda com confirmação explícita |
 
-Nenhum script, exceto o `90_`, contém `DROP`, `TRUNCATE` ou `DELETE`. O `90_` nunca é chamado pelos outros e, por padrão, falha sem apagar nada (ORA-20001): para permitir, troque `'NAO'` por `'SIM'` na linha `<<CONFIRMACAO>>`. Ele cita as 12 tabelas `RC_*` uma a uma e não toca em `PEQUENOVAREJO`, `VENDA` ou qualquer outro objeto.
+Nenhum script, exceto o `90_`, contém `DROP`, `TRUNCATE` ou `DELETE`. O `90_` nunca é chamado pelos outros e, por padrão, falha sem apagar nada (ORA-20001): para permitir, troque `'NAO'` por `'SIM'` na linha `<<CONFIRMACAO>>`. Ele cita as 13 tabelas `RC_*` (12 da RC-03 e `RC_SESSAO_LOGIN` da RC-04) uma a uma e não toca em `PEQUENOVAREJO`, `VENDA` ou qualquer outro objeto.
 
 Para ver as saídas do `04_` e da carga, habilite a saída do servidor (SQL Developer: Exibir > Saída DBMS; SQLcl/SQL*Plus: `SET SERVEROUTPUT ON`).
 
@@ -22,7 +23,8 @@ Para ver as saídas do `04_` e da carga, habilite a saída do servidor (SQL Deve
 
 - Rodar `01_` de novo: cada `CREATE` falha com **ORA-00955** e nada é alterado.
 - Rodar `02_` de novo: falha com **ORA-00001** (e-mail já cadastrado) e o bloco inteiro é desfeito; nada é duplicado.
-- Para recomeçar em ambiente de desenvolvimento: `90_` (com confirmação) → `01_` → `02_`.
+- Rodar `05_` de novo: ORA-00955 e nada é alterado.
+- Para recomeçar em ambiente de desenvolvimento: `90_` (com confirmação) → `01_` → `02_` → `05_`.
 
 ## Contas e senhas de demonstração
 
@@ -32,7 +34,7 @@ Para ver as saídas do `04_` e da carga, habilite a saída do servidor (SQL Deve
 | `paciente.b@exemplo.invalid` | `PACIENTE` |
 | `admin@exemplo.invalid` | `ADMINISTRADOR` |
 
-O domínio `.invalid` é reservado e nunca coincide com conta real. A coluna `SENHA_HASH` guarda **somente hash BCrypt** (versão `2a`, **custo 12**, 60 caracteres, formato `$2a$12$…`). Os hashes foram gerados com a biblioteca `at.favre.lib:bcrypt` 0.10.2, a mesma candidata para a API (RC-04), por um programa descartável fora do repositório, a partir da **senha de demonstração fictícia** `RegulaCheck#Demo2026`, usada apenas neste ambiente acadêmico e que **não é senha de ninguém**. Cada conta tem um hash distinto (sal próprio). Não reutilize essa senha em nenhum outro lugar. A compatibilidade com a API é conferida na RC-04.
+O domínio `.invalid` é reservado e nunca coincide com conta real. A coluna `SENHA_HASH` guarda **somente hash BCrypt** (versão `2a`, **custo 12**, 60 caracteres, formato `$2a$12$…`). Os hashes foram gerados com a biblioteca `at.favre.lib:bcrypt` 0.10.2, a mesma candidata para a API (RC-04), por um programa descartável fora do repositório, a partir da **senha de demonstração fictícia** `RegulaCheck#Demo2026`, usada apenas neste ambiente acadêmico e que **não é senha de ninguém**. Cada conta tem um hash distinto (sal próprio). Não reutilize essa senha em nenhum outro lugar. A compatibilidade com a biblioteca de verificação da API foi conferida na RC-04 por teste automatizado (`HashesRc03CompatibilidadeTest`), que lê os três hashes deste script e verifica a senha de demonstração, e pelo login real das três contas (ver registro em [../README.md](../README.md#verificação-registrada)).
 
 ## Dados da carga (contagens por tabela)
 
@@ -60,4 +62,4 @@ Cada caso deve falhar com o código esperado e imprimir `OK`: perfil inválido, 
 
 ## Verificação registrada
 
-Execuções reais no Oracle da faculdade estão em [../README.md](../README.md#verificação-registrada).
+Execuções reais no Oracle da faculdade (inclusive a do `05_`) estão em [../README.md](../README.md#verificação-registrada).

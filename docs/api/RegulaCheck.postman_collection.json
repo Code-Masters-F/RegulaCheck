@@ -1,13 +1,64 @@
 {
   "info": {
-    "name": "RegulaCheck - fundacao",
+    "name": "RegulaCheck - fundacao e autenticacao",
+    "description": "Dados sinteticos. Defina a variavel senhaDemo com a senha de demonstracao fictícia de database/scripts/README.md (nao a versione preenchida).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
-  "variable": [{ "key": "baseUrl", "value": "http://localhost:8080" }],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "email", "value": "paciente.a@exemplo.invalid" },
+    { "key": "senhaDemo", "value": "" },
+    { "key": "token", "value": "" }
+  ],
   "item": [
     {
       "name": "Health tecnico",
       "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+    },
+    {
+      "name": "Login (200 com token; guarda em {{token}})",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) { pm.collectionVariables.set('token', pm.response.json().token); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": { "mode": "raw", "raw": "{\"email\":\"{{email}}\",\"senha\":\"{{senhaDemo}}\"}" }
+      }
+    },
+    {
+      "name": "Login com senha errada (401 CREDENCIAIS_INVALIDAS)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": { "mode": "raw", "raw": "{\"email\":\"{{email}}\",\"senha\":\"senha-errada\"}" }
+      }
+    },
+    {
+      "name": "Sessao atual (200; 401 NAO_AUTENTICADO sem sessao)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/auth/sessao"
+      }
+    },
+    {
+      "name": "Logout (204)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/auth/logout"
+      }
     }
   ]
 }
