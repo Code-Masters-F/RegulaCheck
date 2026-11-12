@@ -22,6 +22,7 @@ public final class CenarioAuth {
     public static final String EMAIL_A = "paciente.a@exemplo.invalid";
     public static final String EMAIL_B = "paciente.b@exemplo.invalid";
     public static final String EMAIL_INATIVA = "inativa@exemplo.invalid";
+    public static final String EMAIL_ADMIN = "admin@exemplo.invalid";
     public static final Duration TTL = Duration.ofMinutes(30);
 
     public final UsuarioRepositoryMemoria usuarios = new UsuarioRepositoryMemoria();
@@ -54,6 +55,7 @@ public final class CenarioAuth {
         usuarios.adicionar(new Usuario(1, EMAIL_A, "Paciente A (ficticia)", hash, Perfil.PACIENTE, true));
         usuarios.adicionar(new Usuario(2, EMAIL_B, "Paciente B (ficticia)", hash, Perfil.PACIENTE, true));
         usuarios.adicionar(new Usuario(3, EMAIL_INATIVA, "Conta Inativa", hash, Perfil.PACIENTE, false));
+        usuarios.adicionar(new Usuario(4, EMAIL_ADMIN, "Administrador (ficticio)", hash, Perfil.ADMINISTRADOR, true));
         this.servico = new AutenticacaoService(usuarios, sessoes, verificador, gerador, relogio, TTL);
     }
 

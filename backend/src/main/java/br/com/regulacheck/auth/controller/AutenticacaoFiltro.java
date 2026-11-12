@@ -1,7 +1,10 @@
 package br.com.regulacheck.auth.controller;
 
+import br.com.regulacheck.auth.autorizacao.ChaveSimulador;
+import br.com.regulacheck.auth.autorizacao.Erros;
 import br.com.regulacheck.auth.service.AutenticacaoService;
 import br.com.regulacheck.auth.service.SessaoAutenticada;
+import br.com.regulacheck.common.exception.ExcecaoNegocio;
 import br.com.regulacheck.common.exception.RespostaErro;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -11,6 +14,8 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Ponto unico de autenticacao das rotas protegidas.
@@ -22,20 +27,30 @@ import java.io.IOException;
  *
  * <p>Como as proximas historias o usam: registrar este filtro no caminho de cada rota protegida em
  * {@code Composicao} (ex.: {@code /solicitacoes/*}). O filtro so identifica quem chamou; regras por
- * perfil e isolamento por paciente sao da RC-05 e ficam nos servicos.
+ * perfil sao do {@code AutorizacaoFiltro} (registrado por {@code RotasPrivadas}) e a dona do recurso
+ * e verificada nos servicos com {@code Propriedade}.
+ *
+ * <p>Credencial do simulador: se a rota e de conta e quem chama apresenta a chave do simulador valida,
+ * a resposta e 403 (identidade reconhecida, sem permissao aqui) e nao 401.
  */
 public class AutenticacaoFiltro implements Filter {
 
     /** Nome do atributo da requisicao que carrega a {@link SessaoAutenticada}. */
     public static final String ATRIBUTO = "br.com.regulacheck.sessaoAutenticada";
 
+    private static final Logger LOG = LoggerFactory.getLogger(AutenticacaoFiltro.class);
     private static final String ESQUEMA = "bearer ";
 
     private final AutenticacaoService autenticacao;
+    private final ChaveSimulador chaveSimulador;
 
-    /** @param autenticacao casos de uso de autenticacao */
-    public AutenticacaoFiltro(AutenticacaoService autenticacao) {
+    /**
+     * @param autenticacao casos de uso de autenticacao
+     * @param chaveSimulador chave do simulador, usada so para recusar com 403 quem a apresenta aqui
+     */
+    public AutenticacaoFiltro(AutenticacaoService autenticacao, ChaveSimulador chaveSimulador) {
         this.autenticacao = autenticacao;
+        this.chaveSimulador = chaveSimulador;
     }
 
     /**
@@ -59,8 +74,22 @@ public class AutenticacaoFiltro implements Filter {
         HttpServletRequest http = (HttpServletRequest) requisicao;
         HttpServletResponse respostaHttp = (HttpServletResponse) resposta;
         try {
-            SessaoAutenticada sessao = autenticacao.autenticar(token(http.getHeader("Authorization")));
+            SessaoAutenticada sessao = autenticacao.autenticar(tokenDe(http.getHeader("Authorization")));
             http.setAttribute(ATRIBUTO, sessao);
+        } catch (ExcecaoNegocio naoAutenticado) {
+            if (naoAutenticado.status() == HttpServletResponse.SC_UNAUTHORIZED
+                    && chaveSimulador.confere(http.getHeader(ChaveSimulador.CABECALHO))) {
+                LOG.warn("Acesso negado. credencial=simulador metodo={} caminho={} codigo=ACESSO_NEGADO",
+                        http.getMethod(), http.getRequestURI());
+                RespostaErro.tratar(respostaHttp, Erros.acessoNegado());
+                return;
+            }
+            if (naoAutenticado.status() == HttpServletResponse.SC_UNAUTHORIZED) {
+                LOG.warn("Acesso nao autenticado. metodo={} caminho={} codigo=NAO_AUTENTICADO",
+                        http.getMethod(), http.getRequestURI());
+            }
+            RespostaErro.tratar(respostaHttp, naoAutenticado);
+            return;
         } catch (RuntimeException falha) {
             // 401 (previsto), 503 (banco) e falhas inesperadas (500) saem no formato padrao; a cadeia nao segue.
             RespostaErro.tratar(respostaHttp, falha);
@@ -69,8 +98,13 @@ public class AutenticacaoFiltro implements Filter {
         cadeia.doFilter(requisicao, resposta);
     }
 
-    /** Extrai o token do cabecalho, ou {@code null} se o esquema nao for Bearer. */
-    private static String token(String cabecalho) {
+    /**
+     * Extrai o token do cabecalho {@code Authorization}.
+     *
+     * @param cabecalho valor do cabecalho; pode ser {@code null}
+     * @return o token, ou {@code null} se o esquema nao for Bearer
+     */
+    public static String tokenDe(String cabecalho) {
         if (cabecalho == null || cabecalho.length() <= ESQUEMA.length()
                 || !cabecalho.regionMatches(true, 0, ESQUEMA, 0, ESQUEMA.length())) {
             return null;

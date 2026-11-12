@@ -5,15 +5,34 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080" },
-    { "key": "email", "value": "paciente.a@exemplo.invalid" },
-    { "key": "senhaDemo", "value": "" },
-    { "key": "token", "value": "" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "email",
+      "value": "paciente.a@exemplo.invalid"
+    },
+    {
+      "key": "senhaDemo",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "chaveSimulador",
+      "value": ""
+    }
   ],
   "item": [
     {
       "name": "Health tecnico",
-      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
     },
     {
       "name": "Login (200 com token; guarda em {{token}})",
@@ -30,25 +49,46 @@
       ],
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "url": "{{baseUrl}}/auth/login",
-        "body": { "mode": "raw", "raw": "{\"email\":\"{{email}}\",\"senha\":\"{{senhaDemo}}\"}" }
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{email}}\",\"senha\":\"{{senhaDemo}}\"}"
+        }
       }
     },
     {
       "name": "Login com senha errada (401 CREDENCIAIS_INVALIDAS)",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "url": "{{baseUrl}}/auth/login",
-        "body": { "mode": "raw", "raw": "{\"email\":\"{{email}}\",\"senha\":\"senha-errada\"}" }
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{email}}\",\"senha\":\"senha-errada\"}"
+        }
       }
     },
     {
       "name": "Sessao atual (200; 401 NAO_AUTENTICADO sem sessao)",
       "request": {
         "method": "GET",
-        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
         "url": "{{baseUrl}}/auth/sessao"
       }
     },
@@ -56,8 +96,26 @@
       "name": "Logout (204)",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
         "url": "{{baseUrl}}/auth/logout"
+      }
+    },
+    {
+      "name": "Sessao com chave do simulador em rota de conta (403 ACESSO_NEGADO)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Chave-Simulador",
+            "value": "{{chaveSimulador}}"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/sessao"
       }
     }
   ]

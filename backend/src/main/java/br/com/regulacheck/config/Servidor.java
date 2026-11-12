@@ -3,7 +3,9 @@ package br.com.regulacheck.config;
 import br.com.regulacheck.auth.repository.SessaoRepositoryJdbc;
 import br.com.regulacheck.usuario.repository.UsuarioRepositoryJdbc;
 import java.io.IOException;
+import br.com.regulacheck.auth.autorizacao.RotasPrivadas;
 import java.time.Clock;
+import java.util.function.Consumer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ErrorHandler;
@@ -41,7 +43,7 @@ public final class Servidor {
         BancoDados banco = BancoDados.criar(configuracao.banco());
         Dependencias reais = new Dependencias(new UsuarioRepositoryJdbc(banco), new SessaoRepositoryJdbc(banco),
                 Clock.systemUTC());
-        return montar(configuracao, reais, banco);
+        return montar(configuracao, reais, banco, rotas -> { });
     }
 
     /**
@@ -53,10 +55,25 @@ public final class Servidor {
      * @return servidor pronto para {@link #iniciar()}
      */
     public static Servidor criar(Configuracao configuracao, Dependencias dependencias) {
-        return montar(configuracao, dependencias, null);
+        return montar(configuracao, dependencias, null, rotas -> { });
     }
 
-    private static Servidor montar(Configuracao configuracao, Dependencias dependencias, BancoDados banco) {
+    /**
+     * Como {@link #criar(Configuracao, Dependencias)}, com rotas extras registradas pelo mesmo
+     * {@link RotasPrivadas} da producao (usado nos testes de autorizacao com rotas de exemplo).
+     *
+     * @param configuracao host, porta, validade da sessao e chave do simulador
+     * @param dependencias repositorios e relogio
+     * @param extensao rotas extras, registradas antes da rota coringa
+     * @return servidor pronto para {@link #iniciar()}
+     */
+    public static Servidor criar(Configuracao configuracao, Dependencias dependencias,
+            Consumer<RotasPrivadas> extensao) {
+        return montar(configuracao, dependencias, null, extensao);
+    }
+
+    private static Servidor montar(Configuracao configuracao, Dependencias dependencias, BancoDados banco,
+            Consumer<RotasPrivadas> extensao) {
         Server servidor = new Server();
         ServerConnector conector = new ServerConnector(servidor);
         conector.setHost(configuracao.host());
@@ -67,7 +84,7 @@ public final class Servidor {
         erros.setShowStacks(false);
         servidor.setErrorHandler(erros);
 
-        servidor.setHandler(Composicao.montar(configuracao, dependencias));
+        servidor.setHandler(Composicao.montar(configuracao, dependencias, extensao));
         return new Servidor(servidor, conector, banco);
     }
 

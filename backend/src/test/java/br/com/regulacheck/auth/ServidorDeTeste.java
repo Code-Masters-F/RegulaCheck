@@ -45,6 +45,14 @@ public final class ServidorDeTeste implements AutoCloseable {
         return new ServidorDeTeste(servidor);
     }
 
+    /** Inicia a API de teste com chave do simulador e rotas de exemplo registradas pelo mecanismo real. */
+    public static ServidorDeTeste iniciarComRotas(Configuracao configuracao, Dependencias dependencias,
+            java.util.function.Consumer<br.com.regulacheck.auth.autorizacao.RotasPrivadas> rotas) throws Exception {
+        Servidor servidor = Servidor.criar(configuracao, dependencias, rotas);
+        servidor.iniciar();
+        return new ServidorDeTeste(servidor);
+    }
+
     /** Inicia a API com as dependencias reais e a configuracao informada (usado para testar o 503 sem banco). */
     public static ServidorDeTeste iniciarReal(Configuracao configuracao) throws Exception {
         Servidor servidor = Servidor.criar(configuracao);
@@ -54,6 +62,17 @@ public final class ServidorDeTeste implements AutoCloseable {
 
     public Resposta get(String caminho, Map<String, String> cabecalhos) throws Exception {
         return enviar(builder(caminho, cabecalhos).GET().build());
+    }
+
+    /** Envia um metodo qualquer, com corpo JSON opcional (use {@code null} para nao enviar corpo). */
+    public Resposta enviar(String metodo, String caminho, String json, Map<String, String> cabecalhos)
+            throws Exception {
+        HttpRequest.Builder b = builder(caminho, cabecalhos);
+        if (json != null) {
+            b.header("Content-Type", "application/json");
+        }
+        return enviar(b.method(metodo, json == null ? HttpRequest.BodyPublishers.noBody()
+                : HttpRequest.BodyPublishers.ofString(json)).build());
     }
 
     public Resposta postJson(String caminho, String json, Map<String, String> cabecalhos) throws Exception {
