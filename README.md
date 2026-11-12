@@ -10,7 +10,7 @@ Verificador de completude documental de encaminhamentos (MVP acadêmico, **dados
 - Mobile: Android nativo com Kotlin (decidido, não criado).
 - Desenvolvimento conduzido com o GitHub Spec Kit (ver `CLAUDE.md` e `.specify/`).
 
-Detalhes e pendências em [docs/decisoes.md](docs/decisoes.md).
+Detalhes e pendências em [docs/decisoes.md](docs/decisoes.md). Recorte e regras do demonstrador em [docs/protocolo-academico.md](docs/protocolo-academico.md); tecnologias e limitações em [docs/escopo-e-limitacoes.md](docs/escopo-e-limitacoes.md).
 
 ## Estado real da preparação
 A **fundação existente em `backend/` ainda é a versão antiga** (Spring Boot 4.1.2, JPA, PostgreSQL) e **precisa ser migrada** para a stack acima; ela não representa a stack final. Não há entidades de negócio, mobile, simulador, segurança nem integração com o Oracle implementados. A migração será feita pelo fluxo do Spec Kit.

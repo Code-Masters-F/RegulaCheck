@@ -23,7 +23,7 @@ config, auth, usuario, solicitacao, documento, extracao, protocolo, analise, val
 ## Estados da solicitação (propostos)
 RASCUNHO, PROCESSANDO, REQUER_CONFERENCIA, COM_PENDENCIAS, SEM_PENDENCIAS_IDENTIFICADAS, FALHA_ANALISE, SUBMETIDA_SIMULACAO.
 
-Transições previstas: RASCUNHO -> PROCESSANDO -> (REQUER_CONFERENCIA | COM_PENDENCIAS | SEM_PENDENCIAS_IDENTIFICADAS | FALHA_ANALISE); após correção/reenvio volta a PROCESSANDO; somente SEM_PENDENCIAS_IDENTIFICADAS -> SUBMETIDA_SIMULACAO. O estado do resumo de IA é distinto do estado da validação. Implementação futura.
+Transições previstas: RASCUNHO -> PROCESSANDO -> (REQUER_CONFERENCIA | COM_PENDENCIAS | SEM_PENDENCIAS_IDENTIFICADAS | FALHA_ANALISE); após correção/reenvio volta a PROCESSANDO; somente SEM_PENDENCIAS_IDENTIFICADAS -> SUBMETIDA_SIMULACAO. `REQUER_CONFERENCIA` cobre também o caso de haver regra não verificável (ver [protocolo-academico.md](protocolo-academico.md#resultado-geral)). O estado do resumo de IA é distinto do estado da validação. Implementação futura.
 
 ## Contratos
 Ver [api/README.md](api/README.md) e [../CONTRATO_API.md](../CONTRATO_API.md). A conferência da transcrição é separada de alteração clínica do documento original; informação clínica ausente é corrigida pela unidade emissora. O sistema não diagnostica, não define urgência nem autoriza atendimento; a submissão é simulada.
