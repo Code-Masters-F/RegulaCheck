@@ -357,3 +357,8 @@ Se houver atraso, explicite o impacto e retire primeiro melhorias P1; não supri
 - [ ] Relatório final distingue implementado, verificado, pendente e fora do escopo.
 
 Na preparação inicial, acrescentar: backend compilável e inicializável, health técnico mínimo, versões registradas e pendências de banco/mobile/IA explícitas. Um health UP não comprova que o MVP está completo.
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->
