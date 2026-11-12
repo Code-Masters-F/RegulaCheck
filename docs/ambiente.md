@@ -36,6 +36,9 @@ Não precisa de banco nem de variável alguma para subir e responder `/health`. 
 ## Variáveis
 Ver `.env.example`. A aplicação não lê `.env` sozinha: exporte no shell (`$env:SERVER_PORT="8081"` no PowerShell; `export SERVER_PORT=8081` no Unix) ou configure a IDE. Variáveis de IA (`AI_*`) não são necessárias: a IA e a extração são mockadas.
 
+## Chave do simulador (RC-05)
+`IOT_API_KEY` é a chave que o simulador de sensores envia no cabeçalho `X-Chave-Simulador`. É **opcional** para iniciar a API: sem ela a rota de telemetria responde sempre 401. Defina só no shell/IDE ou no seu `.env` local (ignorado pelo Git); nunca versione valor real. A chave só vale na telemetria; em qualquer outra rota responde 403. Os testes usam uma chave fictícia própria.
+
 ## Problemas comuns
 - Porta 8080 ocupada: defina `SERVER_PORT`.
 - Java incompatível: use JDK 21 ou superior.

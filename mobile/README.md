@@ -15,6 +15,12 @@ A API de autenticação existe (`POST /auth/login`, `GET /auth/sessao`, `POST /a
 5. Em qualquer 401 `NAO_AUTENTICADO`, apagar o token e voltar ao login pedindo novo acesso.
 6. Ao sair, chamar `POST /auth/logout` e apagar o token local, mesmo que a chamada falhe por rede.
 
+## Respostas de autorização (RC-05): comportamento esperado do app
+- **401** `NAO_AUTENTICADO`: apagar o token e voltar ao login (já descrito acima).
+- **403** `ACESSO_NEGADO`: mostrar "sem permissão para esta tela"; não tentar de novo automaticamente. A paciente não deveria ver telas administrativas.
+- **404** `NAO_ENCONTRADO`: mostrar "item não encontrado" e voltar à lista; é a mesma resposta para um item que não existe e para um de outra paciente.
+- O app nunca envia identificador de dona no corpo e nunca guarda ou usa a chave do simulador (`IOT_API_KEY`), que pertence ao script de sensores.
+
 ## Endereço da API em desenvolvimento
 | Onde o app roda | Endereço |
 |---|---|

@@ -1,5 +1,8 @@
 package br.com.regulacheck.config;
 
+import br.com.regulacheck.auth.autorizacao.ChaveSimulador;
+import br.com.regulacheck.auth.autorizacao.RotasPrivadas;
+import br.com.regulacheck.auth.autorizacao.SimuladorFiltro;
 import br.com.regulacheck.auth.controller.AutenticacaoFiltro;
 import br.com.regulacheck.auth.controller.LoginController;
 import br.com.regulacheck.auth.controller.LogoutController;
@@ -11,10 +14,9 @@ import br.com.regulacheck.common.http.RotaNaoEncontradaController;
 import br.com.regulacheck.saude.SaudeController;
 import br.com.regulacheck.saude.SaudeRepositoryMemoria;
 import br.com.regulacheck.saude.SaudeService;
-import jakarta.servlet.DispatcherType;
+import br.com.regulacheck.usuario.entity.Perfil;
 import java.time.Duration;
-import java.util.EnumSet;
-import org.eclipse.jetty.ee10.servlet.FilterHolder;
+import java.util.function.Consumer;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 
@@ -38,6 +40,22 @@ public final class Composicao {
      * @return contexto raiz ({@code /}) pronto para ser entregue ao servidor
      */
     public static ServletContextHandler montar(Configuracao configuracao, Dependencias dependencias) {
+        return montar(configuracao, dependencias, rotas -> { });
+    }
+
+    /**
+     * Igual a {@link #montar(Configuracao, Dependencias)}, com um ponto de extensao para registrar rotas
+     * adicionais pelo mesmo {@link RotasPrivadas} da producao. Em producao a extensao e vazia; os testes de
+     * autorizacao o usam para publicar rotas de exemplo (a RC-05 nao cria rotas de negocio).
+     *
+     * @param configuracao configuracao de execucao
+     * @param dependencias repositorios e relogio
+     * @param extensao rotas extras, registradas antes da rota coringa
+     * @return contexto raiz pronto para ser entregue ao servidor
+     * @throws IllegalStateException se alguma rota ficar publicada fora de {@link RotasPrivadas}
+     */
+    public static ServletContextHandler montar(Configuracao configuracao, Dependencias dependencias,
+            Consumer<RotasPrivadas> extensao) {
         ServletContextHandler contexto = new ServletContextHandler("/");
 
         SaudeService saude = new SaudeService(new SaudeRepositoryMemoria());
@@ -47,15 +65,17 @@ public final class Composicao {
                 new VerificadorSenha(), new GeradorToken(), dependencias.relogio(),
                 Duration.ofMinutes(configuracao.ttlSessaoMinutos()));
         contexto.addServlet(new ServletHolder(new LoginController(autenticacao)), "/auth/login");
-        // Rotas protegidas: o filtro identifica a conta e responde 401 sem sessao valida.
-        AutenticacaoFiltro protecao = new AutenticacaoFiltro(autenticacao);
-        contexto.addFilter(new FilterHolder(protecao), "/auth/sessao", EnumSet.of(DispatcherType.REQUEST));
-        contexto.addFilter(new FilterHolder(protecao), "/auth/logout", EnumSet.of(DispatcherType.REQUEST));
-        contexto.addServlet(new ServletHolder(new SessaoController()), "/auth/sessao");
-        contexto.addServlet(new ServletHolder(new LogoutController(autenticacao)), "/auth/logout");
+        // Rotas privadas: sempre por RotasPrivadas (401 sem sessao valida, 403 se o perfil nao serve).
+        ChaveSimulador chaveSimulador = new ChaveSimulador(configuracao.chaveSimulador());
+        RotasPrivadas rotas = new RotasPrivadas(contexto, new AutenticacaoFiltro(autenticacao, chaveSimulador),
+                new SimuladorFiltro(chaveSimulador, autenticacao));
+        rotas.registrar("/auth/sessao", new SessaoController(), Perfil.PACIENTE, Perfil.ADMINISTRADOR);
+        rotas.registrar("/auth/logout", new LogoutController(autenticacao), Perfil.PACIENTE, Perfil.ADMINISTRADOR);
+        extensao.accept(rotas);
 
         // Rota coringa: qualquer caminho sem controller devolve 404 no formato padrao.
         contexto.addServlet(new ServletHolder(new RotaNaoEncontradaController()), "/*");
+        rotas.exigirTudoDeclarado();
         return contexto;
     }
 }

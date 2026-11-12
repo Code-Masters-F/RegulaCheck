@@ -85,5 +85,5 @@ PK composta (`ANALISE_ID` FK, `REGRA_ID` FK) · `RESULTADO` (`ATENDE`/`PENDENTE`
 ## O que o banco garante e o que fica para a API
 
 - **Banco:** valores permitidos, unicidades (e-mail, código da regra por versão, resultado por regra por análise, revisão por pedido, vigência única, submissão única), referências, tipo da pendência igual ao do resultado, limites de arquivo e unidade de sensor coerente com o tipo.
-- **API (RC-05 em diante):** autorização por recurso (o banco não impede a paciente A de apontar para o pedido da paciente B), transições de estado, consistência de `REVISAO_ATUAL` com a revisão mais recente, resultado geral derivado dos resultados por regra, classificação de leitura "antiga" e faixas dos sensores.
+- **API (RC-05 em diante):** autorização por recurso, implementada como mecanismo na RC-05 e aplicada por cada história de negócio (o banco não impede a paciente A de apontar para o pedido da paciente B), transições de estado, consistência de `REVISAO_ATUAL` com a revisão mais recente, resultado geral derivado dos resultados por regra, classificação de leitura "antiga" e faixas dos sensores.
 - **Mudanças futuras do esquema:** sempre por novos scripts numerados e aditivos; nunca por recriação automática.

@@ -1,6 +1,6 @@
 ## Contrato mínimo de API proposto
 
-Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas; as demais rotas abaixo estão **planejadas**. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
+Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas, assim como o **mecanismo de autorização por perfil e por dona** (RC-05, ver [docs/api/autorizacao.md](docs/api/autorizacao.md)); as demais rotas abaixo estão **planejadas** e, quando forem implementadas, devem cumprir a tabela de perfis ao final deste arquivo. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
 
 As rotas são uma proposta para manter um domínio só e orientar a implementação; ajustar nomes sem perder comportamentos.
 
@@ -27,3 +27,21 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | POST   | /sessoes-captura/{id}/leituras                        | Credencial de simulador vinculada à sessão |
 | GET    | /solicitacoes/{id}/leituras                           | Paciente consulta telemetria própria       |
 | GET    | /admin/indicadores                                    | Administrador consulta agregados           |
+
+## Perfil permitido por rota (RC-05)
+
+| Rota | Perfil permitido | Dona verificada |
+|---|---|---|
+| `GET/POST /solicitacoes`, `GET/PUT/DELETE /solicitacoes/{id}` | PACIENTE | sim (a lista traz só as próprias) |
+| `POST/GET/DELETE /solicitacoes/{id}/documentos[/{docId}]` | PACIENTE | sim (documento **e** solicitação) |
+| `POST /solicitacoes/{id}/extracoes`, `PUT …/extracoes/{extracaoId}/conferencia` | PACIENTE | sim |
+| `POST/GET /solicitacoes/{id}/analises`, `POST …/analises/{analiseId}/resumo` | PACIENTE | sim |
+| `POST /solicitacoes/{id}/submissoes-simuladas` | PACIENTE | sim |
+| `GET /solicitacoes/{id}/leituras` | PACIENTE | sim |
+| `GET /protocolos` | PACIENTE e ADMINISTRADOR | não se aplica (protocolo acadêmico, sem dado de paciente) |
+| `GET /admin/indicadores` | ADMINISTRADOR | não se aplica (somente agregados, sem dado identificável) |
+| `POST /sessoes-captura/{id}/leituras` | simulador (cabeçalho `X-Chave-Simulador`) | sessão de captura existente e aberta |
+| `GET /auth/sessao`, `POST /auth/logout` | PACIENTE e ADMINISTRADOR | a própria sessão |
+| `GET /health`, `POST /auth/login` | públicas | não se aplica |
+
+Regras comuns: 401 sem identidade válida; 403 perfil sem permissão; 404 recurso inexistente **ou** de outra paciente (resposta idêntica); 400 só depois dessas conferências. A paciente é sempre a da sessão, nunca um identificador enviado no corpo. O administrador **não** acessa documentos, análises, resumos nem submissões individuais por padrão. Detalhes e ordem de verificação: [docs/api/erros.md](docs/api/erros.md).

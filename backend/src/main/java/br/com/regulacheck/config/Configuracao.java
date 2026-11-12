@@ -14,8 +14,10 @@ import java.util.Map;
  * @param porta porta HTTP; {@code 0} escolhe uma porta livre (usado em testes)
  * @param banco dados de conexao com o Oracle; podem estar ausentes
  * @param ttlSessaoMinutos validade da sessao de login, em minutos (1 a 1440)
+ * @param chaveSimulador chave do simulador de sensores ({@code IOT_API_KEY}); opcional, {@code null} ou vazia
+ *     significa ausente (a telemetria responde 401); nunca aparece em {@link #toString()}
  */
-public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMinutos) {
+public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMinutos, String chaveSimulador) {
 
     /** Porta padrao quando {@code SERVER_PORT} nao e informada. */
     public static final int PORTA_PADRAO = 8080;
@@ -27,6 +29,18 @@ public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMin
     public static final int TTL_SESSAO_PADRAO_MINUTOS = 30;
 
     private static final int TTL_SESSAO_MAXIMO_MINUTOS = 1440;
+
+    /**
+     * Cria uma configuracao sem chave do simulador.
+     *
+     * @param host endereco de escuta
+     * @param porta porta HTTP
+     * @param banco dados do banco
+     * @param ttlSessaoMinutos validade da sessao em minutos
+     */
+    public Configuracao(String host, int porta, Banco banco, int ttlSessaoMinutos) {
+        this(host, porta, banco, ttlSessaoMinutos, null);
+    }
 
     /**
      * Cria uma configuracao sem banco e com a validade padrao da sessao (usada em testes).
@@ -102,7 +116,16 @@ public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMin
         }
         Banco banco = new Banco(aparar(variaveis.get("DB_URL")), aparar(variaveis.get("DB_USERNAME")),
                 variaveis.get("DB_PASSWORD"));
-        return new Configuracao(host, porta, banco, ttlDe(variaveis.get("SESSION_TTL_MINUTES")));
+        return new Configuracao(host, porta, banco, ttlDe(variaveis.get("SESSION_TTL_MINUTES")),
+                aparar(variaveis.get("IOT_API_KEY")));
+    }
+
+    /** Oculta a chave do simulador (e o banco) para que nao vazem em logs. */
+    @Override
+    public String toString() {
+        return "Configuracao[host=" + host + ", porta=" + porta + ", banco=" + banco + ", ttlSessaoMinutos="
+                + ttlSessaoMinutos + ", chaveSimulador=" + (chaveSimulador == null || chaveSimulador.isBlank()
+                        ? "ausente" : "informada") + "]";
     }
 
     private static int ttlDe(String texto) {

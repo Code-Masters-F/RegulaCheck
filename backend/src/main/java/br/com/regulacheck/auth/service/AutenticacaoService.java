@@ -152,7 +152,8 @@ public class AutenticacaoService {
         return new ExcecaoNegocio(401, "CREDENCIAIS_INVALIDAS", MENSAGEM_CREDENCIAIS);
     }
 
-    private static ExcecaoNegocio naoAutenticado() {
+    /** @return 401 {@code NAO_AUTENTICADO} com a mensagem unica de sessao invalida (mesma para qualquer motivo) */
+    public static ExcecaoNegocio naoAutenticado() {
         return new ExcecaoNegocio(401, "NAO_AUTENTICADO", MENSAGEM_SESSAO);
     }
 

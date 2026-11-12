@@ -1,13 +1,15 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.2.0
+  version: 0.3.0
   description: >
     Documentação escrita à mão. Nesta etapa estão implementados GET /health e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
-    dependem do banco Oracle: sem DB_* configuradas respondem 503. O sistema não diagnostica,
-    não define urgência nem autoriza atendimento.
+    dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
+    identidade válida, 403 perfil sem permissão, 404 recurso inexistente ou de outra paciente
+    (resposta idêntica), nessa ordem; a tabela de perfis por rota está em CONTRATO_API.md. O
+    sistema não diagnostica, não define urgência nem autoriza atendimento.
 servers:
   - url: http://localhost:8080
     description: Computador de desenvolvimento
@@ -96,6 +98,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Erro"
+        "403":
+          description: Chave do simulador apresentada em rota de conta (ACESSO_NEGADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
         "503":
           description: Banco indisponível (DEPENDENCIA_INDISPONIVEL)
           content:
@@ -117,6 +125,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Erro"
+        "403":
+          description: Chave do simulador apresentada em rota de conta (ACESSO_NEGADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
         "503":
           description: Banco indisponível (DEPENDENCIA_INDISPONIVEL)
           content:
@@ -129,6 +143,13 @@ components:
       type: http
       scheme: bearer
       description: Token recebido em POST /auth/login, enviado em Authorization (Bearer).
+    chaveSimulador:
+      type: apiKey
+      in: header
+      name: X-Chave-Simulador
+      description: >
+        Chave do simulador de sensores (variável IOT_API_KEY), válida somente na rota de telemetria
+        (planejada). Em qualquer outra rota responde 403; o valor real nunca é versionado.
   schemas:
     Saude:
       type: object
@@ -187,7 +208,7 @@ components:
       required: [codigo, mensagem]
       properties:
         codigo: { type: string, example: NAO_ENCONTRADO }
-        mensagem: { type: string, example: Recurso não encontrado. }
+        mensagem: { type: string, example: Recurso nao encontrado. }
         idRastreamento: { type: string }
         detalhes:
           type: array

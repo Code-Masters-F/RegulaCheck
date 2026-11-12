@@ -22,6 +22,12 @@ public final class UsuarioRepositoryMemoria implements UsuarioRepository {
         porId.put(id, new Usuario(u.id(), u.email(), u.nome(), u.senhaHash(), u.perfil(), false));
     }
 
+    /** Muda o perfil da conta, como se o banco fosse alterado depois do login. */
+    public synchronized void mudarPerfil(long id, br.com.regulacheck.usuario.entity.Perfil perfil) {
+        Usuario u = porId.get(id);
+        porId.put(id, new Usuario(u.id(), u.email(), u.nome(), u.senhaHash(), perfil, u.ativo()));
+    }
+
     @Override
     public synchronized Optional<Usuario> buscarPorEmail(String email) {
         return porId.values().stream().filter(u -> u.email().equals(email)).findFirst();
