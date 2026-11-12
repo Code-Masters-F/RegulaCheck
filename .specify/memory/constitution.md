@@ -1,5 +1,7 @@
 <!--
 Sync Impact Report
+- IA do MVP é mockada e identificada como simulada (2026-11-12), incluído na versão 2.0.0.
+- Exceção: Spring Boot permitido somente em testes automatizados (2026-11-12), incluída na versão 2.0.0.
 - Version change: 1.0.0 → 2.0.0 (MAJOR: redefinição do Princípio III e das restrições tecnológicas —
   Java sem Spring e sem JPA, banco Oracle via JDBC, exigência da disciplina confirmada em 2026-11-12)
 - Princípios modificados: III (Java puro/Servlet/JDBC), IV (senhas), V (motor independente de JDBC)
@@ -34,7 +36,8 @@ um campo não comprova sua ausência.
 
 ### III. Backend Java em Monólito Modular
 O backend MUST ser Java puro com Jakarta Servlet em servidor embutido (Jetty ou Tomcat), acesso a dados
-por JDBC e SQL parametrizado, sem Spring (incluindo Spring Boot e Spring Data) e sem JPA/Hibernate ORM,
+por JDBC e SQL parametrizado, sem Spring (incluindo Spring Boot e Spring Data) e sem JPA/Hibernate ORM no código de produção
+(Spring Boot é permitido SOMENTE em testes automatizados, com escopo `test`),
 uma aplicação e um módulo Maven, com Controller, Service e
 Repository separados e organização por funcionalidade. Controller MUST NOT acessar Repository nem
 aplicar regras documentais; Repository MUST NOT chamar IA; Entity MUST NOT ser serializada como
@@ -86,18 +89,20 @@ sem refatoração ampla, troca de framework, dependências extras ou código que
 
 ## Restrições Tecnológicas e de Escopo
 
-- Linguagem Java; Spring, Spring Boot e JPA/Hibernate PROIBIDOS (exigência da disciplina); dependências
+- Linguagem Java; Spring, Spring Boot e JPA/Hibernate PROIBIDOS em produção (exigência da disciplina), com exceção de
+  Spring Boot apenas para testes automatizados (escopo `test`); dependências
   estáveis e fixadas (sem SNAPSHOT ou intervalo dinâmico); JDK conforme a
   disciplina, propondo Java 21 se não houver indicação (registrar a decisão).
 - Build com Maven Wrapper (scripts Unix e Windows) e versões fixadas. Docker é opcional, nunca requisito oculto.
 - Banco **Oracle** (exigência da disciplina), via JDBC; MUST NOT trocar silenciosamente por H2 ou
   PostgreSQL. Não adicionar ORM nem driver sem datasource funcional.
 - Mobile consome a própria API (sem acesso direto ao banco ou à IA); framework conforme definição do grupo.
-- Dois sensores simulados (luminosidade em lux, distância em cm) vinculados à sessão de captura; sensores
+- Dois sensores simulados por script (luminosidade em lux, distância em cm), enviando JSON por HTTP e vinculados à sessão de captura; sensores
   não comprovam legibilidade e sua indisponibilidade não bloqueia salvamento/upload.
-- IA e extração isoladas por contratos e adaptadores; provedores ainda não definidos. Boot e testes
+- IA mockada no MVP (sem provedor real; decisão de 2026-11-12), isolada por contrato e adaptador e SEMPRE
+  identificada como simulada; extração/OCR também mockada e identificada como simulada, isolada por contrato e adaptador. Boot e testes
   unitários MUST NOT chamar IA paga nem enviar documentos reais.
-- Variáveis futuras (DB_*, AI_*, IOT_API_KEY etc.) MUST NOT ser obrigatórias para iniciar a fundação.
+- Variáveis futuras (DB_*, IOT_API_KEY etc.) MUST NOT ser obrigatórias para iniciar a fundação.
 - Prazo oficial de entrega: 19/11/2026, 23h55 (horário de Salvador). Em atraso, retirar primeiro
   melhorias P1, sem suprimir exigências da avaliação nem simular funcionalidade pronta.
 

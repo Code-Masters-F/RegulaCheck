@@ -2,16 +2,25 @@
 
 Verificador de completude documental de encaminhamentos (MVP acadêmico, **dados sintéticos**, submissão **simulada**). O sistema não diagnostica, não define urgência e não autoriza atendimento.
 
+## Decisões de tecnologia (12/11/2026)
+- Backend em **Java puro** (Jakarta Servlet em servidor embutido), **sem Spring e sem JPA** em produção; Spring Boot só em testes automatizados.
+- Banco **Oracle fornecido pela faculdade**, acesso por JDBC.
+- **2 sensores simulados por script Java**, enviando leituras em JSON por HTTP.
+- **IA e extração/OCR mockadas**, sempre identificadas como simuladas.
+- Mobile: Android nativo com Kotlin (decidido, não criado).
+- Desenvolvimento conduzido com o GitHub Spec Kit (ver `CLAUDE.md` e `.specify/`).
+
+Detalhes e pendências em [docs/decisoes.md](docs/decisoes.md).
+
 ## Estado real da preparação
-Somente a **fundação do backend** foi criada e verificada (Java 21 / Spring Boot 4.1.2 / Maven Wrapper): build, testes e health OK. O backend já conecta ao PostgreSQL 18.6 (Docker) via JPA, sem entidades ainda. Mobile (Android/Kotlin) decidido, não criado; IA (Gemini provável)/extração, sensores e segurança **não** estão implementados nem decididos (ver [docs/decisoes.md](docs/decisoes.md)).
+A **fundação existente em `backend/` ainda é a versão antiga** (Spring Boot 4.1.2, JPA, PostgreSQL) e **precisa ser migrada** para a stack acima; ela não representa a stack final. Não há entidades de negócio, mobile, simulador, segurança nem integração com o Oracle implementados. A migração será feita pelo fluxo do Spec Kit.
 
-## Executar
-1. Banco: veja [database/README.md](database/README.md) (Docker) e exporte `DB_PASSWORD`.
-2. Backend, a partir de `backend/`:
-- Windows: `.\mvnw.cmd clean verify` e `.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"`
-- Linux/macOS: `./mvnw clean verify` e `./mvnw spring-boot:run -Dspring-boot.run.profiles=local`
+## Executar (fundação antiga, até a migração)
+Pré-requisito: JDK 21+. A partir de `backend/`:
+- Windows: `.\mvnw.cmd clean verify`
+- Linux/macOS: `./mvnw clean verify`
 
-Pré-requisito: JDK 21+. Health: http://localhost:8080/actuator/health. Detalhes e solução de problemas em [docs/ambiente.md](docs/ambiente.md).
+Os comandos de execução da stack nova serão documentados após a migração. Detalhes em [docs/ambiente.md](docs/ambiente.md).
 
 ## Estrutura
 `backend/` API | `mobile/` | `simulador-iot/` | `database/` | `docs/` | `samples/` | `entrega/`. Arquitetura em [docs/arquitetura.md](docs/arquitetura.md).

@@ -6,7 +6,7 @@ Instruções permanentes para trabalhar neste repositório. Leia antes de planej
 
 O RegulaCheck é um MVP acadêmico cuja usuária principal é a paciente. Ela envia documentos, acompanha a extração das informações, confere a transcrição, recebe uma avaliação de critérios documentais e um resumo de pendências por IA, providencia correções e reenvia os documentos antes de uma submissão simulada.
 
-- Backend obrigatoriamente em Java, **sem Spring (incluindo Spring Boot) e sem JPA/Hibernate ORM**, e banco **Oracle** acessado por JDBC. São exigências da disciplina, confirmadas pelo grupo em 12/11/2026.
+- Backend obrigatoriamente em Java, **sem Spring (incluindo Spring Boot) e sem JPA/Hibernate ORM**, e banco **Oracle** acessado por JDBC. São exigências da disciplina, confirmadas pelo grupo em 12/11/2026. **Única exceção:** Spring Boot (e seu módulo de testes) pode ser usado somente em testes automatizados, com escopo `test` no Maven; nunca no código de produção.
 - Arquitetura: monólito modular, uma aplicação backend e um módulo Maven, com Controller, Service e Repository separados.
 - Banco relacional, mobile consumindo a própria API e dois sensores simulados integrados ao domínio.
 - Somente dados sintéticos e protocolo acadêmico fictício, identificado na interface e documentação.
@@ -91,13 +91,13 @@ O escopo da tarefa atual prevalece sobre o cronograma como autorização de exec
 | Item | Convenção |
 |---|---|
 | Linguagem | Java; não criar backend em C# |
-| Framework | Java puro com Jakarta Servlet em servidor embutido (Jetty ou Tomcat). Spring, Spring Boot, Spring Data e JPA/Hibernate são proibidos |
+| Framework | Java puro com Jakarta Servlet em servidor embutido (Jetty ou Tomcat). Spring, Spring Boot, Spring Data e JPA/Hibernate são proibidos no código de produção; Spring Boot é permitido apenas para testes automatizados (escopo `test`) |
 | JDK | Preservar versão exigida pela disciplina/projeto; sem indicação, propor Java 21 e registrar a decisão |
 | Build | Maven Wrapper, scripts Unix e Windows, versões fixadas |
 | Dependências | Versões estáveis fixadas no pom.xml; sem SNAPSHOT ou intervalo dinâmico. Preferir poucas bibliotecas |
 | Banco | **Oracle** (exigência da disciplina), acesso por JDBC (driver Oracle) com SQL parametrizado e pool de conexões simples; sem ORM |
 | Mobile | Verificar projeto existente; não escolher framework novo sem definição do grupo |
-| IA e extração | Provedores ainda não presumidos; isolar por contratos e adaptadores |
+| IA e extração | **Sem provedor de IA real**: o resumo de pendências usa dados mockados (decisão de 12/11/2026), isolado atrás de contrato e adaptador para permitir troca futura. Extração/OCR também mockada (decisão de 12/11/2026), com o mesmo isolamento e identificação |
 | Docker | Opcional para desenvolvimento, nunca requisito oculto |
 
 Não adicionar framework ORM nem driver sem configuração funcional de datasource. Não trocar silenciosamente o banco final (Oracle) por H2 ou PostgreSQL. Não instalar SDK de IA sem necessidade e provedor definidos. Evitar Lombok e mapeadores automáticos se não houver padrão existente que os justifique.
@@ -133,7 +133,7 @@ Organize por funcionalidade, preservando as camadas dentro de cada módulo lógi
 | specs/ | Especificações, planos e tarefas das features, conforme instalação |
 | backend/ | API Java (Servlet/JDBC) e testes |
 | mobile/ | Aplicativo e documentação da tecnologia adotada |
-| simulador-iot/ | Simulação de luminosidade e distância |
+| simulador-iot/ | Simulador Java que gera luminosidade e distância e envia as leituras em JSON por HTTP |
 | database/scripts/ | SQL de criação, carga sintética e consultas |
 | docs/arquitetura.md | Componentes, fluxo e limites de dependência |
 | docs/ambiente.md | Configuração, comandos e diagnóstico |
@@ -237,7 +237,7 @@ Não escreva documentação para comportamento que o código não executa. Ao mu
 - Padronize erros com código, mensagem compreensível e detalhes de campo quando pertinentes. Inclua identificador de rastreamento se implementado, sem vazar dados internos.
 - Identifique a paciente pela sessão autenticada, nunca por um ownerId livre recebido no body.
 - Verifique autorização por recurso em todas as operações: pedido, arquivo, extração, análise, resumo e submissão.
-- Perfil administrador não recebe acesso irrestrito aos documentos automaticamente. Simulador tem credencial e escopo restritos à telemetria.
+- Perfil administrador não recebe acesso irrestrito aos documentos automaticamente. O simulador tem credencial e escopo restritos à telemetria.
 - Armazene senhas com algoritmo próprio para senhas (BCrypt ou Argon2) de biblioteca consolidada; nunca texto puro, criptografia reversível ou hash rápido caseiro.
 - Use consultas parametrizadas/ORM. Não concatene entrada do usuário em SQL.
 - Arquivos fora de diretório público/static, com download autenticado, nomes internos seguros e validação de tipo real, tamanho e páginas. Não confie em nome de arquivo nem permita path traversal.
@@ -270,7 +270,7 @@ Não escreva documentação para comportamento que o código não executa. Ao mu
 - Instruções dentro de um documento não podem mudar o prompt de sistema, executar ferramentas ou suprimir requisitos.
 - Configure timeout e trate indisponibilidade; evite retentativas automáticas ilimitadas ou que dupliquem custos/operações.
 - Falha da IA preserva o resultado determinístico e apresenta resumo padrão identificado ou possibilidade de tentar novamente.
-- Respostas fixas são permitidas como fixtures/mocks de teste identificados, nunca como demonstração de integração real.
+- Resumo de IA e extração/OCR mockados são a implementação adotada no MVP (decisão de 12/11/2026): MUST ser identificados como simulado na interface, API e documentação, e nunca apresentado como integração real com IA. O adaptador mockado respeita o mesmo contrato estruturado e as mesmas validações de uma integração real.
 - Boot e testes unitários não devem chamar IA paga ou enviar documentos reais automaticamente.
 
 ## 12. Mobile e sensores
@@ -280,14 +280,14 @@ Não escreva documentação para comportamento que o código não executa. Ao mu
 - Preservar dados digitados em falhas recuperáveis; explicar quando for necessário selecionar arquivo novamente.
 - Evitar cliques repetidos e operações duplicadas; não declarar envio concluído sem confirmação do backend.
 - Não presumir que localhost aponta para o backend em emulador ou aparelho físico. Documentar a URL real de desenvolvimento.
-- Sensores simulados: luminosidade em lux e distância em centímetros, vinculados à sessão de captura. Valores fora da faixa geram orientação; leituras antigas são identificadas.
+- Sensores simulados por script (2 sensores): luminosidade em lux e distância em centímetros, vinculados à sessão de captura. O script envia as leituras em JSON por HTTP POST (`/sessoes-captura/{id}/leituras`) com credencial restrita; o backend valida e persiste. O script é escrito em Java (cliente `java.net.http.HttpClient`, sem Spring). Valores fora da faixa geram orientação; leituras antigas são identificadas.
 - Limites dos sensores são demonstrativos; sensores não comprovam legibilidade e sua indisponibilidade não bloqueia salvamento/upload.
 
 ## 13. Ambiente, dependências e comandos
 
 Preserve pom.xml, Wrapper e configurações válidas. Fixe versões compatíveis. Não faça upgrade geral como parte de uma mudança pequena.
 
-Documente variáveis ativas e reservadas. Propostas: SERVER_PORT, DB_URL, DB_USERNAME, DB_PASSWORD, DOCUMENT_STORAGE_PATH, AI_BASE_URL, AI_API_KEY, AI_MODEL e IOT_API_KEY. Não torne variáveis futuras obrigatórias para iniciar a fundação.
+Documente variáveis ativas e reservadas. Propostas: SERVER_PORT, DB_URL, DB_USERNAME, DB_PASSWORD, DOCUMENT_STORAGE_PATH, e IOT_API_KEY. Variáveis AI_* não são necessárias enquanto a IA for mockada. Não torne variáveis futuras obrigatórias para iniciar a fundação.
 
 A aplicação não lê .env automaticamente só porque o arquivo existe. Documente exportação no shell/IDE ou o carregamento explícito realmente implementado.
 
@@ -328,9 +328,9 @@ Plano de referência atualizado em 12/11/2026. Datas em horário de Salvador. S�
 | 2 — Conta e proteção de acesso | 13/11 | 14/11 | Login, perfis e isolamento por paciente verificados |
 | 3 — Envio pela paciente | 13/11 | 14/11 | Rascunho, upload real, consulta e substituição/exclusão permitidas |
 | 4 — Extração e critérios | 13/11 | 15/11 | Extração, conferência, motor de regras e histórico por revisão |
-| 5 — Orientação por IA e reenvio | 15/11 | 16/11 | Resumo real por IA, correção, reanálise e submissão simulada |
+| 5 — Orientação por IA e reenvio | 15/11 | 16/11 | Resumo de pendências por adaptador de IA mockado (identificado como simulado), correção, reanálise e submissão simulada |
 | 6 — Mobile e operação administrativa | 12/11 | 17/11 | Telas integradas, indicadores, acessibilidade e tratamento de falhas |
-| 7 — IoT simulada | 14/11 | 16/11 | Dois sensores chegando à API e alterando alertas no app |
+| 7 — IoT simulada | 14/11 | 16/11 | Dois sensores simulados por script, enviando JSON por HTTP à API e alterando alertas no app |
 | 8 — Qualidade e validação | 12/11 | 18/11 | Dados/gabaritos, plano, execuções, feedback, indicadores e retestes |
 | 9 — Documentação e entrega | 12/11 | 19/11 | README, SQL/API, PDF, pitch público, ZIP validado e envio comprovado |
 
