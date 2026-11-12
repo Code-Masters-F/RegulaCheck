@@ -79,9 +79,9 @@ Sem pré-requisitos bloqueantes além de T001–T002.
 - [X] T015 [P] Atualizar `README.md` com link para os dois documentos
 - [X] T016 Revisão cruzada (SC-004): comparar os dois documentos com `CLAUDE.md`, constituição v2.0.0 e `docs/decisoes.md`; buscar por termos proibidos ("diagnóstico" como ação do sistema, "aprovado pelo SUS", "IA real", Spring em produção); corrigir a origem de qualquer divergência
 - [X] T017 Validar que todos os links relativos dos documentos novos resolvem
-- [ ] T018 Exercício em papel (SC-002): duas pessoas do grupo aplicam os 5 casos separadamente e comparam; registrar data, participantes (por papel) e resultado real em `docs/protocolo-academico.md` (seção "Verificação"); se não executado, escrever "pendente"
-- [ ] T019 Conferir SC-001, SC-003 e SC-005 seguindo `specs/001-recorte-demonstrador/quickstart.md`; marcar tarefas concluídas somente após conferir critérios de aceite
-- [ ] T020 Confirmar com o grupo, e registrar data e participantes por papel em `docs/protocolo-academico.md` (seção "Verificação"), a localidade, a especialidade, as 6 regras e a validade de 180 dias; enquanto não confirmado, marcar como "proposto"
+- [X] T018 (DISPENSADA por decisão do usuário em 12/11/2026; não executada, não verificada) Exercício em papel (SC-002): duas pessoas do grupo aplicam os 5 casos separadamente e comparam; registrar data, participantes (por papel) e resultado real em `docs/protocolo-academico.md` (seção "Verificação"); se não executado, escrever "pendente"
+- [X] T019 (SC-001 conferido; SC-003 e SC-005 dispensados por decisão do usuário, não verificados) Conferir SC-001, SC-003 e SC-005 seguindo `specs/001-recorte-demonstrador/quickstart.md`; marcar tarefas concluídas somente após conferir critérios de aceite
+- [X] T020 (DISPENSADA a validação pelo grupo; valores adotados por decisão do usuário em 12/11/2026) Confirmar com o grupo, e registrar data e participantes por papel em `docs/protocolo-academico.md` (seção "Verificação"), a localidade, a especialidade, as 6 regras e a validade de 180 dias; enquanto não confirmado, marcar como "proposto"
 - [X] T021 Relatório final da RC-01: vínculo RC-01 → FR/tarefas/arquivos, distinguindo documentado, verificado e pendente; sem commit sem autorização
 
 ---

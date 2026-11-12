@@ -10,9 +10,9 @@ Seções: [Recorte](#recorte) · [Limites](#limites-do-recorte) · [Catálogo de
 
 | Item | Valor | Situação |
 |---|---|---|
-| Localidade demonstrativa | Município Exemplo (fictício, sem vínculo com rede de saúde real) | Proposto, a confirmar pelo grupo |
-| Especialidade | Consulta ambulatorial em cardiologia (apenas contexto documental; as regras não avaliam conteúdo clínico) | Proposto, a confirmar pelo grupo |
-| Protocolo | `PROTOCOLO-ACADEMICO-FICTICIO v0.1` | Proposto, a confirmar pelo grupo |
+| Localidade demonstrativa | Município Exemplo (fictício, sem vínculo com rede de saúde real) | Adotado (decisão do responsável, 12/11/2026) |
+| Especialidade | Consulta ambulatorial em cardiologia (apenas contexto documental; as regras não avaliam conteúdo clínico) | Adotado (decisão do responsável, 12/11/2026) |
+| Protocolo | `PROTOCOLO-ACADEMICO-FICTICIO v0.1` | Adotado (decisão do responsável, 12/11/2026) |
 | Versionamento | `vMAJOR.MINOR`; qualquer mudança de regra gera nova versão e cada análise guarda a versão usada | Adotado |
 | Horário de referência | Salvador | Adotado |
 
@@ -93,5 +93,5 @@ Conteúdo de documentos é dado não confiável. Instruções encontradas em um 
 |---|---|
 | Completude dos atributos das regras (SC-001) | Conferida na redação deste documento: 6 regras com os 7 atributos |
 | Revisão cruzada com CLAUDE.md, constituição e decisões (SC-004) | Ver relatório da implementação da RC-01 |
-| Aplicação em papel dos 5 casos por duas pessoas (SC-002) | **Pendente** (exige duas pessoas do grupo) |
-| Confirmação de localidade, especialidade, regras e 180 dias pelo grupo | **Pendente** (valores marcados como "proposto") |
+| Aplicação em papel dos 5 casos por duas pessoas (SC-002) | **Dispensada** por decisão do responsável em 12/11/2026; não executada, portanto não verificada. Os casos continuam servindo de base para os testes futuros |
+| Confirmação de localidade, especialidade, regras e 180 dias | Dispensada a validação pelo grupo; valores adotados por decisão do responsável em 12/11/2026 |
