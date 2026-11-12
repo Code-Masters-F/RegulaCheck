@@ -5,7 +5,7 @@
 --
 -- Finalidade : recomecar o esquema em AMBIENTE DE DESENVOLVIMENTO (depois, rode 01 e 02).
 -- Ordem      : fora da sequencia normal. NENHUM outro script chama este arquivo.
--- Efeito     : DROP das 12 tabelas RC_* (e, com elas, seus indices, restricoes e
+-- Efeito     : DROP das 13 tabelas RC_* (12 da RC-03 + RC_SESSAO_LOGIN da RC-04) (e, com elas, seus indices, restricoes e
 --              sequencias de identity). Os dados sao perdidos. Nao ha desfazer.
 -- Seguranca  : - so remove objetos com o prefixo RC_, citados um a um neste arquivo
 --                (nao ha busca dinamica por tabelas); nunca toca PEQUENOVAREJO, VENDA ou
@@ -23,7 +23,7 @@ DECLARE
     -- Ordem inversa de dependencia: filhas antes das tabelas pai.
     TYPE t_tabelas IS TABLE OF VARCHAR2(30);
     v_tabelas t_tabelas := t_tabelas(
-        'RC_SUBMISSAO', 'RC_LEITURA_SENSOR', 'RC_SESSAO_CAPTURA', 'RC_PENDENCIA',
+        'RC_SESSAO_LOGIN', 'RC_SUBMISSAO', 'RC_LEITURA_SENSOR', 'RC_SESSAO_CAPTURA', 'RC_PENDENCIA',
         'RC_RESULTADO_REGRA', 'RC_ANALISE', 'RC_DOCUMENTO', 'RC_REVISAO',
         'RC_SOLICITACAO', 'RC_REGRA', 'RC_PROTOCOLO', 'RC_USUARIO');
 BEGIN

@@ -22,7 +22,8 @@ Toda resposta de erro tem o mesmo corpo, com `Content-Type: application/json`:
 | HTTP | Código | Quando |
 |---|---|---|
 | 400 | `REQUISICAO_INVALIDA` | corpo ou parâmetro inválido (detalhes por campo) |
-| 401 | `NAO_AUTENTICADO` | sessão ausente ou expirada (RC-04) |
+| 401 | `CREDENCIAIS_INVALIDAS` | login com senha errada, e-mail inexistente, conta desativada ou senha acima de 72 bytes: sempre a mesma resposta (RC-04) |
+| 401 | `NAO_AUTENTICADO` | token ausente, malformado, desconhecido, expirado ou encerrado, ou conta desativada: sempre a mesma resposta (RC-04) |
 | 403 | `ACESSO_NEGADO` | perfil sem permissão (RC-05) |
 | 404 | `NAO_ENCONTRADO` | recurso inexistente **ou** de outra paciente (não revelar existência) |
 | 405 | `METODO_NAO_PERMITIDO` | método HTTP não suportado pela rota |

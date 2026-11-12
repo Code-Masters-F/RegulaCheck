@@ -1,4 +1,4 @@
-# Modelo de dados (RC-03)
+# Modelo de dados (RC-03, com a tabela de sessões da RC-04)
 
 Banco **Oracle 19c** da faculdade. Todas as tabelas têm o prefixo `RC_` porque o esquema é compartilhado com outros trabalhos. Os scripts estão em [`database/scripts/`](../database/scripts/README.md); a origem do desenho (decisões e alternativas) está em [`specs/003-modelo-banco-sql/`](../specs/003-modelo-banco-sql/data-model.md). Nomes de estados, resultados e regras coincidem com [api/estados-e-revisoes.md](api/estados-e-revisoes.md) e [protocolo-academico.md](protocolo-academico.md). Dados somente sintéticos; protocolo fictício.
 
@@ -7,6 +7,7 @@ Banco **Oracle 19c** da faculdade. Todas as tabelas têm o prefixo `RC_` porque 
 ```mermaid
 erDiagram
     RC_USUARIO ||--o{ RC_SOLICITACAO : "abre (paciente)"
+    RC_USUARIO ||--o{ RC_SESSAO_LOGIN : "autentica (RC-04)"
     RC_PROTOCOLO ||--|{ RC_REGRA : "contém"
     RC_PROTOCOLO ||--o{ RC_SOLICITACAO : "usa"
     RC_SOLICITACAO ||--|{ RC_REVISAO : "tem"
@@ -67,6 +68,9 @@ PK composta (`ANALISE_ID` FK, `REGRA_ID` FK) · `RESULTADO` (`ATENDE`/`PENDENTE`
 ### RC_LEITURA_SENSOR
 `ID` (PK) · `SESSAO_ID` (FK, NN) · `TIPO` (`LUMINOSIDADE`/`DISTANCIA`) · `VALOR` (`NUMBER(12,3)`) · `UNIDADE` (`LUX` para luminosidade, `CM` para distância) · `MEDIDA_EM` · `RECEBIDA_EM`.
 
+### RC_SESSAO_LOGIN (RC-04, criada por `05_sessao_login.sql`)
+`ID` (PK) · `USUARIO_ID` (FK, NN) · `TOKEN_HASH` (UK, NN; SHA-256 do token em hexadecimal minúsculo, 64 caracteres; nunca o token) · `CRIADA_EM` (NN) · `EXPIRA_EM` (NN; posterior a `CRIADA_EM`) · `ENCERRADA_EM` (nula enquanto a sessão está aberta). Sessão válida: não encerrada, não expirada e conta com `ATIVO = 1`. **Não confundir** com `RC_SESSAO_CAPTURA`: `RC_SESSAO_LOGIN` é a autenticação da paciente na API; `RC_SESSAO_CAPTURA` agrupa as leituras dos sensores simulados de um pedido.
+
 ### RC_SUBMISSAO
 `ID` (PK) · `SOLICITACAO_ID` (FK, UK: uma por pedido) · `ANALISE_ID` (FK) · `REFERENCIA` (UK) · `SIMULADA` (sempre 1) · `SUBMETIDA_EM`. Não é envio a nenhuma fila real do SUS.
 
@@ -76,9 +80,10 @@ PK composta (`ANALISE_ID` FK, `REGRA_ID` FK) · `RESULTADO` (`ATENDE`/`PENDENTE`
 - Solicitação 1—N Revisão (mínimo 1) · Revisão 1—N Documento (envio) · Revisão 1—0..1 Análise.
 - Análise 1—N Resultado de regra (um por regra) · Resultado de regra 1—0..1 Pendência.
 - Solicitação 1—N Sessão de captura · Sessão 1—N Leitura · Solicitação 1—0..1 Submissão.
+- Usuário 1—N Sessão de login (várias sessões simultâneas por conta; encerrar uma não afeta as outras).
 
 ## O que o banco garante e o que fica para a API
 
 - **Banco:** valores permitidos, unicidades (e-mail, código da regra por versão, resultado por regra por análise, revisão por pedido, vigência única, submissão única), referências, tipo da pendência igual ao do resultado, limites de arquivo e unidade de sensor coerente com o tipo.
-- **API (RC-04 em diante):** autorização por recurso (o banco não impede a paciente A de apontar para o pedido da paciente B), transições de estado, consistência de `REVISAO_ATUAL` com a revisão mais recente, resultado geral derivado dos resultados por regra, classificação de leitura "antiga" e faixas dos sensores.
+- **API (RC-05 em diante):** autorização por recurso (o banco não impede a paciente A de apontar para o pedido da paciente B), transições de estado, consistência de `REVISAO_ATUAL` com a revisão mais recente, resultado geral derivado dos resultados por regra, classificação de leitura "antiga" e faixas dos sensores.
 - **Mudanças futuras do esquema:** sempre por novos scripts numerados e aditivos; nunca por recriação automática.

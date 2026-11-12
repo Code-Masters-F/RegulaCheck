@@ -17,7 +17,7 @@ Depois do `clean verify`, a partir de `backend/`:
 java -jar target\regulacheck-backend.jar
 curl http://localhost:8080/health   # 200 {"status":"UP"}
 ```
-Não precisa de banco nem de variável alguma. Opcionais: `SERVER_PORT` (padrão 8080) e `SERVER_HOST` (padrão `0.0.0.0`).
+Não precisa de banco nem de variável alguma para subir e responder `/health`. Opcionais: `SERVER_PORT` (padrão 8080), `SERVER_HOST` (padrão `0.0.0.0`) e `SESSION_TTL_MINUTES` (validade da sessão, 1 a 1440, padrão 30). As rotas `/auth/*` precisam do banco: sem `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` exportadas elas respondem 503 `DEPENDENCIA_INDISPONIVEL`.
 
 ## Acesso do app à API
 - **Emulador Android:** `http://10.0.2.2:8080` (alias do computador). `localhost` aponta para o próprio emulador e **não** funciona.
@@ -27,6 +27,11 @@ Não precisa de banco nem de variável alguma. Opcionais: `SERVER_PORT` (padrão
 
 ## Banco
 **Oracle fornecido pela faculdade**, acesso por JDBC. Host `oracle.fiap.com.br`, porta `1521`, SID `orcl` (URL `jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl`). Verificado em 12/11/2026: conexão JDBC funcionando a partir da máquina de desenvolvimento com o driver `ojdbc11` 23.26.4.0.0; servidor Oracle Database 19c Enterprise Edition, charset AL32UTF8, usuário com CREATE TABLE e CREATE SEQUENCE e quota ilimitada. Tabelas do RegulaCheck usam o prefixo `RC_`. Usuário e senha individuais ficam só no `.env` local. Nunca versione credenciais: exporte `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` no shell/IDE. O PostgreSQL/Docker da fundação antiga foi removido.
+
+## Testes
+- `.\mvnw.cmd clean verify` (a partir de `backend/`) roda os testes unitários e de servlet **sem banco**, com repositórios em memória.
+- Os testes que usam o Oracle real (`AuthOracleTest`) são **opt-in**: só rodam se `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` estiverem exportadas **e** `RC_TESTE_ORACLE=SIM`; sem isso são ignorados e devem ser registrados como **não verificados**. Pré-requisito: scripts `01_`, `02_` e `05_` executados na sua conta. Eles removem apenas as sessões que criaram.
+- Os logs da API nunca contêm senha, hash, token nem e-mail.
 
 ## Variáveis
 Ver `.env.example`. A aplicação não lê `.env` sozinha: exporte no shell (`$env:SERVER_PORT="8081"` no PowerShell; `export SERVER_PORT=8081` no Unix) ou configure a IDE. Variáveis de IA (`AI_*`) não são necessárias: a IA e a extração são mockadas.

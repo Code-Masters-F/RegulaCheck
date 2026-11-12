@@ -47,7 +47,8 @@ public final class RespostaErro {
      */
     public static void tratar(HttpServletResponse resposta, Throwable falha) throws IOException {
         if (falha instanceof ExcecaoNegocio negocio) {
-            escrever(resposta, negocio.status(), negocio.codigo(), negocio.getMessage());
+            corpo(resposta, negocio.status(),
+                    new ErroPadrao(negocio.codigo(), negocio.getMessage(), negocio.detalhes(), null));
             return;
         }
         String id = UUID.randomUUID().toString().substring(0, 8);

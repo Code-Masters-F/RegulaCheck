@@ -1,5 +1,6 @@
 package br.com.regulacheck.common.http;
 
+import br.com.regulacheck.common.Json;
 import br.com.regulacheck.common.exception.RespostaErro;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -26,6 +27,21 @@ public abstract class ServletJson extends HttpServlet {
      */
     protected ServletJson(String... metodosPermitidos) {
         this.metodosPermitidos = Set.of(metodosPermitidos);
+    }
+
+    /**
+     * Escreve um DTO como corpo JSON de sucesso.
+     *
+     * @param resposta resposta HTTP
+     * @param status status HTTP de sucesso
+     * @param corpo DTO a serializar (nunca uma entidade)
+     * @throws IOException se a escrita na resposta falhar
+     */
+    protected static void responderJson(HttpServletResponse resposta, int status, Object corpo) throws IOException {
+        resposta.setStatus(status);
+        resposta.setContentType("application/json");
+        resposta.setCharacterEncoding("UTF-8");
+        resposta.getWriter().write(Json.escrever(corpo));
     }
 
     @Override

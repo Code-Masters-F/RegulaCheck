@@ -9,7 +9,7 @@
 
 ## Como executar
 
-Ordem: `01_criar_esquema.sql` → `02_carga_sintetica.sql` → `03_consultas_uso.sql` → `04_testes_restricoes.sql`. O `90_limpeza_DESTRUTIVA.sql` fica fora da sequência e exige confirmação explícita. Detalhes, contas de demonstração e resultados esperados: [scripts/README.md](scripts/README.md).
+Ordem: `01_criar_esquema.sql` → `02_carga_sintetica.sql` → `03_consultas_uso.sql` → `04_testes_restricoes.sql` → `05_sessao_login.sql` (RC-04; só exige o `01_`). O `90_limpeza_DESTRUTIVA.sql` fica fora da sequência e exige confirmação explícita. Detalhes, contas de demonstração e resultados esperados: [scripts/README.md](scripts/README.md).
 
 ## Verificação registrada
 
@@ -27,4 +27,18 @@ Execução **real** no Oracle 19c da faculdade em **12/11/2026**, com um executo
 | `90_` com confirmação (a pedido do responsável) | as 12 tabelas `RC_*` removidas; restaram só `PEQUENOVAREJO` e `VENDA` (0 linhas cada) e 0 objetos `RC_` |
 | Recriação (`01_` → `02_` → `03_` → `04_`) | todos sem erro, com as mesmas contagens e os mesmos resultados; 13 `OK` no `04_` |
 
-Não verificado: execução no SQL Developer/SQLcl (o grupo deve repetir a ordem acima uma vez no seu cliente); compatibilidade dos hashes com a API (RC-04); desempenho (fora do escopo, volume de demonstração).
+### RC-04 (`05_sessao_login.sql` e login contra o Oracle real, 12/11/2026)
+
+| Verificação | Resultado |
+|---|---|
+| Estado antes | 12 tabelas `RC_*`, 77 linhas nelas, `RC_SESSAO_LOGIN` inexistente, `PEQUENOVAREJO` e `VENDA` com 0 linhas |
+| `05_sessao_login.sql` | 2 instruções, 0 erros: `RC_SESSAO_LOGIN` com PK, FK, UK do hash do token, 2 CHECK (formato do hash e prazo) e 1 índice; maior nome de restrição com 26 caracteres |
+| `05_` repetido | 2 erros ORA-00955, nada alterado |
+| Estado depois | 13 tabelas `RC_*`; as 12 da RC-03 seguem com 77 linhas; `PEQUENOVAREJO` e `VENDA` com 0 linhas |
+| Testes automatizados contra o Oracle (`AuthOracleTest`, 6 testes) | verdes: 3 contas entram, 401 idêntico para senha errada e e-mail inexistente, logout invalida o token e preserva outra sessão da conta, expiração no prazo, simulação de reinício, o token em claro nunca é o valor gravado |
+| Percurso manual com `java -jar` | login das 3 contas (200), sessão (200), logout (204), reuso (401), 401 idêntico nos dois tipos de falha; sem `DB_*` o login dá 503 e `/health` segue 200 |
+| Limpeza | os testes removeram só as sessões que criaram e as 3 linhas do percurso manual foram removidas por ID; `RC_SESSAO_LOGIN` terminou com 0 linhas |
+
+Não verificado (RC-04): tempo do login ≤ 1 s no primeiro acesso (o primeiro login levou ~1,6 s por abrir a conexão com o Oracle e o seguinte ~0,3 s); execução no SQL Developer do `05_`.
+
+Não verificado: execução no SQL Developer/SQLcl (o grupo deve repetir a ordem acima, incluindo o `05_`, uma vez no seu cliente); desempenho (fora do escopo, volume de demonstração).
