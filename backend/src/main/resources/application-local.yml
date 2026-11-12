@@ -1,4 +1,0 @@
-# Perfil de desenvolvimento local. Sem segredos; sem banco, IA ou sensores nesta etapa.
-logging:
-  level:
-    br.com.regulacheck: DEBUG
