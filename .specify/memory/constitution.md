@@ -1,6 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: (template, sem versão) → 1.0.0
+- Version change: 1.0.0 → 2.0.0 (MAJOR: redefinição do Princípio III e das restrições tecnológicas —
+  Java sem Spring e sem JPA, banco Oracle via JDBC, exigência da disciplina confirmada em 2026-11-12)
+- Princípios modificados: III (Java puro/Servlet/JDBC), IV (senhas), V (motor independente de JDBC)
 - Princípios adicionados: I. Escopo Acadêmico e Dados Sintéticos; II. Limites Clínicos e Integridade
   Documental; III. Backend Java em Monólito Modular; IV. Segurança e Autorização por Recurso;
   V. Regras Determinísticas, IA Subordinada e Dados Não Confiáveis; VI. Persistência, Revisões e
@@ -31,7 +33,9 @@ unidade emissora. A extração MUST distinguir identificado, não localizado e i
 um campo não comprova sua ausência.
 
 ### III. Backend Java em Monólito Modular
-O backend MUST ser Java (Spring Boot), uma aplicação e um módulo Maven, com Controller, Service e
+O backend MUST ser Java puro com Jakarta Servlet em servidor embutido (Jetty ou Tomcat), acesso a dados
+por JDBC e SQL parametrizado, sem Spring (incluindo Spring Boot e Spring Data) e sem JPA/Hibernate ORM,
+uma aplicação e um módulo Maven, com Controller, Service e
 Repository separados e organização por funcionalidade. Controller MUST NOT acessar Repository nem
 aplicar regras documentais; Repository MUST NOT chamar IA; Entity MUST NOT ser serializada como
 contrato público (usar DTO). MUST NOT introduzir microsserviços, gateway, mensageria, CQRS ou
@@ -41,14 +45,14 @@ exigem necessidade concreta demonstrada.
 ### IV. Segurança e Autorização por Recurso
 A paciente MUST ser identificada pela sessão autenticada, nunca por identificador livre no corpo da
 requisição. Toda operação sobre pedido, arquivo, extração, análise, resumo e submissão MUST verificar
-autorização por recurso. Entrada MUST ser validada no servidor; senhas MUST usar o mecanismo do Spring
-Security; consultas MUST ser parametrizadas. Segredos MUST ficar fora do repositório, logs e mobile.
+autorização por recurso. Entrada MUST ser validada no servidor; senhas MUST usar algoritmo próprio para senhas
+(BCrypt ou Argon2) de biblioteca consolidada; consultas MUST ser parametrizadas. Segredos MUST ficar fora do repositório, logs e mobile.
 Logs e respostas de erro MUST NOT conter documento completo, senha, token, chave, stack trace ou SQL.
 Arquivos MUST ficar fora de diretório público, com download autenticado e validação de tipo real,
 tamanho e páginas (proposta: 3 arquivos de até 5 MB; PDF até 5 páginas, JPEG/PNG).
 
 ### V. Regras Determinísticas, IA Subordinada e Dados Não Confiáveis
-A avaliação MUST ser feita por motor de regras determinístico e versionado, independente de HTTP, JPA
+A avaliação MUST ser feita por motor de regras determinístico e versionado, independente de HTTP, JDBC
 e provedor de IA; todas as regras aplicáveis MUST ser avaliadas (resultado por regra: atende,
 pendente, não verificável, não aplicável). A IA MUST receber o mínimo de dados, apenas explicar
 pendências verificadas e MUST NOT alterar regras, permissões ou estado do pedido. A saída da IA MUST
@@ -82,11 +86,12 @@ sem refatoração ampla, troca de framework, dependências extras ou código que
 
 ## Restrições Tecnológicas e de Escopo
 
-- Linguagem Java; Spring Boot estável e fixado (sem SNAPSHOT ou intervalo dinâmico); JDK conforme a
+- Linguagem Java; Spring, Spring Boot e JPA/Hibernate PROIBIDOS (exigência da disciplina); dependências
+  estáveis e fixadas (sem SNAPSHOT ou intervalo dinâmico); JDK conforme a
   disciplina, propondo Java 21 se não houver indicação (registrar a decisão).
 - Build com Maven Wrapper (scripts Unix e Windows) e versões fixadas. Docker é opcional, nunca requisito oculto.
-- Banco relacional definido pela disciplina (PostgreSQL como proposta); MUST NOT trocar silenciosamente
-  por H2. Não adicionar JPA/driver sem datasource funcional.
+- Banco **Oracle** (exigência da disciplina), via JDBC; MUST NOT trocar silenciosamente por H2 ou
+  PostgreSQL. Não adicionar ORM nem driver sem datasource funcional.
 - Mobile consome a própria API (sem acesso direto ao banco ou à IA); framework conforme definição do grupo.
 - Dois sensores simulados (luminosidade em lux, distância em cm) vinculados à sessão de captura; sensores
   não comprovam legibilidade e sua indisponibilidade não bloqueia salvamento/upload.
@@ -119,4 +124,4 @@ material; PATCH para esclarecimentos e ajustes de redação. Todo plano MUST pas
 Check", e desvios MUST ser justificados na seção de complexidade do plano. Revisões de código e
 `analyze` MUST verificar conformidade. Diretrizes de execução do dia a dia: `CLAUDE.md`.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-12
+**Version**: 2.0.0 | **Ratified**: 2026-11-12 | **Last Amended**: 2026-11-12

@@ -6,7 +6,7 @@ Instruções permanentes para trabalhar neste repositório. Leia antes de planej
 
 O RegulaCheck é um MVP acadêmico cuja usuária principal é a paciente. Ela envia documentos, acompanha a extração das informações, confere a transcrição, recebe uma avaliação de critérios documentais e um resumo de pendências por IA, providencia correções e reenvia os documentos antes de uma submissão simulada.
 
-- Backend obrigatoriamente em Java. Spring Boot é a proposta de framework, respeitando o conteúdo da disciplina.
+- Backend obrigatoriamente em Java, **sem Spring (incluindo Spring Boot) e sem JPA/Hibernate ORM**, e banco **Oracle** acessado por JDBC. São exigências da disciplina, confirmadas pelo grupo em 12/11/2026.
 - Arquitetura: monólito modular, uma aplicação backend e um módulo Maven, com Controller, Service e Repository separados.
 - Banco relacional, mobile consumindo a própria API e dois sensores simulados integrados ao domínio.
 - Somente dados sintéticos e protocolo acadêmico fictício, identificado na interface e documentação.
@@ -91,16 +91,16 @@ O escopo da tarefa atual prevalece sobre o cronograma como autorização de exec
 | Item | Convenção |
 |---|---|
 | Linguagem | Java; não criar backend em C# |
-| Framework | Spring Boot, compatível com o conteúdo até a fase 7 |
+| Framework | Java puro com Jakarta Servlet em servidor embutido (Jetty ou Tomcat). Spring, Spring Boot, Spring Data e JPA/Hibernate são proibidos |
 | JDK | Preservar versão exigida pela disciplina/projeto; sem indicação, propor Java 21 e registrar a decisão |
 | Build | Maven Wrapper, scripts Unix e Windows, versões fixadas |
-| Spring Boot | Versão estável e compatível, fixada no projeto; sem SNAPSHOT ou intervalo dinâmico |
-| Banco | Usar o banco definido pela disciplina; PostgreSQL é proposta se ainda não houver decisão |
+| Dependências | Versões estáveis fixadas no pom.xml; sem SNAPSHOT ou intervalo dinâmico. Preferir poucas bibliotecas |
+| Banco | **Oracle** (exigência da disciplina), acesso por JDBC (driver Oracle) com SQL parametrizado e pool de conexões simples; sem ORM |
 | Mobile | Verificar projeto existente; não escolher framework novo sem definição do grupo |
 | IA e extração | Provedores ainda não presumidos; isolar por contratos e adaptadores |
 | Docker | Opcional para desenvolvimento, nunca requisito oculto |
 
-Não adicionar JPA/driver sem configuração funcional de datasource. Não trocar silenciosamente o banco final por H2. Não instalar SDK de IA sem necessidade e provedor definidos. Evitar Lombok e mapeadores automáticos se não houver padrão existente que os justifique.
+Não adicionar framework ORM nem driver sem configuração funcional de datasource. Não trocar silenciosamente o banco final (Oracle) por H2 ou PostgreSQL. Não instalar SDK de IA sem necessidade e provedor definidos. Evitar Lombok e mapeadores automáticos se não houver padrão existente que os justifique.
 
 ## 5. Arquitetura e responsabilidades
 
@@ -111,7 +111,7 @@ Organize por funcionalidade, preservando as camadas dentro de cada módulo lógi
 | Controller | HTTP, validação de contrato, autenticação declarativa e tradução da resposta | Não acessa Repository diretamente nem aplica regras documentais |
 | Service | Caso de uso, autorização sobre recursos, revisão, transições e coordenação | Não conhece detalhes específicos de SDK externo |
 | Repository | Consultas e persistência | Não coordena casos de uso nem chama IA |
-| Motor de regras | Avaliação determinística e agregação de resultados | Não depende de HTTP, JPA ou provedor de IA |
+| Motor de regras | Avaliação determinística e agregação de resultados | Não depende de HTTP, JDBC ou provedor de IA |
 | Adapter | Tradução entre contratos próprios e tecnologia externa | Não decide aprovação nem estado de negócio |
 | Entity | Modelo persistido e invariantes locais apropriadas | Não é serializada diretamente como contrato público |
 | DTO | Entrada/saída explícita de dados | Não expõe senha, segredo ou campos internos |
@@ -131,7 +131,7 @@ Organize por funcionalidade, preservando as camadas dentro de cada módulo lógi
 |---|---|
 | .specify/ | Configuração e constituição do Spec Kit, conforme instalação |
 | specs/ | Especificações, planos e tarefas das features, conforme instalação |
-| backend/ | API Java Spring Boot e testes |
+| backend/ | API Java (Servlet/JDBC) e testes |
 | mobile/ | Aplicativo e documentação da tecnologia adotada |
 | simulador-iot/ | Simulação de luminosidade e distância |
 | database/scripts/ | SQL de criação, carga sintética e consultas |
@@ -194,7 +194,7 @@ Não crie uma pasta utils para acumular regras de negócio. Compartilhe somente 
 - Não misture entidades, DTOs e respostas de provedores externos. Faça mapeamento explícito e pequeno; não adicione ferramenta de mapeamento sem necessidade.
 - Não capture Exception para ocultar falha, devolver sucesso ou continuar com estado inconsistente. Use exceções específicas e tratamento global coerente.
 - Não use System.out para logs da aplicação. Use o mecanismo de logging do projeto, com mensagens úteis e sem conteúdo sensível.
-- Não mantenha dados por paciente em campos mutáveis de componentes singleton do Spring. Contexto por requisição deve permanecer isolado.
+- Não mantenha dados por paciente em campos mutáveis de componentes singleton (servlets, services). Contexto por requisição deve permanecer isolado.
 - Não devolva stack trace, mensagem SQL, chave externa ou corpo bruto de erro do provedor na resposta pública.
 
 ## 8. Documentação obrigatória do código
@@ -232,13 +232,13 @@ Não escreva documentação para comportamento que o código não executa. Ao mu
 ## 9. API, segurança e tratamento de erros
 
 - Valide a entrada no servidor. Validação do mobile melhora a experiência, mas não protege a API.
-- Use DTOs explícitos e Jakarta Bean Validation quando aplicável; separe erro de contrato de regra de negócio.
+- Use DTOs explícitos e validação explícita no servidor; separe erro de contrato de regra de negócio.
 - Retorne códigos HTTP coerentes: criação 201, processamento aceito 202 quando realmente assíncrono, sucesso 200/204 conforme o contrato; documente erros 400, 401, 403/404, 409, 413 e 415 quando usados.
 - Padronize erros com código, mensagem compreensível e detalhes de campo quando pertinentes. Inclua identificador de rastreamento se implementado, sem vazar dados internos.
 - Identifique a paciente pela sessão autenticada, nunca por um ownerId livre recebido no body.
 - Verifique autorização por recurso em todas as operações: pedido, arquivo, extração, análise, resumo e submissão.
 - Perfil administrador não recebe acesso irrestrito aos documentos automaticamente. Simulador tem credencial e escopo restritos à telemetria.
-- Armazene senhas com mecanismo apropriado do Spring Security; nunca texto puro, criptografia reversível ou hash rápido caseiro.
+- Armazene senhas com algoritmo próprio para senhas (BCrypt ou Argon2) de biblioteca consolidada; nunca texto puro, criptografia reversível ou hash rápido caseiro.
 - Use consultas parametrizadas/ORM. Não concatene entrada do usuário em SQL.
 - Arquivos fora de diretório público/static, com download autenticado, nomes internos seguros e validação de tipo real, tamanho e páginas. Não confie em nome de arquivo nem permita path traversal.
 - Limites propostos do MVP: 3 arquivos de até 5 MB cada; PDF até 5 páginas, JPEG/PNG. Trate formato não suportado e PDF protegido com orientação clara.
@@ -285,11 +285,11 @@ Não escreva documentação para comportamento que o código não executa. Ao mu
 
 ## 13. Ambiente, dependências e comandos
 
-Preserve pom.xml, Wrapper e configurações válidas. Fixe versões compatíveis e use o gerenciamento do Spring Boot. Não faça upgrade geral como parte de uma mudança pequena.
+Preserve pom.xml, Wrapper e configurações válidas. Fixe versões compatíveis. Não faça upgrade geral como parte de uma mudança pequena.
 
 Documente variáveis ativas e reservadas. Propostas: SERVER_PORT, DB_URL, DB_USERNAME, DB_PASSWORD, DOCUMENT_STORAGE_PATH, AI_BASE_URL, AI_API_KEY, AI_MODEL e IOT_API_KEY. Não torne variáveis futuras obrigatórias para iniciar a fundação.
 
-O Spring Boot não lê .env automaticamente só porque o arquivo existe. Documente exportação no shell/IDE ou o carregamento explícito realmente implementado.
+A aplicação não lê .env automaticamente só porque o arquivo existe. Documente exportação no shell/IDE ou o carregamento explícito realmente implementado.
 
 Antes de afirmar que o ambiente está pronto, confira JDK, Wrapper, acesso às dependências, porta e configuração necessária. Não instalar ferramentas globalmente nem alterar permanentemente a máquina sem necessidade autorizada. Instalação incompleta deve ser reportada com instruções e tarefas independentes concluídas.
 
@@ -299,10 +299,10 @@ A partir de backend/, quando aplicável:
 java -version
 ./mvnw -version
 ./mvnw clean verify
-./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+# comando de execução: definir na migração (RC de fundação sem Spring)
 ```
 
-No Windows PowerShell, usar .\mvnw.cmd no lugar de ./mvnw. Documentar comandos efetivamente verificados. Se Actuator estiver configurado, a rota técnica prevista é GET /actuator/health com HTTP 200 e status UP; se outra rota for usada, registrar seu caminho real.
+No Windows PowerShell, usar .\mvnw.cmd no lugar de ./mvnw. Documentar comandos efetivamente verificados. A rota técnica de health prevista é GET /health (ou a rota real implementada, registrando seu caminho) com HTTP 200 e status UP.
 
 Docker é opcional. Se adotado, fixar versão da imagem, explicar volumes e portas e não executar remoção de dados para contornar erros.
 
