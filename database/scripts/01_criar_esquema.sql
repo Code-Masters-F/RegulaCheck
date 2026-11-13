@@ -268,6 +268,27 @@ CREATE TABLE RC_EXTRACAO_CAMPO (
 CREATE INDEX RC_EXTRACAO_DOC_IX_DOCUMENTO ON RC_EXTRACAO_DOCUMENTO (DOCUMENTO_ID);
 
 -- ---------------------------------------------------------------------------
+-- RC_CONFERENCIA_CAMPO (RC-11): decisao VIGENTE da paciente sobre cada campo lido (confirmar ou apontar
+-- divergencia). Sem coluna de valor: a paciente nao digita nem corrige informacao. A FK composta garante que o
+-- campo existe na leitura; qual decisao cabe a qual situacao do campo e imposto pelo servico.
+-- ---------------------------------------------------------------------------
+CREATE TABLE RC_CONFERENCIA_CAMPO (
+    EXTRACAO_DOCUMENTO_ID NUMBER NOT NULL,
+    CODIGO                VARCHAR2(40 CHAR) NOT NULL,
+    DECISAO               VARCHAR2(20 CHAR) NOT NULL,
+    MOTIVO                VARCHAR2(40 CHAR),
+    DECIDIDA_EM           TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP AT TIME ZONE 'UTC' NOT NULL,
+    CONSTRAINT RC_CONFERENCIA_CAMPO_PK      PRIMARY KEY (EXTRACAO_DOCUMENTO_ID, CODIGO),
+    CONSTRAINT RC_CONFERENCIA_CAMPO_FK_CAMPO FOREIGN KEY (EXTRACAO_DOCUMENTO_ID, CODIGO)
+        REFERENCES RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO),
+    CONSTRAINT RC_CONFERENCIA_CAMPO_CK_DEC  CHECK (DECISAO IN ('CONFIRMADA', 'DIVERGENTE')),
+    CONSTRAINT RC_CONFERENCIA_CAMPO_CK_MOT  CHECK (MOTIVO IS NULL OR MOTIVO IN ('VALOR_DIFERENTE_DO_DOCUMENTO',
+        'CAMPO_EXISTE_E_NAO_FOI_LIDO')),
+    CONSTRAINT RC_CONFERENCIA_CAMPO_CK_PAR  CHECK ((DECISAO = 'CONFIRMADA' AND MOTIVO IS NULL)
+        OR (DECISAO = 'DIVERGENTE' AND MOTIVO IS NOT NULL))
+);
+
+-- ---------------------------------------------------------------------------
 -- RC_SESSAO_CAPTURA e RC_LEITURA_SENSOR: telemetria dos dois sensores simulados.
 -- A unidade e amarrada ao tipo. Limites demonstrativos e leitura "antiga" ficam na API.
 -- ---------------------------------------------------------------------------

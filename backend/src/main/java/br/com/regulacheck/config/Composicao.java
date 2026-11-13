@@ -17,7 +17,9 @@ import br.com.regulacheck.common.http.CabecalhosSegurosFiltro;
 import br.com.regulacheck.common.http.RotaNaoEncontradaController;
 import br.com.regulacheck.documento.controller.DocumentoController;
 import br.com.regulacheck.documento.service.DocumentoService;
+import br.com.regulacheck.extracao.controller.ConferenciaController;
 import br.com.regulacheck.extracao.controller.ExtracaoController;
+import br.com.regulacheck.extracao.service.ConferenciaService;
 import br.com.regulacheck.extracao.service.ExtracaoService;
 import br.com.regulacheck.protocolo.controller.ProtocoloController;
 import br.com.regulacheck.protocolo.service.ProtocoloService;
@@ -127,11 +129,13 @@ public final class Composicao {
         // RC-10: leitura (simulada) dos documentos; mesma entrega de subcaminho que os documentos.
         ExtracaoService extracao = new ExtracaoService(dependencias.extracoes(), dependencias.leitor(),
                 armazenamento, dependencias.relogio());
+        // RC-11: conferencia da transcricao (decisoes da paciente sobre a leitura); mesma entrega de subcaminho.
+        ConferenciaService conferenciaDaLeitura = new ConferenciaService(dependencias.conferencias(), dependencias.relogio());
         MultipartConfigElement multipart = new MultipartConfigElement(conferencia.quarentena().toString(),
                 LimitesArquivo.MAXIMO_BYTES, LimitesArquivo.MAXIMO_BYTES + FOLGA_MULTIPART_BYTES, 0);
         rotas.registrar("/solicitacoes/*",
                 new SolicitacaoController(solicitacoes, new DocumentoController(documentos),
-                        new ExtracaoController(extracao)), multipart,
+                        new ExtracaoController(extracao), new ConferenciaController(conferenciaDaLeitura)), multipart,
                 Perfil.PACIENTE);
         extensao.accept(rotas);
 

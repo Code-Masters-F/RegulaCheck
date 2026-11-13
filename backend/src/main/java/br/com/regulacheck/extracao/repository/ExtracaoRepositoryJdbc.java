@@ -61,6 +61,11 @@ public final class ExtracaoRepositoryJdbc implements ExtracaoRepository {
              WHERE s.ID = ? AND s.PACIENTE_ID = ?
              ORDER BY e.REVISAO DESC
              FETCH FIRST 1 ROW ONLY""";
+    private static final String SQL_POR_ID = """
+            SELECT e.ID, e.SOLICITACAO_ID, e.REVISAO, e.CRIADA_EM, s.REVISAO_ATUAL
+              FROM RC_EXTRACAO e
+              JOIN RC_SOLICITACAO s ON s.ID = e.SOLICITACAO_ID
+             WHERE e.ID = ? AND s.ID = ? AND s.PACIENTE_ID = ?""";
     private static final String SQL_EXISTENTE = """
             SELECT e.ID, e.SOLICITACAO_ID, e.REVISAO, e.CRIADA_EM, s.REVISAO_ATUAL
               FROM RC_EXTRACAO e
@@ -132,6 +137,21 @@ public final class ExtracaoRepositoryJdbc implements ExtracaoRepository {
                 PreparedStatement consulta = conexao.prepareStatement(SQL_MAIS_RECENTE)) {
             consulta.setLong(1, solicitacaoId);
             consulta.setLong(2, pacienteId);
+            try (ResultSet linha = consulta.executeQuery()) {
+                return linha.next() ? Optional.of(carregar(conexao, linha)) : Optional.empty();
+            }
+        } catch (SQLException falha) {
+            throw traduzir(falha);
+        }
+    }
+
+    @Override
+    public Optional<ExtracaoRegistrada> buscarPorId(long pacienteId, long solicitacaoId, long extracaoId) {
+        try (Connection conexao = banco.conexao();
+                PreparedStatement consulta = conexao.prepareStatement(SQL_POR_ID)) {
+            consulta.setLong(1, extracaoId);
+            consulta.setLong(2, solicitacaoId);
+            consulta.setLong(3, pacienteId);
             try (ResultSet linha = consulta.executeQuery()) {
                 return linha.next() ? Optional.of(carregar(conexao, linha)) : Optional.empty();
             }

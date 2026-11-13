@@ -85,6 +85,20 @@ public final class ExtracaoRepositoryMemoria implements ExtracaoRepository {
     }
 
     @Override
+    public Optional<ExtracaoRegistrada> buscarPorId(long pacienteId, long solicitacaoId, long extracaoId) {
+        synchronized (pedidos) {
+            falharSeInjetado(true);
+            Optional<Solicitacao> pedido = pedidos.buscarDaPaciente(solicitacaoId, pacienteId);
+            Map<Integer, Extracao> doPedido = leituras.get(solicitacaoId);
+            if (pedido.isEmpty() || doPedido == null) {
+                return Optional.empty();
+            }
+            return doPedido.values().stream().filter(leitura -> leitura.id() == extracaoId).findFirst()
+                    .map(leitura -> new ExtracaoRegistrada(leitura, pedido.get().revisaoAtual()));
+        }
+    }
+
+    @Override
     public ResultadoGravacao gravar(long pacienteId, long solicitacaoId, int revisaoCapturada,
             List<LeituraParaGravar> paraGravar, Instant agora) {
         synchronized (pedidos) {

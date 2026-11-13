@@ -70,7 +70,7 @@ class BancoIndisponivelSolicitacaoTest {
     }
 
     private static Dependencias comPedidosQueFalham(CenarioAuth c, Supplier<RuntimeException> falha) {
-        return new Dependencias(c.usuarios, c.sessoes, c.protocolos, new SolicitacoesQueFalham(falha), c.documentos, c.extracoes,
+        return new Dependencias(c.usuarios, c.sessoes, c.protocolos, new SolicitacoesQueFalham(falha), c.documentos, c.extracoes, c.conferencias,
                 new br.com.regulacheck.integracao.extracao.LeitorSimulado(), c.relogio);
     }
 
@@ -114,7 +114,7 @@ class BancoIndisponivelSolicitacaoTest {
         Supplier<RuntimeException> fora = () -> new ExcecaoNegocio(503, "DEPENDENCIA_INDISPONIVEL",
                 "Servico temporariamente indisponivel. Tente novamente em instantes.");
         Dependencias deps = new Dependencias(cenario.usuarios, cenario.sessoes, new ProtocolosQueFalham(fora),
-                cenario.solicitacoes, cenario.documentos, cenario.extracoes,
+                cenario.solicitacoes, cenario.documentos, cenario.extracoes, cenario.conferencias,
                 new br.com.regulacheck.integracao.extracao.LeitorSimulado(), cenario.relogio);
         try (ServidorDeTeste api = ServidorDeTeste.iniciar(deps)) {
             Map<String, String> auth = bearer(api.entrar(EMAIL_A, SENHA));

@@ -9,6 +9,7 @@ import br.com.regulacheck.common.exception.RespostaErro;
 import br.com.regulacheck.common.http.CorpoJson;
 import br.com.regulacheck.common.http.ServletJson;
 import br.com.regulacheck.documento.controller.DocumentoController;
+import br.com.regulacheck.extracao.controller.ConferenciaController;
 import br.com.regulacheck.extracao.controller.ExtracaoController;
 import br.com.regulacheck.solicitacao.dto.ListaSolicitacoesResponse;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoRequest;
@@ -47,6 +48,7 @@ public class SolicitacaoController extends ServletJson {
     private final transient SolicitacaoService servico;
     private final transient DocumentoController documentos;
     private final transient ExtracaoController extracao;
+    private final transient ConferenciaController conferencia;
 
     /**
      * @param servico casos de uso da solicitacao
@@ -54,18 +56,21 @@ public class SolicitacaoController extends ServletJson {
      *     {@code /{id}/documentos[/{docId}]}
      * @param extracao controller da leitura (simulada) dos documentos (RC-10), ao qual este entrega o subcaminho
      *     {@code /{id}/extracoes}
+     * @param conferencia controller da conferencia da transcricao (RC-11), ao qual este entrega o subcaminho
+     *     {@code /{id}/extracoes/{extracaoId}/conferencia}
      */
     public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos,
-            ExtracaoController extracao) {
+            ExtracaoController extracao, ConferenciaController conferencia) {
         super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
         this.documentos = documentos;
         this.extracao = extracao;
+        this.conferencia = conferencia;
     }
 
     /**
-     * Entrega ao {@link DocumentoController} os subcaminhos de documentos e ao {@link ExtracaoController} o de
-     * extracao; o resto segue o fluxo normal. A RC-05
+     * Entrega ao {@link DocumentoController} os subcaminhos de documentos, ao {@link ConferenciaController} o da
+     * conferencia e ao {@link ExtracaoController} o de extracao; o resto segue o fluxo normal. A RC-05
      * so aceita um registro por caminho, e {@code /solicitacoes/*} e este.
      */
     @Override
@@ -73,6 +78,12 @@ public class SolicitacaoController extends ServletJson {
             throws ServletException, IOException {
         if (DocumentoController.reconhece(requisicao.getPathInfo())) {
             documentos.atender(requisicao, resposta);
+            return;
+        }
+        // A conferencia (/{id}/extracoes/{extracaoId}/conferencia) vem antes da extracao, que reconhece qualquer
+        // caminho com "extracoes" no terceiro segmento.
+        if (ConferenciaController.reconhece(requisicao.getPathInfo())) {
+            conferencia.atender(requisicao, resposta);
             return;
         }
         if (ExtracaoController.reconhece(requisicao.getPathInfo())) {

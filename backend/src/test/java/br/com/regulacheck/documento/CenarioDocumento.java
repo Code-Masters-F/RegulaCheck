@@ -112,6 +112,19 @@ public final class CenarioDocumento implements AutoCloseable {
         return api.get("/solicitacoes/" + pedidoId + "/extracoes", auth);
     }
 
+    /** Consulta a conferencia da transcricao de uma leitura (GET /extracoes/{id}/conferencia, RC-11). */
+    public Resposta consultarConferencia(Map<String, String> auth, String pedidoId, String extracaoId)
+            throws Exception {
+        return api.get("/solicitacoes/" + pedidoId + "/extracoes/" + extracaoId + "/conferencia", auth);
+    }
+
+    /** Registra decisoes de conferencia (PUT /extracoes/{id}/conferencia) com corpo JSON. */
+    public Resposta decidir(Map<String, String> auth, String pedidoId, String extracaoId, String json)
+            throws Exception {
+        return api.enviar("PUT", "/solicitacoes/" + pedidoId + "/extracoes/" + extracaoId + "/conferencia", json,
+                auth);
+    }
+
     /** Remove um documento (DELETE). */
     public Resposta remover(Map<String, String> auth, String pedidoId, String documentoId) throws Exception {
         return api.enviar("DELETE", "/solicitacoes/" + pedidoId + "/documentos/" + documentoId, null, auth);
