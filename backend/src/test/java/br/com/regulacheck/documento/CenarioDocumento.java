@@ -102,6 +102,16 @@ public final class CenarioDocumento implements AutoCloseable {
                 corpo.contentType(), cabecalhos);
     }
 
+    /** Pede a leitura (simulada) dos documentos do pedido (POST /extracoes, RC-10). */
+    public Resposta lerDocumentos(Map<String, String> auth, String pedidoId) throws Exception {
+        return api.enviar("POST", "/solicitacoes/" + pedidoId + "/extracoes", null, auth);
+    }
+
+    /** Consulta a leitura mais recente do pedido (GET /extracoes, RC-10). */
+    public Resposta consultarLeitura(Map<String, String> auth, String pedidoId) throws Exception {
+        return api.get("/solicitacoes/" + pedidoId + "/extracoes", auth);
+    }
+
     /** Remove um documento (DELETE). */
     public Resposta remover(Map<String, String> auth, String pedidoId, String documentoId) throws Exception {
         return api.enviar("DELETE", "/solicitacoes/" + pedidoId + "/documentos/" + documentoId, null, auth);

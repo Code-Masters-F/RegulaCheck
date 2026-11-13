@@ -58,10 +58,22 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
               FROM RC_SOLICITACAO
              WHERE ID = ? AND PACIENTE_ID = ?
                FOR UPDATE""";
+    /** Codigo do Oracle para "tabela ou visao inexistente" (esquema sem o script 08). */
+    private static final int ORA_TABELA_INEXISTENTE = 942;
+
     private static final String SQL_CONTAR_DOCUMENTOS = """
             SELECT COUNT(*) FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ? AND REVISAO_REMOCAO IS NULL""";
     private static final String SQL_CAMINHOS_DOCUMENTOS = """
             SELECT CAMINHO_INTERNO FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ?""";
+    // RC-10: leituras (simuladas) do pedido; apagadas antes dos documentos que elas referenciam.
+    private static final String SQL_APAGAR_CAMPOS_EXTRACAO = """
+            DELETE FROM RC_EXTRACAO_CAMPO WHERE EXTRACAO_DOCUMENTO_ID IN (
+                SELECT ed.ID FROM RC_EXTRACAO_DOCUMENTO ed JOIN RC_EXTRACAO e ON e.ID = ed.EXTRACAO_ID
+                 WHERE e.SOLICITACAO_ID = ?)""";
+    private static final String SQL_APAGAR_DOCUMENTOS_EXTRACAO = """
+            DELETE FROM RC_EXTRACAO_DOCUMENTO WHERE EXTRACAO_ID IN (
+                SELECT ID FROM RC_EXTRACAO WHERE SOLICITACAO_ID = ?)""";
+    private static final String SQL_APAGAR_EXTRACOES = "DELETE FROM RC_EXTRACAO WHERE SOLICITACAO_ID = ?";
     private static final String SQL_APAGAR_DOCUMENTOS = "DELETE FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ?";
     private static final String SQL_APAGAR_REVISOES = "DELETE FROM RC_REVISAO WHERE SOLICITACAO_ID = ?";
     private static final String SQL_APAGAR_PEDIDO = "DELETE FROM RC_SOLICITACAO WHERE ID = ?";
@@ -259,12 +271,29 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
                 }
             }
         }
-        // Ordem imposta pelas chaves estrangeiras: documentos -> revisoes -> pedido.
+        // Ordem imposta pelas chaves estrangeiras: leituras -> documentos -> revisoes -> pedido.
+        apagarExtracoes(conexao, id);
         apagarDoPedido(conexao, SQL_APAGAR_DOCUMENTOS, id);
         apagarDoPedido(conexao, SQL_APAGAR_REVISOES, id);
         apagarDoPedido(conexao, SQL_APAGAR_PEDIDO, id);
         LOG.info("Rascunho excluido. solicitacaoId={} arquivos={}", id, arquivos.size());
         return ResultadoExclusao.excluido(arquivos);
+    }
+
+    /**
+     * Apaga as leituras do pedido (RC-10). Em banco sem o script 08 as tabelas nao existem (ORA-00942) e, portanto,
+     * nao ha leitura a apagar: a exclusao do rascunho segue funcionando.
+     */
+    private static void apagarExtracoes(Connection conexao, long id) throws SQLException {
+        try {
+            apagarDoPedido(conexao, SQL_APAGAR_CAMPOS_EXTRACAO, id);
+            apagarDoPedido(conexao, SQL_APAGAR_DOCUMENTOS_EXTRACAO, id);
+            apagarDoPedido(conexao, SQL_APAGAR_EXTRACOES, id);
+        } catch (SQLException falha) {
+            if (falha.getErrorCode() != ORA_TABELA_INEXISTENTE) {
+                throw falha;
+            }
+        }
     }
 
     private static void apagarDoPedido(Connection conexao, String sql, long id) throws SQLException {

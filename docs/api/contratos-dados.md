@@ -92,6 +92,29 @@ Contrato completo: [specs/010-substituir-excluir-documentos/contracts/api-altera
 - **Política de arquivos:** o arquivo de documento removido ou substituído é **apagado**; o registro fica como histórico enquanto o pedido existir (com `REVISAO_REMOCAO` preenchida e a chave de envio anulada); a exclusão do rascunho apaga tudo. Não há lixeira nem desfazer.
 - **Conferência:** remover e substituir tornam não vigente a análise anterior (`RC_ANALISE.VIGENTE = 0`, histórico preservado), **não** iniciam análise e **não** mudam o estado do pedido. Nenhuma rota produz análise ainda, então isso é exercitado só com pedidos montados em memória nos testes.
 
+## Extração das informações dos arquivos (RC-10)
+Contrato completo: [specs/011-extrair-informacoes-arquivos/contracts/api-extracao.md](../../specs/011-extrair-informacoes-arquivos/contracts/api-extracao.md). Rotas só de `PACIENTE`. **A leitura é simulada** (decisão de 12/11/2026): o sistema não lê o arquivo; reconhece os documentos sintéticos de demonstração e devolve dados predefinidos. Toda resposta traz `simulada: true` e um aviso fixo.
+
+- **Ler:** `POST /solicitacoes/{id}/extracoes` (sem corpo) → 201 com a leitura nova, ou 200 se já existe leitura para a versão atual dos documentos. Lê os documentos disponíveis; um documento por vez, sem misturar campos.
+- **Consultar:** `GET /solicitacoes/{id}/extracoes` → a leitura mais recente, `situacao` `ATUAL` ou `DESATUALIZADA` (depois de enviar, remover ou substituir documento). 404 se nunca houve leitura.
+- **Campos** (só os usados pelas regras R01 a R06): `TIPO_DOCUMENTO`, `NOME`, `DATA_NASCIMENTO`, `MOTIVO_ENCAMINHAMENTO`, `DATA_EMISSAO`, `AUTORIZACAO_ASSINADA`. Cada um em **uma** de: `IDENTIFICADO` (com `valor` e, quando disponível, `origem` com `pagina` e `trecho`), `NAO_LOCALIZADO` (documento lido, campo ausente) ou `ILEGIVEL`; os dois últimos nunca trazem valor nem origem. "Ilegível" não significa "ausente".
+- **Documento não lido:** `situacao` `PROTEGIDO` ou `LEITURA_VAZIA`, com `motivo`, `reenviar: true`, `orientacao` e `campos` vazio. Nunca declara campo `NAO_LOCALIZADO` e **não** gera resultado de completude nem pendência.
+- **Falha do leitor** (ou saída fora do contrato): 503 `LEITURA_INDISPONIVEL`, sem detalhe técnico e **sem gravar nada**; a paciente pode tentar de novo.
+- **Ordem de verificação:** 401 → 403 → 404 (dona) → 409 (submetido, mesmo com leitura existente) → 422 `SEM_DOCUMENTOS` → 200 (já existe) → leitura → 409 (documentos mudaram durante a leitura) → 503.
+- **Efeitos:** uma leitura por versão do conjunto documental (repetir não duplica, nem sob concorrência); não muda o estado do pedido, não cria revisão, não inicia análise.
+
+```json
+{ "id": "12", "situacao": "ATUAL", "versaoConjuntoDocumental": 3, "simulada": true,
+  "aviso": "Leitura simulada com dados sintéticos; não é leitura real dos documentos.", "criadaEm": "2026-11-13T16:00:00.000Z",
+  "documentos": [
+    { "documentoId": "41", "tipoDocumental": "ENCAMINHAMENTO", "situacao": "LIDO",
+      "campos": [ { "codigo": "NOME", "situacao": "IDENTIFICADO", "valor": "Maria Exemplo da Silva",
+                    "origem": { "pagina": 1, "trecho": "Paciente: Maria Exemplo da Silva" } },
+                  { "codigo": "AUTORIZACAO_ASSINADA", "situacao": "NAO_LOCALIZADO" } ] },
+    { "documentoId": "42", "tipoDocumental": "OUTRO", "situacao": "LEITURA_VAZIA", "reenviar": true,
+      "motivo": "Não foi possível extrair informações deste arquivo.", "orientacao": "Isso não significa que as informações estejam faltando no documento. Envie um arquivo mais nítido.", "campos": [] } ] }
+```
+
 ## Análise
 `POST /solicitacoes/{id}/analises` (202 se assíncrona; 200 se concluída na chamada) · `GET /solicitacoes/{id}/analises` (200)
 

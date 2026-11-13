@@ -1,0 +1,70 @@
+{
+  "leituras" : [ {
+    "descricao" : "encaminhamento-sintetico.pdf",
+    "hash" : "a2954d2c8797c39ea26fcfc8cd7477bc49284cd0b8e93e8e9c04713835b8e160",
+    "situacao" : "LIDO",
+    "campos" : [ {
+      "codigo" : "TIPO_DOCUMENTO",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "ENCAMINHAMENTO",
+      "pagina" : 1,
+      "trecho" : "ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL"
+    }, {
+      "codigo" : "NOME",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "Maria Exemplo da Silva",
+      "pagina" : 1,
+      "trecho" : "Paciente: Maria Exemplo da Silva"
+    }, {
+      "codigo" : "DATA_NASCIMENTO",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "1990-04-12",
+      "pagina" : 1,
+      "trecho" : "Nascimento: 12/04/1990"
+    }, {
+      "codigo" : "MOTIVO_ENCAMINHAMENTO",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "Avaliacao cardiologica ambulatorial (texto sintetico)",
+      "pagina" : 1,
+      "trecho" : "Motivo: Avaliacao cardiologica ambulatorial (texto sintetico)"
+    }, {
+      "codigo" : "DATA_EMISSAO",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "2026-10-20",
+      "pagina" : 1,
+      "trecho" : "Emissao: 20/10/2026"
+    }, {
+      "codigo" : "AUTORIZACAO_ASSINADA",
+      "situacao" : "NAO_LOCALIZADO"
+    } ]
+  }, {
+    "descricao" : "identificacao-sintetica.png",
+    "hash" : "001117f663acd6b8fd2e6f2b03bcfc4456ca75619f60b9877fb1762d319b90da",
+    "situacao" : "LIDO",
+    "campos" : [ {
+      "codigo" : "TIPO_DOCUMENTO",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "IDENTIFICACAO",
+      "trecho" : "DOCUMENTO DE IDENTIFICACAO (SINTETICO)"
+    }, {
+      "codigo" : "NOME",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "Maria Exemplo da Silva",
+      "trecho" : "Nome: Maria Exemplo da Silva"
+    }, {
+      "codigo" : "DATA_NASCIMENTO",
+      "situacao" : "IDENTIFICADO",
+      "valor" : "1990-04-12",
+      "trecho" : "Nascimento: 12/04/1990"
+    }, {
+      "codigo" : "MOTIVO_ENCAMINHAMENTO",
+      "situacao" : "NAO_LOCALIZADO"
+    }, {
+      "codigo" : "DATA_EMISSAO",
+      "situacao" : "NAO_LOCALIZADO"
+    }, {
+      "codigo" : "AUTORIZACAO_ASSINADA",
+      "situacao" : "NAO_LOCALIZADO"
+    } ]
+  } ]
+}

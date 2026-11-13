@@ -9,6 +9,7 @@ import br.com.regulacheck.common.exception.RespostaErro;
 import br.com.regulacheck.common.http.CorpoJson;
 import br.com.regulacheck.common.http.ServletJson;
 import br.com.regulacheck.documento.controller.DocumentoController;
+import br.com.regulacheck.extracao.controller.ExtracaoController;
 import br.com.regulacheck.solicitacao.dto.ListaSolicitacoesResponse;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoRequest;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoResponse;
@@ -45,20 +46,26 @@ public class SolicitacaoController extends ServletJson {
 
     private final transient SolicitacaoService servico;
     private final transient DocumentoController documentos;
+    private final transient ExtracaoController extracao;
 
     /**
      * @param servico casos de uso da solicitacao
      * @param documentos controller dos documentos do pedido (RC-08), ao qual este entrega os subcaminhos
      *     {@code /{id}/documentos[/{docId}]}
+     * @param extracao controller da leitura (simulada) dos documentos (RC-10), ao qual este entrega o subcaminho
+     *     {@code /{id}/extracoes}
      */
-    public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos) {
+    public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos,
+            ExtracaoController extracao) {
         super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
         this.documentos = documentos;
+        this.extracao = extracao;
     }
 
     /**
-     * Entrega ao {@link DocumentoController} os subcaminhos de documentos; o resto segue o fluxo normal. A RC-05
+     * Entrega ao {@link DocumentoController} os subcaminhos de documentos e ao {@link ExtracaoController} o de
+     * extracao; o resto segue o fluxo normal. A RC-05
      * so aceita um registro por caminho, e {@code /solicitacoes/*} e este.
      */
     @Override
@@ -66,6 +73,10 @@ public class SolicitacaoController extends ServletJson {
             throws ServletException, IOException {
         if (DocumentoController.reconhece(requisicao.getPathInfo())) {
             documentos.atender(requisicao, resposta);
+            return;
+        }
+        if (ExtracaoController.reconhece(requisicao.getPathInfo())) {
+            extracao.atender(requisicao, resposta);
             return;
         }
         super.service(requisicao, resposta);
