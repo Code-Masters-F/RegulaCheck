@@ -1,6 +1,6 @@
 ## Contrato mínimo de API proposto
 
-Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas, assim como o **mecanismo de autorização por perfil e por dona** (RC-05, ver [docs/api/autorizacao.md](docs/api/autorizacao.md)); as **proteções de entrada e de arquivos** (RC-06, ver [docs/api/protecoes.md](docs/api/protecoes.md): conferência por tipo real, extensão, tamanho e páginas, área privada, download seguro, texto puro, segredos e HTTPS) também estão implementadas como mecanismo; a **RC-07** implementou `GET /protocolos` e o rascunho da solicitação (`GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}`; contrato em [specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md](specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md)); as demais rotas abaixo estão **planejadas** e, quando forem implementadas, devem cumprir a tabela de perfis ao final deste arquivo. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
+Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas, assim como o **mecanismo de autorização por perfil e por dona** (RC-05, ver [docs/api/autorizacao.md](docs/api/autorizacao.md)); as **proteções de entrada e de arquivos** (RC-06, ver [docs/api/protecoes.md](docs/api/protecoes.md): conferência por tipo real, extensão, tamanho e páginas, área privada, download seguro, texto puro, segredos e HTTPS) também estão implementadas como mecanismo; a **RC-07** implementou `GET /protocolos` e o rascunho da solicitação (`GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}`; contrato em [specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md](specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md)); a **RC-08** implementou o envio, a lista e o download dos documentos do pedido (`POST/GET /solicitacoes/{id}/documentos`, `GET …/documentos/{docId}`; contrato em [specs/009-enviar-consultar-documentos/contracts/api-documentos.md](specs/009-enviar-consultar-documentos/contracts/api-documentos.md)); as demais rotas abaixo estão **planejadas** e, quando forem implementadas, devem cumprir a tabela de perfis ao final deste arquivo. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
 
 As rotas são uma proposta para manter um domínio só e orientar a implementação; ajustar nomes sem perder comportamentos.
 
@@ -15,10 +15,11 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | GET    | /solicitacoes/{id}                                    | Detalhes próprios (**implementada**, RC-07) |
 | PUT    | /solicitacoes/{id}                                    | Troca o serviço de um rascunho; revisão +1 se mudou (**implementada**, RC-07) |
 | DELETE | /solicitacoes/{id}                                    | Exclui rascunho permitido                  |
-| POST   | /solicitacoes/{id}/documentos                         | Upload multipart autenticado (até 3 arquivos, 5 MB cada, PDF até 5 páginas, JPEG/PNG; conferido pelo conteúdo, RC-06) |
-| GET    | /solicitacoes/{id}/documentos/{docId}                 | Download protegido (autenticado, só a dona, como anexo; RC-06) |
-| DELETE | /solicitacoes/{id}/documentos/{docId}                 | Remove documento antes da submissão        |
-| POST   | /solicitacoes/{id}/extracoes                          | Extrai arquivos da revisão atual           |
+| POST   | /solicitacoes/{id}/documentos                         | Envia **um** arquivo (multipart: `arquivo` e `tipoDocumental`; cabeçalho opcional `X-Chave-Envio`) ao rascunho próprio: PDF até 5 páginas, JPEG/PNG, 5 MB, até 3 por pedido, conferido pelo conteúdo; revisão +1; não inicia análise (**implementada**, RC-08) |
+| GET    | /solicitacoes/{id}/documentos                         | Lista os documentos disponíveis do pedido próprio, com estado do envio (**implementada**, RC-08) |
+| GET    | /solicitacoes/{id}/documentos/{docId}                 | Download protegido (autenticado, só a dona e só pelo pedido ao qual o documento pertence, como anexo) (**implementada**, RC-08) |
+| DELETE | /solicitacoes/{id}/documentos/{docId}                 | Remove documento antes da submissão (**prevista, não implementada**: a RC-08 responde 405) |
+| POST   | /solicitacoes/{id}/extracoes                          | Extrai arquivos da revisão atual (**prevista, não implementada**) |
 | PUT    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | Registra conferência da transcrição        |
 | POST   | /solicitacoes/{id}/analises                           | Executa regras e resumo de IA              |
 | GET    | /solicitacoes/{id}/analises                           | Consulta resultados e histórico            |
@@ -33,7 +34,7 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | Rota | Perfil permitido | Dona verificada |
 |---|---|---|
 | `GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}` (RC-07, implementadas) e `DELETE /solicitacoes/{id}` (planejada) | PACIENTE | sim (a lista traz só as próprias) |
-| `POST/GET/DELETE /solicitacoes/{id}/documentos[/{docId}]` | PACIENTE | sim (documento **e** solicitação) |
+| `POST/GET /solicitacoes/{id}/documentos[/{docId}]` (RC-08, implementadas) e `DELETE …/documentos/{docId}` (prevista) | PACIENTE | sim (documento **e** solicitação) |
 | `POST /solicitacoes/{id}/extracoes`, `PUT …/extracoes/{extracaoId}/conferencia` | PACIENTE | sim |
 | `POST/GET /solicitacoes/{id}/analises`, `POST …/analises/{analiseId}/resumo` | PACIENTE | sim |
 | `POST /solicitacoes/{id}/submissoes-simuladas` | PACIENTE | sim |

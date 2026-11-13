@@ -1,9 +1,11 @@
 -- =============================================================================
 -- RegulaCheck - 04_testes_restricoes.sql  (RC-03)
--- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 14 casos tenta uma
+-- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 17 casos tenta uma
 --              violacao e confere o codigo ORA esperado; imprime "OK" ou "FALHOU".
 --              Os casos 13 e 14 (RC-07) exigem o motivo PROTOCOLO_ALTERADO: em banco criado
 --              antes da RC-07, rode antes o 06_motivo_revisao_protocolo.sql.
+--              Os casos 15 a 17 (RC-08) exigem as colunas de RC_DOCUMENTO do 07_: em banco criado
+--              antes da RC-08, rode antes o 07_documento_tipo_e_tentativa.sql.
 -- Ordem      : 4o script, depois do 01 e do 02 (usa os dados da carga como referencia).
 -- Efeito     : NAO DEIXA DADOS. Cada caso termina com ROLLBACK, e o script confere no fim
 --              que a contagem de linhas voltou ao valor da carga original.
@@ -169,6 +171,36 @@ BEGIN
         INSERT INTO RC_REVISAO (SOLICITACAO_ID, NUMERO, MOTIVO) VALUES (v_sol_rasc, 999, 'MOTIVO_INVENTADO');
         confere('motivo de revisao inventado', -2290, 0);
     EXCEPTION WHEN OTHERS THEN confere('motivo de revisao inventado', -2290, SQLCODE);
+    END;
+
+    -- 15. (RC-08) Tipo documental fora do conjunto fechado
+    BEGIN
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-tipo-doc.dat', 'LAUDO_INVENTADO');
+        confere('tipo documental invalido', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('tipo documental invalido', -2290, SQLCODE);
+    END;
+
+    -- 16. (RC-08) Hash do conteudo fora do formato (SHA-256 em 64 hexadecimais minusculos)
+    BEGIN
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL, HASH_CONTEUDO)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-hash.dat', 'OUTRO', 'ZZZ-nao-e-hexadecimal');
+        confere('hash de conteudo malformado', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('hash de conteudo malformado', -2290, SQLCODE);
+    END;
+
+    -- 17. (RC-08) Mesma chave de envio duas vezes no mesmo pedido (a repeticao nao pode virar outro documento)
+    BEGIN
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL, CHAVE_ENVIO)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-chave-1.dat', 'OUTRO', 'chave-teste-0001');
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL, CHAVE_ENVIO)
+        VALUES (v_sol_rasc, 1, 'b.pdf', 'PDF', 1000, 1, 'sim/teste-chave-2.dat', 'OUTRO', 'chave-teste-0001');
+        confere('chave de envio repetida no pedido', -1, 0);
+    EXCEPTION WHEN OTHERS THEN confere('chave de envio repetida no pedido', -1, SQLCODE);
     END;
 
     -- Conferencia final: nenhuma linha restante (total da carga original = 77).

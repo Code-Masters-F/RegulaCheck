@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.LongToIntFunction;
 
 /**
  * Repositorio de solicitacoes em memoria para testes sem Oracle.
@@ -38,6 +39,7 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
     private final Map<Long, Solicitacao> pedidos = new LinkedHashMap<>();
     private final Map<Long, List<RevisaoRegistrada>> revisoes = new LinkedHashMap<>();
     private long proximoId = 1;
+    private LongToIntFunction contadorDeDocumentos = id -> 0;
 
     @Override
     public synchronized Solicitacao criar(long pacienteId, Protocolo protocolo, Instant agora) {
@@ -52,7 +54,7 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
 
     @Override
     public synchronized Optional<Solicitacao> buscarDaPaciente(long id, long pacienteId) {
-        return Optional.ofNullable(pedidos.get(id)).filter(p -> p.pacienteId() == pacienteId);
+        return Optional.ofNullable(pedidos.get(id)).filter(p -> p.pacienteId() == pacienteId).map(this::comContagem);
     }
 
     @Override
@@ -60,7 +62,7 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
         Comparator<Solicitacao> maisRecentePrimeiro = Comparator.comparing(Solicitacao::criadaEm)
                 .thenComparing(Solicitacao::id).reversed();
         return pedidos.values().stream().filter(p -> p.pacienteId() == pacienteId)
-                .sorted(maisRecentePrimeiro).limit(limite).toList();
+                .sorted(maisRecentePrimeiro).limit(limite).map(this::comContagem).toList();
     }
 
     @Override
@@ -74,13 +76,13 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
             return ResultadoTroca.foraDeRascunho();
         }
         if (atual.protocolo().id() == novoProtocolo.id()) {
-            return ResultadoTroca.semMudanca(atual);
+            return ResultadoTroca.semMudanca(comContagem(atual));
         }
         Solicitacao nova = new Solicitacao(id, pacienteId, novoProtocolo, atual.estado(), atual.revisaoAtual() + 1,
                 atual.criadaEm(), agora);
         pedidos.put(id, nova);
         revisoes.get(id).add(new RevisaoRegistrada(nova.revisaoAtual(), MotivoRevisao.PROTOCOLO_ALTERADO, agora));
-        return ResultadoTroca.alterada(nova);
+        return ResultadoTroca.alterada(comContagem(nova));
     }
 
     /**
@@ -101,6 +103,38 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
      */
     public synchronized List<RevisaoRegistrada> revisoesDe(long id) {
         return List.copyOf(revisoes.getOrDefault(id, List.of()));
+    }
+
+    /**
+     * Liga o dobro de documentos a este: a contagem de documentos disponiveis de cada pedido passa a vir dele
+     * (espelha a subconsulta de contagem do JDBC).
+     *
+     * @param contador devolve quantos documentos disponiveis o pedido tem
+     */
+    public synchronized void usarContadorDeDocumentos(LongToIntFunction contador) {
+        this.contadorDeDocumentos = contador;
+    }
+
+    /**
+     * Incrementa a revisao do pedido por causa de um documento enviado e registra a revisao com o motivo
+     * {@link MotivoRevisao#DOCUMENTO_ENVIADO} (so o dobro de documentos chama; equivale ao {@code UPDATE} e ao
+     * {@code INSERT} em {@code RC_REVISAO} da transacao do JDBC).
+     *
+     * @param id pedido existente
+     * @param agora instante do envio
+     * @return o pedido com a revisao nova
+     */
+    public synchronized Solicitacao incrementarPorDocumento(long id, Instant agora) {
+        Solicitacao atual = pedidos.get(id);
+        Solicitacao nova = new Solicitacao(id, atual.pacienteId(), atual.protocolo(), atual.estado(),
+                atual.revisaoAtual() + 1, atual.criadaEm(), agora);
+        pedidos.put(id, nova);
+        revisoes.get(id).add(new RevisaoRegistrada(nova.revisaoAtual(), MotivoRevisao.DOCUMENTO_ENVIADO, agora));
+        return comContagem(nova);
+    }
+
+    private Solicitacao comContagem(Solicitacao pedido) {
+        return pedido.comDocumentos(contadorDeDocumentos.applyAsInt(pedido.id()));
     }
 
     /** @return quantos pedidos existem, de qualquer paciente */

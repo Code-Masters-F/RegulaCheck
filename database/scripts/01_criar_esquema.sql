@@ -122,6 +122,11 @@ CREATE TABLE RC_DOCUMENTO (
     PAGINAS          NUMBER(3)  NOT NULL,
     CAMINHO_INTERNO  VARCHAR2(300 CHAR) NOT NULL,
     ENVIADO_EM       TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP AT TIME ZONE 'UTC' NOT NULL,
+    -- RC-08: tipo documental, identificacao da tentativa de envio e SHA-256 do conteudo (ver 07_ para banco antigo).
+    -- O DEFAULT 'OUTRO' so cobre as linhas da carga sintetica; a API sempre informa o tipo.
+    TIPO_DOCUMENTAL  VARCHAR2(30 CHAR) DEFAULT 'OUTRO' NOT NULL,
+    CHAVE_ENVIO      VARCHAR2(64 CHAR),
+    HASH_CONTEUDO    VARCHAR2(64 CHAR),
     CONSTRAINT RC_DOCUMENTO_PK              PRIMARY KEY (ID),
     CONSTRAINT RC_DOCUMENTO_FK_REV_ENVIO    FOREIGN KEY (SOLICITACAO_ID, REVISAO_ENVIO)
         REFERENCES RC_REVISAO (SOLICITACAO_ID, NUMERO),
@@ -131,8 +136,18 @@ CREATE TABLE RC_DOCUMENTO (
     CONSTRAINT RC_DOCUMENTO_CK_TIPO         CHECK (TIPO IN ('PDF', 'JPEG', 'PNG')),
     CONSTRAINT RC_DOCUMENTO_CK_TAMANHO      CHECK (TAMANHO_BYTES BETWEEN 1 AND 5242880),
     CONSTRAINT RC_DOCUMENTO_CK_PAGINAS      CHECK (PAGINAS >= 1 AND (TIPO <> 'PDF' OR PAGINAS <= 5)),
-    CONSTRAINT RC_DOCUMENTO_UK_CAMINHO      UNIQUE (CAMINHO_INTERNO)
+    CONSTRAINT RC_DOCUMENTO_UK_CAMINHO      UNIQUE (CAMINHO_INTERNO),
+    CONSTRAINT RC_DOCUMENTO_CK_TIPO_DOC     CHECK (TIPO_DOCUMENTAL IN
+        ('ENCAMINHAMENTO', 'IDENTIFICACAO', 'AUTORIZACAO_RESPONSAVEL', 'OUTRO')),
+    CONSTRAINT RC_DOCUMENTO_CK_HASH         CHECK (HASH_CONTEUDO IS NULL
+        OR REGEXP_LIKE(HASH_CONTEUDO, '^[0-9a-f]{64}$'))
 );
+
+-- Chave de envio unica por pedido. UNIQUE (SOLICITACAO_ID, CHAVE_ENVIO) nao serve: no Oracle uma chave composta
+-- com so uma coluna nula conta como valor e rejeitaria dois documentos sem chave no mesmo pedido. O indice
+-- funcional abaixo vira (NULL, NULL) quando nao ha chave, e entradas totalmente nulas nao entram no indice.
+CREATE UNIQUE INDEX RC_DOCUMENTO_UK_CHAVE ON RC_DOCUMENTO (
+    CASE WHEN CHAVE_ENVIO IS NOT NULL THEN SOLICITACAO_ID END, CHAVE_ENVIO);
 
 -- ---------------------------------------------------------------------------
 -- RC_ANALISE: resultado da analise de uma revisao, com a versao do protocolo usada.

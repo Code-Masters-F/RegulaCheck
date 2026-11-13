@@ -1,5 +1,8 @@
 package br.com.regulacheck.config;
 
+import br.com.regulacheck.armazenamento.ArmazenamentoEmDisco;
+import br.com.regulacheck.armazenamento.conferencia.ConferenciaDeArquivo;
+import br.com.regulacheck.armazenamento.conferencia.LimitesArquivo;
 import br.com.regulacheck.auth.autorizacao.ChaveSimulador;
 import br.com.regulacheck.auth.autorizacao.RotasPrivadas;
 import br.com.regulacheck.auth.autorizacao.SimuladorFiltro;
@@ -12,6 +15,8 @@ import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
 import br.com.regulacheck.common.http.CabecalhosSegurosFiltro;
 import br.com.regulacheck.common.http.RotaNaoEncontradaController;
+import br.com.regulacheck.documento.controller.DocumentoController;
+import br.com.regulacheck.documento.service.DocumentoService;
 import br.com.regulacheck.protocolo.controller.ProtocoloController;
 import br.com.regulacheck.protocolo.service.ProtocoloService;
 import br.com.regulacheck.saude.SaudeController;
@@ -21,6 +26,9 @@ import br.com.regulacheck.saude.SaudeRepositoryMemoria;
 import br.com.regulacheck.saude.SaudeService;
 import br.com.regulacheck.usuario.entity.Perfil;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.MultipartConfigElement;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.function.Consumer;
@@ -37,7 +45,25 @@ import org.eclipse.jetty.ee10.servlet.ServletHolder;
  */
 public final class Composicao {
 
+    /** Folga do limite de corpo multipart para os campos de texto e delimitadores alem do arquivo (64 KB). */
+    private static final long FOLGA_MULTIPART_BYTES = 64L * 1024;
+
     private Composicao() {
+    }
+
+    /**
+     * Prepara a conferencia de arquivos (e, com ela, a pasta de quarentena privada). Sem
+     * {@code DOCUMENT_STORAGE_PATH} a conferencia usa uma pasta temporaria privada; com ele, {@code <raiz>/.quarentena}.
+     *
+     * @throws IllegalStateException se a pasta de quarentena nao puder ser criada; a mensagem nao traz o caminho
+     */
+    private static ConferenciaDeArquivo prepararConferencia(Configuracao configuracao) {
+        Path raiz = configuracao.armazenamentoConfigurado() ? Path.of(configuracao.armazenamentoRaiz()) : null;
+        try {
+            return ConferenciaDeArquivo.para(raiz);
+        } catch (IOException falha) {
+            throw new IllegalStateException("Nao foi possivel preparar a pasta privada de arquivos.", falha);
+        }
     }
 
     /**
@@ -87,7 +113,17 @@ public final class Composicao {
         rotas.registrar("/protocolos", new ProtocoloController(protocolos), Perfil.PACIENTE);
         SolicitacaoService solicitacoes = new SolicitacaoService(protocolos, dependencias.solicitacoes(),
                 dependencias.relogio());
-        rotas.registrar("/solicitacoes/*", new SolicitacaoController(solicitacoes), Perfil.PACIENTE);
+        // RC-08: documentos do pedido. O caminho /solicitacoes/* tem um unico registro (RC-05), entao o controller
+        // de documentos e entregue ao de solicitacoes, que lhe repassa os subcaminhos /{id}/documentos[/{docId}].
+        ConferenciaDeArquivo conferencia = prepararConferencia(configuracao);
+        Path raizArquivos = configuracao.armazenamentoConfigurado() ? Path.of(configuracao.armazenamentoRaiz()) : null;
+        DocumentoService documentos = new DocumentoService(solicitacoes, dependencias.documentos(),
+                new ArmazenamentoEmDisco(raizArquivos), conferencia, dependencias.relogio());
+        MultipartConfigElement multipart = new MultipartConfigElement(conferencia.quarentena().toString(),
+                LimitesArquivo.MAXIMO_BYTES, LimitesArquivo.MAXIMO_BYTES + FOLGA_MULTIPART_BYTES, 0);
+        rotas.registrar("/solicitacoes/*",
+                new SolicitacaoController(solicitacoes, new DocumentoController(documentos)), multipart,
+                Perfil.PACIENTE);
         extensao.accept(rotas);
 
         // Rota coringa: qualquer caminho sem controller devolve 404 no formato padrao.
