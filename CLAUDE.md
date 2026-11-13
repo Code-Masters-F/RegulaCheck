@@ -361,5 +361,5 @@ Na preparação inicial, acrescentar: backend compilável e inicializável, heal
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/006-protecao-entradas/plan.md
+specs/007-epico-telas-pendev/plan.md
 <!-- SPECKIT END -->

@@ -28,6 +28,13 @@ A API de autenticação existe (`POST /auth/login`, `GET /auth/sessao`, `POST /a
 - **Arquivos:** limites 3 arquivos, 5 MB cada, PDF até 5 páginas, JPEG/PNG. Em recusa (400/413/415), mostre a mensagem recebida, preserve o que a pessoa digitou e explique que é preciso escolher o arquivo de novo. O download vem como anexo autenticado; não guarde o arquivo em área pública.
 - A varredura de segredos do repositório também cobre `mobile/`.
 
+## Design das telas (pen.dev)
+O desenho das telas do app é feito no [pen.dev](https://www.pen.dev/) (arquivos `.pen`), com **dados fictícios** e **sem chamar a API**. Fica em [`design/`](design/): `00-fundamentos.pen` (cores, tipografia, componentes), `01-entrada.pen`, `02-envio.pen`, `03-resultado.pen` e `04-sensores-admin-acessibilidade.pen`.
+- **Arquivos `.pen`:** abra e edite só pelo pen.dev e suas ferramentas; não edite à mão.
+- **Texto revisável no Git:** [`design/INDEX.md`](design/INDEX.md) (quadro → rota da API → contrato), [`design/textos.md`](design/textos.md) (todos os textos das telas), [`design/dados-ficticios.md`](design/dados-ficticios.md), [`design/mapa-de-percursos.md`](design/mapa-de-percursos.md), [`design/acessibilidade.md`](design/acessibilidade.md) e [`design/checklist-revisao.md`](design/checklist-revisao.md).
+- **Regras de conteúdo:** tudo identificado como acadêmico e sintético; resumo e leitura marcados **SIMULADO**; nenhum texto afirma diagnóstico, urgência, autorização, vaga ou aprovação do SUS; estado nunca só por cor.
+- **Situação:** os documentos de apoio existem; **os quadros ainda não foram desenhados** (ver o épico em `specs/007-epico-telas-pendev/`).
+
 ## Endereço da API em desenvolvimento
 | Onde o app roda | Endereço |
 |---|---|
