@@ -51,6 +51,11 @@ public final class ConferenciaDeArquivo {
         return new ConferenciaDeArquivo(diretorio);
     }
 
+    /** @return pasta privada das copias temporarias (usada tambem como pasta temporaria do multipart) */
+    public Path quarentena() {
+        return quarentena;
+    }
+
     /**
      * Confere um arquivo recebido.
      *

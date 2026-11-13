@@ -45,6 +45,21 @@ public final class ServidorDeTeste implements AutoCloseable {
         return new ServidorDeTeste(servidor);
     }
 
+    /** Inicia a API com a configuracao informada (por exemplo, com raiz de armazenamento) e rotas reais apenas. */
+    public static ServidorDeTeste iniciar(Configuracao configuracao, Dependencias dependencias) throws Exception {
+        Servidor servidor = Servidor.criar(configuracao, dependencias);
+        servidor.iniciar();
+        return new ServidorDeTeste(servidor);
+    }
+
+    /** POST com corpo binario (envio multipart de arquivo). */
+    public Resposta postBinario(String caminho, byte[] corpo, String contentType, Map<String, String> cabecalhos)
+            throws Exception {
+        HttpRequest.Builder b = builder(caminho, cabecalhos);
+        b.header("Content-Type", contentType);
+        return enviar(b.POST(HttpRequest.BodyPublishers.ofByteArray(corpo)).build());
+    }
+
     /** Inicia a API de teste com chave do simulador e rotas de exemplo registradas pelo mecanismo real. */
     public static ServidorDeTeste iniciarComRotas(Configuracao configuracao, Dependencias dependencias,
             java.util.function.Consumer<br.com.regulacheck.auth.autorizacao.RotasPrivadas> rotas) throws Exception {

@@ -28,6 +28,14 @@
     {
       "key": "solicitacaoId",
       "value": ""
+    },
+    {
+      "key": "documentoId",
+      "value": ""
+    },
+    {
+      "key": "chaveEnvio",
+      "value": "7d1c1b8e-9f2a-4c3e-8a10-aa11bb22cc33"
     }
   ],
   "item": [
@@ -233,6 +241,104 @@
           "mode": "raw",
           "raw": "{\"protocoloId\":\"PROTOCOLO-ACADEMICO-FICTICIO-v0.1\"}"
         }
+      }
+    },
+    {
+      "name": "RC-08 Enviar documento (201 com Location; guarda em {{documentoId}}; repetir com a mesma chave devolve 200 sem duplicar)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) { pm.collectionVariables.set('documentoId', pm.response.json().id); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "X-Chave-Envio",
+            "value": "{{chaveEnvio}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "tipoDocumental",
+              "value": "ENCAMINHAMENTO",
+              "type": "text"
+            },
+            {
+              "key": "arquivo",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "description": "Escolha um PDF, JPEG ou PNG sintetico no campo arquivo. O pedido precisa estar em RASCUNHO."
+      }
+    },
+    {
+      "name": "RC-08 Enviar documento com tipo documental invalido (400 REQUISICAO_INVALIDA, campo tipoDocumental)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "tipoDocumental",
+              "value": "LAUDO_INVENTADO",
+              "type": "text"
+            },
+            {
+              "key": "arquivo",
+              "type": "file",
+              "src": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "RC-08 Meus documentos do pedido (200; lista vazia tambem e 200)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos"
+      }
+    },
+    {
+      "name": "RC-08 Baixar documento (200 como anexo; 404 se for de outra paciente, de outro pedido ou nao existir)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos/{{documentoId}}"
       }
     }
   ]

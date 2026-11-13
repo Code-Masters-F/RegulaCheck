@@ -1,6 +1,7 @@
 package br.com.regulacheck.config;
 
 import br.com.regulacheck.auth.repository.SessaoRepositoryJdbc;
+import br.com.regulacheck.documento.repository.DocumentoRepositoryJdbc;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepositoryJdbc;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepositoryJdbc;
 import br.com.regulacheck.usuario.repository.UsuarioRepositoryJdbc;
@@ -46,6 +47,7 @@ public final class Servidor {
         BancoDados banco = BancoDados.criar(configuracao.banco());
         Dependencias reais = new Dependencias(new UsuarioRepositoryJdbc(banco), new SessaoRepositoryJdbc(banco),
                 new ProtocoloRepositoryJdbc(banco), new SolicitacaoRepositoryJdbc(banco),
+                new DocumentoRepositoryJdbc(banco),
                 Clock.systemUTC());
         return montar(configuracao, reais, banco, rotas -> { });
     }

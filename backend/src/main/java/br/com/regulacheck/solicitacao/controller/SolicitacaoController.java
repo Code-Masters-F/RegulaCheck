@@ -6,11 +6,13 @@ import br.com.regulacheck.auth.service.SessaoAutenticada;
 import br.com.regulacheck.common.exception.RespostaErro;
 import br.com.regulacheck.common.http.CorpoJson;
 import br.com.regulacheck.common.http.ServletJson;
+import br.com.regulacheck.documento.controller.DocumentoController;
 import br.com.regulacheck.solicitacao.dto.ListaSolicitacoesResponse;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoRequest;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoResponse;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
 import br.com.regulacheck.solicitacao.service.SolicitacaoService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,11 +34,31 @@ public class SolicitacaoController extends ServletJson {
     private static final Pattern ID = Pattern.compile("^[1-9][0-9]{0,17}$");
 
     private final transient SolicitacaoService servico;
+    private final transient DocumentoController documentos;
 
-    /** @param servico casos de uso da solicitacao */
-    public SolicitacaoController(SolicitacaoService servico) {
+    /**
+     * @param servico casos de uso da solicitacao
+     * @param documentos controller dos documentos do pedido (RC-08), ao qual este entrega os subcaminhos
+     *     {@code /{id}/documentos[/{docId}]}
+     */
+    public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos) {
         super("GET", "POST", "PUT");
         this.servico = servico;
+        this.documentos = documentos;
+    }
+
+    /**
+     * Entrega ao {@link DocumentoController} os subcaminhos de documentos; o resto segue o fluxo normal. A RC-05
+     * so aceita um registro por caminho, e {@code /solicitacoes/*} e este.
+     */
+    @Override
+    protected void service(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
+        if (DocumentoController.reconhece(requisicao.getPathInfo())) {
+            documentos.atender(requisicao, resposta);
+            return;
+        }
+        super.service(requisicao, resposta);
     }
 
     @Override

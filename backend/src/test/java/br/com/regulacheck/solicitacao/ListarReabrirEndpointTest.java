@@ -41,7 +41,8 @@ class ListarReabrirEndpointTest {
             assertEquals(List.of(a2, a1), ids(listaA));
             assertEquals(List.of(b1), ids(listaB));
             assertEquals(List.of("id", "protocoloId", "servico", "estado", "revisao", "criadaEm", "atualizadaEm",
-                    "simulacao"), ServidorDeTeste.campos(listaA.get("itens").get(0)));
+                    "simulacao", "versaoConjuntoDocumental", "documentosDisponiveis", "analise"),
+                    ServidorDeTeste.campos(listaA.get("itens").get(0)));
         }
     }
 

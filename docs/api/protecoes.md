@@ -2,14 +2,16 @@
 
 Guia para as histórias de negócio (envio de documentos, extração, análise, resumo). Contrato completo: [specs/006-protecao-entradas/contracts/api-protecoes.md](../../specs/006-protecao-entradas/contracts/api-protecoes.md). Dados exclusivamente sintéticos; o sistema não diagnostica, não define urgência nem autoriza atendimento.
 
-> **Situação:** as proteções existem como **mecanismos reutilizáveis** e foram provadas com arquivos e textos sintéticos de teste. As rotas de envio e download de negócio ainda **não existem**; cada história que as criar usa as peças abaixo e repete a matriz de testes de `DownloadAutenticadoTest` para o seu recurso.
+> **Situação:** as proteções existem como **mecanismos reutilizáveis** e foram provadas com arquivos e textos sintéticos de teste. **A RC-08 é o primeiro uso real:** `POST/GET /solicitacoes/{id}/documentos` e `GET …/documentos/{docId}` (ver [contratos-dados.md](contratos-dados.md)) usam a conferência, o armazenamento privado e o download seguro descritos abaixo, e repetem a matriz de testes de `DownloadAutenticadoTest` para o seu recurso (`MatrizPerfisDocumentoTest`, `ListarAbrirDocumentoEndpointTest`, `RecusaDeArquivoEndpointTest`).
+>
+> **Como a RC-08 montou as peças** (`Composicao`): `ConferenciaDeArquivo.para(raiz)` e `ArmazenamentoEmDisco(raiz)`, com a pasta de quarentena também como pasta temporária do `multipart/form-data` do servlet de `/solicitacoes/*` (`RotasPrivadas.registrar` com `MultipartConfigElement`: 5 MB por arquivo, +64 KB de folga no corpo, nada em memória). O limite de tamanho do Jetty responde 413 pelo mesmo erro `ARQUIVO_MUITO_GRANDE`. A ordem do envio é conferir → guardar o arquivo → transação do banco; se a transação falhar ou recusar, o arquivo é removido (item 2 abaixo).
 
 ## Limites do MVP
 3 arquivos por pedido · 5 MB por arquivo · PDF até 5 páginas · JPEG e PNG · imagem até 25 milhões de pixels · nome de exibição até 100 caracteres. Ficam em `LimitesArquivo`.
 
 ## Como proteger uma rota nova de arquivo (≈ 20 min)
 
-0. **Montar as peças** (na `Composicao` da história que criar a rota; nesta história elas não estão ligadas a nenhuma rota, para não haver código morto):
+0. **Montar as peças** (na `Composicao`; a RC-08 já faz isto para as rotas de documentos, e as próximas histórias de arquivo reutilizam as mesmas peças):
    ```java
    Path raiz = configuracao.armazenamentoConfigurado() ? Path.of(configuracao.armazenamentoRaiz()) : null;
    ArmazenamentoPrivado armazenamento = new ArmazenamentoEmDisco(raiz);

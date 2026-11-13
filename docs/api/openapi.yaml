@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.5.0
+  version: 0.6.0
   description: >
     Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
     Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
     derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
-    extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; as rotas
-    de envio e download ainda não existem.
-    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07) e as rotas de
+    extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; desde a
+    RC-08 são usadas pelas rotas de documentos do pedido (envio, lista e download).
+    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08) e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
     dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
@@ -281,6 +281,135 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/documentos:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Número decimal positivo do pedido; outro formato responde 404.
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    get:
+      summary: Lista os documentos disponíveis do pedido próprio (RC-08)
+      description: Na ordem de envio, no máximo 3. Lista vazia é 200.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Documentos do pedido
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ListaDocumentos" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+    post:
+      summary: Envia um arquivo ao rascunho do pedido (RC-08)
+      description: >
+        Um arquivo por requisição, só em RASCUNHO. O formato é decidido pelo conteúdo (PDF, JPEG ou PNG), nunca
+        pela extensão ou pelo tipo declarado. Cada envio novo cria a revisão seguinte (motivo DOCUMENTO_ENVIADO) e
+        não inicia análise. Com `X-Chave-Envio`, repetir o mesmo envio (mesmo conteúdo e tipo documental) devolve o
+        documento existente com 200, sem gravar nada. Recusa não persiste nada. A dona é conferida antes do corpo.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-Chave-Envio
+          in: header
+          required: false
+          description: Identificação da tentativa, 8 a 64 caracteres [A-Za-z0-9_-]; válida por pedido.
+          schema: { type: string, pattern: "^[A-Za-z0-9_-]{8,64}$" }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [arquivo, tipoDocumental]
+              properties:
+                arquivo: { type: string, format: binary, description: "PDF (até 5 páginas), JPEG ou PNG, até 5 MB" }
+                tipoDocumental: { $ref: "#/components/schemas/TipoDocumental" }
+      responses:
+        "200":
+          description: Repetição da mesma tentativa; documento já existente (nada novo foi gravado)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DocumentoEnviado" }
+        "201":
+          description: Documento novo gravado, revisão do pedido incrementada
+          headers:
+            Location:
+              schema: { type: string, example: /solicitacoes/12/documentos/41 }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DocumentoEnviado" }
+        "400":
+          description: >
+            REQUISICAO_INVALIDA com `detalhes[].campo` = tipoDocumental, arquivo, arquivos ou chaveEnvio; PDF com mais
+            de 5 páginas, protegido por senha ou ilegível
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: CONFLITO_ESTADO (pedido fora de RASCUNHO) ou CHAVE_ENVIO_REUTILIZADA (mesma chave com outro conteúdo ou tipo)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "413":
+          description: ARQUIVO_MUITO_GRANDE (acima de 5 MB)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "415":
+          description: TIPO_NAO_SUPORTADO (corpo que não é multipart/form-data ou conteúdo que não é PDF/JPEG/PNG) ou EXTENSAO_INCOMPATIVEL
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "422":
+          description: REGRA_DE_NEGOCIO, campo `documentos` (o pedido já tem 3 documentos)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/documentos/{docId}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+      - name: docId
+        in: path
+        required: true
+        description: Número decimal positivo devolvido pelo envio; só abre pelo pedido ao qual pertence.
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    get:
+      summary: Baixa o arquivo de um documento próprio, como anexo (RC-08)
+      description: >
+        Conteúdo exatamente como foi guardado. Documento alheio, de outro pedido, inexistente ou id mal formado:
+        o mesmo 404. O nome interno de armazenamento nunca aparece.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Arquivo
+          headers:
+            Content-Disposition:
+              schema: { type: string, example: 'attachment; filename="encaminhamento.pdf"' }
+            X-Content-Type-Options:
+              schema: { type: string, example: nosniff }
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+            image/jpeg:
+              schema: { type: string, format: binary }
+            image/png:
+              schema: { type: string, format: binary }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -343,9 +472,57 @@ components:
           maxLength: 100
           description: Serviço escolhido, valor de `protocoloId` devolvido por GET /protocolos. Deve ser texto JSON.
           example: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
+    TipoDocumental:
+      type: string
+      enum: [ENCAMINHAMENTO, IDENTIFICACAO, AUTORIZACAO_RESPONSAVEL, OUTRO]
+      description: O que o arquivo diz ser (informado pela paciente); não prova que o conteúdo corresponde.
+    Documento:
+      type: object
+      required: [id, solicitacaoId, nomeArquivo, tipoDocumental, formato, tamanhoBytes, paginas, estadoEnvio, revisaoEntrada, enviadoEm, simulacao]
+      properties:
+        id: { type: string, description: Número decimal opaco, example: "41" }
+        solicitacaoId: { type: string, example: "12" }
+        nomeArquivo: { type: string, description: Nome de exibição saneado (nunca o nome de armazenamento), example: encaminhamento-sintetico.pdf }
+        tipoDocumental: { $ref: "#/components/schemas/TipoDocumental" }
+        formato: { type: string, enum: [PDF, JPEG, PNG], description: Decidido pelo conteúdo }
+        tamanhoBytes: { type: integer, minimum: 1, maximum: 5242880 }
+        paginas: { type: integer, minimum: 1, maximum: 5, description: Páginas do PDF; 1 para imagens }
+        estadoEnvio:
+          type: string
+          enum: [ENVIADO]
+          description: Estado do envio, não da análise. Novos valores só entram em histórias de processamento.
+        revisaoEntrada: { type: integer, minimum: 2 }
+        enviadoEm: { type: string, format: date-time }
+        simulacao: { type: boolean, enum: [true] }
+    DocumentoEnviado:
+      allOf:
+        - $ref: "#/components/schemas/Documento"
+        - type: object
+          required: [versaoConjuntoDocumental, documentosDisponiveis]
+          properties:
+            versaoConjuntoDocumental: { type: integer, minimum: 2, description: Revisão do pedido após o envio }
+            documentosDisponiveis: { type: integer, minimum: 1, maximum: 3 }
+    ListaDocumentos:
+      type: object
+      required: [documentos, total, maximo, versaoConjuntoDocumental]
+      properties:
+        documentos:
+          type: array
+          maxItems: 3
+          items: { $ref: "#/components/schemas/Documento" }
+        total: { type: integer }
+        maximo: { type: integer, example: 3 }
+        versaoConjuntoDocumental: { type: integer, minimum: 1 }
+    Analise:
+      type: object
+      required: [situacao, mensagem]
+      description: Situação da análise para a versão atual dos documentos. Upload concluído não é análise concluída.
+      properties:
+        situacao: { type: string, enum: [NAO_REALIZADA], description: Hoje só este valor existe }
+        mensagem: { type: string }
     Solicitacao:
       type: object
-      required: [id, protocoloId, servico, estado, revisao, criadaEm, atualizadaEm, simulacao]
+      required: [id, protocoloId, servico, estado, revisao, criadaEm, atualizadaEm, simulacao, versaoConjuntoDocumental, documentosDisponiveis, analise]
       properties:
         id: { type: string, description: Número decimal opaco, example: "12" }
         protocoloId: { type: string }
@@ -364,6 +541,9 @@ components:
         criadaEm: { type: string, format: date-time }
         atualizadaEm: { type: string, format: date-time }
         simulacao: { type: boolean, enum: [true] }
+        versaoConjuntoDocumental: { type: integer, minimum: 1, description: Igual a `revisao` (RC-08) }
+        documentosDisponiveis: { type: integer, minimum: 0, maximum: 3, description: Documentos disponíveis do pedido (RC-08) }
+        analise: { $ref: "#/components/schemas/Analise" }
     ListaSolicitacoes:
       type: object
       required: [itens, limite]

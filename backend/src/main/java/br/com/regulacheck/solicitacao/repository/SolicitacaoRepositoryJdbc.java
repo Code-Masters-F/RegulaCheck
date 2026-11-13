@@ -33,7 +33,9 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
 
     private static final String COLUNAS_PEDIDO = """
             SELECT s.ID, s.PACIENTE_ID, s.ESTADO, s.REVISAO_ATUAL, s.CRIADA_EM, s.ATUALIZADA_EM,
-                   p.ID AS PROTOCOLO_ID, p.IDENTIFICADOR, p.VERSAO, p.LOCALIDADE, p.ESPECIALIDADE, p.AVISO_FICTICIO
+                   p.ID AS PROTOCOLO_ID, p.IDENTIFICADOR, p.VERSAO, p.LOCALIDADE, p.ESPECIALIDADE, p.AVISO_FICTICIO,
+                   (SELECT COUNT(*) FROM RC_DOCUMENTO d
+                     WHERE d.SOLICITACAO_ID = s.ID AND d.REVISAO_REMOCAO IS NULL) AS DOCUMENTOS
               FROM RC_SOLICITACAO s
               JOIN RC_PROTOCOLO p ON p.ID = s.PROTOCOLO_ID
              WHERE s.PACIENTE_ID = ?""";
@@ -52,6 +54,8 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
               FROM RC_SOLICITACAO
              WHERE ID = ? AND PACIENTE_ID = ?
                FOR UPDATE""";
+    private static final String SQL_CONTAR_DOCUMENTOS = """
+            SELECT COUNT(*) FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ? AND REVISAO_REMOCAO IS NULL""";
     private static final String SQL_TROCAR = """
             UPDATE RC_SOLICITACAO SET PROTOCOLO_ID = ?, REVISAO_ATUAL = ?, ATUALIZADA_EM = ? WHERE ID = ?""";
 
@@ -170,8 +174,8 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
             return ResultadoTroca.foraDeRascunho();
         }
         if (protocoloAtual == novoProtocolo.id()) {
-            return ResultadoTroca.semMudanca(
-                    new Solicitacao(id, pacienteId, novoProtocolo, estado, revisaoAtual, criadaEm, atualizadaEm));
+            return ResultadoTroca.semMudanca(new Solicitacao(id, pacienteId, novoProtocolo, estado, revisaoAtual,
+                    criadaEm, atualizadaEm, contarDocumentos(conexao, id)));
         }
         int novaRevisao = revisaoAtual + 1;
         try (PreparedStatement troca = conexao.prepareStatement(SQL_TROCAR)) {
@@ -183,8 +187,18 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
         }
         inserirRevisao(conexao, id, novaRevisao, MotivoRevisao.PROTOCOLO_ALTERADO, agora);
         LOG.info("Servico do rascunho trocado. solicitacaoId={} revisao={}", id, novaRevisao);
-        return ResultadoTroca.alterada(
-                new Solicitacao(id, pacienteId, novoProtocolo, estado, novaRevisao, criadaEm, agora));
+        return ResultadoTroca.alterada(new Solicitacao(id, pacienteId, novoProtocolo, estado, novaRevisao, criadaEm,
+                agora, contarDocumentos(conexao, id)));
+    }
+
+    /** Conta os documentos disponiveis do pedido, na mesma transacao (e sob o mesmo bloqueio) da troca. */
+    private static int contarDocumentos(Connection conexao, long solicitacaoId) throws SQLException {
+        try (PreparedStatement consulta = conexao.prepareStatement(SQL_CONTAR_DOCUMENTOS)) {
+            consulta.setLong(1, solicitacaoId);
+            try (ResultSet resultado = consulta.executeQuery()) {
+                return resultado.next() ? resultado.getInt(1) : 0;
+            }
+        }
     }
 
     private static void inserirRevisao(Connection conexao, long solicitacaoId, int numero, MotivoRevisao motivo,
@@ -205,7 +219,8 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
         return new Solicitacao(resultado.getLong("ID"), resultado.getLong("PACIENTE_ID"), protocolo,
                 EstadoSolicitacao.valueOf(resultado.getString("ESTADO")), resultado.getInt("REVISAO_ATUAL"),
                 resultado.getObject("CRIADA_EM", OffsetDateTime.class).toInstant(),
-                resultado.getObject("ATUALIZADA_EM", OffsetDateTime.class).toInstant());
+                resultado.getObject("ATUALIZADA_EM", OffsetDateTime.class).toInstant(),
+                resultado.getInt("DOCUMENTOS"));
     }
 
     private static void desfazer(Connection conexao) {

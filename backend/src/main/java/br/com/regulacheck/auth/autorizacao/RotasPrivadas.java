@@ -3,6 +3,7 @@ package br.com.regulacheck.auth.autorizacao;
 import br.com.regulacheck.auth.controller.AutenticacaoFiltro;
 import br.com.regulacheck.usuario.entity.Perfil;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.http.HttpServlet;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -63,6 +64,22 @@ public final class RotasPrivadas {
      * @throws IllegalArgumentException se nao houver perfil ou o caminho ja estiver declarado ou for publico
      */
     public void registrar(String caminho, HttpServlet servlet, Perfil... perfis) {
+        registrar(caminho, servlet, null, perfis);
+    }
+
+    /**
+     * Publica uma rota privada de conta cujo servlet recebe {@code multipart/form-data} (envio de arquivos, RC-08).
+     * A autenticacao e a autorizacao por perfil sao as mesmas de {@link #registrar(String, HttpServlet, Perfil...)};
+     * a configuracao multipart so vale para requisicoes multipart e define os limites e a pasta temporaria
+     * privada onde o conteiner grava as partes.
+     *
+     * @param caminho caminho do servlet (ex.: {@code /solicitacoes/*})
+     * @param servlet controller da rota
+     * @param multipart limites e pasta temporaria das partes; {@code null} para uma rota sem multipart
+     * @param perfis perfis que podem usar a rota; ao menos um
+     * @throws IllegalArgumentException se nao houver perfil ou o caminho ja estiver declarado ou for publico
+     */
+    public void registrar(String caminho, HttpServlet servlet, MultipartConfigElement multipart, Perfil... perfis) {
         if (perfis == null || perfis.length == 0) {
             throw new IllegalArgumentException("A rota " + caminho + " precisa declarar ao menos um perfil.");
         }
@@ -70,7 +87,11 @@ public final class RotasPrivadas {
         EnumSet<DispatcherType> tipos = EnumSet.of(DispatcherType.REQUEST);
         contexto.addFilter(new FilterHolder(autenticacao), caminho, tipos);
         contexto.addFilter(new FilterHolder(new AutorizacaoFiltro(Set.of(perfis))), caminho, tipos);
-        contexto.addServlet(new ServletHolder(servlet), caminho);
+        ServletHolder suporte = new ServletHolder(servlet);
+        if (multipart != null) {
+            suporte.getRegistration().setMultipartConfig(multipart);
+        }
+        contexto.addServlet(suporte, caminho);
     }
 
     /**

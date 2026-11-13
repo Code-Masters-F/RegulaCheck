@@ -33,7 +33,12 @@ class CriarRascunhoEndpointTest {
             assertEquals(201, criada.status());
             JsonNode corpo = criada.json();
             assertEquals(List.of("id", "protocoloId", "servico", "estado", "revisao", "criadaEm", "atualizadaEm",
-                    "simulacao"), ServidorDeTeste.campos(corpo));
+                    "simulacao", "versaoConjuntoDocumental", "documentosDisponiveis", "analise"),
+                    ServidorDeTeste.campos(corpo));
+            // RC-08: pedido novo -> versao do conjunto = revisao 1, nenhum documento, nenhuma analise.
+            assertEquals(1, corpo.get("versaoConjuntoDocumental").asInt());
+            assertEquals(0, corpo.get("documentosDisponiveis").asInt());
+            assertEquals("NAO_REALIZADA", corpo.get("analise").get("situacao").asText());
             assertEquals("PROTOCOLO-ACADEMICO-FICTICIO-v0.1", corpo.get("protocoloId").asText());
             assertEquals("RASCUNHO", corpo.get("estado").asText());
             assertEquals(1, corpo.get("revisao").asInt());
