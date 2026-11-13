@@ -30,7 +30,7 @@ Saída:
 ## Upload de documento
 `POST /solicitacoes/{id}/documentos` (201), multipart com um arquivo por requisição.
 
-Limites: até 3 arquivos por solicitação, 5 MB cada, PDF até 5 páginas, JPEG ou PNG; tipo real verificado (não só a extensão). Erros: 400 (campo ausente), 413 (tamanho), 415 (tipo), 409 (limite de arquivos ou solicitação em estado que não aceita alteração).
+Limites: até 3 arquivos por solicitação, 5 MB cada, PDF até 5 páginas, JPEG ou PNG; tipo real verificado pelo conteúdo (não só a extensão). Erros: 400 (campo ausente, PDF com mais de 5 páginas, PDF protegido por senha, arquivo ilegível ou mais de 3 arquivos), 413 (tamanho), 415 (tipo ou extensão incompatível), 409 (solicitação em estado que não aceita alteração). O arquivo fica em área privada com nome interno gerado e o download exige autenticação (RC-06; ver [protecoes.md](protecoes.md)).
 
 Saída:
 ```json

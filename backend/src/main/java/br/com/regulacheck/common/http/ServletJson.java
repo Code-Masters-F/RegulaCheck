@@ -57,7 +57,10 @@ public abstract class ServletJson extends HttpServlet {
             super.service(requisicao, resposta);
         } catch (RuntimeException falha) {
             if (!resposta.isCommitted()) {
+                // reset() apaga tambem os cabecalhos de seguranca definidos pelo filtro; eles voltam em seguida.
+                var seguros = CabecalhosSegurosFiltro.capturar(resposta);
                 resposta.reset();
+                CabecalhosSegurosFiltro.restaurar(resposta, seguros);
             }
             RespostaErro.tratar(resposta, falha);
         }

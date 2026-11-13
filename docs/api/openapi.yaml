@@ -1,9 +1,14 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.3.0
+  version: 0.4.0
   description: >
-    Documentação escrita à mão. Nesta etapa estão implementados GET /health e as rotas de
+    Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
+    Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
+    derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
+    extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; as rotas
+    de envio e download ainda não existem.
+    Demais notas: Nesta etapa estão implementados GET /health e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
     dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
@@ -218,3 +223,13 @@ components:
             properties:
               campo: { type: string }
               mensagem: { type: string }
+    TextoSimulado:
+      type: object
+      description: >
+        Texto do resumo simulado (a IA é mockada). Deve ser exibido como texto puro, nunca como HTML;
+        o servidor já escapa os caracteres de marcação no JSON.
+      required: [texto, simulado, formato]
+      properties:
+        texto: { type: string }
+        simulado: { type: boolean, enum: [true] }
+        formato: { type: string, enum: [texto_puro] }

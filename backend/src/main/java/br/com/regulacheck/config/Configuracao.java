@@ -16,8 +16,13 @@ import java.util.Map;
  * @param ttlSessaoMinutos validade da sessao de login, em minutos (1 a 1440)
  * @param chaveSimulador chave do simulador de sensores ({@code IOT_API_KEY}); opcional, {@code null} ou vazia
  *     significa ausente (a telemetria responde 401); nunca aparece em {@link #toString()}
+ * @param armazenamentoRaiz raiz da area privada de arquivos ({@code DOCUMENT_STORAGE_PATH}); opcional, {@code null}
+ *     ou vazia significa ausente (a conferencia funciona, mas guardar arquivos falha com erro claro)
+ * @param urlPublica endereco pelo qual o app alcanca a API ({@code API_PUBLIC_URL}); opcional. Se for remoto,
+ *     precisa ser {@code https} (ver {@link ConfiguracaoDeCanal})
  */
-public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMinutos, String chaveSimulador) {
+public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMinutos, String chaveSimulador,
+        String armazenamentoRaiz, String urlPublica) {
 
     /** Porta padrao quando {@code SERVER_PORT} nao e informada. */
     public static final int PORTA_PADRAO = 8080;
@@ -29,6 +34,19 @@ public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMin
     public static final int TTL_SESSAO_PADRAO_MINUTOS = 30;
 
     private static final int TTL_SESSAO_MAXIMO_MINUTOS = 1440;
+
+    /**
+     * Cria uma configuracao sem area de arquivos e sem URL publica.
+     *
+     * @param host endereco de escuta
+     * @param porta porta HTTP
+     * @param banco dados do banco
+     * @param ttlSessaoMinutos validade da sessao em minutos
+     * @param chaveSimulador chave do simulador; pode ser {@code null}
+     */
+    public Configuracao(String host, int porta, Banco banco, int ttlSessaoMinutos, String chaveSimulador) {
+        this(host, porta, banco, ttlSessaoMinutos, chaveSimulador, null, null);
+    }
 
     /**
      * Cria uma configuracao sem chave do simulador.
@@ -117,15 +135,26 @@ public record Configuracao(String host, int porta, Banco banco, int ttlSessaoMin
         Banco banco = new Banco(aparar(variaveis.get("DB_URL")), aparar(variaveis.get("DB_USERNAME")),
                 variaveis.get("DB_PASSWORD"));
         return new Configuracao(host, porta, banco, ttlDe(variaveis.get("SESSION_TTL_MINUTES")),
-                aparar(variaveis.get("IOT_API_KEY")));
+                aparar(variaveis.get("IOT_API_KEY")), aparar(variaveis.get("DOCUMENT_STORAGE_PATH")),
+                aparar(variaveis.get("API_PUBLIC_URL")));
     }
 
-    /** Oculta a chave do simulador (e o banco) para que nao vazem em logs. */
+    /** @return {@code true} se a raiz da area privada de arquivos foi informada */
+    public boolean armazenamentoConfigurado() {
+        return armazenamentoRaiz != null && !armazenamentoRaiz.isBlank();
+    }
+
+    /**
+     * Oculta a chave do simulador, o banco, o caminho da area de arquivos e a URL publica para que nao
+     * vazem em logs.
+     */
     @Override
     public String toString() {
         return "Configuracao[host=" + host + ", porta=" + porta + ", banco=" + banco + ", ttlSessaoMinutos="
                 + ttlSessaoMinutos + ", chaveSimulador=" + (chaveSimulador == null || chaveSimulador.isBlank()
-                        ? "ausente" : "informada") + "]";
+                        ? "ausente" : "informada") + ", armazenamento="
+                + (armazenamentoConfigurado() ? "configurado" : "ausente") + ", urlPublica="
+                + (urlPublica == null || urlPublica.isBlank() ? "ausente" : "informada") + "]";
     }
 
     private static int ttlDe(String texto) {

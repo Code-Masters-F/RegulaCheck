@@ -2,6 +2,8 @@ package br.com.regulacheck.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.SerializableString;
+import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -23,7 +25,36 @@ public final class Json {
             .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
             .build();
 
+    static {
+        // Texto puro: a saida nunca carrega marcacao literal (<, >, &, '), mesmo que um cliente trate a
+        // resposta como pagina. O cliente JSON decodifica < de volta para o texto original.
+        MAPPER.getFactory().setCharacterEscapes(new EscapeDeMarcacao());
+    }
+
     private Json() {
+    }
+
+    /** Escapa os caracteres usados em marcacao HTML nas respostas JSON. */
+    private static final class EscapeDeMarcacao extends CharacterEscapes {
+        private static final long serialVersionUID = 1L;
+        private final int[] escapes;
+
+        EscapeDeMarcacao() {
+            escapes = CharacterEscapes.standardAsciiEscapesForJSON();
+            for (char c : new char[] {'<', '>', '&', '\''}) {
+                escapes[c] = CharacterEscapes.ESCAPE_STANDARD;
+            }
+        }
+
+        @Override
+        public int[] getEscapeCodesForAscii() {
+            return escapes;
+        }
+
+        @Override
+        public SerializableString getEscapeSequence(int ch) {
+            return null;
+        }
     }
 
     /**

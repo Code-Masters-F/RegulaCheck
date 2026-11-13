@@ -60,6 +60,21 @@ public final class ServidorDeTeste implements AutoCloseable {
         return new ServidorDeTeste(servidor);
     }
 
+    /** Resposta HTTP com corpo binario (download de arquivo). */
+    public record RespostaBinaria(int status, byte[] corpo, HttpResponse<byte[]> http) {
+
+        public String cabecalho(String nome) {
+            return http.headers().firstValue(nome).orElse("");
+        }
+    }
+
+    /** GET que preserva os bytes do corpo (para conferir download de arquivo byte a byte). */
+    public RespostaBinaria getBinario(String caminho, Map<String, String> cabecalhos) throws Exception {
+        HttpResponse<byte[]> r = CLIENTE.send(builder(caminho, cabecalhos).GET().build(),
+                HttpResponse.BodyHandlers.ofByteArray());
+        return new RespostaBinaria(r.statusCode(), r.body(), r);
+    }
+
     public Resposta get(String caminho, Map<String, String> cabecalhos) throws Exception {
         return enviar(builder(caminho, cabecalhos).GET().build());
     }

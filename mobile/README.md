@@ -21,6 +21,13 @@ A API de autenticação existe (`POST /auth/login`, `GET /auth/sessao`, `POST /a
 - **404** `NAO_ENCONTRADO`: mostrar "item não encontrado" e voltar à lista; é a mesma resposta para um item que não existe e para um de outra paciente.
 - O app nunca envia identificador de dona no corpo e nunca guarda ou usa a chave do simulador (`IOT_API_KEY`), que pertence ao script de sensores.
 
+## Segurança do app (RC-06): comportamento esperado
+- **HTTPS fora do desenvolvimento local:** na demonstração remota o endereço da API é `https://...`. Tráfego em texto claro (`http://`) só na variante de **depuração**, restrito a `10.0.2.2`, ao IP do computador na rede local e a `localhost`, por configuração de segurança de rede do Android; a variante de entrega não permite texto claro.
+- **Nenhum segredo no app além do token de sessão:** sem credencial de banco, sem `IOT_API_KEY`, sem chave de IA (a IA é mockada) e sem senha guardada. O token fica no armazenamento seguro da plataforma e nunca em log.
+- **Exibir texto como texto:** o resumo simulado chega com `simulado: true` e `formato: "texto_puro"`; mostre-o em componente de texto, **nunca** em WebView nem interpretando HTML. Identifique-o como simulado.
+- **Arquivos:** limites 3 arquivos, 5 MB cada, PDF até 5 páginas, JPEG/PNG. Em recusa (400/413/415), mostre a mensagem recebida, preserve o que a pessoa digitou e explique que é preciso escolher o arquivo de novo. O download vem como anexo autenticado; não guarde o arquivo em área pública.
+- A varredura de segredos do repositório também cobre `mobile/`.
+
 ## Endereço da API em desenvolvimento
 | Onde o app roda | Endereço |
 |---|---|
