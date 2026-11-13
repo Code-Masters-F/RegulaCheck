@@ -4,7 +4,7 @@
 
 Rastreabilidade: RC-01 ([ClickBus#6](https://github.com/Code-Masters-F/ClickBus/issues/6)) · especificação em [`specs/001-recorte-demonstrador/`](../specs/001-recorte-demonstrador/spec.md).
 
-Seções: [Recorte](#recorte) · [Limites](#limites-do-recorte) · [Catálogo de regras](#catálogo-de-regras) · [Resultados por regra](#resultados-por-regra) · [Resultado geral](#resultado-geral) · [Casos de verificação](#casos-sintéticos-de-verificação) · [Documentos como dados](#tratamento-de-documentos) · [Verificação](#verificação)
+Seções: [Recorte](#recorte) · [Limites](#limites-do-recorte) · [Catálogo de regras](#catálogo-de-regras) · [Resultados por regra](#resultados-por-regra) · [Resultado geral](#resultado-geral) · [Casos de verificação](#casos-sintéticos-de-verificação) · [Documentos como dados](#tratamento-de-documentos) · [Aplicação pelo motor](#aplicação-pelo-motor-rc-12) · [Verificação](#verificação)
 
 ## Recorte
 
@@ -87,6 +87,19 @@ No caso 3, R02 e R06 ficam não verificáveis porque dependem do documento ileg�
 ## Tratamento de documentos
 Conteúdo de documentos é dado não confiável. Instruções encontradas em um documento (por exemplo, "ignore as regras") não alteram critérios, perfil ou estado da solicitação.
 
+## Aplicação pelo motor (RC-12)
+
+Como o motor de regras (`backend/.../validacao`) aplica esta versão. As regras acima não mudam; isto é a interpretação das evidências. Detalhes e alternativas em [specs/013-executar-regras-protocolo/research.md](../specs/013-executar-regras-protocolo/research.md).
+
+- **Evidência:** só vale o campo **identificado na leitura e confirmado pela paciente** (RC-11), com valor no formato esperado (datas `AAAA-MM-DD`, tipo pelos nomes dos tipos documentais, autorização `SIM`/`NAO`). Ilegível, não conferido, com divergência apontada, valor fora do formato e documento não lido (protegido ou leitura vazia) tornam **não verificável** a regra que depende deles. Campo não localizado em documento lido, sem contestação, conta como ausente.
+- **Tipo do documento:** o lido e confirmado; o tipo escolhido no envio não é prova.
+- **Data de referência ("data do envio"):** a data, em Salvador, do envio mais recente entre os documentos avaliados.
+- **R01/R03:** documento de tipo não verificável pode ser o que falta, então impede "pendente" (fica não verificável). R03 exige identificação com nome e data de nascimento confirmados.
+- **R02:** nomes comparados sem diferenciar acentos, maiúsculas e espaços extras; divergência entre valores confirmados é pendente mesmo que outro campo esteja ilegível; menos de dois documentos com nome e data confirmados é não verificável.
+- **R04/R05:** consideram todos os encaminhamentos confirmados (basta um sem motivo ou fora da validade para ficar pendente). 180 dias atende, 181 não; emissão posterior à data de referência é pendente. Sem encaminhamento confirmado, ficam **não verificáveis** (nunca pendentes: a falta do encaminhamento é cobrada pela R01).
+- **R06:** a idade vem só da data de nascimento do documento de identificação; ausente, não verificável, posterior à data de referência ou diferente entre identificações → condição indeterminada (não verificável). Quem completa 18 anos na data de referência é adulta.
+- **Pendências:** pendente usa a mensagem e o responsável da regra; não verificável usa a mensagem padrão acima, com um motivo de lista fechada (campo ilegível, documento não lido, transcrição não conferida, divergência apontada, valor não interpretável, condição indeterminada, documentos insuficientes, depende de documento ausente) e a paciente como responsável.
+
 ## Verificação
 
 | Verificação | Situação |
@@ -94,4 +107,5 @@ Conteúdo de documentos é dado não confiável. Instruções encontradas em um 
 | Completude dos atributos das regras (SC-001) | Conferida na redação deste documento: 6 regras com os 7 atributos |
 | Revisão cruzada com CLAUDE.md, constituição e decisões (SC-004) | Ver relatório da implementação da RC-01 |
 | Aplicação em papel dos 5 casos por duas pessoas (SC-002) | **Dispensada** por decisão do responsável em 12/11/2026; não executada, portanto não verificada. Os casos continuam servindo de base para os testes futuros |
+| Aplicação automática dos 5 casos pelo motor (RC-12) | Verificada por teste em 13/11/2026 (`CasosDoProtocoloTest`: 30 resultados e 5 gerais iguais à tabela de casos); gabarito escrito à mão em [specs/013-executar-regras-protocolo/quickstart.md](../specs/013-executar-regras-protocolo/quickstart.md) |
 | Confirmação de localidade, especialidade, regras e 180 dias | Dispensada a validação pelo grupo; valores adotados por decisão do responsável em 12/11/2026 |

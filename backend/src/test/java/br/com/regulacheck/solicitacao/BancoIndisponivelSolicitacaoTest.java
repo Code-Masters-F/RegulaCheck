@@ -12,6 +12,7 @@ import br.com.regulacheck.auth.ServidorDeTeste.Resposta;
 import br.com.regulacheck.common.exception.ExcecaoNegocio;
 import br.com.regulacheck.config.Dependencias;
 import br.com.regulacheck.protocolo.entity.Protocolo;
+import br.com.regulacheck.protocolo.entity.RegraDoProtocolo;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepository;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
 import br.com.regulacheck.solicitacao.repository.ResultadoExclusao;
@@ -65,6 +66,11 @@ class BancoIndisponivelSolicitacaoTest {
 
         @Override
         public Optional<Protocolo> buscarAtivoPorProtocoloId(String protocoloId) {
+            throw falha.get();
+        }
+
+        @Override
+        public List<RegraDoProtocolo> listarRegras(long protocoloId) {
             throw falha.get();
         }
     }
