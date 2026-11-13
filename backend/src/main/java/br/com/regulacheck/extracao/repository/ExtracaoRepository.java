@@ -33,6 +33,19 @@ public interface ExtracaoRepository {
     Optional<ExtracaoRegistrada> buscarMaisRecente(long pacienteId, long solicitacaoId);
 
     /**
+     * Busca uma leitura pelo identificador, dentro do pedido da paciente (usada pela conferencia da transcricao).
+     * A dona e o pedido sao aplicados na propria consulta: leitura de outro pedido da mesma paciente, de outra
+     * paciente ou inexistente sao indistinguiveis.
+     *
+     * @param pacienteId conta dona (a da sessao)
+     * @param solicitacaoId pedido
+     * @param extracaoId leitura
+     * @return a leitura, ou vazio se o pedido nao existe, nao e da paciente ou a leitura nao e dele
+     * @throws br.com.regulacheck.common.exception.ExcecaoNegocio 503 se o banco estiver indisponivel
+     */
+    Optional<ExtracaoRegistrada> buscarPorId(long pacienteId, long solicitacaoId, long extracaoId);
+
+    /**
      * Grava a leitura de uma versao do conjunto documental, de forma atomica e sob o bloqueio da linha do pedido.
      * Na mesma transacao: confere a dona e o estado ({@code SUBMETIDA_SIMULACAO} recusa), confere que a revisao
      * atual ainda e a capturada, procura leitura ja existente para essa versao (existe: devolve-a) e, so entao,

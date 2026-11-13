@@ -6,6 +6,7 @@ import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
 import br.com.regulacheck.config.Dependencias;
 import br.com.regulacheck.documento.DocumentoRepositoryMemoria;
+import br.com.regulacheck.extracao.ConferenciaRepositoryMemoria;
 import br.com.regulacheck.extracao.ExtracaoRepositoryMemoria;
 import br.com.regulacheck.integracao.extracao.LeitorDeDocumento;
 import br.com.regulacheck.integracao.extracao.LeitorSimulado;
@@ -37,6 +38,7 @@ public final class CenarioAuth {
     public final SolicitacaoRepositoryMemoria solicitacoes = new SolicitacaoRepositoryMemoria();
     public final DocumentoRepositoryMemoria documentos = new DocumentoRepositoryMemoria(solicitacoes);
     public final ExtracaoRepositoryMemoria extracoes = new ExtracaoRepositoryMemoria(solicitacoes, documentos);
+    public final ConferenciaRepositoryMemoria conferencias = new ConferenciaRepositoryMemoria(solicitacoes, extracoes);
     public final RelogioFixo relogio = new RelogioFixo(Instant.parse("2026-11-12T20:00:00Z"));
     public final ContadorDeVerificacoes verificador = new ContadorDeVerificacoes();
     public final GeradorToken gerador = new GeradorToken();
@@ -81,6 +83,7 @@ public final class CenarioAuth {
      * @return as dependencias para montar o servidor com este cenario e esse leitor
      */
     public Dependencias dependencias(LeitorDeDocumento leitor) {
-        return new Dependencias(usuarios, sessoes, protocolos, solicitacoes, documentos, extracoes, leitor, relogio);
+        return new Dependencias(usuarios, sessoes, protocolos, solicitacoes, documentos, extracoes, conferencias, leitor,
+                relogio);
     }
 }

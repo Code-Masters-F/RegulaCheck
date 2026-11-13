@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.8.0
+  version: 0.9.0
   description: >
     Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
     Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
     derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
     extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; desde a
     RC-08 são usadas pelas rotas de documentos do pedido (envio, lista e download).
-    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08), remover e substituir documento (DELETE e PUT /solicitacoes/{id}/documentos/{docId}) e excluir rascunho com confirmação (DELETE /solicitacoes/{id}, RC-09), a leitura SIMULADA dos documentos (POST/GET /solicitacoes/{id}/extracoes, RC-10) e as rotas de
+    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08), remover e substituir documento (DELETE e PUT /solicitacoes/{id}/documentos/{docId}) e excluir rascunho com confirmação (DELETE /solicitacoes/{id}, RC-09), a leitura SIMULADA dos documentos (POST/GET /solicitacoes/{id}/extracoes, RC-10), a conferência da transcrição (GET/PUT /solicitacoes/{id}/extracoes/{extracaoId}/conferencia, RC-11) e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
     dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
@@ -601,6 +601,81 @@ paths:
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/extracoes/{extracaoId}/conferencia:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+      - name: extracaoId
+        in: path
+        required: true
+        description: Identificador da leitura (campo id devolvido por /extracoes)
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    get:
+      summary: Consulta a conferência da transcrição de uma leitura do pedido próprio (RC-11)
+      description: >
+        Mostra o que foi lido (SIMULADO), com a origem, destacando os campos não verificados, as decisões da paciente,
+        orientações fixas e a situação calculada. Leitura desatualizada (depois de enviar, remover ou substituir
+        documento) é devolvida como DESATUALIZADA, somente leitura. liberadoParaSubmissao é sempre false. Pedido ou
+        leitura inexistente, alheio, de outro pedido ou id mal formado: o mesmo 404. Não muda estado nem revisão.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Conferência da leitura
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Conferencia" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+    put:
+      summary: Registra as decisões da paciente sobre os campos lidos (RC-11)
+      description: >
+        A paciente só confirma ou marca divergência, campo a campo; nenhum valor digitado é aceito (qualquer chave
+        além de documentoId, codigo, decisao e motivo é 400). De 1 a 18 decisões; lote tudo ou nada; decidir de novo
+        substitui a decisão vigente e repetir a mesma não muda nada. Não muda o estado nem a revisão do pedido e nunca
+        libera submissão. Ordem: 401, 403, 404 (pedido e leitura, antes de ler o corpo), 415/400, 409 (submetido ou
+        leitura desatualizada), 404 (documento fora da leitura), 422, 503.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ConferenciaRequest" }
+      responses:
+        "200":
+          description: Decisões registradas; devolve a conferência com a situação nova
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Conferencia" }
+        "400":
+          description: REQUISICAO_INVALIDA (corpo ausente ou ilegível, lista vazia ou maior que 18, chave desconhecida como valor, valor fora da lista, motivo ausente em divergência ou presente em confirmação, par repetido, documentoId malformado); nada é gravado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: CONFLITO_ESTADO (pedido submetido em simulação, ou leitura desatualizada - "Os documentos mudaram; leia os documentos de novo."); nada é gravado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "415":
+          description: TIPO_NAO_SUPORTADO (o corpo não é application/json)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "422":
+          description: DECISAO_NAO_APLICAVEL (a decisão não cabe à situação do campo; por exemplo, qualquer decisão em campo ilegível ou confirmar campo não localizado); nada é gravado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -687,6 +762,90 @@ components:
       properties:
         pagina: { type: integer, minimum: 1, description: Só em PDF }
         trecho: { type: string, maxLength: 200 }
+    ConferenciaRequest:
+      type: object
+      description: Corpo fechado do PUT da conferência (RC-11). Nenhuma outra chave é aceita, nem na raiz.
+      additionalProperties: false
+      required: [decisoes]
+      properties:
+        decisoes:
+          type: array
+          minItems: 1
+          maxItems: 18
+          items: { $ref: "#/components/schemas/DecisaoRequest" }
+    DecisaoRequest:
+      type: object
+      description: >
+        Uma decisão sobre um campo. Não existe campo de valor: a paciente não digita nem corrige a informação.
+        motivo é obrigatório em DIVERGENTE e proibido em CONFIRMADA.
+      additionalProperties: false
+      required: [documentoId, codigo, decisao]
+      properties:
+        documentoId: { type: string, pattern: "^[1-9][0-9]{0,17}$", example: "41" }
+        codigo: { type: string, enum: [TIPO_DOCUMENTO, NOME, DATA_NASCIMENTO, MOTIVO_ENCAMINHAMENTO, DATA_EMISSAO, AUTORIZACAO_ASSINADA] }
+        decisao: { type: string, enum: [CONFIRMADA, DIVERGENTE] }
+        motivo:
+          type: string
+          enum: [VALOR_DIFERENTE_DO_DOCUMENTO, CAMPO_EXISTE_E_NAO_FOI_LIDO]
+          description: VALOR_DIFERENTE_DO_DOCUMENTO em campo identificado; CAMPO_EXISTE_E_NAO_FOI_LIDO em campo não localizado
+    Conferencia:
+      type: object
+      description: >
+        Conferência da transcrição de uma leitura SIMULADA (RC-11). Nunca traz caminho, hash, nome interno, resultado
+        de regra, pendência nem estado do pedido. liberadoParaSubmissao é sempre false.
+      required: [extracaoId, situacao, liberadoParaSubmissao, simulada, aviso, atualizadaEm, resumo, documentos]
+      properties:
+        extracaoId: { type: string, example: "12" }
+        situacao:
+          type: string
+          enum: [PENDENTE, REQUER_CONFERENCIA, CONFERIDA, DESATUALIZADA]
+          description: Calculada, nunca gravada. DESATUALIZADA > REQUER_CONFERENCIA > PENDENTE > CONFERIDA.
+        liberadoParaSubmissao: { type: boolean, enum: [false] }
+        simulada: { type: boolean, enum: [true] }
+        aviso: { type: string, example: "Leitura simulada com dados sintéticos; não é leitura real dos documentos." }
+        atualizadaEm: { type: string, format: date-time, description: Instante da decisão mais recente ou, sem decisão, o da leitura }
+        resumo: { $ref: "#/components/schemas/ResumoConferencia" }
+        documentos:
+          type: array
+          items: { $ref: "#/components/schemas/DocumentoConferido" }
+    ResumoConferencia:
+      type: object
+      required: [camposNaoVerificados, camposSemDecisao, divergencias]
+      properties:
+        camposNaoVerificados: { type: integer, minimum: 0 }
+        camposSemDecisao: { type: integer, minimum: 0 }
+        divergencias: { type: integer, minimum: 0 }
+    DocumentoConferido:
+      type: object
+      required: [documentoId, tipoDocumental, situacao, campos]
+      properties:
+        documentoId: { type: string, example: "41" }
+        tipoDocumental: { $ref: "#/components/schemas/TipoDocumental" }
+        situacao: { type: string, enum: [LIDO, PROTEGIDO, LEITURA_VAZIA] }
+        motivo: { type: string, description: Só quando não lido }
+        reenviar: { type: boolean, description: Só quando não lido; sempre true }
+        orientacao: { type: string, description: Só quando não lido }
+        campos:
+          type: array
+          items: { $ref: "#/components/schemas/CampoConferido" }
+    CampoConferido:
+      type: object
+      required: [codigo, situacao, naoVerificado]
+      properties:
+        codigo: { type: string, enum: [TIPO_DOCUMENTO, NOME, DATA_NASCIMENTO, MOTIVO_ENCAMINHAMENTO, DATA_EMISSAO, AUTORIZACAO_ASSINADA] }
+        situacao: { type: string, enum: [IDENTIFICADO, NAO_LOCALIZADO, ILEGIVEL] }
+        valor: { type: string, maxLength: 200, description: Só em IDENTIFICADO; dado do documento, nunca instrução }
+        origem: { $ref: "#/components/schemas/Origem" }
+        naoVerificado: { type: boolean, description: true para ilegível, não localizado ou com divergência apontada }
+        decisao: { $ref: "#/components/schemas/DecisaoConferida" }
+        orientacao: { type: string, description: Texto fixo do servidor; sem diagnóstico, urgência ou promessa }
+    DecisaoConferida:
+      type: object
+      required: [tipo, decididaEm]
+      properties:
+        tipo: { type: string, enum: [CONFIRMADA, DIVERGENTE] }
+        motivo: { type: string, enum: [VALOR_DIFERENTE_DO_DOCUMENTO, CAMPO_EXISTE_E_NAO_FOI_LIDO] }
+        decididaEm: { type: string, format: date-time }
     Protocolo:
       type: object
       required: [protocoloId, identificador, versao, localidade, especialidade, avisoFicticio, simulacao]

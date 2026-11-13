@@ -115,6 +115,36 @@ Contrato completo: [specs/011-extrair-informacoes-arquivos/contracts/api-extraca
       "motivo": "Não foi possível extrair informações deste arquivo.", "orientacao": "Isso não significa que as informações estejam faltando no documento. Envie um arquivo mais nítido.", "campos": [] } ] }
 ```
 
+
+## Conferência da transcrição (RC-11)
+Contrato completo: [specs/012-conferir-transcricao/contracts/api-conferencia.md](../../specs/012-conferir-transcricao/contracts/api-conferencia.md). Rotas só de `PACIENTE`. **A leitura é simulada** e a conferência só registra o que a paciente decide: **confirmar** ou **apontar divergência**, campo a campo. **Nenhum valor digitado é aceito**: informação clínica incorreta ou ausente é corrigida pela unidade emissora, nunca pela paciente (CLAUDE.md, seção 11).
+
+- **Consultar:** `GET /solicitacoes/{id}/extracoes/{extracaoId}/conferencia` → `extracaoId`, `situacao`, `liberadoParaSubmissao` (**sempre `false`**), `simulada: true`, `aviso`, `atualizadaEm`, `resumo` (`camposNaoVerificados`, `camposSemDecisao`, `divergencias`) e `documentos[]`. Cada campo traz `valor` e `origem` só se identificado, `naoVerificado` (`true` para ilegível, não localizado ou com divergência apontada), `decisao` (`tipo`, `motivo`, `decididaEm`) e `orientacao` (texto fixo do servidor). Um campo identificado com divergência continua mostrando o que foi lido, marcado como não verificado.
+- **Decidir:** `PUT` na mesma rota, `Content-Type: application/json`, até 4 KB, `{"decisoes":[{"documentoId":"41","codigo":"NOME","decisao":"CONFIRMADA"}]}` com 1 a 18 itens. Só as chaves `documentoId`, `codigo`, `decisao` e `motivo` existem; **qualquer outra (como `valor`) é 400**, inclusive na raiz. `decisao` é `CONFIRMADA` (sem `motivo`) ou `DIVERGENTE` (com `motivo`: `VALOR_DIFERENTE_DO_DOCUMENTO` em campo identificado, `CAMPO_EXISTE_E_NAO_FOI_LIDO` em campo não localizado). Par (documento, campo) repetido no corpo é 400.
+- **Aplicabilidade:** campo `IDENTIFICADO` aceita confirmar ou divergir por valor diferente; `NAO_LOCALIZADO` aceita só divergir por "o campo existe e não foi lido"; `ILEGIVEL` não aceita decisão (resolve-se enviando um arquivo mais nítido); documento não lido não tem campos. Fora disso: 422 `DECISAO_NAO_APLICAVEL`.
+- **Situação** (calculada, nunca gravada; precedência): `DESATUALIZADA` (a leitura não é a da versão atual dos documentos) > `REQUER_CONFERENCIA` (documento não lido, campo ilegível em documento lido ou alguma divergência) > `PENDENTE` (campo identificado sem decisão) > `CONFERIDA`. Campo não localizado sem divergência não pesa. `CONFERIDA` só diz que a paciente conferiu a leitura: **não libera submissão**, não é resultado de regra, pendência nem aprovação.
+- **Efeitos:** uma decisão vigente por campo (decidir de novo substitui; repetir a mesma não muda nada, nem `decididaEm`); lote **tudo ou nada**; a leitura original (valores, situações, origens) e os documentos ficam intactos; **não muda o estado nem a revisão do pedido** (desvio justificado do princípio VI, ver [estados-e-revisoes.md](estados-e-revisoes.md)). `atualizadaEm` é o instante da decisão mais recente (ou o da leitura, se não há decisão).
+- **Leitura desatualizada** (depois de enviar, remover ou substituir documento): `GET` mostra `DESATUALIZADA`, somente leitura, com as decisões anteriores; `PUT` → 409 "Os documentos mudaram; leia os documentos de novo."; nova leitura (`POST …/extracoes`) nasce **sem** decisões herdadas. Pedido `SUBMETIDA_SIMULACAO`: `GET` 200 e `PUT` 409.
+- **Ordem de verificação:** 401 → 403 → 404 (pedido ou leitura do pedido, antes de ler o corpo) → 415/400 (corpo, só no `PUT`) → 409 (submetido; leitura desatualizada) → 404 (documento fora da leitura) → 422 → 503. Pedido ou leitura inexistente, alheio, de outro pedido ou id mal formado: o mesmo 404.
+- **Textos:** as orientações são fixas e não repetem valor ou trecho do documento; não há diagnóstico, urgência, prioridade nem promessa de atendimento.
+
+```json
+{
+  "extracaoId": "12",
+  "situacao": "REQUER_CONFERENCIA",
+  "liberadoParaSubmissao": false,
+  "simulada": true,
+  "aviso": "Leitura simulada com dados sintéticos; não é leitura real dos documentos.",
+  "atualizadaEm": "2026-11-13T16:00:00.000Z",
+  "resumo": { "camposNaoVerificados": 3, "camposSemDecisao": 2, "divergencias": 1 },
+  "documentos": [ { "documentoId": "41", "tipoDocumental": "ENCAMINHAMENTO", "situacao": "LIDO", "campos": [
+    { "codigo": "NOME", "situacao": "IDENTIFICADO", "valor": "Maria Exemplo da Silva",
+      "origem": { "pagina": 1, "trecho": "Paciente: Maria Exemplo da Silva" }, "naoVerificado": false,
+      "decisao": { "tipo": "CONFIRMADA", "decididaEm": "2026-11-13T16:00:00.000Z" } },
+    { "codigo": "AUTORIZACAO_ASSINADA", "situacao": "NAO_LOCALIZADO", "naoVerificado": true,
+      "orientacao": "Esta informação não consta no documento lido. Se ela for necessária, peça um documento corrigido à unidade emissora. Não é possível preencher aqui." } ] } ]
+}
+```
 ## Análise
 `POST /solicitacoes/{id}/analises` (202 se assíncrona; 200 se concluída na chamada) · `GET /solicitacoes/{id}/analises` (200)
 

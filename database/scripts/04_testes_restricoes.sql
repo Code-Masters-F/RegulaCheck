@@ -1,6 +1,6 @@
 -- =============================================================================
 -- RegulaCheck - 04_testes_restricoes.sql  (RC-03)
--- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 22 casos tenta uma
+-- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 27 casos tenta uma
 --              violacao e confere o codigo ORA esperado; imprime "OK" ou "FALHOU".
 --              Os casos 13 e 14 (RC-07) exigem o motivo PROTOCOLO_ALTERADO: em banco criado
 --              antes da RC-07, rode antes o 06_motivo_revisao_protocolo.sql.
@@ -8,6 +8,8 @@
 --              antes da RC-08, rode antes o 07_documento_tipo_e_tentativa.sql.
 --              Os casos 18 a 22 (RC-10) exigem as tabelas RC_EXTRACAO* do 08_: em banco criado antes da
 --              RC-10, rode antes o 08_extracao.sql.
+--              Os casos 23 a 27 (RC-11) exigem RC_CONFERENCIA_CAMPO do 09_: em banco criado antes da
+--              RC-11, rode antes o 09_conferencia.sql.
 -- Ordem      : 4o script, depois do 01 e do 02 (usa os dados da carga como referencia).
 -- Efeito     : NAO DEIXA DADOS. Cada caso termina com ROLLBACK, e o script confere no fim
 --              que a contagem de linhas voltou ao valor da carga original.
@@ -263,6 +265,91 @@ BEGIN
         VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'ILEGIVEL', 1);
         confere('origem em campo ilegivel', -2290, 0);
     EXCEPTION WHEN OTHERS THEN confere('origem em campo ilegivel', -2290, SQLCODE);
+    END;
+
+    -- 23. (RC-11) Duas decisoes vigentes para o mesmo campo
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO, VALOR)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'IDENTIFICADO', 'Maria Exemplo');
+        INSERT INTO RC_CONFERENCIA_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, DECISAO, MOTIVO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'CONFIRMADA', NULL);
+        INSERT INTO RC_CONFERENCIA_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, DECISAO, MOTIVO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'CONFIRMADA', NULL);
+        confere('duas decisoes para o mesmo campo', -1, 0);
+    EXCEPTION WHEN OTHERS THEN confere('duas decisoes para o mesmo campo', -1, SQLCODE);
+    END;
+
+    -- 24. (RC-11) Motivo em decisao CONFIRMADA
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO, VALOR)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'IDENTIFICADO', 'Maria Exemplo');
+        INSERT INTO RC_CONFERENCIA_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, DECISAO, MOTIVO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'CONFIRMADA', 'VALOR_DIFERENTE_DO_DOCUMENTO');
+        confere('motivo em decisao confirmada', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('motivo em decisao confirmada', -2290, SQLCODE);
+    END;
+
+    -- 25. (RC-11) Decisao DIVERGENTE sem motivo
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO, VALOR)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'IDENTIFICADO', 'Maria Exemplo');
+        INSERT INTO RC_CONFERENCIA_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, DECISAO, MOTIVO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'DIVERGENTE', NULL);
+        confere('divergencia sem motivo', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('divergencia sem motivo', -2290, SQLCODE);
+    END;
+
+    -- 26. (RC-11) Motivo fora da lista
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO, VALOR)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'IDENTIFICADO', 'Maria Exemplo');
+        INSERT INTO RC_CONFERENCIA_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, DECISAO, MOTIVO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'DIVERGENTE', 'TEXTO_LIVRE_DA_PACIENTE');
+        confere('motivo fora da lista', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('motivo fora da lista', -2290, SQLCODE);
+    END;
+
+    -- 27. (RC-11) Decisao para campo que nao existe na leitura
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_CONFERENCIA_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, DECISAO, MOTIVO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'CONFIRMADA', NULL);
+        confere('decisao para campo inexistente', -2291, 0);
+    EXCEPTION WHEN OTHERS THEN confere('decisao para campo inexistente', -2291, SQLCODE);
     END;
 
     -- Conferencia final: nenhuma linha restante (total da carga original = 77).

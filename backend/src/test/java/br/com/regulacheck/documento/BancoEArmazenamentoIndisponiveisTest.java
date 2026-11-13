@@ -75,7 +75,7 @@ class BancoEArmazenamentoIndisponiveisTest {
     void bancoForaDoArDa503GenericoNoEnvioNaListaENoDownloadSemDeixarArquivo() throws Exception {
         CenarioAuth base = new CenarioAuth();
         Dependencias deps = new Dependencias(base.usuarios, base.sessoes, base.protocolos, base.solicitacoes,
-                new DocumentosQueFalham(), base.extracoes,
+                new DocumentosQueFalham(), base.extracoes, base.conferencias,
                 new br.com.regulacheck.integracao.extracao.LeitorSimulado(), base.relogio);
         try (CenarioDocumento c = CenarioDocumento.iniciar(base, deps, true)) {
             String pedido = c.criarRascunho(c.authA);

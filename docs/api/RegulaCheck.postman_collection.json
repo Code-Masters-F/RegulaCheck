@@ -40,6 +40,10 @@
     {
       "key": "chaveTroca",
       "value": "3f9a2c1d-6b7e-4d80-9c11-0a1b2c3d4e5f"
+    },
+    {
+      "key": "extracaoId",
+      "value": ""
     }
   ],
   "item": [
@@ -475,7 +479,18 @@
         ],
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes",
         "description": "Sem corpo. Leitura simulada com dados sinteticos (simulada: true). Nao altera o estado do pedido, nao gera analise nem resultado de completude. Pedido em SUBMETIDA_SIMULACAO responde 409."
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201 || pm.response.code === 200) { pm.collectionVariables.set('extracaoId', pm.response.json().id); }"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "RC-10 Consultar leitura do pedido (200 ATUAL ou DESATUALIZADA; 404 se nunca houve leitura)",
@@ -489,6 +504,108 @@
         ],
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes",
         "description": "Devolve a leitura mais recente. Depois de remover ou substituir documento, a leitura anterior fica DESATUALIZADA."
+      }
+    },
+    {
+      "name": "RC-11 Consultar conferencia da leitura (200 com situacao calculada; liberadoParaSubmissao sempre false; 404 se o pedido ou a leitura nao for da paciente)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "description": "Mostra o que foi lido (SIMULADO) com origem, destaca campos nao verificados e traz orientacoes fixas. Leitura desatualizada volta como DESATUALIZADA, somente leitura. Nao altera estado nem revisao."
+      }
+    },
+    {
+      "name": "RC-11 Confirmar um campo (200 com a decisao; decidir de novo substitui; repetir a mesma nao muda nada)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"decisoes\":[{\"documentoId\":\"{{documentoId}}\",\"codigo\":\"NOME\",\"decisao\":\"CONFIRMADA\"}]}"
+        },
+        "description": "A paciente so confirma ou marca divergencia. Corpo fechado: documentoId, codigo, decisao e motivo."
+      }
+    },
+    {
+      "name": "RC-11 Marcar divergencia (200; motivo obrigatorio: VALOR_DIFERENTE_DO_DOCUMENTO em campo identificado, CAMPO_EXISTE_E_NAO_FOI_LIDO em campo nao localizado)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"decisoes\":[{\"documentoId\":\"{{documentoId}}\",\"codigo\":\"DATA_EMISSAO\",\"decisao\":\"DIVERGENTE\",\"motivo\":\"VALOR_DIFERENTE_DO_DOCUMENTO\"}]}"
+        },
+        "description": "Divergencia nao troca o valor lido: a correcao de informacao e da unidade emissora."
+      }
+    },
+    {
+      "name": "RC-11 Tentar digitar valor (400 REQUISICAO_INVALIDA; nenhum valor digitado e aceito e nada e gravado)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"decisoes\":[{\"documentoId\":\"{{documentoId}}\",\"codigo\":\"NOME\",\"decisao\":\"CONFIRMADA\",\"valor\":\"Outro Nome\"}]}"
+        },
+        "description": "Qualquer chave alem de documentoId, codigo, decisao e motivo e recusada."
+      }
+    },
+    {
+      "name": "RC-11 Decisao que nao cabe ao campo (422 DECISAO_NAO_APLICAVEL; ex.: confirmar campo nao localizado ou qualquer decisao em campo ilegivel)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"decisoes\":[{\"documentoId\":\"{{documentoId}}\",\"codigo\":\"AUTORIZACAO_ASSINADA\",\"decisao\":\"CONFIRMADA\"}]}"
+        },
+        "description": "Lote tudo ou nada: nenhuma decisao do corpo e gravada. Leitura desatualizada responde 409 e pedido submetido tambem."
       }
     }
   ]

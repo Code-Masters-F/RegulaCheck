@@ -66,6 +66,10 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
     private static final String SQL_CAMINHOS_DOCUMENTOS = """
             SELECT CAMINHO_INTERNO FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ?""";
     // RC-10: leituras (simuladas) do pedido; apagadas antes dos documentos que elas referenciam.
+    private static final String SQL_APAGAR_CONFERENCIAS = """
+            DELETE FROM RC_CONFERENCIA_CAMPO WHERE EXTRACAO_DOCUMENTO_ID IN (
+                SELECT ed.ID FROM RC_EXTRACAO_DOCUMENTO ed JOIN RC_EXTRACAO e ON e.ID = ed.EXTRACAO_ID
+                 WHERE e.SOLICITACAO_ID = ?)""";
     private static final String SQL_APAGAR_CAMPOS_EXTRACAO = """
             DELETE FROM RC_EXTRACAO_CAMPO WHERE EXTRACAO_DOCUMENTO_ID IN (
                 SELECT ed.ID FROM RC_EXTRACAO_DOCUMENTO ed JOIN RC_EXTRACAO e ON e.ID = ed.EXTRACAO_ID
@@ -271,13 +275,29 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
                 }
             }
         }
-        // Ordem imposta pelas chaves estrangeiras: leituras -> documentos -> revisoes -> pedido.
+        // Ordem imposta pelas chaves estrangeiras: decisoes -> leituras -> documentos -> revisoes -> pedido.
+        apagarConferencias(conexao, id);
         apagarExtracoes(conexao, id);
         apagarDoPedido(conexao, SQL_APAGAR_DOCUMENTOS, id);
         apagarDoPedido(conexao, SQL_APAGAR_REVISOES, id);
         apagarDoPedido(conexao, SQL_APAGAR_PEDIDO, id);
         LOG.info("Rascunho excluido. solicitacaoId={} arquivos={}", id, arquivos.size());
         return ResultadoExclusao.excluido(arquivos);
+    }
+
+    /**
+     * Apaga as decisoes de conferencia do pedido (RC-11). Em banco sem o script 09 a tabela nao existe (ORA-00942)
+     * e, portanto, nao ha decisao a apagar: a exclusao do rascunho segue funcionando. Fica separada de
+     * {@link #apagarExtracoes} para que a falta do 09 nao impeca apagar as leituras.
+     */
+    private static void apagarConferencias(Connection conexao, long id) throws SQLException {
+        try {
+            apagarDoPedido(conexao, SQL_APAGAR_CONFERENCIAS, id);
+        } catch (SQLException falha) {
+            if (falha.getErrorCode() != ORA_TABELA_INEXISTENTE) {
+                throw falha;
+            }
+        }
     }
 
     /**
