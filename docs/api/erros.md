@@ -33,6 +33,8 @@ Toda resposta de erro tem o mesmo corpo, com `Content-Type: application/json`:
 | 415 | `TIPO_NAO_SUPORTADO` | três usos: corpo de rota JSON que não é `application/json` (RC-04), arquivo cujo conteúdo real não é PDF/JPEG/PNG (RC-06) e, no envio de documento, corpo que não é `multipart/form-data` (RC-08); a mensagem diferencia |
 | 415 | `EXTENSAO_INCOMPATIVEL` | extensão do arquivo ausente, não permitida ou diferente do conteúdo real (RC-06) |
 | 422 | `REGRA_DE_NEGOCIO` | violação de regra de negócio com a entrada já bem formada. Em uso desde a RC-07: serviço (`protocoloId`) inexistente ou inativo em `POST/PUT /solicitacoes`, com `detalhes[].campo = "protocoloId"` e a mesma resposta para os dois casos. RC-08: pedido que já tem 3 documentos disponíveis em `POST …/documentos`, com `detalhes[].campo = "documentos"`. Previsto também para submeter com pendências |
+| 422 | `SEM_DOCUMENTOS` | RC-10: `POST /solicitacoes/{id}/extracoes` em pedido sem documento disponível; nada é criado |
+| 503 | `LEITURA_INDISPONIVEL` | RC-10: o leitor (simulado hoje) falhou ou respondeu fora do contrato; sem detalhe técnico; nada é gravado e a paciente pode tentar de novo |
 | 500 | `ERRO_INTERNO` | falha inesperada; mensagem genérica, detalhe só no log |
 | 502/503 | `DEPENDENCIA_INDISPONIVEL` | banco ou adaptador indisponível |
 

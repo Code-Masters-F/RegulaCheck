@@ -1,11 +1,13 @@
 -- =============================================================================
 -- RegulaCheck - 04_testes_restricoes.sql  (RC-03)
--- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 17 casos tenta uma
+-- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 22 casos tenta uma
 --              violacao e confere o codigo ORA esperado; imprime "OK" ou "FALHOU".
 --              Os casos 13 e 14 (RC-07) exigem o motivo PROTOCOLO_ALTERADO: em banco criado
 --              antes da RC-07, rode antes o 06_motivo_revisao_protocolo.sql.
 --              Os casos 15 a 17 (RC-08) exigem as colunas de RC_DOCUMENTO do 07_: em banco criado
 --              antes da RC-08, rode antes o 07_documento_tipo_e_tentativa.sql.
+--              Os casos 18 a 22 (RC-10) exigem as tabelas RC_EXTRACAO* do 08_: em banco criado antes da
+--              RC-10, rode antes o 08_extracao.sql.
 -- Ordem      : 4o script, depois do 01 e do 02 (usa os dados da carga como referencia).
 -- Efeito     : NAO DEIXA DADOS. Cada caso termina com ROLLBACK, e o script confere no fim
 --              que a contagem de linhas voltou ao valor da carga original.
@@ -201,6 +203,66 @@ BEGIN
         VALUES (v_sol_rasc, 1, 'b.pdf', 'PDF', 1000, 1, 'sim/teste-chave-2.dat', 'OUTRO', 'chave-teste-0001');
         confere('chave de envio repetida no pedido', -1, 0);
     EXCEPTION WHEN OTHERS THEN confere('chave de envio repetida no pedido', -1, SQLCODE);
+    END;
+
+    -- 18. (RC-10) Duas leituras da mesma versao do conjunto documental no mesmo pedido
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        confere('duas leituras na mesma revisao', -1, 0);
+    EXCEPTION WHEN OTHERS THEN confere('duas leituras na mesma revisao', -1, SQLCODE);
+    END;
+
+    -- 19. (RC-10) Leitura que se declara nao simulada (a extracao e sempre simulada neste MVP)
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO, SIMULADA) VALUES (v_sol_rasc, 1, 0);
+        confere('leitura nao simulada', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('leitura nao simulada', -2290, SQLCODE);
+    END;
+
+    -- 20. (RC-10) Campo nao localizado com valor (o sistema nao completa informacao por suposicao)
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO, VALOR)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'NAO_LOCALIZADO', 'valor inventado');
+        confere('valor em campo nao localizado', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('valor em campo nao localizado', -2290, SQLCODE);
+    END;
+
+    -- 21. (RC-10) Campo identificado sem valor
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'IDENTIFICADO');
+        confere('campo identificado sem valor', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('campo identificado sem valor', -2290, SQLCODE);
+    END;
+
+    -- 22. (RC-10) Origem (pagina) em campo ilegivel
+    BEGIN
+        INSERT INTO RC_EXTRACAO (SOLICITACAO_ID, REVISAO) VALUES (v_sol_rasc, 1);
+        INSERT INTO RC_DOCUMENTO (SOLICITACAO_ID, REVISAO_ENVIO, NOME_ORIGINAL, TIPO, TAMANHO_BYTES, PAGINAS, CAMINHO_INTERNO,
+                                  TIPO_DOCUMENTAL)
+        VALUES (v_sol_rasc, 1, 'a.pdf', 'PDF', 1000, 1, 'sim/teste-extracao.dat', 'OUTRO');
+        INSERT INTO RC_EXTRACAO_DOCUMENTO (EXTRACAO_ID, DOCUMENTO_ID, SITUACAO)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO WHERE SOLICITACAO_ID = v_sol_rasc),
+                (SELECT ID FROM RC_DOCUMENTO WHERE CAMINHO_INTERNO = 'sim/teste-extracao.dat'), 'LIDO');
+        INSERT INTO RC_EXTRACAO_CAMPO (EXTRACAO_DOCUMENTO_ID, CODIGO, SITUACAO, PAGINA)
+        VALUES ((SELECT MAX(ID) FROM RC_EXTRACAO_DOCUMENTO), 'NOME', 'ILEGIVEL', 1);
+        confere('origem em campo ilegivel', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('origem em campo ilegivel', -2290, SQLCODE);
     END;
 
     -- Conferencia final: nenhuma linha restante (total da carga original = 77).

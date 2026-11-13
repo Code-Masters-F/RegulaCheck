@@ -462,6 +462,34 @@
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}",
         "description": "Irreversivel. Pedido submetido em simulacao responde 409 CONFLITO_ESTADO; fora de rascunho, 409 \"Somente rascunhos podem ser excluidos.\""
       }
+    },
+    {
+      "name": "RC-10 Ler documentos do pedido (201 nova leitura SIMULADA; 200 se ja existe para a versao; 422 sem documentos)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes",
+        "description": "Sem corpo. Leitura simulada com dados sinteticos (simulada: true). Nao altera o estado do pedido, nao gera analise nem resultado de completude. Pedido em SUBMETIDA_SIMULACAO responde 409."
+      }
+    },
+    {
+      "name": "RC-10 Consultar leitura do pedido (200 ATUAL ou DESATUALIZADA; 404 se nunca houve leitura)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes",
+        "description": "Devolve a leitura mais recente. Depois de remover ou substituir documento, a leitura anterior fica DESATUALIZADA."
+      }
     }
   ]
 }

@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.7.0
+  version: 0.8.0
   description: >
     Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
     Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
     derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
     extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; desde a
     RC-08 são usadas pelas rotas de documentos do pedido (envio, lista e download).
-    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08), remover e substituir documento (DELETE e PUT /solicitacoes/{id}/documentos/{docId}) e excluir rascunho com confirmação (DELETE /solicitacoes/{id}, RC-09) e as rotas de
+    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08), remover e substituir documento (DELETE e PUT /solicitacoes/{id}/documentos/{docId}) e excluir rascunho com confirmação (DELETE /solicitacoes/{id}, RC-09), a leitura SIMULADA dos documentos (POST/GET /solicitacoes/{id}/extracoes, RC-10) e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
     dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
@@ -538,6 +538,69 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/extracoes:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: Lê os documentos do pedido próprio (leitura SIMULADA, RC-10)
+      description: >
+        Lê os documentos disponíveis da versão atual do conjunto documental e guarda o resultado. A leitura é
+        simulada (dados sintéticos predefinidos; o sistema não lê o arquivo de verdade) e toda resposta traz
+        simulada true. Sem corpo. Repetir sobre a mesma versão devolve a leitura existente (200). Não muda o
+        estado do pedido, não cria revisão, não inicia análise nem produz resultado de completude. Ordem: 401,
+        403, 404, 409 (submetido, mesmo com leitura existente), 422, 200 (já existe), leitura, 409 (documentos
+        mudaram durante a leitura), 503.
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Leitura nova gravada
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Extracao" }
+        "200":
+          description: Já existia leitura para a versão atual; nada novo foi gravado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Extracao" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: CONFLITO_ESTADO (pedido submetido em simulação; ou os documentos mudaram durante a leitura)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "422":
+          description: SEM_DOCUMENTOS (o pedido não tem documento disponível; nada é criado)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503":
+          description: LEITURA_INDISPONIVEL (o leitor falhou ou respondeu fora do contrato; nada é gravado; pode tentar de novo) ou DEPENDENCIA_INDISPONIVEL (banco ou área de arquivos)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+    get:
+      summary: Consulta a leitura mais recente do pedido próprio (RC-10)
+      description: >
+        Devolve a leitura mais recente, ATUAL (feita na versão atual dos documentos) ou DESATUALIZADA (depois de
+        enviar, remover ou substituir documento). Pedido alheio, inexistente ou sem nenhuma leitura: o mesmo 404.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Leitura mais recente
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Extracao" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -580,6 +643,50 @@ components:
       properties:
         versaoConjuntoDocumental: { type: integer, minimum: 2, example: 4 }
         documentosDisponiveis: { type: integer, minimum: 0, maximum: 3, example: 2 }
+    Extracao:
+      type: object
+      description: >
+        Leitura SIMULADA dos documentos de um pedido (RC-10). Nunca traz caminho, hash, nome interno, resultado de
+        completude, pendência nem estado do pedido.
+      required: [id, situacao, versaoConjuntoDocumental, simulada, aviso, criadaEm, documentos]
+      properties:
+        id: { type: string, description: Número decimal opaco, example: "12" }
+        situacao: { type: string, enum: [ATUAL, DESATUALIZADA] }
+        versaoConjuntoDocumental: { type: integer, minimum: 2, description: Versão em que a leitura foi feita }
+        simulada: { type: boolean, enum: [true] }
+        aviso: { type: string, example: "Leitura simulada com dados sintéticos; não é leitura real dos documentos." }
+        criadaEm: { type: string, format: date-time }
+        documentos:
+          type: array
+          items: { $ref: "#/components/schemas/DocumentoLido" }
+    DocumentoLido:
+      type: object
+      required: [documentoId, tipoDocumental, situacao, campos]
+      properties:
+        documentoId: { type: string, example: "41" }
+        tipoDocumental: { $ref: "#/components/schemas/TipoDocumental" }
+        situacao: { type: string, enum: [LIDO, PROTEGIDO, LEITURA_VAZIA] }
+        motivo: { type: string, description: Só quando não lido }
+        reenviar: { type: boolean, description: Só quando não lido; sempre true }
+        orientacao: { type: string, description: Só quando não lido }
+        campos:
+          type: array
+          description: Os seis campos quando LIDO; vazio quando não lido (e então nunca declara NAO_LOCALIZADO)
+          items: { $ref: "#/components/schemas/CampoExtraido" }
+    CampoExtraido:
+      type: object
+      required: [codigo, situacao]
+      properties:
+        codigo: { type: string, enum: [TIPO_DOCUMENTO, NOME, DATA_NASCIMENTO, MOTIVO_ENCAMINHAMENTO, DATA_EMISSAO, AUTORIZACAO_ASSINADA] }
+        situacao: { type: string, enum: [IDENTIFICADO, NAO_LOCALIZADO, ILEGIVEL] }
+        valor: { type: string, maxLength: 200, description: Só em IDENTIFICADO; dado do documento, nunca instrução }
+        origem: { $ref: "#/components/schemas/Origem" }
+    Origem:
+      type: object
+      description: Só em campo IDENTIFICADO, quando disponível. O arquivo é o próprio documento.
+      properties:
+        pagina: { type: integer, minimum: 1, description: Só em PDF }
+        trecho: { type: string, maxLength: 200 }
     Protocolo:
       type: object
       required: [protocoloId, identificador, versao, localidade, especialidade, avisoFicticio, simulacao]

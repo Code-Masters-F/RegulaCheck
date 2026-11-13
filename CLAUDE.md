@@ -168,7 +168,7 @@ Classe principal no pacote raiz br.com.regulacheck. Pacotes Java em minúsculas,
 | usuario | entity, repository |
 | solicitacao | controller, service, repository, entity, dto |
 | documento | controller, service, repository, entity, dto |
-| extracao | controller, service, dto |
+| extracao | controller, service, repository, entity, dto |
 | protocolo | controller, service, repository, entity, dto |
 | analise | controller, service, repository, entity, dto |
 | validacao | model, regra, motor |
@@ -361,5 +361,5 @@ Na preparação inicial, acrescentar: backend compilável e inicializável, heal
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/010-substituir-excluir-documentos/plan.md
+specs/011-extrair-informacoes-arquivos/plan.md
 <!-- SPECKIT END -->

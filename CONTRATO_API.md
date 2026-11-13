@@ -20,7 +20,8 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | GET    | /solicitacoes/{id}/documentos/{docId}                 | Download protegido (autenticado, só a dona e só pelo pedido ao qual o documento pertence, como anexo) (**implementada**, RC-08) |
 | PUT    | /solicitacoes/{id}/documentos/{docId}                 | Substitui o documento por outro arquivo numa só operação (multipart como o envio; `X-Chave-Envio` opcional): 201 com o documento novo, 200 se repetição; recusa deixa o antigo intacto; uma revisão (`DOCUMENTO_SUBSTITUIDO`); não inicia análise (**implementada**, RC-09) |
 | DELETE | /solicitacoes/{id}/documentos/{docId}                 | Remove o documento (libera a vaga e apaga o arquivo): 200 com `versaoConjuntoDocumental` e `documentosDisponiveis`; revisão `DOCUMENTO_REMOVIDO`; repetir é 404; pedido submetido em simulação é 409 (**implementada**, RC-09) |
-| POST   | /solicitacoes/{id}/extracoes                          | Extrai arquivos da revisão atual (**prevista, não implementada**) |
+| POST   | /solicitacoes/{id}/extracoes                          | Lê (**leitura SIMULADA**, dados sintéticos) os documentos disponíveis da versão atual do pedido próprio e guarda o resultado: 201 nova, 200 se já existe para a versão; 422 `SEM_DOCUMENTOS`; 409 se submetido em simulação; 503 `LEITURA_INDISPONIVEL` (nada é gravado). Não muda o estado nem gera análise (**implementada**, RC-10) |
+| GET    | /solicitacoes/{id}/extracoes                          | Devolve a leitura mais recente, por documento (campos `IDENTIFICADO`, `NAO_LOCALIZADO`, `ILEGIVEL`; motivo e reenvio quando não lido), `ATUAL` ou `DESATUALIZADA`; 404 se nunca houve leitura (**implementada**, RC-10) |
 | PUT    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | Registra conferência da transcrição        |
 | POST   | /solicitacoes/{id}/analises                           | Executa regras e resumo de IA              |
 | GET    | /solicitacoes/{id}/analises                           | Consulta resultados e histórico            |
@@ -36,7 +37,7 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 |---|---|---|
 | `GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}` (RC-07) e `DELETE /solicitacoes/{id}` (RC-09), implementadas | PACIENTE | sim (a lista traz só as próprias) |
 | `POST/GET /solicitacoes/{id}/documentos[/{docId}]` (RC-08) e `PUT/DELETE …/documentos/{docId}` (RC-09), implementadas | PACIENTE | sim (documento **e** solicitação) |
-| `POST /solicitacoes/{id}/extracoes`, `PUT …/extracoes/{extracaoId}/conferencia` | PACIENTE | sim |
+| `POST/GET /solicitacoes/{id}/extracoes` (RC-10), implementadas; `PUT …/extracoes/{extracaoId}/conferencia`, prevista | PACIENTE | sim |
 | `POST/GET /solicitacoes/{id}/analises`, `POST …/analises/{analiseId}/resumo` | PACIENTE | sim |
 | `POST /solicitacoes/{id}/submissoes-simuladas` | PACIENTE | sim |
 | `GET /solicitacoes/{id}/leituras` | PACIENTE | sim |

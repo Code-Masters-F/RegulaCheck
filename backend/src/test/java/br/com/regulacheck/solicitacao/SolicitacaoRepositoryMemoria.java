@@ -31,6 +31,8 @@ import java.util.function.LongToIntFunction;
  */
 public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository {
 
+    private final List<java.util.function.LongConsumer> limpezas = new java.util.ArrayList<>();
+
     /**
      * Revisao registrada no historico.
      *
@@ -185,10 +187,21 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
             return ResultadoExclusao.comDependencias();
         }
         // Documentos, revisoes e pedido saem juntos (um so "commit" em memoria).
+        limpezas.forEach(limpeza -> limpeza.accept(id));
         List<IdInterno> arquivos = apagadorDeDocumentos.apply(id);
         revisoes.remove(id);
         pedidos.remove(id);
         return ResultadoExclusao.excluido(arquivos);
+    }
+
+    /**
+     * Registra uma limpeza que roda ao excluir um pedido, antes dos documentos (por exemplo, apagar as leituras do
+     * pedido, que referenciam os documentos).
+     *
+     * @param limpeza recebe o id do pedido excluido
+     */
+    public synchronized void registrarLimpeza(java.util.function.LongConsumer limpeza) {
+        limpezas.add(limpeza);
     }
 
     /**

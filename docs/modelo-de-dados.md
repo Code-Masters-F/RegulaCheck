@@ -13,6 +13,10 @@ erDiagram
     RC_SOLICITACAO ||--|{ RC_REVISAO : "tem"
     RC_REVISAO ||--o{ RC_DOCUMENTO : "recebe (envio)"
     RC_REVISAO ||--o| RC_ANALISE : "é analisada em"
+    RC_REVISAO ||--o| RC_EXTRACAO : "é lida em (RC-10)"
+    RC_EXTRACAO ||--|{ RC_EXTRACAO_DOCUMENTO : "lê cada documento"
+    RC_DOCUMENTO ||--o{ RC_EXTRACAO_DOCUMENTO : "é lido em"
+    RC_EXTRACAO_DOCUMENTO ||--o{ RC_EXTRACAO_CAMPO : "traz campos"
     RC_PROTOCOLO ||--o{ RC_ANALISE : "versão usada"
     RC_ANALISE ||--|{ RC_RESULTADO_REGRA : "resultado por regra"
     RC_REGRA ||--o{ RC_RESULTADO_REGRA : "avaliada em"
@@ -28,6 +32,7 @@ erDiagram
 - **A paciente é uma conta** (`RC_USUARIO` com `PERFIL = 'PACIENTE'`); não existe tabela de paciente separada.
 - **Revisão é uma entidade** (`RC_REVISAO`, chave composta pedido + número). Para saber o que mudou entre a revisão 1 e a 2: compare os documentos (`REVISAO_ENVIO <= n` e `REVISAO_REMOCAO` nula ou `> n`) e as análises de cada revisão. Substituir ou remover um arquivo **não apaga** o histórico.
 - **Política de arquivos (RC-09):** documento removido ou substituído fica no banco como histórico (`REVISAO_REMOCAO` preenchida, `CHAVE_ENVIO` anulada, fora de todas as consultas de documento disponível) e **seu arquivo é apagado**; a exclusão do rascunho apaga `RC_DOCUMENTO`, `RC_REVISAO` e `RC_SOLICITACAO` do pedido (nessa ordem, por causa das chaves estrangeiras) e os arquivos. Não há script `08_`: o esquema já previa tudo isso.
+- **Leitura dos documentos (RC-10):** `RC_EXTRACAO` guarda uma leitura (SIMULADA, `SIMULADA` sempre 1) por pedido e revisão (`UK (SOLICITACAO_ID, REVISAO)`, FK composta para `RC_REVISAO`); `RC_EXTRACAO_DOCUMENTO` guarda a leitura de cada documento (`LIDO`, `PROTEGIDO` ou `LEITURA_VAZIA`); `RC_EXTRACAO_CAMPO` guarda os seis campos de um documento lido (`IDENTIFICADO`, `NAO_LOCALIZADO` ou `ILEGIVEL`). Os `CHECK`s impedem valor ou origem em campo não identificado e campo identificado sem valor. "Atual" não é coluna: é `RC_EXTRACAO.REVISAO = RC_SOLICITACAO.REVISAO_ATUAL`. Criadas pelo `01_` (banco novo) ou pelo `08_extracao.sql` (banco criado antes da RC-10); excluir o rascunho apaga campos → documentos lidos → leitura antes de `RC_DOCUMENTO`.
 - **Versão do protocolo usada** fica em `RC_ANALISE.PROTOCOLO_ID` (a análise guarda a versão com que foi feita).
 - **Uma análise vigente por pedido**: índice único funcional `RC_ANALISE_VIGENTE_UK`.
 - **Pendência** só existe para resultado `PENDENTE` ou `NAO_VERIFICAVEL` e o tipo dela precisa ser igual ao resultado da mesma regra na mesma análise (chave estrangeira composta). `NAO_VERIFICAVEL` se distingue de ausência pelo `TIPO`.
