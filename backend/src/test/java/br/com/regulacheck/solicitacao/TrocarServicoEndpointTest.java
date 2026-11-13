@@ -129,9 +129,10 @@ class TrocarServicoEndpointTest {
 
             assertEquals(401, api.enviar("PUT", local, V02, Map.of()).status());
             assertEquals(403, api.enviar("PUT", local, V02, bearer(api.entrar(EMAIL_ADMIN, SENHA))).status());
-            Resposta delete = api.enviar("DELETE", local, null, auth);
-            assertEquals(405, delete.status());
-            assertEquals("METODO_NAO_PERMITIDO", delete.json().get("codigo").asText());
+            // RC-09: DELETE no pedido passou a existir (exclusao com confirmacao); PATCH segue sem rota.
+            Resposta patch = api.enviar("PATCH", local, null, auth);
+            assertEquals(405, patch.status());
+            assertEquals("METODO_NAO_PERMITIDO", patch.json().get("codigo").asText());
         }
     }
 }

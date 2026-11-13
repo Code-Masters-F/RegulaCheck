@@ -12,10 +12,12 @@ import br.com.regulacheck.common.http.ServletJson;
 import br.com.regulacheck.documento.dto.DocumentoEnviadoResponse;
 import br.com.regulacheck.documento.dto.EnvioDocumento;
 import br.com.regulacheck.documento.dto.ListaDocumentosResponse;
+import br.com.regulacheck.documento.dto.RemocaoResponse;
 import br.com.regulacheck.documento.service.DocumentoService;
 import br.com.regulacheck.documento.service.DocumentoService.ArquivoAberto;
 import br.com.regulacheck.documento.service.DocumentoService.DocumentosDoPedido;
 import br.com.regulacheck.documento.service.DocumentoService.ResultadoEnvio;
+import br.com.regulacheck.documento.service.DocumentoService.ResultadoRemover;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,8 +31,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- * {@code /solicitacoes/{id}/documentos} e {@code /solicitacoes/{id}/documentos/{docId}}: envio, lista e download
- * dos documentos do pedido da paciente. Rota privada de {@code PACIENTE}; autenticacao e perfil ja foram
+ * {@code /solicitacoes/{id}/documentos} e {@code /solicitacoes/{id}/documentos/{docId}}: envio, lista, download, remocao
+ * e substituicao dos documentos do pedido da paciente. Rota privada de {@code PACIENTE}; autenticacao e perfil ja foram
  * conferidos por {@code RotasPrivadas}. Este controller so traduz HTTP (caminho, multipart, status) e delega ao
  * {@link DocumentoService}.
  *
@@ -60,7 +62,7 @@ public class DocumentoController extends ServletJson {
 
     /** @param servico casos de uso dos documentos */
     public DocumentoController(DocumentoService servico) {
-        super("GET", "POST");
+        super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
     }
 
@@ -98,12 +100,51 @@ public class DocumentoController extends ServletJson {
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws IOException {
         Alvo alvo = alvoDe(requisicao);
         if (alvo.documentoId() != null) {
-            metodoNaoPermitido(resposta, "GET");
+            metodoNaoPermitido(resposta, "GET, PUT, DELETE");
+            return;
+        }
+        receberArquivo(requisicao, resposta, alvo);
+    }
+
+    /** Substitui o documento do caminho por outro arquivo (RC-09), com o mesmo multipart do envio. */
+    @Override
+    protected void doPut(HttpServletRequest requisicao, HttpServletResponse resposta) throws IOException {
+        Alvo alvo = alvoDe(requisicao);
+        if (alvo.documentoId() == null) {
+            metodoNaoPermitido(resposta, "GET, POST");
+            return;
+        }
+        receberArquivo(requisicao, resposta, alvo);
+    }
+
+    /** Remove o documento do caminho (RC-09): sem corpo na requisicao; 200 com a versao nova do conjunto. */
+    @Override
+    protected void doDelete(HttpServletRequest requisicao, HttpServletResponse resposta) throws IOException {
+        Alvo alvo = alvoDe(requisicao);
+        if (alvo.documentoId() == null) {
+            metodoNaoPermitido(resposta, "GET, POST");
             return;
         }
         SessaoAutenticada sessao = AutenticacaoFiltro.sessaoDe(requisicao);
+        ResultadoRemover resultado = servico.remover(sessao, alvo.solicitacaoId(), alvo.documentoId());
+        responderJson(resposta, HttpServletResponse.SC_OK, new RemocaoResponse(resultado.versaoConjuntoDocumental(),
+                resultado.documentosDisponiveis()));
+    }
+
+    /**
+     * Envio ({@code POST} na colecao) e substituicao ({@code PUT} no item) compartilham o contrato multipart:
+     * primeiro a dona (404), depois o corpo (415/413/400), depois as regras de negocio.
+     */
+    private void receberArquivo(HttpServletRequest requisicao, HttpServletResponse resposta, Alvo alvo)
+            throws IOException {
+        SessaoAutenticada sessao = AutenticacaoFiltro.sessaoDe(requisicao);
         // Primeiro a dona (404), so depois o corpo (415/413/400): corpo ruim em pedido alheio continua 404.
         servico.exigirPedido(sessao, alvo.solicitacaoId());
+        if (alvo.documentoId() != null) {
+            // PUT: o documento do caminho tambem e conferido antes do corpo (404 antes de 415/413/400).
+            servico.exigirDocumentoParaSubstituir(sessao, alvo.solicitacaoId(), alvo.documentoId(),
+                    requisicao.getHeader(CABECALHO_CHAVE));
+        }
         exigirMultipart(requisicao);
         Collection<Part> partes = lerPartes(requisicao);
         try {
@@ -112,7 +153,9 @@ public class DocumentoController extends ServletJson {
             try (InputStream conteudo = arquivo.getInputStream()) {
                 EnvioDocumento envio = EnvioDocumento.validar(tipoTexto, requisicao.getHeader(CABECALHO_CHAVE),
                         arquivo.getSubmittedFileName(), conteudo);
-                ResultadoEnvio resultado = servico.enviar(sessao, alvo.solicitacaoId(), envio);
+                ResultadoEnvio resultado = alvo.documentoId() == null
+                        ? servico.enviar(sessao, alvo.solicitacaoId(), envio)
+                        : servico.substituir(sessao, alvo.solicitacaoId(), alvo.documentoId(), envio);
                 DocumentoEnviadoResponse corpo = DocumentoEnviadoResponse.de(resultado.documento(),
                         resultado.versaoConjuntoDocumental(), resultado.documentosDisponiveis());
                 if (resultado.repetido()) {

@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao.service;
 
+import br.com.regulacheck.armazenamento.ArmazenamentoEmDisco;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -39,7 +40,7 @@ class TrocarServicoServiceTest {
     void preparar() {
         protocolos.adicionar(ProtocoloRepositoryMemoria.padrao(), true);
         protocolos.adicionar(ProtocoloRepositoryMemoria.segundo(), true);
-        servico = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes, relogio);
+        servico = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes, new ArmazenamentoEmDisco(null), relogio);
         rascunho = servico.criar(A, V01);
         relogio.avancar(Duration.ofMinutes(5));
     }

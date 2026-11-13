@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao.service;
 
+import br.com.regulacheck.armazenamento.ArmazenamentoEmDisco;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +35,7 @@ class ListarReabrirServiceTest {
     void preparar() {
         ProtocoloRepositoryMemoria protocolos = new ProtocoloRepositoryMemoria();
         protocolos.adicionar(ProtocoloRepositoryMemoria.padrao(), true);
-        servico = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes, relogio);
+        servico = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes, new ArmazenamentoEmDisco(null), relogio);
     }
 
     @Test

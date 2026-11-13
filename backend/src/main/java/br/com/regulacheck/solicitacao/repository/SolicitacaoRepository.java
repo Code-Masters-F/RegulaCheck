@@ -61,4 +61,19 @@ public interface SolicitacaoRepository {
      * @throws br.com.regulacheck.common.exception.ExcecaoNegocio 503 se o banco estiver indisponivel
      */
     ResultadoTroca trocarProtocolo(long id, long pacienteId, Protocolo novoProtocolo, Instant agora);
+
+    /**
+     * Exclui um rascunho da paciente por inteiro, de forma atomica e sob o bloqueio da linha do pedido: confere
+     * dona e estado (so {@code RASCUNHO} pode ser excluido), le os nomes internos dos arquivos de todos os
+     * documentos (disponiveis e removidos) e apaga {@code RC_DOCUMENTO}, {@code RC_REVISAO} e
+     * {@code RC_SOLICITACAO}, nessa ordem, por causa das chaves estrangeiras. Se algo ainda ligado ao pedido
+     * impedir a exclusao, desfaz tudo e informa. Apagar os arquivos e tarefa do Service, <strong>depois</strong>
+     * do commit.
+     *
+     * @param id identificador do pedido
+     * @param pacienteId conta dona (a da sessao)
+     * @return o desfecho e, se excluido, os arquivos a apagar
+     * @throws br.com.regulacheck.common.exception.ExcecaoNegocio 503 se o banco estiver indisponivel
+     */
+    ResultadoExclusao excluirRascunho(long id, long pacienteId);
 }

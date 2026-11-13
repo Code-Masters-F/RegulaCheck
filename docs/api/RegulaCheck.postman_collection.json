@@ -36,6 +36,10 @@
     {
       "key": "chaveEnvio",
       "value": "7d1c1b8e-9f2a-4c3e-8a10-aa11bb22cc33"
+    },
+    {
+      "key": "chaveTroca",
+      "value": "3f9a2c1d-6b7e-4d80-9c11-0a1b2c3d4e5f"
     }
   ],
   "item": [
@@ -339,6 +343,124 @@
           }
         ],
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos/{{documentoId}}"
+      }
+    },
+    {
+      "name": "RC-09 Remover documento (200 com a versao nova e documentosDisponiveis; repetir e 404)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos/{{documentoId}}",
+        "description": "Sem corpo. Revisao +1 (DOCUMENTO_REMOVIDO); o arquivo e apagado; a vaga volta. Pedido em SUBMETIDA_SIMULACAO responde 409."
+      }
+    },
+    {
+      "name": "RC-09 Substituir documento (201 com Location do documento NOVO e guarda em {{documentoId}}; repetir com a mesma chave devolve 200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) { pm.collectionVariables.set('documentoId', pm.response.json().id); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "X-Chave-Envio",
+            "value": "{{chaveTroca}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos/{{documentoId}}",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "tipoDocumental",
+              "value": "ENCAMINHAMENTO",
+              "type": "text"
+            },
+            {
+              "key": "arquivo",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "description": "Escolha um PDF, JPEG ou PNG sintetico no campo arquivo. Uma revisao (DOCUMENTO_SUBSTITUIDO); a contagem nao muda. Arquivo recusado deixa o antigo intacto."
+      }
+    },
+    {
+      "name": "RC-09 Substituir documento com arquivo invalido (415/400; o documento antigo continua igual)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos/{{documentoId}}",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "tipoDocumental",
+              "value": "OUTRO",
+              "type": "text"
+            },
+            {
+              "key": "arquivo",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "description": "Escolha, por exemplo, um .txt renomeado para .pdf."
+      }
+    },
+    {
+      "name": "RC-09 Excluir rascunho SEM confirmacao (400 REQUISICAO_INVALIDA, campo confirmacao; nada e apagado)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}"
+      }
+    },
+    {
+      "name": "RC-09 Excluir rascunho com confirmacao (204; apaga pedido, revisoes, documentos e arquivos; so RASCUNHO)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "X-Confirmar-Exclusao",
+            "value": "EXCLUIR"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}",
+        "description": "Irreversivel. Pedido submetido em simulacao responde 409 CONFLITO_ESTADO; fora de rascunho, 409 \"Somente rascunhos podem ser excluidos.\""
       }
     }
   ]

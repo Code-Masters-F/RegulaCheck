@@ -14,6 +14,7 @@ import br.com.regulacheck.config.Dependencias;
 import br.com.regulacheck.protocolo.entity.Protocolo;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepository;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
+import br.com.regulacheck.solicitacao.repository.ResultadoExclusao;
 import br.com.regulacheck.solicitacao.repository.ResultadoTroca;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepository;
 import java.time.Instant;
@@ -47,6 +48,11 @@ class BancoIndisponivelSolicitacaoTest {
 
         @Override
         public ResultadoTroca trocarProtocolo(long id, long pacienteId, Protocolo novo, Instant agora) {
+            throw falha.get();
+        }
+
+        @Override
+        public ResultadoExclusao excluirRascunho(long id, long pacienteId) {
             throw falha.get();
         }
     }

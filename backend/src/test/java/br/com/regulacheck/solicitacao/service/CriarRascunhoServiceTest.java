@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao.service;
 
+import br.com.regulacheck.armazenamento.ArmazenamentoEmDisco;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,7 +38,7 @@ class CriarRascunhoServiceTest {
     @BeforeEach
     void preparar() {
         protocolos.adicionar(ProtocoloRepositoryMemoria.padrao(), true);
-        servico = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes, relogio);
+        servico = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes, new ArmazenamentoEmDisco(null), relogio);
     }
 
     @Test
@@ -93,7 +94,7 @@ class CriarRascunhoServiceTest {
         Instant comNanos = Instant.parse("2026-11-12T20:00:00.123456789Z");
         Clock relogioPreciso = Clock.fixed(comNanos, ZoneOffset.UTC);
         SolicitacaoService preciso = new SolicitacaoService(new ProtocoloService(protocolos), solicitacoes,
-                relogioPreciso);
+                new ArmazenamentoEmDisco(null), relogioPreciso);
 
         Solicitacao pedido = preciso.criar(PACIENTE_A, PROTOCOLO);
 

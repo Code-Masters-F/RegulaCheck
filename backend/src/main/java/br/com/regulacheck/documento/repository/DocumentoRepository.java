@@ -32,6 +32,44 @@ public interface DocumentoRepository {
     ResultadoRegistro registrar(long pacienteId, long solicitacaoId, NovoDocumento novo, Instant agora);
 
     /**
+     * Remove (logicamente) um documento disponivel do pedido, de forma atomica e sob o bloqueio da linha do
+     * pedido. Na mesma transacao: confere dona e estado (so {@code SUBMETIDA_SIMULACAO} recusa), procura o
+     * documento disponivel <em>do pedido</em>, incrementa a revisao do pedido, registra a revisao com o motivo de
+     * documento removido, marca o documento com essa revisao e anula a chave de envio dele (a unicidade da chave
+     * cobre tambem linhas removidas) e torna nao vigente a analise vigente, se houver. O estado do pedido nao
+     * muda e nenhuma analise e iniciada. O registro do documento permanece como historico; apagar o arquivo e
+     * tarefa do Service, <strong>depois</strong> do commit.
+     *
+     * @param pacienteId conta dona (a da sessao)
+     * @param solicitacaoId pedido do caminho
+     * @param documentoId documento a remover
+     * @param agora instante da remocao e da atualizacao do pedido
+     * @return o desfecho; nunca {@code null}
+     * @throws br.com.regulacheck.common.exception.ExcecaoNegocio 503 se o banco estiver indisponivel
+     */
+    ResultadoRemocao remover(long pacienteId, long solicitacaoId, long documentoId, Instant agora);
+
+    /**
+     * Substitui um documento por outro numa unica transacao, sob o bloqueio da linha do pedido. A chave de envio
+     * (se houver) e procurada <strong>antes</strong> do documento do caminho: depois de uma substituicao bem
+     * sucedida o documento antigo ja nao existe, e a repeticao da mesma tentativa precisa ser reconhecida em vez de
+     * virar "nao encontrado". Sem repeticao: confere dona e estado (so {@code SUBMETIDA_SIMULACAO} recusa), procura
+     * o documento disponivel do pedido, incrementa a revisao <em>uma</em> vez, registra a revisao com o motivo de
+     * documento substituido, marca o antigo como removido nessa revisao (chave anulada), grava o novo nela e torna
+     * nao vigente a analise vigente. A contagem de disponiveis nao muda, entao o limite nao se aplica.
+     *
+     * @param pacienteId conta dona (a da sessao)
+     * @param solicitacaoId pedido do caminho
+     * @param documentoId documento a substituir
+     * @param novo dados do documento novo, com o arquivo ja guardado na area privada
+     * @param agora instante da substituicao
+     * @return o desfecho; nunca {@code null}
+     * @throws br.com.regulacheck.common.exception.ExcecaoNegocio 503 se o banco estiver indisponivel
+     */
+    ResultadoSubstituicao substituir(long pacienteId, long solicitacaoId, long documentoId, NovoDocumento novo,
+            Instant agora);
+
+    /**
      * Lista os documentos disponiveis do pedido da paciente, na ordem de envio.
      *
      * @param solicitacaoId pedido

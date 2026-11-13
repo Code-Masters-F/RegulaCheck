@@ -1,17 +1,22 @@
 package br.com.regulacheck.solicitacao.service;
 
+import br.com.regulacheck.armazenamento.ArmazenamentoPrivado;
+import br.com.regulacheck.armazenamento.IdInterno;
 import br.com.regulacheck.auth.autorizacao.Propriedade;
 import br.com.regulacheck.auth.service.SessaoAutenticada;
 import br.com.regulacheck.common.exception.ExcecaoNegocio;
 import br.com.regulacheck.protocolo.entity.Protocolo;
 import br.com.regulacheck.protocolo.service.ProtocoloService;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
+import br.com.regulacheck.solicitacao.repository.ResultadoExclusao;
 import br.com.regulacheck.solicitacao.repository.ResultadoTroca;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepository;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Casos de uso da solicitacao em rascunho (RC-07): criar, reabrir, listar e trocar o servico escolhido.
@@ -25,18 +30,25 @@ public class SolicitacaoService {
     /** Maximo de pedidos devolvidos pela listagem (sem paginacao nesta historia). */
     public static final int LIMITE_LISTA = 50;
 
+    private static final Logger LOG = LoggerFactory.getLogger(SolicitacaoService.class);
+
     private final ProtocoloService protocolos;
     private final SolicitacaoRepository solicitacoes;
+    private final ArmazenamentoPrivado armazenamento;
     private final Clock relogio;
 
     /**
      * @param protocolos catalogo de servicos
      * @param solicitacoes persistencia dos pedidos
+     * @param armazenamento area privada de arquivos (infraestrutura comum; usada so para apagar os arquivos dos
+     *     documentos de um rascunho excluido)
      * @param relogio relogio da aplicacao (instantes gravados e devolvidos)
      */
-    public SolicitacaoService(ProtocoloService protocolos, SolicitacaoRepository solicitacoes, Clock relogio) {
+    public SolicitacaoService(ProtocoloService protocolos, SolicitacaoRepository solicitacoes,
+            ArmazenamentoPrivado armazenamento, Clock relogio) {
         this.protocolos = protocolos;
         this.solicitacoes = solicitacoes;
+        this.armazenamento = armazenamento;
         this.relogio = relogio;
     }
 
@@ -102,6 +114,52 @@ public class SolicitacaoService {
                     "Este pedido não pode mais ser alterado.");
             case SEM_MUDANCA, ALTERADA -> resultado.solicitacao();
         };
+    }
+
+    /**
+     * Exclui um rascunho da paciente da sessao, com o pedido, o historico de revisoes, os documentos e os
+     * arquivos guardados. A confirmacao explicita ja foi exigida pelo controller; aqui valem a dona, o estado e a
+     * atomicidade.
+     *
+     * <p>Politica de arquivos (RC-09): o banco muda primeiro, numa transacao so; os arquivos sao apagados
+     * <strong>depois</strong> do commit. Se apagar um arquivo falhar, a exclusao continua valendo (o pedido ja nao
+     * existe) e o arquivo remanescente fica sem registro, sem nunca ser visivel ao usuario; o risco e registrado so
+     * em log tecnico, com a contagem e sem nome interno.
+     *
+     * @param sessao paciente autenticada (dona do pedido)
+     * @param id identificador do pedido
+     * @throws ExcecaoNegocio 404 {@code NAO_ENCONTRADO} se o pedido nao existe, ja foi excluido ou e de outra
+     *     paciente; 409 {@code CONFLITO_ESTADO} se o pedido foi submetido em simulacao, se nao e rascunho ou se
+     *     algo ainda ligado a ele impede a exclusao; 503 se o banco estiver indisponivel (nada e apagado)
+     */
+    public void excluirRascunho(SessaoAutenticada sessao, long id) {
+        ResultadoExclusao resultado = solicitacoes.excluirRascunho(id, sessao.usuarioId());
+        switch (resultado.situacao()) {
+            case NAO_ENCONTRADO -> throw Propriedade.naoEncontrada(sessao);
+            case SUBMETIDO -> throw new ExcecaoNegocio(409, "CONFLITO_ESTADO",
+                    "Este pedido já foi submetido e só pode ser consultado.");
+            case FORA_DE_RASCUNHO -> throw new ExcecaoNegocio(409, "CONFLITO_ESTADO",
+                    "Somente rascunhos podem ser excluídos.");
+            case COM_DEPENDENCIAS -> throw new ExcecaoNegocio(409, "CONFLITO_ESTADO",
+                    "Este pedido não pode ser excluído.");
+            case EXCLUIDO -> apagarArquivos(id, resultado.arquivos());
+        }
+    }
+
+    /** Depois do commit: apaga cada arquivo sem interromper nos erros; so a contagem de falhas vai ao log. */
+    private void apagarArquivos(long id, List<IdInterno> arquivos) {
+        int falhas = 0;
+        for (IdInterno arquivo : arquivos) {
+            try {
+                armazenamento.remover(arquivo);
+            } catch (RuntimeException falha) {
+                falhas++;
+            }
+        }
+        if (falhas > 0) {
+            LOG.warn("Arquivos de rascunho excluido nao puderam ser apagados. solicitacaoId={} arquivos={} falhas={}",
+                    id, arquivos.size(), falhas);
+        }
     }
 
     /**

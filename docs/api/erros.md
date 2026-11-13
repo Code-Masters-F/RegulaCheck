@@ -21,13 +21,13 @@ Toda resposta de erro tem o mesmo corpo, com `Content-Type: application/json`:
 
 | HTTP | Código | Quando |
 |---|---|---|
-| 400 | `REQUISICAO_INVALIDA` | corpo ou parâmetro inválido (detalhes por campo) |
+| 400 | `REQUISICAO_INVALIDA` | corpo ou parâmetro inválido (detalhes por campo). RC-09: `DELETE /solicitacoes/{id}` sem o cabeçalho `X-Confirmar-Exclusao: EXCLUIR` (ausente, em branco ou com outro valor) → detalhe `confirmacao`, e nada é apagado |
 | 401 | `CREDENCIAIS_INVALIDAS` | login com senha errada, e-mail inexistente, conta desativada ou senha acima de 72 bytes: sempre a mesma resposta (RC-04) |
 | 401 | `NAO_AUTENTICADO` | token ausente, malformado, desconhecido, expirado ou encerrado, ou conta desativada: sempre a mesma resposta (RC-04) |
 | 403 | `ACESSO_NEGADO` | identidade válida, mas o perfil não pode usar a rota (ex.: administrador em recurso individual de paciente, paciente em rota administrativa, chave do simulador fora da telemetria, conta na telemetria). Mensagem fixa: "Voce nao tem permissao para esta operacao." (RC-05) |
 | 404 | `NAO_ENCONTRADO` | recurso inexistente **ou** de outra paciente, sessão de captura inexistente ou encerrada, identificador ilegível, rota inexistente. Corpo idêntico em todos os casos; mensagem fixa: "Recurso nao encontrado." (RC-05) |
 | 405 | `METODO_NAO_PERMITIDO` | método HTTP não suportado pela rota |
-| 409 | `CONFLITO_ESTADO` | operação incompatível com o estado ou a revisão atual (RC-07: `PUT /solicitacoes/{id}` em pedido que já saiu de `RASCUNHO`; mensagem "Este pedido não pode mais ser alterado." RC-08: `POST …/documentos` em pedido fora de `RASCUNHO`; mensagem "Este pedido não pode mais receber documentos.") |
+| 409 | `CONFLITO_ESTADO` | operação incompatível com o estado ou a revisão atual (RC-07: `PUT /solicitacoes/{id}` em pedido que já saiu de `RASCUNHO`; mensagem "Este pedido não pode mais ser alterado." RC-08: `POST …/documentos` em pedido fora de `RASCUNHO`; mensagem "Este pedido não pode mais receber documentos." RC-09: remover, substituir ou excluir pedido em `SUBMETIDA_SIMULACAO`; mensagem "Este pedido já foi submetido e só pode ser consultado."; excluir fora de `RASCUNHO`: "Somente rascunhos podem ser excluídos."; excluir quando algo ainda ligado ao pedido impede: "Este pedido não pode ser excluído.", sem apagar nada) |
 | 409 | `CHAVE_ENVIO_REUTILIZADA` | RC-08: o cabeçalho `X-Chave-Envio` já foi usado, no mesmo pedido, com outro arquivo ou outro tipo documental; nada é criado nem alterado. Repetir a **mesma** tentativa não é erro: responde 200 com o documento existente |
 | 413 | `ARQUIVO_MUITO_GRANDE` | arquivo acima de 5 MB (a leitura para no limite, sem confiar no tamanho declarado). Corpo JSON grande demais **não** usa 413: segue 400 (RC-04) |
 | 415 | `TIPO_NAO_SUPORTADO` | três usos: corpo de rota JSON que não é `application/json` (RC-04), arquivo cujo conteúdo real não é PDF/JPEG/PNG (RC-06) e, no envio de documento, corpo que não é `multipart/form-data` (RC-08); a mensagem diferencia |
