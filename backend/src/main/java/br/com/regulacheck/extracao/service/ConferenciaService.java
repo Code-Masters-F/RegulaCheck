@@ -115,12 +115,14 @@ public class ConferenciaService {
     }
 
     /**
-     * Monta a visao publicavel: situacao calculada pela regra pura e instante da ultima alteracao.
+     * Monta a visao publicavel: situacao calculada pela regra pura e instante da ultima alteracao. Publico para a
+     * avaliacao dos criterios (RC-12) capturar o mesmo {@code atualizadaEm} que a conferencia expoe, sem recalcular
+     * por conta propria.
      *
      * @param registrada leitura com as decisoes vigentes
      * @return a visao
      */
-    static VisaoConferencia visao(ConferenciaRegistrada registrada) {
+    public static VisaoConferencia visao(ConferenciaRegistrada registrada) {
         var leitura = registrada.leitura();
         Instant atualizadaEm = registrada.decisoes().stream().map(DecisaoConferencia::decididaEm)
                 .max(Instant::compareTo).orElse(leitura.extracao().criadaEm());
