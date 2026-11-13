@@ -16,6 +16,8 @@ import br.com.regulacheck.documento.entity.Documento;
 import br.com.regulacheck.documento.repository.DocumentoRepository;
 import br.com.regulacheck.documento.repository.NovoDocumento;
 import br.com.regulacheck.documento.repository.ResultadoRegistro;
+import br.com.regulacheck.documento.repository.ResultadoRemocao;
+import br.com.regulacheck.documento.repository.ResultadoSubstituicao;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -39,6 +41,17 @@ class BancoEArmazenamentoIndisponiveisTest {
 
         @Override
         public ResultadoRegistro registrar(long pacienteId, long solicitacaoId, NovoDocumento novo, Instant agora) {
+            throw fora();
+        }
+
+        @Override
+        public ResultadoRemocao remover(long pacienteId, long solicitacaoId, long documentoId, Instant agora) {
+            throw fora();
+        }
+
+        @Override
+        public ResultadoSubstituicao substituir(long pacienteId, long solicitacaoId, long documentoId,
+                NovoDocumento novo, Instant agora) {
             throw fora();
         }
 

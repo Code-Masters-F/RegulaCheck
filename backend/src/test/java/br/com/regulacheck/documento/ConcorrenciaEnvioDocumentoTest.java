@@ -69,7 +69,7 @@ class ConcorrenciaEnvioDocumentoTest {
         pedidos = new SolicitacaoRepositoryMemoria();
         documentos = new DocumentoRepositoryMemoria(pedidos);
         RelogioFixo relogio = new RelogioFixo(Instant.parse("2026-11-12T20:00:00Z"));
-        solicitacoes = new SolicitacaoService(new ProtocoloService(protocolos), pedidos, relogio);
+        solicitacoes = new SolicitacaoService(new ProtocoloService(protocolos), pedidos, new ArmazenamentoEmDisco(raiz), relogio);
         servico = new DocumentoService(solicitacoes, documentos, new ArmazenamentoEmDisco(raiz),
                 ConferenciaDeArquivo.para(raiz), relogio);
         rascunho = solicitacoes.criar(A, V01);

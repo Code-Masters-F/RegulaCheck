@@ -111,14 +111,17 @@ public final class Composicao {
         // RC-07: servicos disponiveis e rascunho de solicitacao (somente PACIENTE; dona conferida no Service).
         ProtocoloService protocolos = new ProtocoloService(dependencias.protocolos());
         rotas.registrar("/protocolos", new ProtocoloController(protocolos), Perfil.PACIENTE);
+        // Area privada de arquivos: usada pelos documentos (RC-08) e, na RC-09, pela exclusao de rascunho, que
+        // apaga os arquivos dos documentos do pedido.
+        Path raizArquivos = configuracao.armazenamentoConfigurado() ? Path.of(configuracao.armazenamentoRaiz()) : null;
+        ArmazenamentoEmDisco armazenamento = new ArmazenamentoEmDisco(raizArquivos);
         SolicitacaoService solicitacoes = new SolicitacaoService(protocolos, dependencias.solicitacoes(),
-                dependencias.relogio());
+                armazenamento, dependencias.relogio());
         // RC-08: documentos do pedido. O caminho /solicitacoes/* tem um unico registro (RC-05), entao o controller
         // de documentos e entregue ao de solicitacoes, que lhe repassa os subcaminhos /{id}/documentos[/{docId}].
         ConferenciaDeArquivo conferencia = prepararConferencia(configuracao);
-        Path raizArquivos = configuracao.armazenamentoConfigurado() ? Path.of(configuracao.armazenamentoRaiz()) : null;
         DocumentoService documentos = new DocumentoService(solicitacoes, dependencias.documentos(),
-                new ArmazenamentoEmDisco(raizArquivos), conferencia, dependencias.relogio());
+                armazenamento, conferencia, dependencias.relogio());
         MultipartConfigElement multipart = new MultipartConfigElement(conferencia.quarentena().toString(),
                 LimitesArquivo.MAXIMO_BYTES, LimitesArquivo.MAXIMO_BYTES + FOLGA_MULTIPART_BYTES, 0);
         rotas.registrar("/solicitacoes/*",

@@ -27,6 +27,7 @@ erDiagram
 
 - **A paciente é uma conta** (`RC_USUARIO` com `PERFIL = 'PACIENTE'`); não existe tabela de paciente separada.
 - **Revisão é uma entidade** (`RC_REVISAO`, chave composta pedido + número). Para saber o que mudou entre a revisão 1 e a 2: compare os documentos (`REVISAO_ENVIO <= n` e `REVISAO_REMOCAO` nula ou `> n`) e as análises de cada revisão. Substituir ou remover um arquivo **não apaga** o histórico.
+- **Política de arquivos (RC-09):** documento removido ou substituído fica no banco como histórico (`REVISAO_REMOCAO` preenchida, `CHAVE_ENVIO` anulada, fora de todas as consultas de documento disponível) e **seu arquivo é apagado**; a exclusão do rascunho apaga `RC_DOCUMENTO`, `RC_REVISAO` e `RC_SOLICITACAO` do pedido (nessa ordem, por causa das chaves estrangeiras) e os arquivos. Não há script `08_`: o esquema já previa tudo isso.
 - **Versão do protocolo usada** fica em `RC_ANALISE.PROTOCOLO_ID` (a análise guarda a versão com que foi feita).
 - **Uma análise vigente por pedido**: índice único funcional `RC_ANALISE_VIGENTE_UK`.
 - **Pendência** só existe para resultado `PENDENTE` ou `NAO_VERIFICAVEL` e o tipo dela precisa ser igual ao resultado da mesma regra na mesma análise (chave estrangeira composta). `NAO_VERIFICAVEL` se distingue de ausência pelo `TIPO`.

@@ -25,6 +25,8 @@ public record ResultadoRegistro(Situacao situacao, Documento documento, int vers
         NAO_ENCONTRADO,
         /** O pedido ja saiu de rascunho; nada foi gravado. */
         FORA_DE_RASCUNHO,
+        /** O pedido esta em submissao simulada e so pode ser consultado (substituir); nada foi gravado. */
+        SUBMETIDO,
         /** O pedido ja tem o maximo de documentos disponiveis; nada foi gravado. */
         LIMITE,
         /** A chave de envio ja existe no pedido com outro conteudo ou outro tipo documental; nada foi gravado. */
@@ -43,6 +45,11 @@ public record ResultadoRegistro(Situacao situacao, Documento documento, int vers
     /** @return resultado sem documento: pedido fora de rascunho */
     public static ResultadoRegistro foraDeRascunho() {
         return new ResultadoRegistro(Situacao.FORA_DE_RASCUNHO, null, 0, 0);
+    }
+
+    /** @return resultado sem documento: pedido submetido em simulacao */
+    public static ResultadoRegistro submetido() {
+        return new ResultadoRegistro(Situacao.SUBMETIDO, null, 0, 0);
     }
 
     /** @return resultado sem documento: limite de documentos atingido */

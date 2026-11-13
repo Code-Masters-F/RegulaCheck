@@ -59,6 +59,12 @@ public final class DocumentoRepositoryJdbc implements DocumentoRepository {
             SELECT COUNT(*) FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ? AND REVISAO_REMOCAO IS NULL""";
     private static final String SQL_ATUALIZAR_PEDIDO = """
             UPDATE RC_SOLICITACAO SET REVISAO_ATUAL = ?, ATUALIZADA_EM = ? WHERE ID = ?""";
+    // A chave de envio e anulada para liberar o indice unico (RC_DOCUMENTO_UK_CHAVE cobre linhas removidas).
+    private static final String SQL_MARCAR_REMOVIDO = """
+            UPDATE RC_DOCUMENTO SET REVISAO_REMOCAO = ?, CHAVE_ENVIO = NULL
+             WHERE ID = ? AND SOLICITACAO_ID = ? AND REVISAO_REMOCAO IS NULL""";
+    private static final String SQL_INVALIDAR_ANALISE = """
+            UPDATE RC_ANALISE SET VIGENTE = 0 WHERE SOLICITACAO_ID = ? AND VIGENTE = 1""";
     private static final String SQL_INSERIR_REVISAO = """
             INSERT INTO RC_REVISAO (SOLICITACAO_ID, NUMERO, MOTIVO, CRIADA_EM) VALUES (?, ?, ?, ?)""";
     private static final String SQL_INSERIR_DOCUMENTO = """
@@ -146,6 +152,183 @@ public final class DocumentoRepositoryJdbc implements DocumentoRepository {
                 novo.formato(), novo.tamanhoBytes(), novo.paginas(), novaRevisao, agora, novo.caminhoInterno(),
                 novo.hashConteudo(), novo.chaveEnvio());
         return ResultadoRegistro.registrado(documento, novaRevisao, disponiveis + 1);
+    }
+
+    @Override
+    public ResultadoRemocao remover(long pacienteId, long solicitacaoId, long documentoId, Instant agora) {
+        try (Connection conexao = banco.conexao()) {
+            conexao.setAutoCommit(false);
+            try {
+                ResultadoRemocao resultado = removerBloqueado(conexao, pacienteId, solicitacaoId, documentoId, agora);
+                // COMMIT tambem nos desfechos sem escrita: libera o bloqueio da linha.
+                conexao.commit();
+                return resultado;
+            } catch (SQLException | RuntimeException falha) {
+                desfazer(conexao);
+                throw traduzir(falha);
+            }
+        } catch (SQLException falha) {
+            throw indisponivel(falha);
+        }
+    }
+
+    private ResultadoRemocao removerBloqueado(Connection conexao, long pacienteId, long solicitacaoId,
+            long documentoId, Instant agora) throws SQLException {
+        PedidoBloqueado pedido = bloquear(conexao, pacienteId, solicitacaoId);
+        if (pedido == null) {
+            return ResultadoRemocao.naoEncontrado();
+        }
+        if (pedido.estado() == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+            return ResultadoRemocao.submetido();
+        }
+        Optional<Documento> vivo = buscarVivo(conexao, solicitacaoId, pacienteId, documentoId);
+        if (vivo.isEmpty()) {
+            // Inexistente, de outro pedido, ja removido: nada muda (repetir a remocao nao remove outro documento).
+            return ResultadoRemocao.naoEncontrado();
+        }
+        int novaRevisao = abrirRevisao(conexao, solicitacaoId, pedido.revisaoAtual(),
+                MotivoRevisao.DOCUMENTO_REMOVIDO, agora);
+        marcarRemovido(conexao, documentoId, solicitacaoId, novaRevisao);
+        invalidarAnalise(conexao, solicitacaoId);
+        int disponiveis = contar(conexao, solicitacaoId);
+        LOG.info("Documento removido. solicitacaoId={} documentoId={} revisao={}", solicitacaoId, documentoId,
+                novaRevisao);
+        return ResultadoRemocao.removido(vivo.get(), novaRevisao, disponiveis);
+    }
+
+    @Override
+    public ResultadoSubstituicao substituir(long pacienteId, long solicitacaoId, long documentoId,
+            NovoDocumento novo, Instant agora) {
+        try (Connection conexao = banco.conexao()) {
+            conexao.setAutoCommit(false);
+            try {
+                ResultadoSubstituicao resultado = substituirBloqueado(conexao, pacienteId, solicitacaoId,
+                        documentoId, novo, agora);
+                conexao.commit();
+                return resultado;
+            } catch (SQLException | RuntimeException falha) {
+                desfazer(conexao);
+                throw traduzir(falha);
+            }
+        } catch (SQLException falha) {
+            throw indisponivel(falha);
+        }
+    }
+
+    private ResultadoSubstituicao substituirBloqueado(Connection conexao, long pacienteId, long solicitacaoId,
+            long documentoId, NovoDocumento novo, Instant agora) throws SQLException {
+        PedidoBloqueado pedido = bloquear(conexao, pacienteId, solicitacaoId);
+        if (pedido == null) {
+            return ResultadoSubstituicao.naoEncontrado();
+        }
+        if (pedido.estado() == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+            return ResultadoSubstituicao.submetido();
+        }
+        if (novo.chaveEnvio() != null) {
+            // Antes do documento do caminho: depois de uma substituicao bem sucedida, o antigo ja nao existe.
+            Optional<Documento> existente = buscarPorChave(conexao, solicitacaoId, pacienteId, novo.chaveEnvio());
+            if (existente.isPresent()) {
+                boolean mesmaTentativa = novo.hashConteudo().equals(existente.get().hashConteudo())
+                        && novo.tipoDocumental() == existente.get().tipoDocumental();
+                return mesmaTentativa
+                        ? ResultadoSubstituicao.repetido(existente.get(), pedido.revisaoAtual(),
+                                contar(conexao, solicitacaoId))
+                        : ResultadoSubstituicao.conflitoChave();
+            }
+        }
+        Optional<Documento> antigo = buscarVivo(conexao, solicitacaoId, pacienteId, documentoId);
+        if (antigo.isEmpty()) {
+            return ResultadoSubstituicao.naoEncontrado();
+        }
+        int novaRevisao = abrirRevisao(conexao, solicitacaoId, pedido.revisaoAtual(),
+                MotivoRevisao.DOCUMENTO_SUBSTITUIDO, agora);
+        // O antigo sai (chave anulada) antes de o novo entrar: o novo pode reutilizar a chave do antigo.
+        marcarRemovido(conexao, documentoId, solicitacaoId, novaRevisao);
+        long novoId = inserirDocumento(conexao, solicitacaoId, novaRevisao, novo, agora);
+        invalidarAnalise(conexao, solicitacaoId);
+        int disponiveis = contar(conexao, solicitacaoId);
+        LOG.info("Documento substituido. solicitacaoId={} documentoAntigoId={} documentoNovoId={} revisao={}",
+                solicitacaoId, documentoId, novoId, novaRevisao);
+        Documento documento = new Documento(novoId, solicitacaoId, novo.nomeArquivo(), novo.tipoDocumental(),
+                novo.formato(), novo.tamanhoBytes(), novo.paginas(), novaRevisao, agora, novo.caminhoInterno(),
+                novo.hashConteudo(), novo.chaveEnvio());
+        return ResultadoSubstituicao.substituido(documento, antigo.get(), novaRevisao, disponiveis);
+    }
+
+    /** Estado e revisao do pedido lidos sob o bloqueio da linha. */
+    private record PedidoBloqueado(EstadoSolicitacao estado, int revisaoAtual) {
+    }
+
+    /** Bloqueia a linha do pedido da paciente; {@code null} se nao existir ou nao for dela. */
+    private static PedidoBloqueado bloquear(Connection conexao, long pacienteId, long solicitacaoId)
+            throws SQLException {
+        try (PreparedStatement bloqueio = conexao.prepareStatement(SQL_BLOQUEAR)) {
+            bloqueio.setLong(1, solicitacaoId);
+            bloqueio.setLong(2, pacienteId);
+            try (ResultSet linha = bloqueio.executeQuery()) {
+                if (!linha.next()) {
+                    return null;
+                }
+                return new PedidoBloqueado(EstadoSolicitacao.valueOf(linha.getString("ESTADO")),
+                        linha.getInt("REVISAO_ATUAL"));
+            }
+        }
+    }
+
+    private static Optional<Documento> buscarVivo(Connection conexao, long solicitacaoId, long pacienteId,
+            long documentoId) throws SQLException {
+        try (PreparedStatement consulta = conexao.prepareStatement(SQL_BUSCAR)) {
+            consulta.setLong(1, solicitacaoId);
+            consulta.setLong(2, pacienteId);
+            consulta.setLong(3, documentoId);
+            try (ResultSet resultado = consulta.executeQuery()) {
+                return resultado.next() ? Optional.of(ler(resultado)) : Optional.empty();
+            }
+        }
+    }
+
+    /** Incrementa a revisao do pedido e registra a revisao nova com o motivo; devolve o numero da revisao nova. */
+    private static int abrirRevisao(Connection conexao, long solicitacaoId, int revisaoAtual, MotivoRevisao motivo,
+            Instant agora) throws SQLException {
+        int novaRevisao = revisaoAtual + 1;
+        try (PreparedStatement atualizar = conexao.prepareStatement(SQL_ATUALIZAR_PEDIDO)) {
+            atualizar.setInt(1, novaRevisao);
+            atualizar.setObject(2, utc(agora));
+            atualizar.setLong(3, solicitacaoId);
+            atualizar.executeUpdate();
+        }
+        try (PreparedStatement revisao = conexao.prepareStatement(SQL_INSERIR_REVISAO)) {
+            revisao.setLong(1, solicitacaoId);
+            revisao.setInt(2, novaRevisao);
+            revisao.setString(3, motivo.name());
+            revisao.setObject(4, utc(agora));
+            revisao.executeUpdate();
+        }
+        return novaRevisao;
+    }
+
+    private static void marcarRemovido(Connection conexao, long documentoId, long solicitacaoId, int revisao)
+            throws SQLException {
+        try (PreparedStatement marcar = conexao.prepareStatement(SQL_MARCAR_REMOVIDO)) {
+            marcar.setInt(1, revisao);
+            marcar.setLong(2, documentoId);
+            marcar.setLong(3, solicitacaoId);
+            if (marcar.executeUpdate() != 1) {
+                // Sob o bloqueio do pedido isto nao acontece; se acontecer, desfaz tudo em vez de seguir.
+                throw new IllegalStateException("Documento nao pode ser marcado como removido.");
+            }
+        }
+    }
+
+    /**
+     * A conferencia anterior deixa de ser vigente (o historico dela e preservado). Nenhuma rota produz analise
+     * ainda, entao hoje afeta zero linhas; a regra existe para quando a analise existir.
+     */
+    private static void invalidarAnalise(Connection conexao, long solicitacaoId) throws SQLException {
+        try (PreparedStatement invalidar = conexao.prepareStatement(SQL_INVALIDAR_ANALISE)) {
+            invalidar.setLong(1, solicitacaoId);
+            invalidar.executeUpdate();
+        }
     }
 
     private static long inserirDocumento(Connection conexao, long solicitacaoId, int revisao, NovoDocumento novo,

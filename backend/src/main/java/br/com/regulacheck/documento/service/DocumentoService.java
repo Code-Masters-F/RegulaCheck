@@ -16,6 +16,8 @@ import br.com.regulacheck.documento.entity.Documento;
 import br.com.regulacheck.documento.repository.DocumentoRepository;
 import br.com.regulacheck.documento.repository.NovoDocumento;
 import br.com.regulacheck.documento.repository.ResultadoRegistro;
+import br.com.regulacheck.documento.repository.ResultadoRemocao;
+import br.com.regulacheck.documento.repository.ResultadoSubstituicao;
 import br.com.regulacheck.solicitacao.entity.EstadoSolicitacao;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
 import br.com.regulacheck.solicitacao.service.SolicitacaoService;
@@ -65,6 +67,15 @@ public class DocumentoService {
      */
     public record ResultadoEnvio(Documento documento, int versaoConjuntoDocumental, int documentosDisponiveis,
             boolean repetido) {
+    }
+
+    /**
+     * Resultado de uma remocao.
+     *
+     * @param versaoConjuntoDocumental revisao do pedido apos a remocao
+     * @param documentosDisponiveis documentos disponiveis do pedido apos a remocao
+     */
+    public record ResultadoRemover(int versaoConjuntoDocumental, int documentosDisponiveis) {
     }
 
     /**
@@ -160,6 +171,104 @@ public class DocumentoService {
     }
 
     /**
+     * Confere, <strong>antes de o controller ler o corpo</strong> do {@code PUT}, que o documento do caminho existe
+     * e esta disponivel no pedido da paciente: respeita a ordem 404 -> 415/413/400 e evita ler e guardar um arquivo
+     * de ate 5 MB para depois responder 404. Excecao (D3): se a identificacao de tentativa ja corresponde a um
+     * documento vivo do pedido, a repeticao da substituicao e reconhecida <em>sem</em> procurar o documento do
+     * caminho (que, depois do sucesso, ja nao existe), e a decisao entre repeticao e conflito fica para depois da
+     * leitura do corpo. A transacao continua sendo a decisao final (outra requisicao pode remover o documento
+     * depois desta conferencia).
+     *
+     * @param sessao paciente autenticada
+     * @param solicitacaoId pedido do caminho (ja conferido como da paciente)
+     * @param documentoId documento do caminho
+     * @param chaveEnvio valor bruto do cabecalho {@code X-Chave-Envio}, ou {@code null}; so serve de consulta
+     * @throws ExcecaoNegocio 404 {@code NAO_ENCONTRADO} se o documento nao existe, ja foi removido, e de outro
+     *     pedido ou de outra paciente (resposta identica); 503 se o banco estiver indisponivel
+     */
+    public void exigirDocumentoParaSubstituir(SessaoAutenticada sessao, long solicitacaoId, long documentoId,
+            String chaveEnvio) {
+        if (chaveEnvio != null && documentos.buscarPorChave(solicitacaoId, sessao.usuarioId(), chaveEnvio)
+                .isPresent()) {
+            return;
+        }
+        Propriedade.exigir(documentos.buscarDoPedido(documentoId, solicitacaoId, sessao.usuarioId()), sessao);
+    }
+
+    /**
+     * Remove um documento do pedido da paciente da sessao. O documento deixa de estar disponivel (lista, download
+     * e contagem), a vaga e liberada e a versao do conjunto documental sobe em um, com a revisao registrada. A
+     * conferencia anterior deixa de ser vigente, mas nenhuma analise e iniciada e o estado do pedido nao muda.
+     *
+     * <p>Politica de arquivos (RC-09): o banco muda primeiro, numa transacao so; o arquivo e apagado
+     * <strong>depois</strong> do commit. Se apagar falhar, a remocao continua valendo e o arquivo fica sem
+     * registro, nunca visivel ao usuario; o armazenamento registra so a classe da falha, sem nome interno.
+     *
+     * @param sessao paciente autenticada (dona do pedido)
+     * @param solicitacaoId pedido do caminho
+     * @param documentoId documento a remover
+     * @return a versao do conjunto documental e a contagem de documentos apos a remocao
+     * @throws ExcecaoNegocio 404 se o pedido ou o documento nao existe, e de outra paciente, e de outro pedido ou
+     *     ja foi removido (resposta identica); 409 {@code CONFLITO_ESTADO} se o pedido foi submetido em simulacao;
+     *     503 se o banco estiver indisponivel (nada muda e nenhum arquivo e apagado)
+     */
+    public ResultadoRemover remover(SessaoAutenticada sessao, long solicitacaoId, long documentoId) {
+        exigirPedido(sessao, solicitacaoId);
+        ResultadoRemocao resultado = documentos.remover(sessao.usuarioId(), solicitacaoId, documentoId, agora());
+        return switch (resultado.situacao()) {
+            case NAO_ENCONTRADO -> throw Propriedade.naoEncontrada(sessao);
+            case SUBMETIDO -> throw pedidoSubmetido();
+            case REMOVIDO -> {
+                apagarArquivo(resultado.documento());
+                yield new ResultadoRemover(resultado.versaoConjuntoDocumental(), resultado.documentosDisponiveis());
+            }
+        };
+    }
+
+    /**
+     * Substitui um documento do pedido da paciente da sessao por outro arquivo, numa unica operacao: o antigo sai e
+     * o novo entra na mesma transacao, com <em>uma</em> revisao nova, e a contagem de documentos nao muda (nao ha
+     * limite a conferir). O arquivo novo passa pela mesma conferencia do envio e e guardado antes da transacao; se
+     * for recusado ou a transacao falhar, o novo e removido e o antigo continua intacto. O arquivo antigo e apagado
+     * so depois do commit.
+     *
+     * <p>Com a mesma identificacao de tentativa, o mesmo conteudo e o mesmo tipo documental, repetir a substituicao
+     * devolve o documento ja criado, sem gravar nada, e isso e reconhecido <em>antes</em> de procurar o documento
+     * do caminho (que, depois do sucesso, ja nao existe).
+     *
+     * @param sessao paciente autenticada (dona do pedido)
+     * @param solicitacaoId pedido do caminho
+     * @param documentoId documento a substituir
+     * @param envio arquivo novo, ja validado quanto ao contrato
+     * @return o desfecho; {@code repetido} indica que nada novo foi gravado
+     * @throws ExcecaoNegocio 404 se o pedido ou o documento nao existe, e de outra paciente, e de outro pedido ou
+     *     ja foi removido; 400/413/415 se o arquivo for recusado pela conferencia; 409 {@code CONFLITO_ESTADO} se o
+     *     pedido foi submetido em simulacao; 409 {@code CHAVE_ENVIO_REUTILIZADA}; 503 se o banco ou a area de
+     *     arquivos estiverem indisponiveis
+     */
+    public ResultadoEnvio substituir(SessaoAutenticada sessao, long solicitacaoId, long documentoId,
+            EnvioDocumento envio) {
+        Solicitacao pedido = exigirPedido(sessao, solicitacaoId);
+        ArquivoConferido arquivo = conferir(envio);
+        try {
+            if (pedido.estado() == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+                throw pedidoSubmetido();
+            }
+            String hash = sha256(arquivo);
+            if (envio.chaveEnvio() != null) {
+                Optional<Documento> existente = documentos.buscarPorChave(solicitacaoId, sessao.usuarioId(),
+                        envio.chaveEnvio());
+                if (existente.isPresent()) {
+                    return repeticao(existente.get(), hash, envio, pedido);
+                }
+            }
+            return gravarSubstituicao(sessao, solicitacaoId, documentoId, envio, arquivo, hash);
+        } finally {
+            arquivo.descartar();
+        }
+    }
+
+    /**
      * Lista os documentos disponiveis do pedido da paciente da sessao, na ordem de envio.
      *
      * @param sessao paciente autenticada
@@ -235,7 +344,7 @@ public class DocumentoService {
                             resultado.documentosDisponiveis(), true);
                 }
                 case NAO_ENCONTRADO -> throw Propriedade.naoEncontrada(sessao);
-                case FORA_DE_RASCUNHO -> throw conflitoDeEstado();
+                case FORA_DE_RASCUNHO, SUBMETIDO -> throw conflitoDeEstado();
                 case LIMITE -> throw limiteAtingido();
                 case CONFLITO_CHAVE -> throw chaveReutilizada();
                 default -> throw new IllegalStateException("Situacao de registro desconhecida.");
@@ -246,6 +355,63 @@ public class DocumentoService {
                 armazenamento.remover(guardado.id());
             }
         }
+    }
+
+    private ResultadoEnvio gravarSubstituicao(SessaoAutenticada sessao, long solicitacaoId, long documentoId,
+            EnvioDocumento envio, ArquivoConferido arquivo, String hash) {
+        ArquivoGuardado guardado = armazenamento.guardar(arquivo);
+        boolean registrado = false;
+        try {
+            NovoDocumento novo = new NovoDocumento(guardado.nomeExibicao(), envio.tipoDocumental(), guardado.tipo(),
+                    guardado.tamanhoBytes(), guardado.paginas(), guardado.id(), hash, envio.chaveEnvio());
+            ResultadoSubstituicao resultado = documentos.substituir(sessao.usuarioId(), solicitacaoId, documentoId,
+                    novo, agora());
+            ResultadoRegistro registro = resultado.registro();
+            switch (registro.situacao()) {
+                case REGISTRADO -> {
+                    registrado = true;
+                    apagarArquivo(resultado.substituido());
+                    return new ResultadoEnvio(registro.documento(), registro.versaoConjuntoDocumental(),
+                            registro.documentosDisponiveis(), false);
+                }
+                case REPETIDO -> {
+                    // Outra tentativa igual venceu a corrida: devolve o documento dela.
+                    return new ResultadoEnvio(registro.documento(), registro.versaoConjuntoDocumental(),
+                            registro.documentosDisponiveis(), true);
+                }
+                case NAO_ENCONTRADO -> throw Propriedade.naoEncontrada(sessao);
+                case SUBMETIDO -> throw pedidoSubmetido();
+                case CONFLITO_CHAVE -> throw chaveReutilizada();
+                default -> throw new IllegalStateException("Situacao de substituicao desconhecida.");
+            }
+        } finally {
+            if (!registrado) {
+                // Compensacao: o arquivo novo nao pode ficar sem registro; o antigo nunca foi tocado.
+                armazenamento.remover(guardado.id());
+            }
+        }
+    }
+
+    /**
+     * Apaga o arquivo de um documento que deixou de estar disponivel, <strong>depois</strong> do commit. Linha da
+     * carga sintetica nao tem arquivo ({@code caminhoInterno} nulo): nada a apagar, e isso nunca e falha. Nenhum
+     * erro daqui desfaz a mudanca ja registrada.
+     */
+    private void apagarArquivo(Documento documento) {
+        if (documento == null || documento.caminhoInterno() == null) {
+            return;
+        }
+        try {
+            armazenamento.remover(documento.caminhoInterno());
+        } catch (RuntimeException falha) {
+            // So a classe da falha: nunca o nome interno do arquivo (FR-022).
+            LOG.warn("Arquivo de documento removido nao pode ser apagado. documentoId={} tipo={}", documento.id(),
+                    falha.getClass().getSimpleName());
+        }
+    }
+
+    private static ExcecaoNegocio pedidoSubmetido() {
+        return new ExcecaoNegocio(409, "CONFLITO_ESTADO", "Este pedido já foi submetido e só pode ser consultado.");
     }
 
     private static String sha256(ArquivoConferido arquivo) {

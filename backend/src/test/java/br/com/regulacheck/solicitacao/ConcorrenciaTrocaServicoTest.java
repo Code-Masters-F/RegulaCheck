@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao;
 
+import br.com.regulacheck.armazenamento.ArmazenamentoEmDisco;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,7 +45,7 @@ class ConcorrenciaTrocaServicoTest {
         protocolos.adicionar(ProtocoloRepositoryMemoria.segundo(), true);
         SolicitacaoRepositoryMemoria repositorio = new SolicitacaoRepositoryMemoria();
         SolicitacaoService servico = new SolicitacaoService(new ProtocoloService(protocolos), repositorio,
-                new RelogioFixo(Instant.parse("2026-11-12T20:00:00Z")));
+                new ArmazenamentoEmDisco(null), new RelogioFixo(Instant.parse("2026-11-12T20:00:00Z")));
         Solicitacao rascunho = servico.criar(A, V01);
 
         int threads = 16;

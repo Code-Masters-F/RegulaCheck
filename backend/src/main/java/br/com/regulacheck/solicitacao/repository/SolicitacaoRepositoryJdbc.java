@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao.repository;
 
+import br.com.regulacheck.armazenamento.IdInterno;
 import br.com.regulacheck.common.exception.ExcecaoNegocio;
 import br.com.regulacheck.config.BancoDados;
 import br.com.regulacheck.protocolo.entity.Protocolo;
@@ -31,6 +32,9 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(SolicitacaoRepositoryJdbc.class);
 
+    /** Codigo do Oracle para "registro filho encontrado" (ORA-02292) ao apagar um pai ainda referenciado. */
+    private static final int ORA_FILHO_ENCONTRADO = 2292;
+
     private static final String COLUNAS_PEDIDO = """
             SELECT s.ID, s.PACIENTE_ID, s.ESTADO, s.REVISAO_ATUAL, s.CRIADA_EM, s.ATUALIZADA_EM,
                    p.ID AS PROTOCOLO_ID, p.IDENTIFICADOR, p.VERSAO, p.LOCALIDADE, p.ESPECIALIDADE, p.AVISO_FICTICIO,
@@ -56,6 +60,11 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
                FOR UPDATE""";
     private static final String SQL_CONTAR_DOCUMENTOS = """
             SELECT COUNT(*) FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ? AND REVISAO_REMOCAO IS NULL""";
+    private static final String SQL_CAMINHOS_DOCUMENTOS = """
+            SELECT CAMINHO_INTERNO FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ?""";
+    private static final String SQL_APAGAR_DOCUMENTOS = "DELETE FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ?";
+    private static final String SQL_APAGAR_REVISOES = "DELETE FROM RC_REVISAO WHERE SOLICITACAO_ID = ?";
+    private static final String SQL_APAGAR_PEDIDO = "DELETE FROM RC_SOLICITACAO WHERE ID = ?";
     private static final String SQL_TROCAR = """
             UPDATE RC_SOLICITACAO SET PROTOCOLO_ID = ?, REVISAO_ATUAL = ?, ATUALIZADA_EM = ? WHERE ID = ?""";
 
@@ -189,6 +198,89 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
         LOG.info("Servico do rascunho trocado. solicitacaoId={} revisao={}", id, novaRevisao);
         return ResultadoTroca.alterada(new Solicitacao(id, pacienteId, novoProtocolo, estado, novaRevisao, criadaEm,
                 agora, contarDocumentos(conexao, id)));
+    }
+
+    @Override
+    public ResultadoExclusao excluirRascunho(long id, long pacienteId) {
+        try (Connection conexao = banco.conexao()) {
+            conexao.setAutoCommit(false);
+            try {
+                ResultadoExclusao resultado = excluirBloqueado(conexao, id, pacienteId);
+                // COMMIT tambem nos desfechos sem escrita: libera o bloqueio da linha.
+                conexao.commit();
+                return resultado;
+            } catch (SQLException falha) {
+                desfazer(conexao);
+                if (falha.getErrorCode() == ORA_FILHO_ENCONTRADO) {
+                    // Algo ainda ligado ao pedido (ex.: tabela de uma historia futura): nada e apagado.
+                    LOG.warn("Exclusao de rascunho impedida por dependencia. solicitacaoId={} codigoFornecedor={}",
+                            id, falha.getErrorCode());
+                    return ResultadoExclusao.comDependencias();
+                }
+                throw traduzir(falha, "excluir");
+            } catch (RuntimeException falha) {
+                desfazer(conexao);
+                throw traduzir(falha, "excluir");
+            }
+        } catch (SQLException falha) {
+            throw indisponivel(falha);
+        }
+    }
+
+    private ResultadoExclusao excluirBloqueado(Connection conexao, long id, long pacienteId) throws SQLException {
+        EstadoSolicitacao estado;
+        // O bloqueio serializa envio, remocao, substituicao, troca de servico e exclusao do mesmo pedido.
+        try (PreparedStatement bloqueio = conexao.prepareStatement(SQL_BLOQUEAR)) {
+            bloqueio.setLong(1, id);
+            bloqueio.setLong(2, pacienteId);
+            try (ResultSet linha = bloqueio.executeQuery()) {
+                if (!linha.next()) {
+                    return ResultadoExclusao.naoEncontrado();
+                }
+                estado = EstadoSolicitacao.valueOf(linha.getString("ESTADO"));
+            }
+        }
+        if (estado == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+            return ResultadoExclusao.submetido();
+        }
+        if (estado != EstadoSolicitacao.RASCUNHO) {
+            return ResultadoExclusao.foraDeRascunho();
+        }
+        List<IdInterno> arquivos = new ArrayList<>();
+        // Todos os documentos, disponiveis e removidos: o arquivo dos removidos ja foi apagado (ou sobrou).
+        try (PreparedStatement consulta = conexao.prepareStatement(SQL_CAMINHOS_DOCUMENTOS)) {
+            consulta.setLong(1, id);
+            try (ResultSet resultado = consulta.executeQuery()) {
+                while (resultado.next()) {
+                    IdInterno interno = caminhoOuNulo(resultado.getString("CAMINHO_INTERNO"));
+                    if (interno != null) {
+                        arquivos.add(interno);
+                    }
+                }
+            }
+        }
+        // Ordem imposta pelas chaves estrangeiras: documentos -> revisoes -> pedido.
+        apagarDoPedido(conexao, SQL_APAGAR_DOCUMENTOS, id);
+        apagarDoPedido(conexao, SQL_APAGAR_REVISOES, id);
+        apagarDoPedido(conexao, SQL_APAGAR_PEDIDO, id);
+        LOG.info("Rascunho excluido. solicitacaoId={} arquivos={}", id, arquivos.size());
+        return ResultadoExclusao.excluido(arquivos);
+    }
+
+    private static void apagarDoPedido(Connection conexao, String sql, long id) throws SQLException {
+        try (PreparedStatement comando = conexao.prepareStatement(sql)) {
+            comando.setLong(1, id);
+            comando.executeUpdate();
+        }
+    }
+
+    /** Linhas da carga sintetica apontam para nomes ficticios (sem formato de nome interno): sem arquivo real. */
+    private static IdInterno caminhoOuNulo(String caminho) {
+        try {
+            return IdInterno.de(caminho);
+        } catch (IllegalArgumentException invalido) {
+            return null;
+        }
     }
 
     /** Conta os documentos disponiveis do pedido, na mesma transacao (e sob o mesmo bloqueio) da troca. */

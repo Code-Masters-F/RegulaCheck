@@ -3,6 +3,8 @@ package br.com.regulacheck.solicitacao.controller;
 import br.com.regulacheck.auth.autorizacao.Erros;
 import br.com.regulacheck.auth.controller.AutenticacaoFiltro;
 import br.com.regulacheck.auth.service.SessaoAutenticada;
+import br.com.regulacheck.common.exception.ErroPadrao;
+import br.com.regulacheck.common.exception.ExcecaoNegocio;
 import br.com.regulacheck.common.exception.RespostaErro;
 import br.com.regulacheck.common.http.CorpoJson;
 import br.com.regulacheck.common.http.ServletJson;
@@ -16,10 +18,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * {@code /solicitacoes} e {@code /solicitacoes/{id}}: rascunho da solicitacao da paciente. Rota privada de
+ * {@code /solicitacoes} e {@code /solicitacoes/{id}}: rascunho da solicitacao da paciente (criar, reabrir, listar,
+ * trocar o servico e excluir com confirmacao). Rota privada de
  * {@code PACIENTE}; autenticacao e perfil ja foram conferidos por {@code RotasPrivadas}. Este controller so
  * traduz HTTP (roteamento, corpo, status) e delega ao {@link SolicitacaoService}.
  *
@@ -33,6 +37,12 @@ public class SolicitacaoController extends ServletJson {
     /** Numero decimal positivo sem zeros a esquerda e dentro do alcance de {@code long}. */
     private static final Pattern ID = Pattern.compile("^[1-9][0-9]{0,17}$");
 
+    /** Cabecalho que confirma, de forma deliberada, a exclusao irreversivel de um rascunho. */
+    public static final String CABECALHO_CONFIRMACAO = "X-Confirmar-Exclusao";
+
+    /** Valor exato exigido no cabecalho de confirmacao. */
+    public static final String VALOR_CONFIRMACAO = "EXCLUIR";
+
     private final transient SolicitacaoService servico;
     private final transient DocumentoController documentos;
 
@@ -42,7 +52,7 @@ public class SolicitacaoController extends ServletJson {
      *     {@code /{id}/documentos[/{docId}]}
      */
     public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos) {
-        super("GET", "POST", "PUT");
+        super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
         this.documentos = documentos;
     }
@@ -64,7 +74,7 @@ public class SolicitacaoController extends ServletJson {
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws IOException {
         if (idDe(requisicao) != SEM_ID) {
-            metodoNaoPermitido(resposta, "GET, PUT");
+            metodoNaoPermitido(resposta, "GET, PUT, DELETE");
             return;
         }
         SolicitacaoRequest corpo = CorpoJson.ler(requisicao.getInputStream(), requisicao.getContentType(),
@@ -108,6 +118,29 @@ public class SolicitacaoController extends ServletJson {
         Solicitacao atualizada = servico.trocarProtocolo(sessao, id, protocoloId);
 
         responderJson(resposta, HttpServletResponse.SC_OK, SolicitacaoResponse.de(atualizada));
+    }
+
+    /**
+     * Exclui o rascunho (RC-09). Ordem: dona (404) -> confirmacao (400) -> estado (409). A confirmacao e o
+     * cabecalho {@link #CABECALHO_CONFIRMACAO} com o valor exato {@link #VALOR_CONFIRMACAO}; sem ela nada e apagado.
+     */
+    @Override
+    protected void doDelete(HttpServletRequest requisicao, HttpServletResponse resposta) throws IOException {
+        long id = idDe(requisicao);
+        if (id == SEM_ID) {
+            metodoNaoPermitido(resposta, "GET, POST");
+            return;
+        }
+        SessaoAutenticada sessao = AutenticacaoFiltro.sessaoDe(requisicao);
+        // Primeiro a dona (404): confirmacao ausente em pedido alheio continua 404 e nao revela que ele existe.
+        servico.buscarPropria(sessao, id);
+        if (!VALOR_CONFIRMACAO.equals(requisicao.getHeader(CABECALHO_CONFIRMACAO))) {
+            throw new ExcecaoNegocio(400, "REQUISICAO_INVALIDA", "A exclusão precisa ser confirmada.",
+                    List.of(new ErroPadrao.Detalhe("confirmacao", "Envie o cabeçalho " + CABECALHO_CONFIRMACAO
+                            + " com o valor " + VALOR_CONFIRMACAO + " para confirmar a exclusão.")));
+        }
+        servico.excluirRascunho(sessao, id);
+        resposta.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     /** Marca "o caminho e a colecao, sem id". Zero nunca e um id valido. */

@@ -32,7 +32,12 @@ class MatrizPerfisDocumentoTest {
         return List.of(new Chamada("POST", "/solicitacoes/1/documentos"),
                 new Chamada("GET", "/solicitacoes/1/documentos"), new Chamada("GET", "/solicitacoes/1/documentos/1"),
                 new Chamada("POST", "/solicitacoes/999999/documentos"),
-                new Chamada("GET", "/solicitacoes/999999/documentos/999999"));
+                new Chamada("GET", "/solicitacoes/999999/documentos/999999"),
+                // RC-09: substituir, remover documento e excluir rascunho tambem so existem para a paciente.
+                new Chamada("PUT", "/solicitacoes/1/documentos/1"),
+                new Chamada("DELETE", "/solicitacoes/1/documentos/1"),
+                new Chamada("DELETE", "/solicitacoes/999999/documentos/999999"),
+                new Chamada("DELETE", "/solicitacoes/1"), new Chamada("DELETE", "/solicitacoes/999999"));
     }
 
     @Test
@@ -81,13 +86,16 @@ class MatrizPerfisDocumentoTest {
                 assertEquals(405, naColecao.status(), metodo + " " + colecao);
                 assertTrue(naColecao.cabecalho("Allow").contains("GET")
                         && naColecao.cabecalho("Allow").contains("POST"), naColecao.cabecalho("Allow"));
-                Resposta noItem = c.api.enviar(metodo, item, null, c.authA);
-                assertEquals(405, noItem.status(), metodo + " " + item);
             }
-            // POST num documento: so GET e permitido.
+            // RC-09: PUT (substituir) e DELETE (remover) passaram a existir no item; so PATCH segue sem rota.
+            Resposta patchNoItem = c.api.enviar("PATCH", item, null, c.authA);
+            assertEquals(405, patchNoItem.status(), "PATCH " + item);
+            assertTrue(patchNoItem.cabecalho("Allow").contains("GET") && patchNoItem.cabecalho("Allow").contains("PUT")
+                    && patchNoItem.cabecalho("Allow").contains("DELETE"), patchNoItem.cabecalho("Allow"));
+            // POST num documento: GET, PUT e DELETE sao os permitidos (a criacao e na colecao).
             Resposta postNoItem = c.api.enviar("POST", item, null, c.authA);
             assertEquals(405, postNoItem.status());
-            assertEquals("GET", postNoItem.cabecalho("Allow"));
+            assertEquals("GET, PUT, DELETE", postNoItem.cabecalho("Allow"));
             assertEquals(0, c.cenario.documentos.todos().size());
         }
     }

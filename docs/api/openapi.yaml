@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.6.0
+  version: 0.7.0
   description: >
     Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
     Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
     derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
     extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; desde a
     RC-08 são usadas pelas rotas de documentos do pedido (envio, lista e download).
-    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08) e as rotas de
+    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08), remover e substituir documento (DELETE e PUT /solicitacoes/{id}/documentos/{docId}) e excluir rascunho com confirmação (DELETE /solicitacoes/{id}, RC-09) e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
     dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
@@ -281,6 +281,41 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+    delete:
+      summary: Exclui um rascunho próprio, com confirmação explícita (RC-09)
+      description: >
+        Exige o cabeçalho `X-Confirmar-Exclusao: EXCLUIR` (valor exato). Sem ele, ou com outro valor, responde 400
+        (detalhe `confirmacao`) e nada é apagado. Só em RASCUNHO. Numa única transação apaga os documentos
+        (disponíveis e removidos), as revisões e o pedido; os arquivos guardados são apagados depois do commit. Ordem:
+        dona (404), confirmação (400), estado (409). Não há lixeira nem desfazer.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-Confirmar-Exclusao
+          in: header
+          required: true
+          description: Confirmação deliberada da exclusão irreversível; o único valor aceito é `EXCLUIR`.
+          schema: { type: string, enum: [EXCLUIR] }
+      responses:
+        "204":
+          description: Pedido, revisões, documentos e arquivos apagados (sem corpo)
+        "400":
+          description: Confirmação ausente, em branco ou diferente de `EXCLUIR` (REQUISICAO_INVALIDA, campo `confirmacao`)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: >
+            CONFLITO_ESTADO: pedido submetido em simulação ("Este pedido já foi submetido e só pode ser consultado."),
+            pedido fora de RASCUNHO ("Somente rascunhos podem ser excluídos.") ou algo ainda ligado ao pedido
+            ("Este pedido não pode ser excluído."); nada é apagado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
   /solicitacoes/{id}/documentos:
     parameters:
       - name: id
@@ -410,6 +445,99 @@ paths:
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+    put:
+      summary: Substitui um documento por outro arquivo, numa só operação (RC-09)
+      description: >
+        Mesmo multipart do envio (`arquivo`, `tipoDocumental`, `X-Chave-Envio` opcional). O documento antigo sai e o
+        novo entra na mesma transação, com UMA revisão nova (motivo DOCUMENTO_SUBSTITUIDO); a contagem de documentos
+        não muda, então não há erro de limite. O arquivo novo passa pela conferência do envio; recusa ou falha deixa o
+        antigo, a versão e os arquivos como estavam. O arquivo antigo é apagado depois do commit. Com `X-Chave-Envio`, a
+        repetição é reconhecida ANTES de procurar o `docId` (que, depois do sucesso, já não existe) e responde 200.
+        Não inicia análise nem muda o estado; torna não vigente a análise anterior. Pedido em SUBMETIDA_SIMULACAO: 409.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-Chave-Envio
+          in: header
+          required: false
+          description: Identificação da tentativa, 8 a 64 caracteres [A-Za-z0-9_-]; vale por pedido, para POST e PUT.
+          schema: { type: string, pattern: "^[A-Za-z0-9_-]{8,64}$" }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [arquivo, tipoDocumental]
+              properties:
+                arquivo: { type: string, format: binary, description: "PDF (até 5 páginas), JPEG ou PNG, até 5 MB" }
+                tipoDocumental: { $ref: "#/components/schemas/TipoDocumental" }
+      responses:
+        "200":
+          description: Repetição da mesma tentativa; documento já existente (nada novo foi gravado)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DocumentoEnviado" }
+        "201":
+          description: Documento novo no lugar do antigo; `Location` aponta para o documento NOVO
+          headers:
+            Location:
+              schema: { type: string, example: /solicitacoes/12/documentos/42 }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DocumentoEnviado" }
+        "400":
+          description: >
+            REQUISICAO_INVALIDA com `detalhes[].campo` = tipoDocumental, arquivo, arquivos ou chaveEnvio; PDF com mais
+            de 5 páginas, protegido por senha ou ilegível
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: >
+            CONFLITO_ESTADO (pedido submetido em simulação: "Este pedido já foi submetido e só pode ser consultado.") ou
+            CHAVE_ENVIO_REUTILIZADA (mesma chave com outro conteúdo ou tipo)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "413":
+          description: ARQUIVO_MUITO_GRANDE (acima de 5 MB)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "415":
+          description: TIPO_NAO_SUPORTADO (corpo que não é multipart/form-data ou conteúdo que não é PDF/JPEG/PNG) ou EXTENSAO_INCOMPATIVEL
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+    delete:
+      summary: Remove um documento do pedido próprio (RC-09)
+      description: >
+        Sem corpo. Revisão +1 (motivo DOCUMENTO_REMOVIDO); o documento some da lista e do download, a vaga é liberada e o
+        arquivo é apagado depois do commit; o registro fica como histórico. Repetir a remoção é 404 e não muda versão
+        nem contagem. Não inicia análise nem muda o estado; torna não vigente a análise anterior. Pedido em
+        SUBMETIDA_SIMULACAO: 409.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Documento removido; estado novo do conjunto documental
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RemocaoDocumento" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: CONFLITO_ESTADO (pedido submetido em simulação; só pode ser consultado)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -445,6 +573,13 @@ components:
         application/json:
           schema: { $ref: "#/components/schemas/Erro" }
   schemas:
+    RemocaoDocumento:
+      type: object
+      description: Estado do conjunto documental depois de remover um documento (RC-09). Não devolve o documento removido.
+      required: [versaoConjuntoDocumental, documentosDisponiveis]
+      properties:
+        versaoConjuntoDocumental: { type: integer, minimum: 2, example: 4 }
+        documentosDisponiveis: { type: integer, minimum: 0, maximum: 3, example: 2 }
     Protocolo:
       type: object
       required: [protocoloId, identificador, versao, localidade, especialidade, avisoFicticio, simulacao]

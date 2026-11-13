@@ -55,9 +55,15 @@ public final class ServidorDeTeste implements AutoCloseable {
     /** POST com corpo binario (envio multipart de arquivo). */
     public Resposta postBinario(String caminho, byte[] corpo, String contentType, Map<String, String> cabecalhos)
             throws Exception {
+        return enviarBinario("POST", caminho, corpo, contentType, cabecalhos);
+    }
+
+    /** Metodo qualquer (por exemplo {@code PUT}) com corpo binario (multipart de arquivo). */
+    public Resposta enviarBinario(String metodo, String caminho, byte[] corpo, String contentType,
+            Map<String, String> cabecalhos) throws Exception {
         HttpRequest.Builder b = builder(caminho, cabecalhos);
         b.header("Content-Type", contentType);
-        return enviar(b.POST(HttpRequest.BodyPublishers.ofByteArray(corpo)).build());
+        return enviar(b.method(metodo, HttpRequest.BodyPublishers.ofByteArray(corpo)).build());
     }
 
     /** Inicia a API de teste com chave do simulador e rotas de exemplo registradas pelo mecanismo real. */

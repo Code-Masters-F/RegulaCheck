@@ -22,13 +22,16 @@
 | `PROCESSANDO` | análise conclui com regra não verificável e sem pendente | `REQUER_CONFERENCIA` |
 | `PROCESSANDO` | análise conclui sem pendência | `SEM_PENDENCIAS_IDENTIFICADAS` |
 | `PROCESSANDO` | falha de processamento | `FALHA_ANALISE` |
-| `RASCUNHO` | enviar, substituir ou remover documento | `RASCUNHO` (revisão + 1) |
+| `RASCUNHO` | enviar, substituir ou remover documento (RC-08, RC-09) | `RASCUNHO` (revisão + 1; motivos `DOCUMENTO_ENVIADO`, `DOCUMENTO_SUBSTITUIDO` e `DOCUMENTO_REMOVIDO`) |
+| `RASCUNHO` | excluir o rascunho com confirmação (`DELETE /solicitacoes/{id}`, RC-09) | (pedido deixa de existir; revisões, documentos e arquivos saem junto) |
 | `RASCUNHO` | trocar o serviço (protocolo) por outro ativo (`PUT /solicitacoes/{id}`, RC-07) | `RASCUNHO` (revisão + 1, motivo `PROTOCOLO_ALTERADO`); salvar com o mesmo serviço não muda nada |
 | `COM_PENDENCIAS`, `REQUER_CONFERENCIA`, `SEM_PENDENCIAS_IDENTIFICADAS` | reenviar documento corrigido ou alterar dado relevante (nova revisão) | `PROCESSANDO` (revisão + 1; resultado anterior deixa de ser vigente) |
 | `FALHA_ANALISE` | tentar de novo ou reenviar documento | `PROCESSANDO` |
 | `PROCESSANDO` | alterar documento ou dado relevante durante o processamento | `PROCESSANDO` (revisão + 1; o resultado da revisão antiga é descartado e não publicado) |
 | `REQUER_CONFERENCIA` | conferência confirmada | `PROCESSANDO` |
 | `SEM_PENDENCIAS_IDENTIFICADAS` | submeter em simulação | `SUBMETIDA_SIMULACAO` |
+
+**Decisão da RC-09 (aberta para RC-13 e RC-16):** a linha acima que leva `COM_PENDENCIAS`, `REQUER_CONFERENCIA` e `SEM_PENDENCIAS_IDENTIFICADAS` a `PROCESSANDO` ao reenviar um documento corrigido descreve o fluxo de **análise e reenvio**, que ainda não existe. Remover ou substituir documento (RC-09) em pedido já analisado **aceita a mudança, cria a revisão seguinte, torna a análise vigente não vigente e mantém o estado**: nada é processado, então o pedido não vai a `PROCESSANDO`. Só `SUBMETIDA_SIMULACAO` recusa (409). Quem dispara a nova análise e a transição de estado é a história de análise/reenvio. Excluir só vale em `RASCUNHO`; pedidos já analisados não podem ser excluídos (409), para não perder o histórico de análise.
 
 **Proibidas:** qualquer estado → `SUBMETIDA_SIMULACAO` exceto a partir de `SEM_PENDENCIAS_IDENTIFICADAS`; `SUBMETIDA_SIMULACAO` → qualquer outro (final); `PROCESSANDO` → `SUBMETIDA_SIMULACAO`; alterações durante `PROCESSANDO` não são rejeitadas: iniciam nova revisão e o resultado da antiga não é publicado (decisão, ver tabela). Não existe volta a `RASCUNHO` depois do primeiro processamento; isso mantém a coerência com `docs/arquitetura.md` ("após correção/reenvio volta a PROCESSANDO").
 

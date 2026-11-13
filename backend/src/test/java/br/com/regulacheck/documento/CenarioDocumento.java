@@ -86,6 +86,56 @@ public final class CenarioDocumento implements AutoCloseable {
                 cabecalhos);
     }
 
+    /** Substitui um documento por outro arquivo (PUT multipart), com chave de tentativa opcional. */
+    public Resposta substituir(Map<String, String> auth, String pedidoId, String documentoId, String tipoDocumental,
+            String nomeArquivo, byte[] conteudo, String chaveEnvio) throws Exception {
+        MultipartTeste corpo = new MultipartTeste();
+        if (tipoDocumental != null) {
+            corpo.texto("tipoDocumental", tipoDocumental);
+        }
+        corpo.arquivo("arquivo", nomeArquivo, "application/octet-stream", conteudo);
+        Map<String, String> cabecalhos = new HashMap<>(auth);
+        if (chaveEnvio != null) {
+            cabecalhos.put("X-Chave-Envio", chaveEnvio);
+        }
+        return api.enviarBinario("PUT", "/solicitacoes/" + pedidoId + "/documentos/" + documentoId, corpo.corpo(),
+                corpo.contentType(), cabecalhos);
+    }
+
+    /** Remove um documento (DELETE). */
+    public Resposta remover(Map<String, String> auth, String pedidoId, String documentoId) throws Exception {
+        return api.enviar("DELETE", "/solicitacoes/" + pedidoId + "/documentos/" + documentoId, null, auth);
+    }
+
+    /** Exclui o rascunho (DELETE); {@code confirmacao} {@code null} nao envia o cabecalho de confirmacao. */
+    public Resposta excluir(Map<String, String> auth, String pedidoId, String confirmacao) throws Exception {
+        Map<String, String> cabecalhos = new HashMap<>(auth);
+        if (confirmacao != null) {
+            cabecalhos.put("X-Confirmar-Exclusao", confirmacao);
+        }
+        return api.enviar("DELETE", "/solicitacoes/" + pedidoId, null, cabecalhos);
+    }
+
+    /**
+     * Confere a integridade entre registro e arquivos (SC-004): todo documento disponivel com arquivo tem o arquivo
+     * na area privada, e todo arquivo na area privada pertence a um documento disponivel (nenhum orfao: nem de
+     * removido, nem de substituido, nem de pedido excluido). Linhas da carga sintetica nao tem arquivo.
+     */
+    public void conferirIntegridade() throws IOException {
+        java.util.Set<String> esperados = new java.util.TreeSet<>();
+        for (br.com.regulacheck.documento.entity.Documento d : cenario.documentos.todos()) {
+            if (d.caminhoInterno() != null) {
+                esperados.add(d.caminhoInterno().valor());
+            }
+        }
+        java.util.Set<String> existentes = new java.util.TreeSet<>();
+        try (Stream<Path> itens = Files.list(raiz)) {
+            itens.filter(Files::isRegularFile).map(p -> p.getFileName().toString()).forEach(existentes::add);
+        }
+        org.junit.jupiter.api.Assertions.assertEquals(esperados, existentes,
+                "arquivos na area privada devem ser exatamente os dos documentos disponiveis");
+    }
+
     /** @return quantos arquivos comuns existem na raiz da area privada (arquivos guardados e temporarios de gravacao) */
     public long arquivosGuardados() throws IOException {
         try (Stream<Path> itens = Files.list(raiz)) {

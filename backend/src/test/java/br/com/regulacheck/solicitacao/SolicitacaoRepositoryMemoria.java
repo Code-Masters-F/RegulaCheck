@@ -1,18 +1,23 @@
 package br.com.regulacheck.solicitacao;
 
+import br.com.regulacheck.armazenamento.IdInterno;
 import br.com.regulacheck.protocolo.entity.Protocolo;
 import br.com.regulacheck.solicitacao.entity.EstadoSolicitacao;
 import br.com.regulacheck.solicitacao.entity.MotivoRevisao;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
+import br.com.regulacheck.solicitacao.repository.ResultadoExclusao;
 import br.com.regulacheck.solicitacao.repository.ResultadoTroca;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepository;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.LongFunction;
 import java.util.function.LongToIntFunction;
 
 /**
@@ -40,6 +45,9 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
     private final Map<Long, List<RevisaoRegistrada>> revisoes = new LinkedHashMap<>();
     private long proximoId = 1;
     private LongToIntFunction contadorDeDocumentos = id -> 0;
+    private LongFunction<List<IdInterno>> apagadorDeDocumentos = id -> List.of();
+    private final Set<Long> pedidosComDependencias = new HashSet<>();
+    private RuntimeException falhaNaExclusao;
 
     @Override
     public synchronized Solicitacao criar(long pacienteId, Protocolo protocolo, Instant agora) {
@@ -125,12 +133,81 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
      * @return o pedido com a revisao nova
      */
     public synchronized Solicitacao incrementarPorDocumento(long id, Instant agora) {
+        return incrementarPorDocumento(id, MotivoRevisao.DOCUMENTO_ENVIADO, agora);
+    }
+
+    /**
+     * Incrementa a revisao do pedido por uma mudanca do conjunto documental (envio, substituicao ou remocao) e
+     * registra a revisao com o motivo informado. O estado do pedido nao muda.
+     *
+     * @param id pedido existente
+     * @param motivo motivo da revisao
+     * @param agora instante da mudanca
+     * @return o pedido com a revisao nova
+     */
+    public synchronized Solicitacao incrementarPorDocumento(long id, MotivoRevisao motivo, Instant agora) {
         Solicitacao atual = pedidos.get(id);
         Solicitacao nova = new Solicitacao(id, atual.pacienteId(), atual.protocolo(), atual.estado(),
                 atual.revisaoAtual() + 1, atual.criadaEm(), agora);
         pedidos.put(id, nova);
-        revisoes.get(id).add(new RevisaoRegistrada(nova.revisaoAtual(), MotivoRevisao.DOCUMENTO_ENVIADO, agora));
+        revisoes.get(id).add(new RevisaoRegistrada(nova.revisaoAtual(), motivo, agora));
         return comContagem(nova);
+    }
+
+    /**
+     * Faz a proxima {@link #excluirRascunho} lancar a falha informada, antes de qualquer alteracao (simula banco
+     * fora do ar na transacao de exclusao).
+     *
+     * @param falha excecao a lancar uma unica vez
+     */
+    public synchronized void falharNaProximaExclusao(RuntimeException falha) {
+        this.falhaNaExclusao = falha;
+    }
+
+    @Override
+    public synchronized ResultadoExclusao excluirRascunho(long id, long pacienteId) {
+        if (falhaNaExclusao != null) {
+            RuntimeException falha = falhaNaExclusao;
+            falhaNaExclusao = null;
+            throw falha;
+        }
+        Solicitacao atual = pedidos.get(id);
+        if (atual == null || atual.pacienteId() != pacienteId) {
+            return ResultadoExclusao.naoEncontrado();
+        }
+        if (atual.estado() == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+            return ResultadoExclusao.submetido();
+        }
+        if (atual.estado() != EstadoSolicitacao.RASCUNHO) {
+            return ResultadoExclusao.foraDeRascunho();
+        }
+        if (pedidosComDependencias.contains(id)) {
+            return ResultadoExclusao.comDependencias();
+        }
+        // Documentos, revisoes e pedido saem juntos (um so "commit" em memoria).
+        List<IdInterno> arquivos = apagadorDeDocumentos.apply(id);
+        revisoes.remove(id);
+        pedidos.remove(id);
+        return ResultadoExclusao.excluido(arquivos);
+    }
+
+    /**
+     * Liga o dobro de documentos a este: apagar o pedido apaga tambem os documentos dele e devolve os arquivos.
+     *
+     * @param apagador apaga os documentos (disponiveis e removidos) do pedido e devolve os arquivos
+     */
+    public synchronized void usarApagadorDeDocumentos(LongFunction<List<IdInterno>> apagador) {
+        this.apagadorDeDocumentos = apagador;
+    }
+
+    /**
+     * Simula algo ainda ligado ao pedido (chave estrangeira de uma historia futura): a exclusao passa a ser
+     * recusada com {@code COM_DEPENDENCIAS}.
+     *
+     * @param id pedido
+     */
+    public synchronized void impedirExclusao(long id) {
+        pedidosComDependencias.add(id);
     }
 
     private Solicitacao comContagem(Solicitacao pedido) {
