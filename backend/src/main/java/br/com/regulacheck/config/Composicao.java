@@ -10,13 +10,17 @@ import br.com.regulacheck.auth.controller.SessaoController;
 import br.com.regulacheck.auth.service.AutenticacaoService;
 import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
+import br.com.regulacheck.common.http.CabecalhosSegurosFiltro;
 import br.com.regulacheck.common.http.RotaNaoEncontradaController;
 import br.com.regulacheck.saude.SaudeController;
 import br.com.regulacheck.saude.SaudeRepositoryMemoria;
 import br.com.regulacheck.saude.SaudeService;
 import br.com.regulacheck.usuario.entity.Perfil;
+import jakarta.servlet.DispatcherType;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.function.Consumer;
+import org.eclipse.jetty.ee10.servlet.FilterHolder;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 
@@ -57,6 +61,9 @@ public final class Composicao {
     public static ServletContextHandler montar(Configuracao configuracao, Dependencias dependencias,
             Consumer<RotasPrivadas> extensao) {
         ServletContextHandler contexto = new ServletContextHandler("/");
+        // Cabecalhos de seguranca em todas as respostas (filtro apenas de cabecalho; nao decide acesso).
+        contexto.addFilter(new FilterHolder(new CabecalhosSegurosFiltro(ConfiguracaoDeCanal.ehHttps(configuracao))),
+                "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR));
 
         SaudeService saude = new SaudeService(new SaudeRepositoryMemoria());
         contexto.addServlet(new ServletHolder(new SaudeController(saude)), "/health");

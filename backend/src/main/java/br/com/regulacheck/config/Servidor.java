@@ -40,6 +40,7 @@ public final class Servidor {
      * @return servidor pronto para {@link #iniciar()}
      */
     public static Servidor criar(Configuracao configuracao) {
+        ConfiguracaoDeCanal.validar(configuracao); // antes de abrir o pool do banco
         BancoDados banco = BancoDados.criar(configuracao.banco());
         Dependencias reais = new Dependencias(new UsuarioRepositoryJdbc(banco), new SessaoRepositoryJdbc(banco),
                 Clock.systemUTC());
@@ -74,6 +75,8 @@ public final class Servidor {
 
     private static Servidor montar(Configuracao configuracao, Dependencias dependencias, BancoDados banco,
             Consumer<RotasPrivadas> extensao) {
+        // Recusa subir com URL publica remota sem https (execucao remota autenticada exige canal seguro).
+        ConfiguracaoDeCanal.validar(configuracao);
         Server servidor = new Server();
         ServerConnector conector = new ServerConnector(servidor);
         conector.setHost(configuracao.host());
@@ -99,7 +102,7 @@ public final class Servidor {
             servidor.start();
         } catch (Exception falha) {
             // Detalhe tecnico no log; a mensagem para quem executa e curta e acionavel.
-            LOG.error("Falha ao iniciar o servidor.", falha);
+            LOG.error("Falha ao iniciar o servidor.", br.com.regulacheck.common.log.RedatorDeLog.redigir(falha));
             throw new IOException("Nao foi possivel iniciar a API na porta " + conector.getPort()
                     + ". Verifique se a porta esta em uso ou defina SERVER_PORT.", falha);
         }

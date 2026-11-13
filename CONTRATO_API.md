@@ -1,6 +1,6 @@
 ## Contrato mínimo de API proposto
 
-Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas, assim como o **mecanismo de autorização por perfil e por dona** (RC-05, ver [docs/api/autorizacao.md](docs/api/autorizacao.md)); as demais rotas abaixo estão **planejadas** e, quando forem implementadas, devem cumprir a tabela de perfis ao final deste arquivo. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
+Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas, assim como o **mecanismo de autorização por perfil e por dona** (RC-05, ver [docs/api/autorizacao.md](docs/api/autorizacao.md)); as **proteções de entrada e de arquivos** (RC-06, ver [docs/api/protecoes.md](docs/api/protecoes.md): conferência por tipo real, extensão, tamanho e páginas, área privada, download seguro, texto puro, segredos e HTTPS) também estão implementadas como mecanismo; as demais rotas abaixo estão **planejadas** e, quando forem implementadas, devem cumprir a tabela de perfis ao final deste arquivo. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
 
 As rotas são uma proposta para manter um domínio só e orientar a implementação; ajustar nomes sem perder comportamentos.
 
@@ -15,8 +15,8 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | GET    | /solicitacoes/{id}                                    | Detalhes próprios                          |
 | PUT    | /solicitacoes/{id}                                    | Atualiza rascunho permitido                |
 | DELETE | /solicitacoes/{id}                                    | Exclui rascunho permitido                  |
-| POST   | /solicitacoes/{id}/documentos                         | Upload multipart autenticado               |
-| GET    | /solicitacoes/{id}/documentos/{docId}                 | Download protegido                         |
+| POST   | /solicitacoes/{id}/documentos                         | Upload multipart autenticado (até 3 arquivos, 5 MB cada, PDF até 5 páginas, JPEG/PNG; conferido pelo conteúdo, RC-06) |
+| GET    | /solicitacoes/{id}/documentos/{docId}                 | Download protegido (autenticado, só a dona, como anexo; RC-06) |
 | DELETE | /solicitacoes/{id}/documentos/{docId}                 | Remove documento antes da submissão        |
 | POST   | /solicitacoes/{id}/extracoes                          | Extrai arquivos da revisão atual           |
 | PUT    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | Registra conferência da transcrição        |

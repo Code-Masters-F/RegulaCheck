@@ -25,6 +25,7 @@
         <bcrypt.version>0.10.2</bcrypt.version>
         <ojdbc.version>23.26.4.0.0</ojdbc.version>
         <hikari.version>6.3.0</hikari.version>
+        <pdfbox.version>3.0.8</pdfbox.version>
         <main.class>br.com.regulacheck.RegulaCheckApplication</main.class>
     </properties>
 
@@ -64,6 +65,12 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikari.version}</version>
+        </dependency>
+        <!-- RC-06: contagem de paginas e deteccao de PDF protegido (somente leitura; ver research D2). -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

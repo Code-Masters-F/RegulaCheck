@@ -1,6 +1,7 @@
 package br.com.regulacheck.common.exception;
 
 import br.com.regulacheck.common.Json;
+import br.com.regulacheck.common.log.RedatorDeLog;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -52,7 +53,8 @@ public final class RespostaErro {
             return;
         }
         String id = UUID.randomUUID().toString().substring(0, 8);
-        LOG.error("Falha inesperada. idRastreamento={}", id, falha);
+        // A mensagem da excecao pode trazer segredos (URL de conexao, tokens); o log recebe a copia redigida.
+        LOG.error("Falha inesperada. idRastreamento={}", id, RedatorDeLog.redigir(falha));
         corpo(resposta, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new ErroPadrao(
                 "ERRO_INTERNO", "Ocorreu um erro inesperado. Tente novamente.", null, id));
     }

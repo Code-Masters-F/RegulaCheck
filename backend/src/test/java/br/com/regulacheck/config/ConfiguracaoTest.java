@@ -64,6 +64,27 @@ class ConfiguracaoTest {
     }
 
     @Test
+    void areaDeArquivosEUrlPublicaSaoOpcionaisEEscondidasNoToString() {
+        Configuracao sem = Configuracao.deMapa(Map.of());
+        assertFalse(sem.armazenamentoConfigurado());
+        assertEquals(null, sem.armazenamentoRaiz());
+        assertEquals(null, sem.urlPublica());
+
+        Configuracao vazia = Configuracao.deMapa(Map.of("DOCUMENT_STORAGE_PATH", "  ", "API_PUBLIC_URL", ""));
+        assertFalse(vazia.armazenamentoConfigurado());
+
+        Configuracao com = Configuracao.deMapa(Map.of("DOCUMENT_STORAGE_PATH", " /dados/privado-ficticio ",
+                "API_PUBLIC_URL", "https://demo-ficticia.exemplo.org"));
+        assertTrue(com.armazenamentoConfigurado());
+        assertEquals("/dados/privado-ficticio", com.armazenamentoRaiz());
+        assertEquals("https://demo-ficticia.exemplo.org", com.urlPublica());
+        String texto = com.toString();
+        assertFalse(texto.contains("privado-ficticio"));
+        assertFalse(texto.contains("demo-ficticia"));
+        assertTrue(texto.contains("armazenamento=configurado"));
+    }
+
+    @Test
     void construtorSimplesDeHostEPortaMantemOsPadroesDeSessao() {
         Configuracao c = new Configuracao("127.0.0.1", 0);
 
