@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.4.0
+  version: 0.5.0
   description: >
     Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
     Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
     derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
     extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; as rotas
     de envio e download ainda não existem.
-    Demais notas: Nesta etapa estão implementados GET /health e as rotas de
+    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07) e as rotas de
     autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
     caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
     dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
@@ -142,6 +142,145 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Erro"
+  /protocolos:
+    get:
+      summary: Serviços (protocolos acadêmicos fictícios) ativos que a paciente pode escolher (RC-07)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Serviços ativos; `itens` vazio quando não há nenhum
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListaProtocolos"
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes:
+    get:
+      summary: Lista os pedidos da paciente da sessão (RC-07)
+      description: Só os pedidos próprios, do mais recente ao mais antigo, no máximo 50 (sem paginação).
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Pedidos da paciente; `itens` vazio se não tiver nenhum
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListaSolicitacoes"
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+    post:
+      summary: Cria um rascunho ligado ao serviço escolhido (RC-07)
+      description: >
+        A paciente é a da sessão; campos extras (dono, estado, revisão) são ignorados. Cada chamada
+        bem-sucedida cria um pedido novo (sem deduplicação).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SolicitacaoRequest"
+      responses:
+        "201":
+          description: Rascunho criado na revisão 1
+          headers:
+            Location:
+              schema: { type: string, example: /solicitacoes/12 }
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solicitacao"
+        "400":
+          description: Corpo ou `protocoloId` inválido (REQUISICAO_INVALIDA, com `detalhes[].campo`)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "415":
+          description: Corpo que não é application/json (TIPO_NAO_SUPORTADO)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "422":
+          description: Serviço inexistente ou inativo (REGRA_DE_NEGOCIO, campo `protocoloId`)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Número decimal positivo devolvido pela criação; outro formato responde 404.
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    get:
+      summary: Reabre um pedido próprio (RC-07)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Dados persistidos do pedido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solicitacao"
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+    put:
+      summary: Troca o serviço de um rascunho (RC-07)
+      description: >
+        Só em RASCUNHO. Serviço diferente: revisão +1, `atualizadaEm` atualizado e revisão registrada com o
+        motivo PROTOCOLO_ALTERADO. Mesmo serviço: 200 sem alterar nada. A dona é conferida antes do corpo.
+        Alterações simultâneas do mesmo rascunho são serializadas.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SolicitacaoRequest"
+      responses:
+        "200":
+          description: Pedido no estado final
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solicitacao"
+        "400":
+          description: Corpo ou `protocoloId` inválido (REQUISICAO_INVALIDA)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: O pedido já saiu de RASCUNHO (CONFLITO_ESTADO)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "415":
+          description: Corpo que não é application/json (TIPO_NAO_SUPORTADO)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "422":
+          description: Serviço inexistente ou inativo (REGRA_DE_NEGOCIO, campo `protocoloId`)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -155,7 +294,84 @@ components:
       description: >
         Chave do simulador de sensores (variável IOT_API_KEY), válida somente na rota de telemetria
         (planejada). Em qualquer outra rota responde 403; o valor real nunca é versionado.
+  responses:
+    NaoAutenticado:
+      description: Sessão ausente, expirada ou encerrada (NAO_AUTENTICADO)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Erro" }
+    AcessoNegado:
+      description: Perfil sem permissão, por exemplo administrador ou chave do simulador (ACESSO_NEGADO)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Erro" }
+    NaoEncontrado:
+      description: Pedido inexistente, de outra paciente ou id inválido (NAO_ENCONTRADO, resposta idêntica)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Erro" }
+    Indisponivel:
+      description: Banco indisponível (DEPENDENCIA_INDISPONIVEL)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Erro" }
   schemas:
+    Protocolo:
+      type: object
+      required: [protocoloId, identificador, versao, localidade, especialidade, avisoFicticio, simulacao]
+      properties:
+        protocoloId: { type: string, example: PROTOCOLO-ACADEMICO-FICTICIO-v0.1 }
+        identificador: { type: string, example: PROTOCOLO-ACADEMICO-FICTICIO }
+        versao: { type: string, example: v0.1 }
+        localidade: { type: string, example: Município Exemplo }
+        especialidade: { type: string, example: Consulta ambulatorial em cardiologia }
+        avisoFicticio: { type: string }
+        simulacao: { type: boolean, enum: [true] }
+    ListaProtocolos:
+      type: object
+      required: [itens]
+      properties:
+        itens:
+          type: array
+          items: { $ref: "#/components/schemas/Protocolo" }
+    SolicitacaoRequest:
+      type: object
+      required: [protocoloId]
+      properties:
+        protocoloId:
+          type: string
+          maxLength: 100
+          description: Serviço escolhido, valor de `protocoloId` devolvido por GET /protocolos. Deve ser texto JSON.
+          example: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
+    Solicitacao:
+      type: object
+      required: [id, protocoloId, servico, estado, revisao, criadaEm, atualizadaEm, simulacao]
+      properties:
+        id: { type: string, description: Número decimal opaco, example: "12" }
+        protocoloId: { type: string }
+        servico:
+          type: object
+          required: [localidade, especialidade, avisoFicticio]
+          properties:
+            localidade: { type: string }
+            especialidade: { type: string }
+            avisoFicticio: { type: string }
+        estado:
+          type: string
+          enum: [RASCUNHO, PROCESSANDO, REQUER_CONFERENCIA, COM_PENDENCIAS, SEM_PENDENCIAS_IDENTIFICADAS, FALHA_ANALISE, SUBMETIDA_SIMULACAO]
+          description: Na RC-07 só RASCUNHO é produzido.
+        revisao: { type: integer, minimum: 1 }
+        criadaEm: { type: string, format: date-time }
+        atualizadaEm: { type: string, format: date-time }
+        simulacao: { type: boolean, enum: [true] }
+    ListaSolicitacoes:
+      type: object
+      required: [itens, limite]
+      properties:
+        itens:
+          type: array
+          items: { $ref: "#/components/schemas/Solicitacao" }
+        limite: { type: integer, example: 50 }
     Saude:
       type: object
       required: [status]

@@ -33,10 +33,19 @@ public final class Propriedade {
      *     veio vazia, seja porque o recurso nao existe ou porque pertence a outra paciente
      */
     public static <T> T exigir(Optional<T> recurso, SessaoAutenticada sessao) {
-        return recurso.orElseThrow(() -> {
-            LOG.info("Recurso nao encontrado ou de outra dona. usuarioId={} perfil={} codigo=NAO_ENCONTRADO",
-                    sessao.usuarioId(), sessao.perfil());
-            return Erros.naoEncontrado();
-        });
+        return recurso.orElseThrow(() -> naoEncontrada(sessao));
+    }
+
+    /**
+     * Monta o 404 padrao (e o registra no log) para quem decide a propriedade dentro de uma operacao atomica do
+     * repositorio, como a troca de servico, em vez de usar a busca separada de {@link #exigir}.
+     *
+     * @param sessao conta autenticada que fez o pedido (so o identificador tecnico vai para o log)
+     * @return o mesmo 404 {@code NAO_ENCONTRADO} de {@link #exigir}, para ser lancado por quem chamou
+     */
+    public static br.com.regulacheck.common.exception.ExcecaoNegocio naoEncontrada(SessaoAutenticada sessao) {
+        LOG.info("Recurso nao encontrado ou de outra dona. usuarioId={} perfil={} codigo=NAO_ENCONTRADO",
+                sessao.usuarioId(), sessao.perfil());
+        return Erros.naoEncontrado();
     }
 }

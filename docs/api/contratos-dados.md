@@ -1,31 +1,63 @@
 # Contratos de dados: solicitação, upload, análise e pendência
 
-Formato JSON, campos em camelCase, instantes em ISO-8601 UTC. Todos os exemplos são fictícios. A paciente é identificada pela sessão autenticada, nunca por campo no corpo. Rotas completas em [`CONTRATO_API.md`](../../CONTRATO_API.md); além de `GET /health`, só as rotas `/auth/*` (RC-04) estão implementadas; as demais são planejadas.
+Formato JSON, campos em camelCase, instantes em ISO-8601 UTC. Todos os exemplos são fictícios. A paciente é identificada pela sessão autenticada, nunca por campo no corpo. Rotas completas em [`CONTRATO_API.md`](../../CONTRATO_API.md); além de `GET /health`, estão implementadas as rotas `/auth/*` (RC-04), `GET /protocolos` e o rascunho da solicitação (`GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}`, RC-07); as demais são planejadas. Fonte detalhada da RC-07: [specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md](../../specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md).
+
+## Serviços disponíveis (RC-07)
+`GET /protocolos` (200), só `PACIENTE`. Lista os serviços ativos; no MVP existe um, o protocolo acadêmico fictício.
+
+```json
+{
+  "itens": [
+    {
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "identificador": "PROTOCOLO-ACADEMICO-FICTICIO",
+      "versao": "v0.1",
+      "localidade": "Município Exemplo",
+      "especialidade": "Consulta ambulatorial em cardiologia",
+      "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.",
+      "simulacao": true
+    }
+  ]
+}
+```
+Sem nenhum serviço ativo a resposta é `{ "itens": [] }` (200). `protocoloId` é `identificador` + `-` + `versao`; o identificador interno do banco não sai pela API.
 
 ## Solicitação
-`POST /solicitacoes` (201) · `GET /solicitacoes/{id}` (200)
+`POST /solicitacoes` (201, com `Location: /solicitacoes/{id}`) · `GET /solicitacoes` (200) · `GET /solicitacoes/{id}` (200) · `PUT /solicitacoes/{id}` (200). Todas só `PACIENTE`; a paciente é sempre a da sessão.
 
-Entrada (criação): `{ "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1" }`
+Entrada (criação e troca de serviço): `{ "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1" }`. Outros campos enviados (dono, estado, revisão) são ignorados e nunca lidos. `protocoloId` deve ser texto JSON, não vazio e com até 100 caracteres.
 
 Saída:
 ```json
 {
-  "id": "sol-0001",
+  "id": "12",
   "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+  "servico": {
+    "localidade": "Município Exemplo",
+    "especialidade": "Consulta ambulatorial em cardiologia",
+    "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+  },
   "estado": "RASCUNHO",
   "revisao": 1,
-  "criadaEm": "2026-11-12T12:00:00Z",
-  "atualizadaEm": "2026-11-12T12:00:00Z",
+  "criadaEm": "2026-11-13T12:00:00Z",
+  "atualizadaEm": "2026-11-13T12:00:00Z",
   "simulacao": true
 }
 ```
 | Campo | Tipo | Obrigatório | Observação |
 |---|---|---|---|
-| `id` | string | sim (saída) | gerado pelo servidor |
-| `protocoloId` | string | sim | protocolo ativo (fictício) |
-| `estado` | enum | sim (saída) | ver [estados-e-revisoes.md](estados-e-revisoes.md) |
-| `revisao` | inteiro ≥ 1 | sim (saída) | incrementa a cada alteração relevante |
+| `id` | string | sim (saída) | número decimal opaco gerado pelo servidor (ex.: `"12"`); id fora de `^[1-9][0-9]{0,17}$` responde 404 |
+| `protocoloId` | string | sim | serviço ativo (fictício); inexistente ou inativo → 422 |
+| `servico` | objeto | sim (saída) | localidade, especialidade e aviso de protocolo fictício |
+| `estado` | enum | sim (saída) | ver [estados-e-revisoes.md](estados-e-revisoes.md); na RC-07 só `RASCUNHO` é produzido |
+| `revisao` | inteiro ≥ 1 | sim (saída) | incrementa a cada alteração relevante (na RC-07: trocar para outro serviço) |
+| `criadaEm`, `atualizadaEm` | string | sim (saída) | ISO-8601 UTC, em milissegundos |
 | `simulacao` | booleano | sim (saída) | sempre `true`; indica envio apenas simulado |
+
+- `GET /solicitacoes`: `{ "itens": [ … ], "limite": 50 }`, só os pedidos da paciente, do mais recente ao mais antigo (`criadaEm` e depois `id`, decrescente), no máximo 50; vazio é 200 com `itens` vazio.
+- `PUT /solicitacoes/{id}`: só em `RASCUNHO`. Serviço diferente → `revisao` +1, `atualizadaEm` = agora e revisão registrada com o motivo `PROTOCOLO_ALTERADO`; mesmo serviço → 200 sem mudar `revisao` nem `atualizadaEm`. Fora de rascunho → 409 `CONFLITO_ESTADO`. A dona é conferida antes do corpo (404 antes de 400). Alterações simultâneas do mesmo rascunho são serializadas no banco (`SELECT … FOR UPDATE`).
+- Cada `POST` bem-sucedido cria um pedido novo: o servidor **não** deduplica toques duplos; a proteção é do cliente.
+- Erros: 400 `REQUISICAO_INVALIDA` (corpo ilegível/grande, `protocoloId` ausente, nulo, em branco, não textual ou longo, com `detalhes[].campo = "protocoloId"`), 401, 403, 404, 405, 409, 415, 422 `REGRA_DE_NEGOCIO` (serviço inexistente/inativo, mesma resposta), 503. Sem dado clínico: o rascunho guarda só o serviço escolhido.
 
 ## Upload de documento
 `POST /solicitacoes/{id}/documentos` (201), multipart com um arquivo por requisição.

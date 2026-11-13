@@ -5,6 +5,8 @@ import br.com.regulacheck.auth.service.AutenticacaoService;
 import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
 import br.com.regulacheck.config.Dependencias;
+import br.com.regulacheck.protocolo.ProtocoloRepositoryMemoria;
+import br.com.regulacheck.solicitacao.SolicitacaoRepositoryMemoria;
 import br.com.regulacheck.usuario.entity.Perfil;
 import br.com.regulacheck.usuario.entity.Usuario;
 import java.time.Duration;
@@ -27,6 +29,8 @@ public final class CenarioAuth {
 
     public final UsuarioRepositoryMemoria usuarios = new UsuarioRepositoryMemoria();
     public final SessaoRepositoryMemoria sessoes = new SessaoRepositoryMemoria();
+    public final ProtocoloRepositoryMemoria protocolos = new ProtocoloRepositoryMemoria();
+    public final SolicitacaoRepositoryMemoria solicitacoes = new SolicitacaoRepositoryMemoria();
     public final RelogioFixo relogio = new RelogioFixo(Instant.parse("2026-11-12T20:00:00Z"));
     public final ContadorDeVerificacoes verificador = new ContadorDeVerificacoes();
     public final GeradorToken gerador = new GeradorToken();
@@ -56,11 +60,12 @@ public final class CenarioAuth {
         usuarios.adicionar(new Usuario(2, EMAIL_B, "Paciente B (ficticia)", hash, Perfil.PACIENTE, true));
         usuarios.adicionar(new Usuario(3, EMAIL_INATIVA, "Conta Inativa", hash, Perfil.PACIENTE, false));
         usuarios.adicionar(new Usuario(4, EMAIL_ADMIN, "Administrador (ficticio)", hash, Perfil.ADMINISTRADOR, true));
+        protocolos.adicionar(ProtocoloRepositoryMemoria.padrao(), true);
         this.servico = new AutenticacaoService(usuarios, sessoes, verificador, gerador, relogio, TTL);
     }
 
     /** @return as dependencias para montar o servidor com este cenario */
     public Dependencias dependencias() {
-        return new Dependencias(usuarios, sessoes, relogio);
+        return new Dependencias(usuarios, sessoes, protocolos, solicitacoes, relogio);
     }
 }

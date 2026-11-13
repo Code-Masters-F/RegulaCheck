@@ -13,7 +13,7 @@ Verificador de completude documental de encaminhamentos (MVP acadêmico, **dados
 Detalhes e pendências em [docs/decisoes.md](docs/decisoes.md). Recorte e regras do demonstrador em [docs/protocolo-academico.md](docs/protocolo-academico.md); tecnologias e limitações em [docs/escopo-e-limitacoes.md](docs/escopo-e-limitacoes.md).
 
 ## Estado real
-A base técnica de `backend/` já está em Java puro (Jetty + Servlet, sem Spring/JPA) e expõe apenas `GET /health`. Ainda **não há** entidades de negócio, banco Oracle conectado, autenticação, mobile nem simulador implementados. Os contratos de dados, erros e estados estão em [docs/api](docs/api/README.md).
+A base técnica de `backend/` já está em Java puro (Jetty + Servlet, sem Spring/JPA) e expõe `GET /health`, a autenticação (`/auth/*`), o catálogo de serviços (`GET /protocolos`) e o rascunho da solicitação (`/solicitacoes`, RC-07). Dentro do código estão implementados e verificados com repositórios em memória; a RC-07 também foi verificada em 13/11/2026 contra o Oracle da faculdade, na conta usada pelo grupo, com o script `database/scripts/06_motivo_revisao_protocolo.sql` aplicado (ver [docs/decisoes.md](docs/decisoes.md)). Ainda **não há** documentos, extração, análise, mobile nem simulador implementados. Os contratos de dados, erros e estados estão em [docs/api](docs/api/README.md).
 
 ## Executar (verificado em 12/11/2026)
 Pré-requisito: JDK 21+. A partir de `backend/` (sem banco e sem variáveis):
