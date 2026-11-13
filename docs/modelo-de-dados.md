@@ -48,7 +48,7 @@ Convenções: `PK` chave primária · `FK` estrangeira · `UK` única · `NN` n�
 `ID` (PK) · `PACIENTE_ID` (FK → RC_USUARIO, NN) · `PROTOCOLO_ID` (FK, NN) · `ESTADO` (NN; os 7 estados) · `REVISAO_ATUAL` (NN, ≥ 1) · `CRIADA_EM` · `ATUALIZADA_EM`.
 
 ### RC_REVISAO
-PK composta (`SOLICITACAO_ID` FK, `NUMERO` ≥ 1) · `MOTIVO` (`CRIACAO`, `DOCUMENTO_ENVIADO`, `DOCUMENTO_SUBSTITUIDO`, `DOCUMENTO_REMOVIDO`, `CONFERENCIA_ALTERADA`) · `CRIADA_EM`.
+PK composta (`SOLICITACAO_ID` FK, `NUMERO` ≥ 1) · `MOTIVO` (`CRIACAO`, `DOCUMENTO_ENVIADO`, `DOCUMENTO_SUBSTITUIDO`, `DOCUMENTO_REMOVIDO`, `CONFERENCIA_ALTERADA`, `PROTOCOLO_ALTERADO`) · `CRIADA_EM`. `PROTOCOLO_ALTERADO` (RC-07) registra a troca de serviço de um rascunho; bancos criados antes da RC-07 precisam do script aditivo `06_motivo_revisao_protocolo.sql`.
 
 ### RC_DOCUMENTO
 `ID` (PK) · (`SOLICITACAO_ID`, `REVISAO_ENVIO`) FK → RC_REVISAO · `REVISAO_REMOCAO` (nula enquanto ativo; FK composta; `CHECK` > `REVISAO_ENVIO`) · `NOME_ORIGINAL` · `TIPO` (`PDF`/`JPEG`/`PNG`) · `TAMANHO_BYTES` (1 a 5 242 880) · `PAGINAS` (≥ 1, ≤ 5 para PDF) · `CAMINHO_INTERNO` (UK; nome seguro gerado pelo sistema, nunca o nome do usuário) · `ENVIADO_EM`.

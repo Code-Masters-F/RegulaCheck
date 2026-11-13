@@ -1,7 +1,9 @@
 -- =============================================================================
 -- RegulaCheck - 04_testes_restricoes.sql  (RC-03)
--- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 12 casos tenta uma
+-- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 14 casos tenta uma
 --              violacao e confere o codigo ORA esperado; imprime "OK" ou "FALHOU".
+--              Os casos 13 e 14 (RC-07) exigem o motivo PROTOCOLO_ALTERADO: em banco criado
+--              antes da RC-07, rode antes o 06_motivo_revisao_protocolo.sql.
 -- Ordem      : 4o script, depois do 01 e do 02 (usa os dados da carga como referencia).
 -- Efeito     : NAO DEIXA DADOS. Cada caso termina com ROLLBACK, e o script confere no fim
 --              que a contagem de linhas voltou ao valor da carga original.
@@ -153,6 +155,20 @@ BEGIN
         VALUES (v_an_novo, v_regra, 'PENDENTE', 'x', 'PACIENTE');
         confere('pendencia de tipo diferente do resultado', -2291, 0);
     EXCEPTION WHEN OTHERS THEN confere('pendencia de tipo diferente do resultado', -2291, SQLCODE);
+    END;
+
+    -- 13. (RC-07) Motivo PROTOCOLO_ALTERADO deve ser ACEITO (codigo 0 = nenhum erro = esperado aqui)
+    BEGIN
+        INSERT INTO RC_REVISAO (SOLICITACAO_ID, NUMERO, MOTIVO) VALUES (v_sol_rasc, 998, 'PROTOCOLO_ALTERADO');
+        confere('motivo PROTOCOLO_ALTERADO aceito', 0, 0);
+    EXCEPTION WHEN OTHERS THEN confere('motivo PROTOCOLO_ALTERADO aceito', 0, SQLCODE);
+    END;
+
+    -- 14. (RC-07) Motivo inventado continua recusado pela restricao RC_REVISAO_CK_MOTIVO
+    BEGIN
+        INSERT INTO RC_REVISAO (SOLICITACAO_ID, NUMERO, MOTIVO) VALUES (v_sol_rasc, 999, 'MOTIVO_INVENTADO');
+        confere('motivo de revisao inventado', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('motivo de revisao inventado', -2290, SQLCODE);
     END;
 
     -- Conferencia final: nenhuma linha restante (total da carga original = 77).

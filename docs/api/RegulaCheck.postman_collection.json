@@ -24,6 +24,10 @@
     {
       "key": "chaveSimulador",
       "value": ""
+    },
+    {
+      "key": "solicitacaoId",
+      "value": ""
     }
   ],
   "item": [
@@ -116,6 +120,119 @@
           }
         ],
         "url": "{{baseUrl}}/auth/sessao"
+      }
+    },
+    {
+      "name": "RC-07 Servicos disponiveis (200; 403 para administrador)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/protocolos"
+      }
+    },
+    {
+      "name": "RC-07 Criar rascunho (201 com Location; guarda em {{solicitacaoId}})",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) { pm.collectionVariables.set('solicitacaoId', pm.response.json().id); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"protocoloId\":\"PROTOCOLO-ACADEMICO-FICTICIO-v0.1\"}"
+        }
+      }
+    },
+    {
+      "name": "RC-07 Criar rascunho com servico inexistente (422 REGRA_DE_NEGOCIO)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"protocoloId\":\"NAO-EXISTE-v1\"}"
+        }
+      }
+    },
+    {
+      "name": "RC-07 Meus pedidos (200; ate 50, mais recentes primeiro)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes"
+      }
+    },
+    {
+      "name": "RC-07 Reabrir pedido (200; 404 se for de outra paciente ou nao existir)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}"
+      }
+    },
+    {
+      "name": "RC-07 Trocar servico do rascunho (200; revisao +1 se mudou; 409 se ja saiu de RASCUNHO)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"protocoloId\":\"PROTOCOLO-ACADEMICO-FICTICIO-v0.1\"}"
+        }
       }
     }
   ]

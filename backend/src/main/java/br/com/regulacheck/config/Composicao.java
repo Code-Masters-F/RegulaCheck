@@ -12,7 +12,11 @@ import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
 import br.com.regulacheck.common.http.CabecalhosSegurosFiltro;
 import br.com.regulacheck.common.http.RotaNaoEncontradaController;
+import br.com.regulacheck.protocolo.controller.ProtocoloController;
+import br.com.regulacheck.protocolo.service.ProtocoloService;
 import br.com.regulacheck.saude.SaudeController;
+import br.com.regulacheck.solicitacao.controller.SolicitacaoController;
+import br.com.regulacheck.solicitacao.service.SolicitacaoService;
 import br.com.regulacheck.saude.SaudeRepositoryMemoria;
 import br.com.regulacheck.saude.SaudeService;
 import br.com.regulacheck.usuario.entity.Perfil;
@@ -78,6 +82,12 @@ public final class Composicao {
                 new SimuladorFiltro(chaveSimulador, autenticacao));
         rotas.registrar("/auth/sessao", new SessaoController(), Perfil.PACIENTE, Perfil.ADMINISTRADOR);
         rotas.registrar("/auth/logout", new LogoutController(autenticacao), Perfil.PACIENTE, Perfil.ADMINISTRADOR);
+        // RC-07: servicos disponiveis e rascunho de solicitacao (somente PACIENTE; dona conferida no Service).
+        ProtocoloService protocolos = new ProtocoloService(dependencias.protocolos());
+        rotas.registrar("/protocolos", new ProtocoloController(protocolos), Perfil.PACIENTE);
+        SolicitacaoService solicitacoes = new SolicitacaoService(protocolos, dependencias.solicitacoes(),
+                dependencias.relogio());
+        rotas.registrar("/solicitacoes/*", new SolicitacaoController(solicitacoes), Perfil.PACIENTE);
         extensao.accept(rotas);
 
         // Rota coringa: qualquer caminho sem controller devolve 404 no formato padrao.

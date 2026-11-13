@@ -27,11 +27,11 @@ Toda resposta de erro tem o mesmo corpo, com `Content-Type: application/json`:
 | 403 | `ACESSO_NEGADO` | identidade válida, mas o perfil não pode usar a rota (ex.: administrador em recurso individual de paciente, paciente em rota administrativa, chave do simulador fora da telemetria, conta na telemetria). Mensagem fixa: "Voce nao tem permissao para esta operacao." (RC-05) |
 | 404 | `NAO_ENCONTRADO` | recurso inexistente **ou** de outra paciente, sessão de captura inexistente ou encerrada, identificador ilegível, rota inexistente. Corpo idêntico em todos os casos; mensagem fixa: "Recurso nao encontrado." (RC-05) |
 | 405 | `METODO_NAO_PERMITIDO` | método HTTP não suportado pela rota |
-| 409 | `CONFLITO_ESTADO` | operação incompatível com o estado ou a revisão atual |
+| 409 | `CONFLITO_ESTADO` | operação incompatível com o estado ou a revisão atual (RC-07: `PUT /solicitacoes/{id}` em pedido que já saiu de `RASCUNHO`; mensagem "Este pedido não pode mais ser alterado.") |
 | 413 | `ARQUIVO_MUITO_GRANDE` | arquivo acima de 5 MB (a leitura para no limite, sem confiar no tamanho declarado). Corpo JSON grande demais **não** usa 413: segue 400 (RC-04) |
 | 415 | `TIPO_NAO_SUPORTADO` | dois usos: corpo de rota JSON que não é `application/json` (RC-04) e arquivo cujo conteúdo real não é PDF/JPEG/PNG (RC-06); a mensagem diferencia |
 | 415 | `EXTENSAO_INCOMPATIVEL` | extensão do arquivo ausente, não permitida ou diferente do conteúdo real (RC-06) |
-| 422 | `REGRA_DE_NEGOCIO` | opcional: violação de regra (ex.: submeter com pendências) |
+| 422 | `REGRA_DE_NEGOCIO` | violação de regra de negócio com a entrada já bem formada. Em uso desde a RC-07: serviço (`protocoloId`) inexistente ou inativo em `POST/PUT /solicitacoes`, com `detalhes[].campo = "protocoloId"` e a mesma resposta para os dois casos. Previsto também para submeter com pendências |
 | 500 | `ERRO_INTERNO` | falha inesperada; mensagem genérica, detalhe só no log |
 | 502/503 | `DEPENDENCIA_INDISPONIVEL` | banco ou adaptador indisponível |
 

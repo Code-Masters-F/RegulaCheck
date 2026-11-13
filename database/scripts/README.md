@@ -11,11 +11,12 @@ Scripts para **Oracle 19c** (SQL Developer, SQLcl ou SQL*Plus). `;` encerra inst
 | 1 | [`01_criar_esquema.sql`](01_criar_esquema.sql) | Cria as 12 tabelas `RC_*`, restrições e índices | Só cria; falha com ORA-00955 se já existir |
 | 2 | [`02_carga_sintetica.sql`](02_carga_sintetica.sql) | Insere 3 contas, o protocolo v0.1, as 6 regras e 4 pedidos de exemplo | Só insere; bloco único, tudo ou nada |
 | 3 | [`03_consultas_uso.sql`](03_consultas_uso.sql) | 6 consultas com junção e agregação | Somente leitura |
-| 4 | [`04_testes_restricoes.sql`](04_testes_restricoes.sql) | Tenta 12 violações e confere que o banco recusa | Não deixa dados (`ROLLBACK`) |
+| 4 | [`04_testes_restricoes.sql`](04_testes_restricoes.sql) | Tenta 14 violações e confere que o banco recusa (os casos 13 e 14, da RC-07, exigem o motivo `PROTOCOLO_ALTERADO`) | Não deixa dados (`ROLLBACK`) |
 | 5 | [`05_sessao_login.sql`](05_sessao_login.sql) | (RC-04) Cria `RC_SESSAO_LOGIN`, onde a API guarda as sessões de login (só o hash do token) | Só cria; exige o `01_`; falha com ORA-00955 se já existir |
+| 6 | [`06_motivo_revisao_protocolo.sql`](06_motivo_revisao_protocolo.sql) | (RC-07) Recria `RC_REVISAO_CK_MOTIVO` aceitando `PROTOCOLO_ALTERADO` (troca de serviço do rascunho). **Só para banco criado antes da RC-07**; o `01_` atual já traz o motivo. Sem ele a troca de serviço falha ao registrar a revisão (ORA-02290) | Aditivo: nenhuma linha muda; contém `DROP CONSTRAINT` seguido de `ADD CONSTRAINT` (se o `ADD` falhar, rode-o de novo antes de usar a API) |
 | 90 | [`90_limpeza_DESTRUTIVA.sql`](90_limpeza_DESTRUTIVA.sql) | **Apaga** as tabelas `RC_*` (as 12 da RC-03 e `RC_SESSAO_LOGIN`) | **DESTRUTIVO**; só roda com confirmação explícita |
 
-Nenhum script, exceto o `90_`, contém `DROP`, `TRUNCATE` ou `DELETE`. O `90_` nunca é chamado pelos outros e, por padrão, falha sem apagar nada (ORA-20001): para permitir, troque `'NAO'` por `'SIM'` na linha `<<CONFIRMACAO>>`. Ele cita as 13 tabelas `RC_*` (12 da RC-03 e `RC_SESSAO_LOGIN` da RC-04) uma a uma e não toca em `PEQUENOVAREJO`, `VENDA` ou qualquer outro objeto.
+Nenhum script, exceto o `90_`, contém `DROP TABLE`, `TRUNCATE` ou `DELETE`; o `06_` tem apenas `DROP CONSTRAINT` de uma restrição que ele recria na instrução seguinte. O `90_` nunca é chamado pelos outros e, por padrão, falha sem apagar nada (ORA-20001): para permitir, troque `'NAO'` por `'SIM'` na linha `<<CONFIRMACAO>>`. Ele cita as 13 tabelas `RC_*` (12 da RC-03 e `RC_SESSAO_LOGIN` da RC-04) uma a uma e não toca em `PEQUENOVAREJO`, `VENDA` ou qualquer outro objeto.
 
 Para ver as saídas do `04_` e da carga, habilite a saída do servidor (SQL Developer: Exibir > Saída DBMS; SQLcl/SQL*Plus: `SET SERVEROUTPUT ON`).
 

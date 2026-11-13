@@ -1,6 +1,8 @@
 package br.com.regulacheck.config;
 
 import br.com.regulacheck.auth.repository.SessaoRepositoryJdbc;
+import br.com.regulacheck.protocolo.repository.ProtocoloRepositoryJdbc;
+import br.com.regulacheck.solicitacao.repository.SolicitacaoRepositoryJdbc;
 import br.com.regulacheck.usuario.repository.UsuarioRepositoryJdbc;
 import java.io.IOException;
 import br.com.regulacheck.auth.autorizacao.RotasPrivadas;
@@ -43,6 +45,7 @@ public final class Servidor {
         ConfiguracaoDeCanal.validar(configuracao); // antes de abrir o pool do banco
         BancoDados banco = BancoDados.criar(configuracao.banco());
         Dependencias reais = new Dependencias(new UsuarioRepositoryJdbc(banco), new SessaoRepositoryJdbc(banco),
+                new ProtocoloRepositoryJdbc(banco), new SolicitacaoRepositoryJdbc(banco),
                 Clock.systemUTC());
         return montar(configuracao, reais, banco, rotas -> { });
     }
