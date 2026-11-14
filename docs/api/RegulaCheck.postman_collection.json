@@ -44,6 +44,10 @@
     {
       "key": "extracaoId",
       "value": ""
+    },
+    {
+      "key": "analiseId",
+      "value": ""
     }
   ],
   "item": [
@@ -606,6 +610,45 @@
           "raw": "{\"decisoes\":[{\"documentoId\":\"{{documentoId}}\",\"codigo\":\"AUTORIZACAO_ASSINADA\",\"decisao\":\"CONFIRMADA\"}]}"
         },
         "description": "Lote tudo ou nada: nenhuma decisao do corpo e gravada. Leitura desatualizada responde 409 e pedido submetido tambem."
+      }
+    },
+    {
+      "name": "RC-13 Pedir analise do pedido (201 analise gravada e vigente; 200 se a vigente ja vale; 409 ANALISE_EM_ANDAMENTO com Retry-After; 503 ANALISE_INDISPONIVEL)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/analises",
+        "description": "Sem corpo. Sincrono: o pedido fica em PROCESSANDO so enquanto a analise roda e vai ao resultado geral. Leitura simulada (simulada: true); sem resumo por IA. Exige leitura da versao atual (409 'Leia os documentos antes de pedir a análise.'). Repetir sem mudanca nos documentos ou na conferencia devolve a mesma analise (200)."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201 || pm.response.code === 200) { pm.collectionVariables.set('analiseId', pm.response.json().id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "RC-13 Historico de analises (200; vigenteId marca a vigente; execucao EM_ANDAMENTO ou INTERROMPIDA so em PROCESSANDO)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/analises",
+        "description": "Todas as analises do pedido, da mais recente para a mais antiga (ate 50). Substituir/remover documento ou mudar uma decisao de conferencia tira a vigencia (vigenteId some) sem apagar a analise. Pedido nunca analisado: lista vazia."
       }
     }
   ]

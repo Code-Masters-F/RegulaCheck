@@ -676,6 +676,72 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/analises:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: Pede a análise do pedido próprio e grava o resultado (RC-13; leitura SIMULADA)
+      description: >
+        Síncrono, sem corpo. Avalia as regras da versão do protocolo do pedido sobre a leitura atual e a conferência
+        atual (RC-12) e grava a análise inteira (resultados, pendências com motivo e evidências), que vira a vigente;
+        o pedido vai ao resultado geral. Enquanto roda, o pedido fica em PROCESSANDO (limite de 1 minuto). Só grava se
+        a revisão e o instante da conferência ainda forem os avaliados. Repetir sem mudança devolve a vigente (200).
+        Sem resumo por IA (RC-14). Ordem: 401, 403, 404, 409 (submetido), 409 ANALISE_EM_ANDAMENTO, 200 (vigente),
+        409 (sem leitura atual), avaliação, 409 (entrada mudou ou análise assumida depois do limite) ou 503, 201.
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Análise feita e gravada agora; é a vigente
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AnaliseGravada" }
+        "200":
+          description: Já havia análise vigente da versão atual dos documentos e da conferência atual; nada foi gravado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AnaliseGravada" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: >
+            CONFLITO_ESTADO (pedido submetido; sem leitura da versão atual; documentos ou conferência mudaram durante
+            a análise, nada gravado; análise passou do limite e foi assumida por outra) ou ANALISE_EM_ANDAMENTO
+            (outra análise do pedido em andamento dentro do limite; cabeçalho Retry-After em segundos)
+          headers:
+            Retry-After:
+              description: Só em ANALISE_EM_ANDAMENTO; segundos até o limite da análise em andamento
+              schema: { type: integer, minimum: 1 }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503":
+          description: ANALISE_INDISPONIVEL (avaliação falhou; nada gravado; pedido em FALHA_ANALISE; pode tentar de novo) ou DEPENDENCIA_INDISPONIVEL (banco)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+    get:
+      summary: Histórico de análises do pedido próprio, com a vigente marcada (RC-13)
+      description: >
+        Todas as análises gravadas, da mais recente para a mais antiga (até 50); no máximo uma vigente. Inclui a
+        análise em andamento (EM_ANDAMENTO) ou interrompida pelo limite (INTERROMPIDA). Pedido nunca analisado: lista
+        vazia. Pedido alheio ou inexistente: o mesmo 404.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Histórico
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HistoricoAnalises" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -711,6 +777,94 @@ components:
         application/json:
           schema: { $ref: "#/components/schemas/Erro" }
   schemas:
+    AnaliseGravada:
+      type: object
+      description: >
+        Análise gravada (RC-13). Sempre simulada (leitura simulada, protocolo acadêmico fictício). Sem valores lidos
+        dos documentos; sem resumo (RC-14). Campos nulos ficam fora do JSON.
+      required: [id, revisao, vigente, executadaEm, protocolo, resultadoGeral, simulada, aviso, documentos, resultados, pendencias]
+      properties:
+        id: { type: string, example: "31" }
+        revisao: { type: integer, minimum: 1, description: Versão do conjunto documental avaliada }
+        vigente: { type: boolean }
+        executadaEm: { type: string, format: date-time }
+        protocolo:
+          type: object
+          required: [identificador, versao]
+          properties:
+            identificador: { type: string, example: PROTOCOLO-ACADEMICO-FICTICIO }
+            versao: { type: string, example: v0.1 }
+        conferenciaConsiderada: { type: string, format: date-time, description: Omitido só nas análises da carga sintética }
+        dataReferencia: { type: string, format: date, description: Omitida só nas análises da carga sintética }
+        resultadoGeral: { type: string, enum: [COM_PENDENCIAS, REQUER_CONFERENCIA, SEM_PENDENCIAS_IDENTIFICADAS] }
+        simulada: { type: boolean, enum: [true] }
+        aviso: { type: string }
+        documentos:
+          type: array
+          items:
+            type: object
+            required: [documentoId, nomeArquivo, tipoDeclarado, disponivel]
+            properties:
+              documentoId: { type: string }
+              nomeArquivo: { type: string }
+              tipoDeclarado: { $ref: "#/components/schemas/TipoDocumental" }
+              disponivel: { type: boolean, description: false se depois foi substituído ou removido }
+        resultados:
+          type: array
+          items:
+            type: object
+            required: [codigoRegra, descricao, resultado]
+            properties:
+              codigoRegra: { type: string, example: RC-R01 }
+              descricao: { type: string }
+              resultado: { type: string, enum: [ATENDE, PENDENTE, NAO_VERIFICAVEL, NAO_APLICAVEL] }
+              motivo: { $ref: "#/components/schemas/MotivoNaoVerificavel" }
+        pendencias:
+          type: array
+          items: { $ref: "#/components/schemas/PendenciaGravada" }
+    MotivoNaoVerificavel:
+      type: string
+      enum: [CAMPO_ILEGIVEL, DOCUMENTO_NAO_LIDO, TRANSCRICAO_NAO_CONFERIDA, DIVERGENCIA_APONTADA, VALOR_NAO_INTERPRETAVEL, CONDICAO_INDETERMINADA, DOCUMENTOS_INSUFICIENTES, DEPENDE_DE_DOCUMENTO_AUSENTE]
+    PendenciaGravada:
+      type: object
+      required: [codigoRegra, descricaoRegra, tipo, explicacao, responsavel, evidencias]
+      properties:
+        codigoRegra: { type: string }
+        descricaoRegra: { type: string }
+        tipo: { type: string, enum: [PENDENTE, NAO_VERIFICAVEL] }
+        explicacao: { type: string }
+        motivo: { $ref: "#/components/schemas/MotivoNaoVerificavel" }
+        responsavel: { type: string, enum: [PACIENTE, UNIDADE_EMISSORA] }
+        evidencias:
+          type: array
+          items:
+            type: object
+            required: [documentoId, campo, situacao]
+            properties:
+              documentoId: { type: string }
+              campo: { type: string, enum: [TIPO_DOCUMENTO, NOME, DATA_NASCIMENTO, MOTIVO_ENCAMINHAMENTO, DATA_EMISSAO, AUTORIZACAO_ASSINADA] }
+              situacao: { type: string, enum: [CONFIRMADO, NAO_LOCALIZADO, ILEGIVEL, NAO_CONFERIDO, DIVERGENCIA_APONTADA, DOCUMENTO_NAO_LIDO] }
+              origem: { $ref: "#/components/schemas/Origem" }
+    HistoricoAnalises:
+      type: object
+      required: [solicitacaoId, estado, versaoConjuntoDocumental, limite, analises]
+      properties:
+        solicitacaoId: { type: string }
+        estado: { type: string }
+        versaoConjuntoDocumental: { type: integer, minimum: 1 }
+        execucao:
+          type: object
+          description: Só em PROCESSANDO
+          required: [situacao, iniciadaEm, limiteEm]
+          properties:
+            situacao: { type: string, enum: [EM_ANDAMENTO, INTERROMPIDA] }
+            iniciadaEm: { type: string, format: date-time }
+            limiteEm: { type: string, format: date-time }
+        vigenteId: { type: string, description: Omitido quando nenhuma análise vale para a versão atual }
+        limite: { type: integer, example: 50 }
+        analises:
+          type: array
+          items: { $ref: "#/components/schemas/AnaliseGravada" }
     RemocaoDocumento:
       type: object
       description: Estado do conjunto documental depois de remover um documento (RC-09). Não devolve o documento removido.
@@ -917,10 +1071,11 @@ components:
     Analise:
       type: object
       required: [situacao, mensagem]
-      description: Situação da análise para a versão atual dos documentos. Upload concluído não é análise concluída.
+      description: Situação da análise para a versão atual dos documentos (calculada desde a RC-13). Upload concluído não é análise concluída.
       properties:
-        situacao: { type: string, enum: [NAO_REALIZADA], description: Hoje só este valor existe }
+        situacao: { type: string, enum: [NAO_REALIZADA, EM_ANDAMENTO, CONCLUIDA] }
         mensagem: { type: string }
+        resultadoGeral: { type: string, enum: [COM_PENDENCIAS, REQUER_CONFERENCIA, SEM_PENDENCIAS_IDENTIFICADAS], description: Só em CONCLUIDA }
     Solicitacao:
       type: object
       required: [id, protocoloId, servico, estado, revisao, criadaEm, atualizadaEm, simulacao, versaoConjuntoDocumental, documentosDisponiveis, analise]
@@ -937,7 +1092,7 @@ components:
         estado:
           type: string
           enum: [RASCUNHO, PROCESSANDO, REQUER_CONFERENCIA, COM_PENDENCIAS, SEM_PENDENCIAS_IDENTIFICADAS, FALHA_ANALISE, SUBMETIDA_SIMULACAO]
-          description: Na RC-07 só RASCUNHO é produzido.
+          description: RASCUNHO desde a RC-07; PROCESSANDO, COM_PENDENCIAS, REQUER_CONFERENCIA, SEM_PENDENCIAS_IDENTIFICADAS e FALHA_ANALISE desde a RC-13.
         revisao: { type: integer, minimum: 1 }
         criadaEm: { type: string, format: date-time }
         atualizadaEm: { type: string, format: date-time }
