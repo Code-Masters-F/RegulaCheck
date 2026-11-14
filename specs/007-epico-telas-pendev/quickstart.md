@@ -1,6 +1,8 @@
 # Quickstart: Épico de telas no pen.dev
 
 ## Pré-requisitos
+
+**Recorte corrente (13/11/2026):** começar por `design/README.md`, na branch `codex/007-design-system-exploracao`, e abrir `design/RegulaCheck.pen`. Os três exemplos estão editáveis; as instruções de cinco arquivos/73 estados abaixo são o plano histórico ainda incompleto. Para scripts Spec Kit, usar `SPECIFY_FEATURE_DIRECTORY=specs/007-epico-telas-pendev` no processo, pois o ponteiro global ainda é da feature 008. Não trocar o ponteiro global automaticamente.
 - Aplicativo pen.dev aberto e conectado ao servidor de ferramentas (pencil MCP). Se o assistente responder "transport not connected", abra o aplicativo e a pasta do projeto e tente de novo.
 - Branch `007-epico-telas-pendev` e, na pasta `mobile/design/`, os arquivos `.pen` da história em andamento. Arquivos `.pen` só se leem e editam **pelas ferramentas do pen.dev**.
 

@@ -6,6 +6,8 @@
 
 ## Summary
 
+**Recorte autorizado em 13/11/2026:** manter este épico e a branch local `codex/007-design-system-exploracao`; transpor somente os três exemplos aprovados como direção visual para `design/RegulaCheck.pen`. Reutilizar variáveis de cor, definir papéis tipográficos Bricolage Grotesque/Nunito Sans e componentes editáveis para as novas telas. A biblioteca anterior permanece identificada como referência em revisão. Validar por screenshots, limites dos elementos e pares de contraste; exportar prévias e salvar pelo MCP. Criar `design/README.md` como ponto de retomada. Não executar código Android/backend, criar issues ou expandir os 73 estados. A organização em cinco arquivos abaixo permanece o plano histórico do inventário completo, não a localização desta entrega parcial.
+
 Entrega o **desenho das telas** do app Android (celular, retrato) em arquivos do pen.dev, com dados fictícios e sem código. Como os arquivos `.pen` só devem ser acessados pelas ferramentas do pen.dev (o site os descreve como JSON aberto, mas a ferramenta os trata como protegidos e não revisáveis por diff), o plano separa o que é **texto revisável no Git** do que é **desenho**:
 
 1. **Desenho** em 5 arquivos `.pen` em `mobile/design/` (um por grupo de histórias): `00-fundamentos`, `01-entrada`, `02-envio`, `03-resultado`, `04-sensores-admin-acessibilidade`. Cada tela é um quadro nomeado `<ID> <Tela> — <Estado>` (73 quadros no total, ver `contracts/telas.md`, com a matriz tela × estado como critério de revisão).

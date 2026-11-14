@@ -20,6 +20,8 @@
 
 ## Phase 1: Setup
 
+> Atualização de 13/11/2026: o MCP está conectado e o responsável aprovou a direção visual. O recorte corrente usa `design/RegulaCheck.pen` e `codex/007-design-system-exploracao`; ver T040–T043. As tarefas históricas que exigem conjuntos completos de estados continuam abertas.
+
 - [ ] T001 Confirmar o ambiente: `git status` na branch `007-epico-telas-pendev`; `.\mvnw.cmd clean verify` em `backend/` como base (218 testes, 8 ignorados); com o pen.dev aberto e conectado, rodar `get_app_state` e `read_skill` (pencil MCP) e registrar em `specs/007-epico-telas-pendev/research.md` (nota ao fim de D8, comparando com o que o site https://www.pen.dev/ informa) o que o pen.dev **confirmadamente** faz: variáveis, componentes reutilizáveis, quadros nomeados, **exportação de imagens**; se não conectar, registrar o bloqueio
 - [x] T002 [P] Criar a estrutura `design/` com esqueletos (cabeçalhos e aviso de dados sintéticos): `INDEX.md`, `textos.md`, `dados-ficticios.md`, `mapa-de-percursos.md`, `acessibilidade.md`, `checklist-revisao.md`
 - [x] T003 [P] `design/dados-ficticios.md`: conjunto único de dados (pessoas A e B e administrador com e-mails `.invalid`; um pedido por estado; PDF de 2 páginas e uma foto; campos extraídos nos três status com origem; pendências por regra do `PROTOCOLO-ACADEMICO-FICTICIO v0.1` com responsável; leituras de sensores em faixa/fora/antiga/indisponível; totais do administrador) conforme `data-model.md`
@@ -181,3 +183,27 @@ A pedido direto do responsável ("criar um épico no projects para um desenvolve
 - Todas no Project "RegulaCheck - termina em 19/11/2026" com Status **Todo**; as quatro histórias vinculadas como **sub-issues** do épico. Sem responsável atribuído (a pessoa Dev se atribui) e sem estimativa de horas (a definir pela pessoa Dev). Os prazos de 14, 15, 16 e 17/11 são **sugestões** dentro do prazo do Épico 6.
 - O texto das issues **não foi mostrado ao responsável antes da criação** (a tarefa T038 previa isso); ele pode ser editado nas issues.
 - Os arquivos citados nas issues estão na branch `007-epico-telas-pendev`, **ainda sem commit e sem merge**: até lá, a pessoa Dev não os encontra na `main`.
+
+## Recorte autorizado — identidade e continuidade (13/11/2026)
+
+Execução em `codex/007-design-system-exploracao`, vinculada a este épico sem criar outra feature. As tarefas abaixo não substituem nem concluem os conjuntos completos de estados acima.
+
+- [x] T040 Registrar aprovação da identidade e reconciliar o recorte corrente em `spec.md`, `plan.md`, `tasks.md` e `design/README.md`; manter requisitos e limites constitucionais e conferir a consistência antes do desenho.
+- [x] T041 Transpor Meus pedidos (E1.2), Documentos (E2.2) e detalhe de pendência/unidade emissora (E3.4) como três quadros editáveis em `design/RegulaCheck.pen`, com papéis tipográficos, componentes reutilizados e cores exatas; identificar biblioteca anterior como em revisão.
+- [x] T042 Rever screenshots, conteúdo, avisos, limites dos elementos e contraste dos pares usados; salvar pelo MCP e exportar prévias para `design/previas/`. Registrar IDs e limitações; não afirmar validação Android, acessibilidade completa ou conclusão dos 73 estados.
+- [x] T043 Entregar o ponto de retomada curto em `design/README.md`, com decisões, caminhos, conexões, ferramentas, localização segura da configuração da chave Refcat, links para evidências e próximos passos; atualizar instruções permanentes e índice.
+
+Dependências: T040 → T041 → T042 → T043. O ambiente de 13/11 já dispõe de variáveis e componentes do trabalho anterior; este recorte autorizado consolida três aplicações da identidade, sem declarar concluída a fase completa de fundamentos ou qualquer história com todos os estados.
+
+**Evidência final do recorte:** arquivo salvo pelo MCP; três PNG 2× exportados; consulta final de instâncias resolvidas confirmou as duas famílias tipográficas, nenhum preenchimento raster e zero problemas de recorte nas três telas. Seis componentes atuais reutilizados. Pares de texto usados ≥4,5:1. Checklist de qualidade de requisitos existente: 16 marcados, 0 pendentes, sem alterar marcações. Ver `design/verificacao-2026-11-13.md` para o que não foi validado. Não foram executados testes Java/Android nem ações no ClickBus nesta etapa; as notas de 12/11 acima são históricas.
+
+## Recorte autorizado — design system v1.0 (13/11/2026)
+
+Pedido do responsável: avaliar as três telas novas e refazer fundamentos e identidade anteriores com base nelas, para guiar a construção das telas. Mesmo arquivo `design/RegulaCheck.pen` e branch `codex/007-design-system-exploracao`; sem nova feature.
+
+- [x] T044 Avaliar as telas `H0BJi`, `CvQRm`, `XCNVm` e os quadros F1–F4 anteriores; registrar inconsistências (escala tipográfica, padding, padrão de estado, superfície, altura de controle, cores fora da direção) em `design/verificacao-2026-11-13.md`.
+- [x] T045 Definir tokens semânticos (cor, tamanho tipográfico, espaço, controle) sobre os primitivos existentes e redesenhar F1 `IkCIw` (princípios, cor com contraste, tipografia, espaço/forma/toque, ícones, faça e evite); calcular contraste de todos os pares e registrar em `mobile/design/acessibilidade.md`.
+- [x] T046 Redesenhar F2 `t9lvSH` (ações, campos, estrutura, objetos do percurso, sensores, retorno), F3 `EVIof` (aviso, SIMULADO, resumo e comprovante simulados, linguagem) e F4 `HBByt` (7 estados do pedido, 4 do arquivo, 4 por critério) como componentes reutilizáveis; arquivar a biblioteca anterior em `Wo9WQ` com prefixo `Legado/`, sem apagá-la.
+- [x] T047 Reconstruir as três telas só com instâncias v1.0, conferir limites e screenshots, exportar prévias, salvar pelo MCP e atualizar `mobile/design/design-system.md`, `mobile/design/INDEX.md` e `design/README.md`.
+
+Dependências: T044 → T045 → T046 → T047. Cobertura das tarefas históricas: substancialmente T005, T007 e T008 (no arquivo único, não em `00-fundamentos.pen`) e T006 **exceto navegação inferior**, deixada fora por decisão de desenho pendente de confirmação do grupo; por isso T005–T008 continuam desmarcadas. Nenhum teste Java/Android executado (sem mudança de código). Não validado: fonte ampliada, TalkBack, teclado/insets, uso com pacientes.

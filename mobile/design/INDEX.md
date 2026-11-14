@@ -1,18 +1,32 @@
 # Índice das telas
 
-> Inventário dos 73 quadros do épico de telas (fonte: `specs/007-epico-telas-pendev/contracts/telas.md`). **Nenhum quadro foi desenhado ainda**: o pen.dev não estava conectado quando este índice foi criado (ver `specs/007-epico-telas-pendev/tasks.md`, T001). A coluna **Status** só muda para "desenhado" depois que o quadro existir no arquivo `.pen` e for conferido pelas ferramentas do pen.dev.
+> Inventário dos 73 quadros do épico (fonte: `specs/007-epico-telas-pendev/contracts/telas.md`). **Atualização de 13/11/2026:** três exemplos da identidade aprovada estão editáveis em `design/RegulaCheck.pen`, com consulta pelo MCP e revisão visual. Isso não conclui conjuntos inteiros de estados. Fonte de continuidade e IDs: `design/README.md`.
 > Nenhuma tela chama a API: a coluna "API" é só referência para o app futuro. Rotas *planejada* ainda não existem no backend; a tela segue o contrato proposto em `CONTRATO_API.md`.
 > Textos de cada quadro: [textos.md](textos.md). Dados: [dados-ficticios.md](dados-ficticios.md). Percursos: [mapa-de-percursos.md](mapa-de-percursos.md).
 
 Legenda de cobertura de estado: **P** quadro próprio · **C** coberto por quadro/componente compartilhado (ver matriz no contrato) · **—** não se aplica. Status: *a desenhar* → *desenhado* → *revisado* → *aprovado*.
 
+## Arquivo corrente: `design/RegulaCheck.pen`
+
+| Exemplo atual | ID nativo | Situação |
+|---|---|---|
+| E1.2 Meus pedidos — Sucesso | `H0BJi` | Aplicação da identidade; demais estados de E1.2 pendentes |
+| E2.2 Documentos — Com arquivos | `CvQRm` | Aplicação da identidade; demais estados de E2.2 pendentes |
+| E3.4 Pendência — Unidade emissora | `XCNVm` | Exemplo parcial; revisão completa de critérios/estados ainda pendente |
+
+Prévias e verificações em `design/previas/` e `design/verificacao-2026-11-13.md`. Ordem de leitura: cabeçalho/contexto → conteúdo/próxima ação → ações → aviso acadêmico. Abrir arquivo e Voltar têm alvos próprios de 48 dp; não há leitor de tela ou navegação implementados no desenho.
+
+As seções abaixo preservam o inventário planejado em cinco arquivos. Para este recorte, usar o arquivo corrente acima.
+
 ## 00-fundamentos.pen (4 quadros)
 | Quadro | Conteúdo | Status |
 |---|---|---|
-| F1 | Variáveis: cor, tipografia, espaço, forma, toque | a desenhar |
-| F2 | Catálogo de componentes | a desenhar |
-| F3 | Aviso acadêmico e selo SIMULADO | a desenhar |
-| F4 | Selos dos sete estados do pedido (texto + ícone) | a desenhar |
+| F1 | Variáveis: cor, tipografia, espaço, forma, toque | v1.0 `IkCIw` no arquivo corrente · desenhado (13/11) |
+| F2 | Catálogo de componentes | v1.0 `t9lvSH` · desenhado; sem navegação inferior (decisão pendente) |
+| F3 | Aviso acadêmico e selo SIMULADO | v1.0 `EVIof` · desenhado |
+| F4 | Selos dos sete estados do pedido (texto + ícone) | v1.0 `HBByt` · desenhado, com estados de arquivo e de critério |
+
+Versões anteriores (`EjfrK`, `H7Mq2`, `EgUbK`, `kBUUQ`) foram movidas para `Wo9WQ` (arquivo, não usar). Detalhes: [design-system.md](design-system.md).
 
 ## 01-entrada.pen — história 1 (21 quadros)
 | Quadros | Tela | Estados | API (referência) | Rótulo / ordem de leitura | Status |
