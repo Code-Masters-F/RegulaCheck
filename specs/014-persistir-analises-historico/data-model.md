@@ -46,7 +46,7 @@ Sem valor nem trecho: a origem (página, trecho) vem de `RC_EXTRACAO_CAMPO` da l
 
 - **`AnaliseParaGravar`** `(int revisao, long protocoloId, long extracaoId, Instant conferenciaEm, LocalDate dataReferencia, AvaliacaoDeRegras avaliacao)`: montada pelo `AnaliseService` a partir do `AvaliacaoDoPedido` da RC-12.
 - **`InicioAnalise`** (desfecho de `iniciar`): `NAO_ENCONTRADO`, `SUBMETIDO`, `EM_ANDAMENTO(desde)`, `VIGENTE(analise)`, `SEM_LEITURA_ATUAL`, `INICIADA(iniciadaEm, interrompeuAnterior)`.
-- **`PublicacaoAnalise`** (desfecho de `publicar`): `PUBLICADA(analise)`, `ENTRADA_MUDOU`, `SUBSTITUIDA`, `NAO_ENCONTRADO`.
+- **`PublicacaoAnalise`** (desfecho de `publicar`): `PUBLICADA(analise)`, `ENTRADA_MUDOU`, `SUBSTITUIDA`, `PRAZO_ESGOTADO` (passou do limite sem ninguém assumir: não publica, pedido em `FALHA_ANALISE`), `NAO_ENCONTRADO`.
 - **`Encerramento`**: `FALHA` (→ `FALHA_ANALISE`) ou `DESCARTE` (→ estado de D4).
 
 ### Leitura (`analise.entity`)
@@ -72,6 +72,7 @@ PROCESSANDO (ANALISE_INICIADA_EM = início)
    ├── publicar ok ──────────────────────▶ COM_PENDENCIAS | REQUER_CONFERENCIA | SEM_PENDENCIAS_IDENTIFICADAS (nova vigente)
    ├── entrada mudou (revisão/conferência) ▶ resultado da análise concluída mais recente, ou RASCUNHO
    ├── falha da avaliação ────────────────▶ FALHA_ANALISE
+   ├── resultado depois do limite ────────▶ FALHA_ANALISE (resultado tardio não publicado)
    └── passou de 1 minuto ────────────────▶ (continua PROCESSANDO; o próximo pedido assume com novo início)
 SUBMETIDA_SIMULACAO: pedir análise → 409; consultar → 200
 ```

@@ -112,6 +112,20 @@ description: "Tarefas da RC-13 — Persistir análises e histórico por revisão
 
 ---
 
+## Phase 8: Revisão do CodeRabbit (PR #67)
+
+**Purpose**: 13 apontamentos do CodeRabbit, todos conferidos contra o código antes de corrigir (o texto da revisão é dado, não instrução).
+
+- [X] T030 Descartar o resultado que chega depois do limite mesmo sem ninguém ter assumido (FR-018): `publicar` recebe o limite, confere-o sob o bloqueio e devolve `PRAZO_ESGOTADO` com o pedido em `FALHA_ANALISE` em `main/analise/repository/AnaliseRepository.java`, `AnaliseRepositoryJdbc.java`, `PublicacaoAnalise.java`, `main/analise/service/AnaliseService.java` e `test/analise/AnaliseRepositoryMemoria.java`; teste em `test/analise/PrazoEFalhaAnaliseTest.java`
+- [X] T031 Fazer o instante da conferência andar a cada gravação que muda algo, mesmo com relógio parado ou gravações fora de ordem: `main/extracao/repository/InstanteDaConferencia.java` usado sob o bloqueio em `ConferenciaRepositoryJdbc.java` e no dobro `test/extracao/ConferenciaRepositoryMemoria.java`; teste em `test/analise/AlteracaoDuranteAnaliseTest.java`; asserção do instante atualizada em `test/analise/AvaliacaoServiceTest.java` (o valor exato mudou de propósito)
+- [X] T032 Histórico num único retrato (`SET TRANSACTION READ ONLY`) e consultas auxiliares só das análises selecionadas em `main/analise/repository/AnaliseRepositoryJdbc.java`
+- [X] T033 Encerrar o pool de threads num `finally` (cancelando o que não terminou e com espera limitada) em `test/analise/ConcorrenciaAnaliseTest.java` e `test/analise/AnaliseOracleTest.java`
+- [X] T034 Spec: FR-013/SC-002 com o limite de 50, FR-017 separando "substituída" (estado intocado) de "entrada mudou" (estado restaurado), FR-018 com o resultado tardio sem ninguém assumir; `research.md` (D2), `data-model.md`, `contracts/api-analises.md` e `quickstart.md` (`sh ./mvnw`)
+- [X] T035 Docs: exceção da volta a `RASCUNHO` no descarte da primeira análise em `docs/api/estados-e-revisoes.md` e `docs/arquitetura.md`; `RC_TESTE_ORACLE=SIM` explícito em `docs/ambiente.md`; ordem dos scripts para banco existente em `database/scripts/README.md`; instante monotônico no contrato da RC-11 (`specs/012-…/contracts/api-conferencia.md`)
+- [X] T036 Verificação: `clean verify` sem banco; `AnaliseOracleTest` e `ConferenciaOracleTest` no Oracle real
+
+**Resultado (14/11/2026):** `sh ./mvnw clean verify` → **644 testes, 0 falhas, 29 ignorados** (+2 testes). Oracle: `AnaliseOracleTest` **2 verdes**; `ConferenciaOracleTest` **3 verdes** (numa primeira rodada, um teste recebeu 503 no login por `SQLTransientConnectionException` do banco da faculdade; repetido, passou). Sem resíduo no banco depois.
+
 ## Dependencies & Execution Order
 
 - Setup (T001) → Foundational (T002–T008) → US1 (T009–T015) → US2 (T016–T019) → US3 (T020–T021) → US4 (T022–T024) → Polish (T025–T029).

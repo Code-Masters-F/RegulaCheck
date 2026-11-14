@@ -11,7 +11,7 @@ Sem corpo (o corpo, se vier, é ignorado). Pede a análise da versão atual dos 
 | **201** | análise feita e gravada agora; virou a vigente e o pedido foi para o resultado geral | `Analise` |
 | **200** | já existe análise vigente da versão atual dos documentos e da conferência atual; nada foi gravado | `Analise` (a existente) |
 | 404 `NAO_ENCONTRADO` | pedido inexistente, de outra paciente ou id mal formado (mesma resposta) | erro padrão |
-| 409 `CONFLITO_ESTADO` | pedido submetido ("Este pedido já foi submetido e só pode ser consultado."); sem leitura da versão atual ("Leia os documentos antes de pedir a análise."); documentos ou conferência mudaram durante a análise ("Os documentos ou a conferência mudaram durante a análise. Confira e peça a análise de novo."); análise passou do limite e foi assumida por outra ("A análise passou do tempo limite e não foi publicada. Consulte as análises ou peça de novo.") | erro padrão |
+| 409 `CONFLITO_ESTADO` | pedido submetido ("Este pedido já foi submetido e só pode ser consultado."); sem leitura da versão atual ("Leia os documentos antes de pedir a análise."); documentos ou conferência mudaram durante a análise ("Os documentos ou a conferência mudaram durante a análise. Confira e peça a análise de novo."); análise passou do limite (assumida por outra, ou não: neste caso o pedido vai a `FALHA_ANALISE`) e não foi publicada ("A análise passou do tempo limite e não foi publicada. Consulte as análises ou peça de novo.") | erro padrão |
 | 409 `ANALISE_EM_ANDAMENTO` | outra análise do pedido está em andamento dentro do limite de 1 minuto; cabeçalho `Retry-After` com os segundos restantes | erro padrão |
 | 503 `ANALISE_INDISPONIVEL` | a avaliação falhou (versão do protocolo não aplicável ou erro inesperado); nada gravado; pedido em `FALHA_ANALISE`; pode tentar de novo | erro padrão |
 | 503 `DEPENDENCIA_INDISPONIVEL` | banco indisponível (ou sem o script `10_`); nada gravado; se o início ficou gravado, o limite de 1 minuto libera o pedido | erro padrão |
@@ -22,7 +22,7 @@ Sem corpo (o corpo, se vier, é ignorado). Pede a análise da versão atual dos 
 
 ## `GET /solicitacoes/{id}/analises`
 
-Histórico do pedido, da análise mais recente para a mais antiga (até 50). Pedido nunca analisado → 200 com lista vazia.
+Histórico do pedido, da análise mais recente para a mais antiga (até as 50 mais recentes; sem paginação no MVP; as mais antigas continuam gravadas). O estado do pedido e as análises vêm de um único retrato do banco. Pedido nunca analisado → 200 com lista vazia.
 
 ```json
 {

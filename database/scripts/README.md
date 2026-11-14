@@ -29,7 +29,8 @@ Para ver as saídas do `04_` e da carga, habilite a saída do servidor (SQL Deve
 - Rodar `01_` de novo: cada `CREATE` falha com **ORA-00955** e nada é alterado.
 - Rodar `02_` de novo: falha com **ORA-00001** (e-mail já cadastrado) e o bloco inteiro é desfeito; nada é duplicado.
 - Rodar `05_` de novo: ORA-00955 e nada é alterado.
-- Para recomeçar em ambiente de desenvolvimento: `90_` (com confirmação) → `01_` → `02_` → `05_`.
+- Para recomeçar em ambiente de desenvolvimento: `90_` (com confirmação) → `01_` → `02_` → `05_` (o `01_` atual já traz o que os `06_` a `10_` acrescentam) e, se quiser conferir as restrições, `04_`.
+- **Banco já existente** (criado antes de alguma história): aplique primeiro os scripts aditivos que faltarem, na ordem (`06_` a `10_`), e só **depois** rode o `04_`, porque os casos dele usam as colunas e tabelas desses scripts.
 
 ## Contas e senhas de demonstração
 

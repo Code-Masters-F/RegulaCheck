@@ -2,11 +2,11 @@
 
 ## Automatizado (sem banco)
 
-A partir de `backend/`:
+A partir de `backend/` (o `mvnw` está no Git sem permissão de execução, por isso `sh ./mvnw`; no Windows, `.\mvnw.cmd`):
 
 ```bash
-./mvnw -q test -Dtest='br.com.regulacheck.analise.**'    # análises (serviço, rota, concorrência, prazo, falha)
-./mvnw clean verify                                       # tudo
+sh ./mvnw -q test -Dtest='br.com.regulacheck.analise.**'    # análises (serviço, rota, concorrência, prazo, falha)
+sh ./mvnw clean verify                                       # tudo
 ```
 
 Os testes usam a API real (Jetty em porta livre) sobre repositórios em memória e o leitor simulado com as amostras sintéticas. O `synchronized` dos dobros em memória faz o papel do `SELECT … FOR UPDATE`: os testes de concorrência provam a lógica do serviço, **não** o bloqueio de linha do Oracle.
@@ -17,7 +17,7 @@ Pré-requisitos: `01_`…`09_` aplicados e **`10_analise_historico.sql`** execut
 
 ```bash
 export DB_URL=… DB_USERNAME=… DB_PASSWORD=… RC_TESTE_ORACLE=SIM
-./mvnw -q test -Dtest=AnaliseOracleTest
+sh ./mvnw -q test -Dtest=AnaliseOracleTest
 ```
 
 Sem `RC_TESTE_ORACLE=SIM` o teste é ignorado e deve ser registrado como **NÃO VERIFICADO**. Também rodar o `04_testes_restricoes.sql` (casos novos 28 a 31) no SQL Developer.
