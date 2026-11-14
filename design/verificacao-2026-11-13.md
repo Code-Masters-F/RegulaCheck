@@ -85,3 +85,11 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Consulta de limites: 0 problemas; 0 componentes `Legado/*`; todos com aviso acadêmico; nenhuma ação fora de `specs/014-fluxo-telas-app/contracts/telas-operacoes.md`; ação principal de cada E1.3 confere com FR-012 e há no máximo uma por quadro.
 - Correções feitas na revisão: rascunho com "Mais opções" no cabeçalho (excesso de altura); texto de E1.4 que afirmava algo não garantido pelo backend foi trocado pelo texto aprovado.
 - Não verificado: compreensão por pessoa que não desenhou (SC-003), fonte ampliada, TalkBack, interação.
+
+## Feature 014 — US2 / RC-37 (T032–T038), 14/11/2026
+
+- Commit da US1: `f724cd6` (enviado).
+- 28 quadros na faixa RC-37: E2.1 Novo pedido (5), E2.2 Documentos (8, incluindo `CvQRm`), E2.7 Anexar (2), E2.3 Recusa de arquivo (8, uma por resposta do backend: 415 ×2, 413, 400 ×3, 422, 409), E2.4/E2.5 (2 + 2) e E2.6 (1).
+- Consulta de limites: 0 problemas reais (avisos restantes vêm de elementos ocultos por padrão); 0 componentes `Legado/*`; aviso acadêmico em todos; "Anexar" nunca aparece fora de rascunho; no máximo uma ação principal por quadro.
+- Correções na revisão: nome longo truncado com reticências; terceiro documento `exames-anteriores.pdf`; "Não enviado" com "Tentar de novo" como única ação; linha de limites removida onde a mensagem já a cobre (3 quadros).
+- Não verificado: fonte ampliada, TalkBack, interação.

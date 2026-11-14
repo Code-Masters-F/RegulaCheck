@@ -8384,7 +8384,8 @@
                                   "content": "PDF · 184 KB · 2 páginas",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
-                                  "fontSize": "$rc-size-meta"
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "normal"
                                 },
                                 {
                                   "id": "ZDnxF",
@@ -8730,7 +8731,8 @@
                                   "content": "Se o motivo estiver ausente, peça à unidade que emitiu o encaminhamento para completar o documento.",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
-                                  "fontSize": 16
+                                  "fontSize": 16,
+                                  "fontWeight": "normal"
                                 }
                               ]
                             }
@@ -23670,6 +23672,5172 @@
       "width": 390,
       "height": 150,
       "content": "E1.5 Sem permissão\nRota de outro perfil → 403 ACESSO_NEGADO (ex.: paciente em /admin/indicadores; administrador em /protocolos)\nFR-010"
+    },
+    {
+      "type": "frame",
+      "id": "c78REx",
+      "x": 5670,
+      "y": 1200,
+      "name": "E2.1 Novo pedido — Padrão",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "QG8ST",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "EXape",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "CajOP",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Novo pedido"
+                },
+                "yQSkI": {
+                  "content": "Escolha o serviço para preparar seus documentos."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "hQ8rZ",
+              "name": "Serviços",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "B20Hb",
+                  "type": "ref",
+                  "ref": "NLIXG",
+                  "width": "fill_container",
+                  "name": "Consulta ambulatorial em cardiologia",
+                  "descendants": {
+                    "Df2K4": {
+                      "content": "Consulta ambulatorial em cardiologia"
+                    },
+                    "G2kiZ": {
+                      "content": "Santa Aurora (município fictício) · Protocolo acadêmico fictício · versão 0.1"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "lDIUR",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                }
+              }
+            },
+            {
+              "id": "RRdTV",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ação principal",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Criar rascunho"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "SYCjz",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "zlkob",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "qaduu",
+      "x": 5670,
+      "y": 2064,
+      "name": "Nota · E2.1 Novo pedido — Padrão",
+      "width": 390,
+      "height": 150,
+      "content": "E2.1 Novo pedido — Padrão\nOperações: GET /protocolos ✅ · POST /solicitacoes ✅ (sem deduplicação: botão bloqueado durante a chamada)\nFR-029 · 1 serviço ativo no backend (protocolo acadêmico fictício v0.1)\nDados: Santa Aurora (município fictício)"
+    },
+    {
+      "type": "frame",
+      "id": "gj4eA",
+      "x": 6140,
+      "y": 1200,
+      "name": "E2.1 Novo pedido — Criando",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "D63SD",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "x3RsW",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "hH30S",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Novo pedido"
+                },
+                "yQSkI": {
+                  "content": "Escolha o serviço para preparar seus documentos."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "XNsuS",
+              "name": "Serviços",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "Yuu5s",
+                  "type": "ref",
+                  "ref": "NLIXG",
+                  "width": "fill_container",
+                  "name": "Consulta ambulatorial em cardiologia",
+                  "descendants": {
+                    "Df2K4": {
+                      "content": "Consulta ambulatorial em cardiologia"
+                    },
+                    "G2kiZ": {
+                      "content": "Santa Aurora (município fictício) · Protocolo acadêmico fictício · versão 0.1"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "v9V63",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                }
+              }
+            },
+            {
+              "id": "P2p4k",
+              "type": "ref",
+              "ref": "RuAVY",
+              "width": "fill_container",
+              "name": "Criando",
+              "descendants": {
+                "r4K7G8": {
+                  "content": "Criando…"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "DNl3h",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "u4ILys",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "Qj0fS",
+      "x": 6140,
+      "y": 2064,
+      "name": "Nota · E2.1 Novo pedido — Criando",
+      "width": 390,
+      "height": 150,
+      "content": "E2.1 Novo pedido — Criando\nOperações: GET /protocolos ✅ · POST /solicitacoes ✅ (sem deduplicação: botão bloqueado durante a chamada)\nFR-029 · 1 serviço ativo no backend (protocolo acadêmico fictício v0.1)\nDados: Santa Aurora (município fictício)"
+    },
+    {
+      "type": "frame",
+      "id": "Zk97Z",
+      "x": 6610,
+      "y": 1200,
+      "name": "E2.1 Novo pedido — Erro",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "vB4fa",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "QyCBd",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "XVzjP",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Novo pedido"
+                },
+                "yQSkI": {
+                  "content": "Escolha o serviço para preparar seus documentos."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "Ru4sP",
+              "name": "Serviços",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "o32ub",
+                  "type": "ref",
+                  "ref": "NLIXG",
+                  "width": "fill_container",
+                  "name": "Consulta ambulatorial em cardiologia",
+                  "descendants": {
+                    "Df2K4": {
+                      "content": "Consulta ambulatorial em cardiologia"
+                    },
+                    "G2kiZ": {
+                      "content": "Santa Aurora (município fictício) · Protocolo acadêmico fictício · versão 0.1"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "vsNXG",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                }
+              }
+            },
+            {
+              "id": "yWJ0h",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Erro",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "Não foi possível criar o rascunho."
+                },
+                "h7SWfJ": {
+                  "content": "Sua escolha foi mantida. Tente de novo."
+                },
+                "zKudv": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "L2jpZ",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ação principal",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "u9Akhh",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "mbZQ1",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "t9Jo3",
+      "x": 6610,
+      "y": 2064,
+      "name": "Nota · E2.1 Novo pedido — Erro",
+      "width": 390,
+      "height": 150,
+      "content": "E2.1 Novo pedido — Erro\nOperações: GET /protocolos ✅ · POST /solicitacoes ✅ (sem deduplicação: botão bloqueado durante a chamada)\nFR-029 · 1 serviço ativo no backend (protocolo acadêmico fictício v0.1)\nDados: Santa Aurora (município fictício)"
+    },
+    {
+      "type": "frame",
+      "id": "pEOeQ",
+      "x": 7080,
+      "y": 1200,
+      "name": "E2.1 Novo pedido — Sem serviços",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "ocqDu",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "oHtSm",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "QJKwK",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Novo pedido"
+                },
+                "yQSkI": {
+                  "content": "Escolha o serviço para preparar seus documentos."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "KbMel",
+              "name": "Sem serviços",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Rwgd0",
+                  "name": "Mensagem",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Nenhum serviço disponível agora.",
+                  "lineHeight": 1.2,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-heading",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "KEY4z",
+                  "name": "Explicação",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Tente de novo mais tarde.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "id": "k7Lp4Y",
+              "type": "ref",
+              "ref": "j97Pe",
+              "width": "fit_content",
+              "name": "Voltar para meus pedidos",
+              "descendants": {
+                "yjg4m": {
+                  "content": "Voltar para meus pedidos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "XUS1F",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "DmV3w",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "thSoF",
+      "x": 7080,
+      "y": 2064,
+      "name": "Nota · E2.1 Novo pedido — Sem serviços",
+      "width": 390,
+      "height": 150,
+      "content": "E2.1 Novo pedido — Sem serviços\nOperações: GET /protocolos ✅ · POST /solicitacoes ✅ (sem deduplicação: botão bloqueado durante a chamada)\nFR-029 · 1 serviço ativo no backend (protocolo acadêmico fictício v0.1)\nDados: Santa Aurora (município fictício)"
+    },
+    {
+      "type": "frame",
+      "id": "V5J0Uz",
+      "x": 7550,
+      "y": 1200,
+      "name": "E2.1 Novo pedido — Trocar serviço",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "YkVmC",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "XEAKC",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "ayxEq",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Trocar serviço"
+                },
+                "yQSkI": {
+                  "content": "Trocar o serviço cria uma nova revisão do rascunho. Escolher o mesmo serviço não muda nada."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "I4ppmc",
+              "name": "Serviços",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "cP2vZ",
+                  "type": "ref",
+                  "ref": "NLIXG",
+                  "width": "fill_container",
+                  "name": "Consulta ambulatorial em cardiologia",
+                  "descendants": {
+                    "Df2K4": {
+                      "content": "Consulta ambulatorial em cardiologia"
+                    },
+                    "G2kiZ": {
+                      "content": "Santa Aurora (município fictício) · Protocolo acadêmico fictício · versão 0.1"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "d3WBQ",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                }
+              }
+            },
+            {
+              "id": "ufcMt",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ação principal",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Salvar serviço"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "D6GUL",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "q96k0x",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "Y4mjVf",
+      "x": 7550,
+      "y": 2064,
+      "name": "Nota · E2.1 Novo pedido — Trocar serviço",
+      "width": 390,
+      "height": 150,
+      "content": "E2.1 Novo pedido — Trocar serviço\nOperações: GET /protocolos ✅ · PUT /solicitacoes/{id} ✅\nFR-029 · 1 serviço ativo no backend (protocolo acadêmico fictício v0.1)\nDados: Santa Aurora (município fictício) · Pedido 5"
+    },
+    {
+      "type": "frame",
+      "id": "t31hN",
+      "x": 8020,
+      "y": 1200,
+      "name": "E2.2 Documentos — Vazia",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "fxeOL",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "JejZy",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "z7HQYw",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "L1nMCC",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "d1lkT",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "gSZxd",
+                  "name": "Vazio",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Nenhum documento anexado ainda.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "jYHzb",
+                  "name": "Espaço",
+                  "width": "fill_container",
+                  "height": 14
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "mmwH1",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "0 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "u95Rj",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "zV6mT",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "FSK5N",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "ZbDEA",
+      "x": 8020,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Vazia",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Vazia\nGET …/documentos ✅ · FR-031 (vazia → \"Anexar documento\")\nDados: Pedido 5 (só no design); arquivos exemplares"
+    },
+    {
+      "type": "frame",
+      "id": "hHwfV",
+      "x": 8960,
+      "y": 1200,
+      "name": "E2.2 Documentos — Enviando",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "jrHyR",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "EskCo",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "RQJzs",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "ToYRz",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "K7BEj",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "m0zVt",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "mpMuo",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    },
+                    "ZDnxF": {
+                      "id": "YuGdC",
+                      "type": "ref",
+                      "ref": "NzIB2",
+                      "name": "Estado do arquivo"
+                    },
+                    "bmp24": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "a54Ouv",
+              "name": "Aviso de envio",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Mantenha o aplicativo aberto até o envio terminar.",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "zdqV3",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "MxcBk",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "idWRn",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "C0jcA",
+      "x": 8960,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Enviando",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Enviando\nPOST …/documentos ✅ (X-Chave-Envio por tentativa) · FR-033\nDados: Pedido 5 (só no design); arquivos exemplares"
+    },
+    {
+      "type": "frame",
+      "id": "WPH7O",
+      "x": 9430,
+      "y": 1200,
+      "name": "E2.2 Documentos — Não enviado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "xbAjH",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "yPgHb",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "Hqbpn",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "ILUVA",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "xOCn6",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "m4BQ7u",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "L8KO9",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    },
+                    "ZDnxF": {
+                      "id": "DAd9E",
+                      "type": "ref",
+                      "ref": "f2gV5",
+                      "name": "Estado do arquivo"
+                    },
+                    "bmp24": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "b1WTnY",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Envio interrompido",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "O envio de “documento-identidade.jpg” foi interrompido."
+                },
+                "h7SWfJ": {
+                  "content": "O arquivo ainda não foi enviado. Toque em “Tentar de novo”."
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "YukPQ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "aNHs7",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "r1u9fz",
+      "x": 9430,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Não enviado",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Não enviado\nPOST …/documentos ✅ · falha de rede; repetir com a mesma chave não duplica · FR-033\nDados: Pedido 5 (só no design); arquivos exemplares"
+    },
+    {
+      "type": "frame",
+      "id": "Leg44",
+      "x": 10370,
+      "y": 1200,
+      "name": "E2.2 Documentos — Limite atingido",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "M1mTAh",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "YPsdT",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "r6orJk",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação.",
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "jhR01",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Ed9T7",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "Y4iDUr",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "NgcAA",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                },
+                {
+                  "id": "zAHLM",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Outro documento · exames-anteriores.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Outro documento"
+                    },
+                    "wFeTH": {
+                      "content": "exames-anteriores.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 156 KB · 1 página"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "vHF2v",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "3 de 3 documentos. Remova um para anexar outro.\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "p0Yoo",
+              "name": "Leitura simulada",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "id": "sZlvz",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Ler documentos",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Ler documentos"
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "LkGgY",
+                  "name": "Nota",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Leitura simulada. Depois você confere o que foi lido.",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hBnDQ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "l3WDd",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "s0r5eO",
+      "x": 10370,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Limite atingido",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Limite atingido\nGET …/documentos ✅ (total 3, máximo 3) · FR-031\nDados: Pedido 5 (só no design); arquivos exemplares"
+    },
+    {
+      "type": "frame",
+      "id": "FEqIA",
+      "x": 10840,
+      "y": 1200,
+      "name": "E2.2 Documentos — Pedido verificado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "qKCPl",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "kIS0c",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 2"
+                }
+              }
+            },
+            {
+              "id": "z9pLgE",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Encaminhamento e identificação deste pedido."
+                }
+              }
+            },
+            {
+              "id": "Jj8ZN",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Trocar ou remover um documento faz o resultado atual deixar de valer."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "bmGmB",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "jvHE1",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "CQCnC",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-ubs-santa-aurora.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-ubs-santa…"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 200 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "iXLkw",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · cartao-sus.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "cartao-sus.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 86 KB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UdQ6e",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "LsqBq",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "ANCG8",
+      "x": 10840,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Pedido verificado",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Pedido verificado\nPUT/DELETE …/documentos/{docId} ✅ · POST recusado fora de rascunho · FR-032 · sem ação principal\nDados: Pedido 2 da carga"
+    },
+    {
+      "type": "frame",
+      "id": "vRJhG",
+      "x": 11310,
+      "y": 1200,
+      "name": "E2.2 Documentos — Pedido concluído",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "cKxL7",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "CGqXD",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 1"
+                }
+              }
+            },
+            {
+              "id": "O1d0V",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Encaminhamento e identificação deste pedido."
+                }
+              }
+            },
+            {
+              "id": "Bh1JQ",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Este pedido já foi submetido e só pode ser consultado."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "hXNy9",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "H3mD2A",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "YXS7x",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-clinica-norte.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-clinica-norte.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 178 KB · 1 página"
+                    },
+                    "j40sY": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "ovE47",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.png",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.png"
+                    },
+                    "UjUmc": {
+                      "content": "PNG · 94 KB"
+                    },
+                    "j40sY": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nu9Nx",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "U8aKVP",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "EU42U",
+      "x": 11310,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Pedido concluído",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Pedido concluído\nGET …/documentos/{docId} ✅ (só abrir) · FR-032\nDados: Pedido 1 da carga"
+    },
+    {
+      "type": "frame",
+      "id": "OndkJ",
+      "x": 9900,
+      "y": 1200,
+      "name": "E2.2 Documentos — Opções do documento",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "hwONU",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "r7D2IT",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "u4eHq",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "dfzly",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "aUq3Q",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "SQDBM",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "d69b4",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "ZiYMl",
+              "type": "ref",
+              "ref": "DpTaD",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "bD8Xp": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "IeI4t",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "2 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "X8c5ET",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ler documentos",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Ler documentos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "MA6no",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "aCwom",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "ndPsA",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "URc3G",
+          "type": "ref",
+          "ref": "M0wDl9",
+          "name": "Folha",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 484,
+          "descendants": {
+            "cRtAf": {
+              "content": "Encaminhamento"
+            },
+            "ApkHu": {
+              "type": "frame",
+              "id": "iKTE1",
+              "name": "Opções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "m2Hlz",
+                  "name": "Abrir",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 14,
+                  "padding": [
+                    14,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "AGYkP",
+                      "name": "Ícone",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "file-text",
+                      "library": "lucide",
+                      "fill": "$rc-text"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Hb8Nb",
+                      "name": "Texto",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xBzgx",
+                          "name": "Rótulo",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Abrir",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a5xo9r",
+                  "name": "Substituir",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 14,
+                  "padding": [
+                    14,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "yWMPw",
+                      "name": "Ícone",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "refresh-cw",
+                      "library": "lucide",
+                      "fill": "$rc-text"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "JD91m",
+                      "name": "Texto",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "h2I2C",
+                          "name": "Rótulo",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Substituir",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ISVFS",
+                          "name": "Apoio",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Trocar por outro arquivo",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Z6tlM",
+                  "name": "Remover",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 14,
+                  "padding": [
+                    14,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "qiAAT",
+                      "name": "Ícone",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "trash-2",
+                      "library": "lucide",
+                      "fill": "$rc-error"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "a3kZ5",
+                      "name": "Texto",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wrRoE",
+                          "name": "Rótulo",
+                          "fill": "$rc-error",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Remover",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "HtoQM",
+                          "name": "Apoio",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Tirar este documento do pedido",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "xtjyo",
+      "x": 9900,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Opções do documento",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Opções do documento\nOperações: GET …/documentos/{docId} (abrir) · PUT …/documentos/{docId} (substituir) · DELETE …/documentos/{docId} (remover) ✅\nFR-030 · folha `Folha/Escolha` sobre rc-scrim\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "fwOMP",
+      "x": 11780,
+      "y": 1200,
+      "name": "E2.7 Anexar — Tipo do documento",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "hNxyb",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "yB08P",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "L8CTq",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "E8v0ot",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "TbFNO",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "SyMr6",
+                  "name": "Texto",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Nenhum documento anexado ainda.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "wU7io",
+                  "name": "Espaço",
+                  "width": "fill_container",
+                  "height": 14
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "i3fCPp",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "0 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "fNxhN",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "F3iAF",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "UDUnX",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "S4Kuu",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "FKVZK",
+          "type": "ref",
+          "ref": "M0wDl9",
+          "name": "Folha",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 370,
+          "descendants": {
+            "cRtAf": {
+              "content": "Que documento você vai anexar?"
+            },
+            "ApkHu": {
+              "type": "frame",
+              "id": "H5weVm",
+              "name": "Opções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "NsvZW",
+                  "type": "ref",
+                  "ref": "bwP65",
+                  "name": "Encaminhamento",
+                  "width": "fill_container",
+                  "descendants": {
+                    "RTyxX": {
+                      "content": "Encaminhamento"
+                    },
+                    "uCGef": {
+                      "content": "Pedido de consulta emitido pela unidade de saúde"
+                    }
+                  }
+                },
+                {
+                  "id": "UpkhV",
+                  "type": "ref",
+                  "ref": "bwP65",
+                  "name": "Identificação ou cartão do SUS",
+                  "width": "fill_container",
+                  "descendants": {
+                    "RTyxX": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "uCGef": {
+                      "content": "RG, CNH ou cartão do SUS"
+                    }
+                  }
+                },
+                {
+                  "id": "h26Lq",
+                  "type": "ref",
+                  "ref": "bwP65",
+                  "name": "Autorização do responsável",
+                  "width": "fill_container",
+                  "descendants": {
+                    "RTyxX": {
+                      "content": "Autorização do responsável"
+                    },
+                    "uCGef": {
+                      "content": "Para pacientes menores de 18 anos"
+                    }
+                  }
+                },
+                {
+                  "id": "kAqr8",
+                  "type": "ref",
+                  "ref": "bwP65",
+                  "name": "Outro documento",
+                  "width": "fill_container",
+                  "descendants": {
+                    "RTyxX": {
+                      "content": "Outro documento"
+                    },
+                    "uCGef": {
+                      "content": "Qualquer outro documento do pedido"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "OZEgb",
+      "x": 11780,
+      "y": 2064,
+      "name": "Nota · E2.7 Anexar — Tipo do documento",
+      "width": 390,
+      "height": 150,
+      "content": "E2.7 Anexar — Tipo do documento\nOperação seguinte: POST …/documentos com tipoDocumental (ENCAMINHAMENTO · IDENTIFICACAO · AUTORIZACAO_RESPONSAVEL · OUTRO) ✅\nFR-034, research D5 · tipo antes da origem\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "ncnpi",
+      "x": 12250,
+      "y": 1200,
+      "name": "E2.7 Anexar — Origem",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "GwBCs",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "IMBq0",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "FqaNQ",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "vfX2q",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "lVhyJ",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "vuSZd",
+                  "name": "Texto",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Nenhum documento anexado ainda.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "oBFkD",
+                  "name": "Espaço",
+                  "width": "fill_container",
+                  "height": 14
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "G8IMhj",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "0 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "HqSef",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "r66bfJ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "RvpGA",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "CeMbP",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "apbQa",
+          "type": "ref",
+          "ref": "M0wDl9",
+          "name": "Folha",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 514,
+          "descendants": {
+            "cRtAf": {
+              "content": "Como você quer anexar?"
+            },
+            "ApkHu": {
+              "type": "frame",
+              "id": "a4k9q0",
+              "name": "Opções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hVFwl",
+                  "name": "Fotografar",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 14,
+                  "padding": [
+                    14,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "VKOw6",
+                      "name": "Ícone",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "camera",
+                      "library": "lucide",
+                      "fill": "$rc-text"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "wiCTK",
+                      "name": "Texto",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vHzss",
+                          "name": "Rótulo",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Fotografar",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Q0zaBm",
+                          "name": "Apoio",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Mostramos as condições da captura antes da foto",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QOCpk",
+                  "name": "Escolher arquivo",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 14,
+                  "padding": [
+                    14,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "sonp6",
+                      "name": "Ícone",
+                      "width": 20,
+                      "height": 20,
+                      "icon": "folder-open",
+                      "library": "lucide",
+                      "fill": "$rc-text"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ihpYV",
+                      "name": "Texto",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WNTSF",
+                          "name": "Rótulo",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Escolher arquivo",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mWRtK",
+                          "name": "Apoio",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "PDF, JPEG ou PNG do seu aparelho",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "K4RSL",
+      "x": 12250,
+      "y": 2064,
+      "name": "Nota · E2.7 Anexar — Origem",
+      "width": 390,
+      "height": 150,
+      "content": "E2.7 Anexar — Origem\n\"Fotografar\" → E4.1 Condições da captura (sensores †) → câmera · \"Escolher arquivo\" → seletor do aparelho\nFR-034, research D14 · sensores nunca bloqueiam\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "LWEDT",
+      "x": 16480,
+      "y": 1200,
+      "name": "E2.4 Substituir documento — Rascunho",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "F3tpie",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "M1hDb",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "P61hix",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "MSQyQ",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ZTqwF",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "hvCN5",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "m8V6mc",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "L5BDtH",
+              "type": "ref",
+              "ref": "DpTaD",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "bD8Xp": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "z2YtfX",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "2 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "g2ffQ",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ler documentos",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Ler documentos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "R4ZIK",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "LiMGi",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "gj1hZ",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "BRmIW",
+          "type": "ref",
+          "ref": "Y6DS1",
+          "name": "Diálogo",
+          "layoutPosition": "absolute",
+          "x": 24,
+          "y": 271,
+          "width": 342,
+          "descendants": {
+            "n1aZfq": {
+              "icon": "refresh-cw",
+              "fill": "$rc-action"
+            },
+            "G6EZho": {
+              "content": "Substituir documento?"
+            },
+            "o0LOO": {
+              "content": "“documento-identidade.jpg” será trocado pelo novo arquivo."
+            },
+            "sqmw0": {
+              "stroke": "$rc-action"
+            },
+            "sqmw0/jGFGo": {
+              "icon": "refresh-cw",
+              "fill": "$rc-action"
+            },
+            "sqmw0/iQQmX": {
+              "content": "Substituir",
+              "fill": "$rc-action"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "t831K",
+      "x": 16480,
+      "y": 2064,
+      "name": "Nota · E2.4 Substituir documento — Rascunho",
+      "width": 390,
+      "height": 150,
+      "content": "E2.4 Substituir documento — Rascunho\nOperação: PUT …/documentos/{docId} ✅ (201 novo documento; 200 repetição)\nFR-036 · \"Cancelar\" em destaque\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "thP1B",
+      "x": 16950,
+      "y": 1200,
+      "name": "E2.4 Substituir documento — Pedido verificado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "vurJS",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "jMYFG",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 2"
+                }
+              }
+            },
+            {
+              "id": "F36cYJ",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Encaminhamento e identificação deste pedido."
+                }
+              }
+            },
+            {
+              "id": "BLrSa",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Trocar ou remover um documento faz o resultado atual deixar de valer."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "p5UpI",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "EzDr6",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "R3Yf6",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-ubs-santa…",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-ubs-santa…"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 200 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "XT1Uo",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · cartao-sus.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "cartao-sus.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 86 KB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "m5oeY",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "CUBY8",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "qMt4Y",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "r0UBC",
+          "type": "ref",
+          "ref": "Y6DS1",
+          "name": "Diálogo",
+          "layoutPosition": "absolute",
+          "x": 24,
+          "y": 235,
+          "width": 342,
+          "descendants": {
+            "n1aZfq": {
+              "icon": "refresh-cw",
+              "fill": "$rc-action"
+            },
+            "G6EZho": {
+              "content": "Substituir documento?"
+            },
+            "o0LOO": {
+              "content": "“encaminhamento-ubs-santa-aurora.pdf” será trocado pelo novo arquivo. O resultado atual deixará de valer. Depois, leia os documentos de novo e verifique os critérios."
+            },
+            "sqmw0": {
+              "stroke": "$rc-action"
+            },
+            "sqmw0/jGFGo": {
+              "icon": "refresh-cw",
+              "fill": "$rc-action"
+            },
+            "sqmw0/iQQmX": {
+              "content": "Substituir",
+              "fill": "$rc-action"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "URB5a",
+      "x": 16950,
+      "y": 2064,
+      "name": "Nota · E2.4 Substituir documento — Pedido verificado",
+      "width": 390,
+      "height": 150,
+      "content": "E2.4 Substituir documento — Pedido verificado\nOperação: PUT …/documentos/{docId} ✅ · análise vigente deixa de ser vigente; estado não muda (RC-09)\nFR-036 · \"Cancelar\" em destaque\nDados: Pedido 2 da carga"
+    },
+    {
+      "type": "frame",
+      "id": "Wlm4C",
+      "x": 17420,
+      "y": 1200,
+      "name": "E2.5 Remover documento — Rascunho",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "MU7HU",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "BWgGh",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "BCtAC",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "cReS0",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "D2iO8a",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "ADgbZ",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "MHB41",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "gj3Eh",
+              "type": "ref",
+              "ref": "DpTaD",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "bD8Xp": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "PVRo0",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "2 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "HBWlV",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ler documentos",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Ler documentos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "lC5n1",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "BcOHb",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "FJ3PV",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "R5oUj",
+          "type": "ref",
+          "ref": "Y6DS1",
+          "name": "Diálogo",
+          "layoutPosition": "absolute",
+          "x": 24,
+          "y": 271,
+          "width": 342,
+          "descendants": {
+            "G6EZho": {
+              "content": "Remover documento?"
+            },
+            "o0LOO": {
+              "content": "“documento-identidade.jpg” será removido do pedido."
+            },
+            "sqmw0/iQQmX": {
+              "content": "Remover"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "Wg3Ak",
+      "x": 17420,
+      "y": 2064,
+      "name": "Nota · E2.5 Remover documento — Rascunho",
+      "width": 390,
+      "height": 150,
+      "content": "E2.5 Remover documento — Rascunho\nOperação: DELETE …/documentos/{docId} ✅ (200 com nova versão)\nFR-036 · \"Cancelar\" em destaque\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "p9txyW",
+      "x": 17890,
+      "y": 1200,
+      "name": "E2.5 Remover documento — Pedido verificado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "uqxyE",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "OLMLM",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 2"
+                }
+              }
+            },
+            {
+              "id": "tXfYh",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Encaminhamento e identificação deste pedido."
+                }
+              }
+            },
+            {
+              "id": "Fxwbe",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Trocar ou remover um documento faz o resultado atual deixar de valer."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "Y43qyd",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "dF6am",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "YacUo",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-ubs-santa…",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-ubs-santa…"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 200 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "J8cw3R",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · cartao-sus.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "cartao-sus.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 86 KB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iTNK8",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "HVdd5",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "RB7Ni",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "R0iFCH",
+          "type": "ref",
+          "ref": "Y6DS1",
+          "name": "Diálogo",
+          "layoutPosition": "absolute",
+          "x": 24,
+          "y": 259,
+          "width": 342,
+          "descendants": {
+            "G6EZho": {
+              "content": "Remover documento?"
+            },
+            "o0LOO": {
+              "content": "“cartao-sus.jpg” será removido do pedido. O resultado atual deixará de valer."
+            },
+            "sqmw0/iQQmX": {
+              "content": "Remover"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "aMb8A",
+      "x": 17890,
+      "y": 2064,
+      "name": "Nota · E2.5 Remover documento — Pedido verificado",
+      "width": 390,
+      "height": 150,
+      "content": "E2.5 Remover documento — Pedido verificado\nOperação: DELETE …/documentos/{docId} ✅ · resultado deixa de ser vigente\nFR-036 · \"Cancelar\" em destaque\nDados: Pedido 2 da carga"
+    },
+    {
+      "type": "frame",
+      "id": "Y92Uz",
+      "x": 18360,
+      "y": 1200,
+      "name": "E2.6 Excluir rascunho",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "ac4Ji",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "q8U3FY",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "dQV9n",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "wXow1",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ITSZa",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "Ltlxn",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "c556b",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "BwWPy",
+              "type": "ref",
+              "ref": "DpTaD",
+              "width": "fill_container",
+              "name": "Anexar documento",
+              "descendants": {
+                "bD8Xp": {
+                  "content": "Anexar documento"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "C2EQcv",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "2 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "id": "z3ReZc",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Ler documentos",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Ler documentos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "mAHp2",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "nAZBW",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "JVpwd",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "hSXF1",
+          "type": "ref",
+          "ref": "Y6DS1",
+          "name": "Diálogo",
+          "layoutPosition": "absolute",
+          "x": 24,
+          "y": 259,
+          "width": 342
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "aOeJJ",
+      "x": 18360,
+      "y": 2064,
+      "name": "Nota · E2.6 Excluir rascunho",
+      "width": 390,
+      "height": 150,
+      "content": "E2.6 Excluir rascunho\nOperação: DELETE /solicitacoes/{id} + X-Confirmar-Exclusao: EXCLUIR ✅ (204; só em rascunho)\nFR-036 · \"Cancelar\" em destaque\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "mNcfi",
+      "x": 12720,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — Formato não suportado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "xFZSi",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "zLeMV",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "VSbIv",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "jHCtJ",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“exame-cardiologico.heic” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "Envie um arquivo PDF, JPEG ou PNG. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "folder-open"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Escolher outro arquivo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "H1fs1",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "KDgSt",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "Ui3lz",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "d5K4i",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "zBAEE",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "SW8Il",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "b9z4f",
+      "x": 12720,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — Formato não suportado",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — Formato não suportado\nOperação: POST …/documentos ✅ → 415 TIPO_NAO_SUPORTADO\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "Kg6LK",
+      "x": 13190,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — Extensão incompatível",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "VMkcb",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "J3ZJl",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "lTySy",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "aJthE",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“documento-identidade.pdf” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "A extensão do arquivo não corresponde ao seu conteúdo. Escolha o arquivo original, sem renomear. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "folder-open"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Escolher outro arquivo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "SdSiG",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "XqrEm",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "wB7D6",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "LTTDY",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "NVGm4",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "d7703G",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "KWFzc",
+      "x": 13190,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — Extensão incompatível",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — Extensão incompatível\nOperação: POST …/documentos ✅ → 415 EXTENSAO_INCOMPATIVEL\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "b7rGX",
+      "x": 13660,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — Acima de 5 MB",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "KvhoN",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "f1CUI5",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "CBtbX",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "UW6Lc",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“foto-documento-identidade.jpg” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "O arquivo tem 8,4 MB e o limite é 5 MB. Reduza o tamanho ou tire uma nova foto. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "folder-open"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Escolher outro arquivo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "pBsjU",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "oyNFG",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "ZDVw6",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ubEO9",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "F6COb",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "Z3mPR",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "V6TVtL",
+      "x": 13660,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — Acima de 5 MB",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — Acima de 5 MB\nOperação: POST …/documentos ✅ → 413 ARQUIVO_MUITO_GRANDE\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "oevl9",
+      "x": 14130,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — PDF com mais de 5 páginas",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "r5fFpX",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "qW1b8",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "LDfwN",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "zKFEb",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“historico-de-consultas.pdf” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "O PDF tem 12 páginas e o limite é 5. Envie só as páginas necessárias. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "folder-open"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Escolher outro arquivo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "WPUG4",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "z9bpfw",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "myerc",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "GXvJ8",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "z1amR8",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "r0k6L",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "EBAdK",
+      "x": 14130,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — PDF com mais de 5 páginas",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — PDF com mais de 5 páginas\nOperação: POST …/documentos ✅ → 400 REQUISICAO_INVALIDA (arquivo: mais de 5 páginas)\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "n2IevX",
+      "x": 14600,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — PDF protegido",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "eDD4A",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "YvNfB",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "hBF88",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "vBaeq",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“encaminhamento-protegido.pdf” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "PDF protegido por senha. Envie uma versão sem proteção ou um novo arquivo. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "folder-open"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Escolher outro arquivo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "ATpVk",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UO5lc",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "TCwuZ",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "H3wSCT",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uGun2",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "Z5XHp8",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "r6PSR",
+      "x": 14600,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — PDF protegido",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — PDF protegido\nOperação: POST …/documentos ✅ → 400 REQUISICAO_INVALIDA (arquivo: PDF com senha)\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "KgK0r",
+      "x": 15070,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — Arquivo ilegível",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Y2xH3",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "Kv0qD",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "M9EVO",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "dmnFn",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“foto-cartao-sus.jpg” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "Não foi possível ler o arquivo. Envie um novo arquivo. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "folder-open"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Escolher outro arquivo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "ye9pU",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DsJDS",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "yhoV8",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "hpnrn",
+              "name": "Limites",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "1 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "rfPkN",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "InNVC",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "UD8nH",
+      "x": 15070,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — Arquivo ilegível",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — Arquivo ilegível\nOperação: POST …/documentos ✅ → 400 REQUISICAO_INVALIDA (arquivo ilegível)\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "EvfCq",
+      "x": 15540,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — Limite de 3",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Ko3j2",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "icN36",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "VsmmG",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação.",
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "qVAsH",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“autorizacao-responsavel.pdf” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "Limite de 3 documentos atingido. Remova um para anexar outro. Nada foi salvo."
+                },
+                "zKudv": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "yNFRz",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bao0j",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "AlOmn",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "V7Oere",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                },
+                {
+                  "id": "d7qVCA",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Outro documento · exames-anteriores.pdf",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Outro documento"
+                    },
+                    "wFeTH": {
+                      "content": "exames-anteriores.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 156 KB · 1 página"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "C9sY1",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "mEvw8",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "o3cGP6",
+      "x": 15540,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — Limite de 3",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — Limite de 3\nOperação: POST …/documentos ✅ → 422 REGRA_DE_NEGOCIO (documentos)\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
+    },
+    {
+      "type": "frame",
+      "id": "pHaNP",
+      "x": 16010,
+      "y": 1200,
+      "name": "E2.3 Recusa de arquivo — Pedido não aceita documentos",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "F3BEd",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "G4zcJ",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "TxJva",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "CGRN4",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Recusa",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "“autorizacao-responsavel.pdf” não foi enviado."
+                },
+                "h7SWfJ": {
+                  "content": "Este pedido não pode mais receber documentos. Nada foi salvo."
+                },
+                "zKudv/CS3YG": {
+                  "icon": "arrow-left"
+                },
+                "zKudv/bD8Xp": {
+                  "content": "Voltar ao pedido"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "Qho6n",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "p49OW",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "R4xkVH",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento · encaminhamento-cardiologia.pdf",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                },
+                {
+                  "id": "TK0ZD",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Identificação ou cartão do SUS · documento-identidade.jpg",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Identificação ou cartão do SUS"
+                    },
+                    "wFeTH": {
+                      "content": "documento-identidade.jpg"
+                    },
+                    "UjUmc": {
+                      "content": "JPG · 1,2 MB"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "d1xzAL",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "X0Tt7b",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "GLMOm",
+      "x": 16010,
+      "y": 2064,
+      "name": "Nota · E2.3 Recusa de arquivo — Pedido não aceita documentos",
+      "width": 390,
+      "height": 150,
+      "content": "E2.3 Recusa de arquivo — Pedido não aceita documentos\nOperação: POST …/documentos ✅ → 409 CONFLITO_ESTADO\nFR-035 · nada é gravado; é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design); arquivo recusado exemplar"
     }
   ],
   "variables": {
