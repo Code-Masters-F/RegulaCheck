@@ -22,7 +22,7 @@
 6. Atualizar `mapa-de-percursos.md` se a tela mudar uma ligação.
 
 ## Revisão e entrega
-1. Aplicar `mobile/design/checklist-revisao.md` à história e registrar o resultado (o que foi e o que **não** foi revisado).
+1. Revisar a história pelas regras de `mobile/design/design-system.md` e `mobile/design/acessibilidade.md`, e registrar o resultado (o que foi e o que **não** foi revisado). O antigo `checklist-revisao.md` foi excluído em 14/11/2026 (feature 014, T066); as auditorias de conteúdo da feature 014 (T057/T058) fazem esse papel.
 2. Pedir a uma pessoa que não desenhou para percorrer o percurso principal pelo mapa (SC-005).
 3. O responsável aprova a história (SC-007); correções pedidas ficam registradas.
 4. Só depois de aprovado, abrir PR da história. Nenhum commit sem pedido.

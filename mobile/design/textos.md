@@ -1,6 +1,6 @@
 # Textos da interface
 
-> Todos os textos exibidos nas telas, por quadro e estado. **O desenho deve usar exatamente estes textos**; alterou o desenho, altere aqui. Dados: [dados-ficticios.md](dados-ficticios.md). Rótulos de valores do backend: [specs/014-fluxo-telas-app/data-model.md](../../specs/014-fluxo-telas-app/data-model.md) §2. Fluxo e ações: [specs/014-fluxo-telas-app/spec.md](../../specs/014-fluxo-telas-app/spec.md). Regras de linguagem: [checklist-revisao.md](checklist-revisao.md).
+> Todos os textos exibidos nas telas, por quadro e estado. **O desenho deve usar exatamente estes textos**; alterou o desenho, altere aqui. Dados: [dados-ficticios.md](dados-ficticios.md). Rótulos de valores do backend: [specs/014-fluxo-telas-app/data-model.md](../../specs/014-fluxo-telas-app/data-model.md) §2. Fluxo e ações: [specs/014-fluxo-telas-app/spec.md](../../specs/014-fluxo-telas-app/spec.md). Regras de linguagem: [design-system.md](design-system.md) (Faça e evite).
 > Convenção: `{...}` = valor que vem dos dados. Português do Brasil, frases curtas, sempre dizendo o próximo passo. Atualizado em 13/11/2026 (feature 014).
 
 ## Avisos fixos (F3)

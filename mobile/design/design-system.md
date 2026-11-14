@@ -105,6 +105,7 @@ Estados: ícone 16 na cor do significado + rótulo 14/700 em `rc-text`. Rótulos
 - Telas de lista mais altas que 844 são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar.
 - Fonte ampliada: o texto acompanha a escala do sistema (até 200%, escala não linear do Android 14). Quando o texto não cabe, `Documento/Linha` e `Critério/Linha` passam as ações e o resultado para baixo do nome, e `Resumo/Simulado` põe o selo abaixo do título. Nunca cortar palavra ou esconder ação. Exemplos: quadros E4.4.
 - Exemplos nos quadros: estrutura do backend, textos realistas em português correto (`mobile/design/dados-ficticios.md`); nunca "Exemplo", "sintético" ou texto sem acento.
+- Android: reservar espaço para barras do sistema, teclado e rolagem; a ação principal e o conteúdo importante nunca ficam escondidos atrás deles. Na implementação, conferir no aparelho o seletor de arquivos, a câmera, o Voltar, a retomada do rascunho, o TalkBack e a fonte ampliada. O desenho não comprova nada disso. Referências oficiais: [acessibilidade e alvos de toque](https://developer.android.com/develop/ui/compose/accessibility/api-defaults), [áreas do sistema e teclado](https://developer.android.com/develop/ui/compose/layouts/insets).
 
 ## Faça e evite
 

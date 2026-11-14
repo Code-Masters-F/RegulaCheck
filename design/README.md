@@ -13,12 +13,12 @@ O responsável aprovou **seguir com a identidade dos três exemplos inspirados n
 
 ## Direção aprovada
 
-- **Minimalista e simpática**, com respiro e linguagem que ajude a resolver burocracia. Referência: Headspace / Explore / iOS, captura Refcat de 08/09/2025. Inspirar-se no tom, sem copiar a marca.
+- **Minimalista e simpática**, com respiro e linguagem que ajude a resolver burocracia. Referência de tom: Headspace (tela Explore, iOS). Inspirar-se no tom, sem copiar a marca.
 - **Bricolage Grotesque 600** em títulos; **Nunito Sans 400** em corpo e **600/700** em ações/ênfase. Títulos de tela 32, corpo 16, apoio 13–14. No pen.dev são famílias explícitas; no Android, usar os arquivos reais e validar fonte ampliada.
 - Paleta: texto `#112B3C`; ação azul `#205375`; acento laranja `#F6680E`; neutro `#EFEFEF`; fundo branco. Apoio `#526774`; sucesso `#176448`; simulado `#8D3C0C` sobre `#FFF1E6`.
 - Superfícies funcionais com raio 24; botões atuais de 52 de altura; alvos de toque ≥48. Poucas caixas, divisores leves, uma ação principal por contexto.
 - **Poucas ilustrações, apenas quando úteis**; nenhuma nas três telas atuais. Sem gradientes ou enfeites decorativos.
-- **Pesquisa fica em texto. Não recolocar painéis, sites ou capturas de referências no canvas.**
+- **Não colocar painéis, sites ou capturas de referências no canvas.**
 
 ## O que existe no pen.dev (design system v1.0, 13/11/2026)
 
@@ -53,14 +53,9 @@ Fase 0 concluída em 13/11: 13 componentes novos ou ajustados (`Folha/Escolha`, 
 | Recurso | Estado e uso |
 |---|---|
 | **pen.dev / pencil MCP** | Conectado nesta sessão. Usar `get_app_state` → `read_skill` (schema/execute) → `execute` → screenshots/checagem de limites → `save`. `Export` gera prévias; IDs acima evitam recriar quadros. |
-| **Refcat MCP remoto** | Configurado como `refcat`, endpoint `https://mcp.refcat.app/mcp`, autenticação `bearer_token_env_var=REFCAT_API_KEY`. A variável do usuário Windows está configurada; **não copiar seu valor para chat, arquivos ou logs**. |
-| **Acesso ao Refcat** | Consultas autenticadas de catálogo/tela funcionaram. As ferramentas não apareceram nativamente nesta sessão; a pesquisa usou o protocolo MCP por HTTPS no PowerShell, com validação TLS nativa do Windows. O Python apresentou erro de certificado; não desativar TLS. Reiniciar o Codex pode carregar o MCP e a variável no processo. Diagnóstico sem segredo: `codex mcp get refcat --json`. |
-| **Chave local** | Auxiliar `scripts/configurar-refcat.ps1`: o próprio responsável insere a chave em campo oculto. Outro computador/agente remoto precisa de sua própria configuração; este repositório não transporta a chave. |
 | **Spec Kit** | Nove skills oficiais `speckit-*` em `.agents/skills/`. CLI isolada em `%LOCALAPPDATA%/RegulaCheck/tools/spec-kit/Scripts/specify.exe`. Configuração Claude anterior preservada. |
 | **Android** | Skill comunitária MIT `android-design-guidelines` em `%USERPROFILE%/.codex/skills/`. É consulta; não impõe modo escuro ou cor dinâmica. Nenhum SDK/emulador foi instalado por este trabalho. |
-| **Image Gen** | Ferramenta integrada usada para conceitos; imagens em `design/exploracoes/headspace-2026-11-13/`. São referência visual, não substituem o `.pen` editável. |
-
-Não usar geração/exportação do Refcat que consuma cota sem pedido. Os permalinks sugeridos pelo catálogo não funcionaram; pesquisar o aplicativo/fluxo em [Refcat](https://refcat.app/dashboard/). Evidências e limites: [referencias.md](referencias.md).
+A pesquisa de referências (Refcat), as capturas de outros aplicativos e as imagens de conceito saíram do repositório em 14/11/2026, por decisão do responsável. A direção que elas ajudaram a escolher está em [design-system.md](../mobile/design/design-system.md). Os arquivos podem ser recuperados pelo histórico do Git (commit `b696b1f`).
 
 ## Retomar com segurança
 
@@ -90,5 +85,5 @@ Não usar geração/exportação do Refcat que consuma cota sem pedido. Os perma
 
 Detalhes: [verificação](verificacao-2026-11-13.md).
 
-Material de apoio: [prompts/conceitos](exploracoes/headspace-direcao-2026-11-13.md), `mobile/design/textos.md`, `dados-ficticios.md`, `mapa-de-percursos.md`, `design-system.md`. Os documentos antigos devem ser lidos com o status de entrega parcial acima.
+Material de apoio em `mobile/design/`: `design-system.md`, `textos.md`, `dados-ficticios.md`, `mapa-de-percursos.md`, `acessibilidade.md` e `INDEX.md`.
 

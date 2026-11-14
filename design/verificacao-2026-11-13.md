@@ -166,3 +166,8 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Não verificado: leitura da nova disposição por quem não desenhou.
 - Commit da organização: `8148594` (enviado).
 - Capturas de referência `design/referencias/*.webp` (5 arquivos, 0,43 MB) incluídas na branch por decisão do responsável, para o grupo avaliar. Registro em `design/referencias.md`.
+
+## Limpeza de arquivos redundantes (T066–T067), 14/11/2026
+
+- Por pedido do responsável, com a lista aprovada antes, saíram 18 arquivos (cerca de 7,8 MB): as capturas do Refcat, as explorações de conceito e os prompts, `design/referencias.md`, `scripts/configurar-refcat.ps1` e `mobile/design/checklist-revisao.md`. Isso substitui a decisão anterior de versionar as capturas. Recuperáveis pelo commit `b696b1f`.
+- Links ajustados nos documentos em uso. As menções que sobraram estão em registros históricos.

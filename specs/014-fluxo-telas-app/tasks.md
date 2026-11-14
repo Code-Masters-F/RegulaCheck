@@ -218,6 +218,15 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 ---
 
+## Phase 13: Limpeza de arquivos redundantes (pedido de 14/11/2026)
+
+**Purpose**: deixar no repositório só o material do design em uso e as specs, para o grupo avaliar sem documentos superados
+
+- [x] T066 Excluir, com a lista aprovada pelo responsável: as 5 capturas do Refcat (`design/referencias/`), as explorações de conceito e os prompts (`design/exploracoes/`), `design/referencias.md`, `scripts/configurar-refcat.ps1` e `mobile/design/checklist-revisao.md`; levar antes os cuidados Android que ainda valem para `mobile/design/design-system.md`
+- [x] T067 Ajustar os links afetados (`design/README.md`, `AGENTS.md`, `mobile/README.md`, `mobile/design/textos.md`) e conferir que nenhum documento em uso aponta para arquivo excluído; registrar em `design/verificacao-2026-11-13.md`
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -282,7 +291,7 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 
 ## Notes
 
-- Total: 65 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas) · 94 quadros (3 existentes ajustados).
+- Total: 67 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas; T066–T067 para a limpeza de arquivos) · 94 quadros (3 existentes ajustados).
 - Nenhum commit, push ou issue sem pedido explícito (constituição, Fluxo de Desenvolvimento).
 - Marcar tarefa como concluída só com evidência (screenshot revisada, consulta de limites, PNG exportado, arquivo salvo).
 - `/speckit-analyze` executado em 13/11/2026; achados F1–F14 corrigidos nesta revisão.
@@ -388,3 +397,11 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
   - Screenshots do cartão de leitura, de um cabeçalho de etapa e de um cartão de linha revisados; documento salvo pelo MCP.
 - **T065:** `design/README.md`, `mobile/design/INDEX.md` (agora por etapa e linha), `mapa-de-percursos.md`, `quickstart.md`, `plan.md` e research D15 apontam para a nova disposição.
 - Não verificado: avaliação da nova disposição por outra pessoa.
+
+### 14/11/2026 — Phase 13 / limpeza de arquivos (T066–T067)
+
+- Commits anteriores: `8148594` (organização do canvas) e `b696b1f` (capturas versionadas), ambos enviados.
+- Pedido do responsável: tirar as capturas do Refcat e os documentos redundantes, ficando com as specs e a documentação em uso. A lista foi apresentada e aprovada antes da exclusão.
+- **T066:** saíram 18 arquivos (cerca de 7,8 MB): 5 capturas, 7 imagens de conceito, 2 registros de prompts, `design/referencias.md`, `scripts/configurar-refcat.ps1` e `mobile/design/checklist-revisao.md`. Os cuidados Android sobre barras do sistema, teclado e conferência no aparelho foram para a seção Comportamentos de `design-system.md`. Ficaram as specs 001–014 (a 007 continua dona do design system), o `.pen`, as prévias e os documentos de `mobile/design/`.
+- **T067:** links ajustados em `design/README.md`, `AGENTS.md`, `mobile/README.md` (a seção de design citava arquivos `.pen` que não existem) e `textos.md`. As menções que sobraram ficam em registros históricos: specs 007 e 014 e o registro de verificação.
+- Os arquivos podem ser recuperados pelo histórico do Git (`b696b1f`).
