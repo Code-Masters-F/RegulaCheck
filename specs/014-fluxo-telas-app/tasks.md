@@ -207,6 +207,17 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 ---
 
+## Phase 12: Organização do canvas para avaliação (pedido de 14/11/2026)
+
+**Purpose**: deixar a sequência de telas legível para quem avalia, sem mudar o conteúdo dos quadros (research D20)
+
+- [x] T062 Reorganizar `design/RegulaCheck.pen` por etapa do percurso: 8 etapas com cabeçalho (histórias RC-XX), uma linha por tela (01–21) na ordem de uso, estados da esquerda para a direita a partir do mais comum (E1.3 pelo ciclo de vida) e cada nota abaixo do seu quadro; remover as 4 capas por história, substituídas pelas etapas
+- [x] T063 Acrescentar ao canvas o cartão "Como avaliar o fluxo" (leitura do quadro, notas, †, dobra, origem dos dados, caminho principal numerado) e, à esquerda de cada linha, um cartão com número, tela, propósito, "Vem de", "Vai para" e operação, conforme `mapa-de-percursos.md` e `contracts/telas-operacoes.md`
+- [x] T064 Verificar no canvas: 0 sobreposições entre nós de topo, 94 quadros com nota logo abaixo, nenhum quadro alterado por dentro (consulta de limites igual à da T061), screenshot do cartão e de uma etapa; salvar pelo MCP
+- [x] T065 [P] Atualizar `design/README.md`, `mobile/design/INDEX.md` (etapas e linhas), `mobile/design/mapa-de-percursos.md`, `quickstart.md` e `plan.md` com a nova disposição; registrar em `design/verificacao-2026-11-13.md`
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -271,7 +282,7 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 
 ## Notes
 
-- Total: 61 tarefas · 94 quadros (3 existentes ajustados).
+- Total: 65 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas) · 94 quadros (3 existentes ajustados).
 - Nenhum commit, push ou issue sem pedido explícito (constituição, Fluxo de Desenvolvimento).
 - Marcar tarefa como concluída só com evidência (screenshot revisada, consulta de limites, PNG exportado, arquivo salvo).
 - `/speckit-analyze` executado em 13/11/2026; achados F1–F14 corrigidos nesta revisão.
@@ -363,3 +374,17 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 - **T059:** `mobile/design/INDEX.md` reescrito com os 94 quadros (ID, faixa, operação, situação "revisado" e prévia); `design/README.md` atualizado com o estado de 14/11 e as pendências.
 - **T060: não executada.** Depende de uma pessoa que não desenhou percorrer o caminho login → comprovante `SIM-2026-0001` (SC-003, SC-004). Fica registrada como **não verificada**.
 - **T061:** consulta de limites final nos 102 quadros (94 telas, 4 capas e F1–F4). Em 5 quadros o `Respiro flexível` fica com altura 0 porque o conteúdo ocupa toda a altura útil; nenhum elemento visível é cortado. Foram exportadas 102 prévias 2× e o documento foi salvo pelo MCP.
+
+### 14/11/2026 — Phase 12 / organização do canvas (T062–T065)
+
+- Commit do polimento: `22d9223` (enviado).
+- Pedido do responsável: organizar visualmente a sequência de telas para facilitar a avaliação. Decisão registrada em research D20.
+- **T062:** os 94 quadros foram movidos para 8 etapas e 21 linhas (uma por tela, na ordem de uso). Os estados vão da esquerda para a direita a partir do mais comum; E1.3 segue o ciclo de vida. Cada nota foi junto com o seu quadro. As 4 capas por história foram removidas, porque as etapas citam as histórias, e as prévias delas foram apagadas.
+- **T063:** cartão "Como avaliar o fluxo" (`io4cw`) com a leitura do quadro, o significado das notas, de † e da dobra, a origem dos dados e o caminho principal numerado (16 passos). Há também um cabeçalho por etapa e um cartão por linha (propósito, "Vem de", "Vai para", operação), escritos a partir de `mapa-de-percursos.md` e `contracts/telas-operacoes.md`.
+- **T064:**
+  - 222 nós de topo e 0 sobreposições.
+  - 94 de 94 quadros com a nota logo abaixo.
+  - Consulta de limites com 0 problemas: o conteúdo dos quadros não foi alterado.
+  - Screenshots do cartão de leitura, de um cabeçalho de etapa e de um cartão de linha revisados; documento salvo pelo MCP.
+- **T065:** `design/README.md`, `mobile/design/INDEX.md` (agora por etapa e linha), `mapa-de-percursos.md`, `quickstart.md`, `plan.md` e research D15 apontam para a nova disposição.
+- Não verificado: avaliação da nova disposição por outra pessoa.

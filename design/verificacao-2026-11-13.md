@@ -149,3 +149,18 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - **Limites:** 0 cortes de conteúdo visível nos 102 quadros. Em 5 quadros (E1.1 serviço indisponível e sem conexão, E1.3 resultado não vigente, E2.2 limite atingido, E2.3 pedido não aceita documentos) o espaçador flexível fica com altura 0, porque o conteúdo ocupa toda a altura útil.
 - **SC-003 e SC-004 (T060): não verificados.** Ainda não houve percurso com uma pessoa que não desenhou.
 - Prévias finais: 98 PNG 2× em `design/previas/` (94 telas e 4 capas) e 4 em `design/previas/fundamentos/`. Documento salvo pelo MCP.
+
+## Feature 014 — Organização do canvas para avaliação (T062–T065), 14/11/2026
+
+- Commit do polimento: `22d9223` (enviado).
+- Disposição nova (research D20):
+  - Cartão "Como avaliar o fluxo" (`io4cw`, prévia em `design/previas/io4cw.png`).
+  - 8 etapas, com 21 linhas numeradas (uma por tela, na ordem de uso) e um cartão por linha com propósito, "Vem de", "Vai para" e operação.
+  - Estados da esquerda para a direita, cada um com a sua nota logo abaixo.
+  - As 4 capas por história foram removidas.
+- Verificação:
+  - 0 sobreposições entre os 222 nós de topo.
+  - 94 de 94 quadros com a nota logo abaixo.
+  - Consulta de limites com 0 problemas (conteúdo dos quadros inalterado).
+  - Screenshots do cartão de leitura, de um cabeçalho e de um cartão de linha revisados; documento salvo pelo MCP.
+- Não verificado: leitura da nova disposição por quem não desenhou.

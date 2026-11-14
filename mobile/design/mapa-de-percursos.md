@@ -2,7 +2,7 @@
 
 > Como as telas se ligam, conforme [specs/014-fluxo-telas-app/spec.md](../../specs/014-fluxo-telas-app/spec.md) (fluxo que acompanha o backend). IDs dos quadros: [specs/014-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/014-fluxo-telas-app/contracts/inventario-quadros.md). Dados: [dados-ficticios.md](dados-ficticios.md). Mapa em texto, sem protótipo executável.
 >
-> **Situação em 14/11/2026:** as quatro faixas estão desenhadas, com os 94 quadros do inventário: RC-36 (E1.1–E1.5, 25 quadros), RC-37 (E2.1–E2.7, 28), RC-38 (E3.1–E3.8, 26) e RC-39 (E4.1–E4.4, 15). Falta o percurso com uma pessoa que não desenhou (T060).
+> **Situação em 14/11/2026:** os 94 quadros do inventário estão desenhados. No canvas, eles estão organizados por etapa do percurso: uma linha por tela, de 01 a 21, na ordem deste mapa (research D20). Os números de linha estão em [INDEX.md](INDEX.md). Falta o percurso com uma pessoa que não desenhou (T060).
 
 ## Percurso de entrada (RC-36) — desenhado
 

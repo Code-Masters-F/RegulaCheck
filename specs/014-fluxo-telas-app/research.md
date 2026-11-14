@@ -90,7 +90,7 @@ Fontes lidas em `origin/main` (merge do PR #13, `0091634`, 13/11/2026): `CONTRAT
 
 ## D15. Organização no pen.dev
 
-- **Decision**: arquivo único `design/RegulaCheck.pen`; uma faixa horizontal por história (RC-36 a RC-39) abaixo dos quadros F1–F4; quadros 390 × 844 nomeados `<ID> <Tela> — <Estado>`; anotações de operação e de "contrato provisório" como nós `note` ao lado do quadro, fora da tela.
+- **Decision** (disposição substituída por D20 em 14/11/2026): arquivo único `design/RegulaCheck.pen`; uma faixa horizontal por história (RC-36 a RC-39) abaixo dos quadros F1–F4; quadros 390 × 844 nomeados `<ID> <Tela> — <Estado>`; anotações de operação e de "contrato provisório" como nós `note` ao lado do quadro, fora da tela.
 - **Rationale**: `design/README.md` adotou o arquivo único em 13/11; nós `note` existem no esquema `.pen` e não poluem a tela.
 - **Alternatives considered**: cinco arquivos `.pen` do plano histórico do 007 (duplicaria o design system por importação).
 
@@ -120,3 +120,17 @@ Fontes lidas em `origin/main` (merge do PR #13, `0091634`, 13/11/2026): `CONTRAT
 - **Alternatives considered**: manter os dois quadros (duplicação sem caminho de navegação).
 
 Nenhum item da Technical Context ficou como NEEDS CLARIFICATION.
+
+## D20. Canvas organizado por etapa do percurso (14/11/2026)
+
+- **Decision**: substitui a disposição de D15 (uma faixa por história, quadros na ordem do inventário). O canvas passa a ser lido como um roteiro:
+  - Um cartão "Como avaliar o fluxo" no topo, com a legenda e o caminho principal numerado.
+  - Oito etapas, cada uma com um cabeçalho que cita as histórias RC-XX.
+  - Dentro de cada etapa, **uma linha por tela**, na ordem em que a tela aparece no uso (01 a 21).
+  - À esquerda de cada linha, um cartão com o propósito da tela, de onde se chega, para onde se vai e a operação.
+  - Os estados da tela vão da esquerda para a direita, começando pelo mais comum. A linha do pedido (E1.3) segue o ciclo de vida, do rascunho à simulação concluída.
+  - Cada nota acompanha o seu quadro. As capas por história saem, porque as etapas as substituem.
+- **Rationale**: o responsável pediu uma sequência visual mais lógica para facilitar a avaliação. A disposição por história misturava telas de momentos diferentes na mesma faixa, sem indicar a ordem de uso nem as ligações entre telas. A mudança só move quadros e acrescenta rótulos fora das telas; o conteúdo dos 94 quadros não muda.
+- **Alternatives considered**:
+  - Manter as faixas por história e só acrescentar rótulos: continua sem mostrar a ordem do percurso.
+  - Uma única linha com o caminho principal e os estados em colunas: as colunas de E1.3, E2.2 e E3.2 ficariam com mais de 9 mil pixels de altura.

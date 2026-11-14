@@ -68,7 +68,7 @@ specs/014-fluxo-telas-app/
 
 ```text
 design/
-├── RegulaCheck.pen               # F1–F4 (y=0), exemplos e uma faixa por história (RC-36 … RC-39)
+├── RegulaCheck.pen               # F1–F4 (y=0) e, à direita, o fluxo por etapa: uma linha por tela (01–21), research D20
 ├── README.md                     # retomada (atualizar: X7)
 └── previas/                      # PNG por quadro e por fase
 mobile/design/

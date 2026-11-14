@@ -11,7 +11,7 @@ Guia para quem vai montar as telas no pen.dev (pessoa ou agente). Só design: ne
 ## Montar um quadro
 
 1. Copiar a tela-exemplo mais próxima (`H0BJi`, `CvQRm` ou `XCNVm`): 390 × 844, padding 24/24/16, conteúdo vertical com gap 24, `Respiro flexível` antes do `Aviso/Rodapé`.
-2. Nomear `<ID> <Tela> — <Estado>` (ex.: `E3.2 Conferência — Campo ilegível`) e posicionar na faixa da história (RC-36 a RC-39), da esquerda para a direita na ordem do inventário.
+2. Nomear `<ID> <Tela> — <Estado>` (ex.: `E3.2 Conferência — Campo ilegível`) e posicionar na linha da tela (01 a 21, ver `mobile/design/INDEX.md`), à direita dos estados já desenhados, com a nota logo abaixo do quadro (research D20).
 3. Trocar só instâncias e textos. Textos vêm de `mobile/design/textos.md` e dos rótulos de data-model §2; dados de data-model §5 (carga do backend, catálogo da leitura simulada e Pedidos 5 a 8 "só no design") e de `mobile/design/dados-ficticios.md` para datas ilustrativas.
 4. Conferir que toda ação do quadro está em `telas-operacoes.md` para aquele estado; se não estiver, a ação não entra.
 5. Adicionar ao lado do quadro um nó `note` com: operação(ões) usada(s), FR atendidos e, se for o caso, "contrato provisório (RC-xx)".
