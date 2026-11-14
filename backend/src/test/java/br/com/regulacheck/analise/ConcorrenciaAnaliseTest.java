@@ -39,30 +39,33 @@ class ConcorrenciaAnaliseTest {
             Pedido p = lido(c, AmostrasSinteticas.ENCAMINHAMENTO, AmostrasSinteticas.IDENTIFICACAO);
             confirmarTudo(c, p);
             ExecutorService threads = Executors.newFixedThreadPool(10);
-            CountDownLatch largada = new CountDownLatch(1);
             List<Future<Resposta>> respostas = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                respostas.add(threads.submit(() -> {
-                    largada.await();
-                    return pedir(c, c.authA, p.id());
-                }));
-            }
-            largada.countDown();
             int criadas = 0;
             Set<String> ids = new HashSet<>();
-            for (Future<Resposta> futura : respostas) {
-                Resposta r = futura.get(30, TimeUnit.SECONDS);
-                assertTrue(List.of(200, 201, 409).contains(r.status()), r.status() + " " + r.corpo());
-                if (r.status() == 201) {
-                    criadas++;
+            try {
+                CountDownLatch largada = new CountDownLatch(1);
+                for (int i = 0; i < 10; i++) {
+                    respostas.add(threads.submit(() -> {
+                        largada.await();
+                        return pedir(c, c.authA, p.id());
+                    }));
                 }
-                if (r.status() == 409) {
-                    assertEquals("ANALISE_EM_ANDAMENTO", r.json().get("codigo").asText());
-                } else {
-                    ids.add(r.json().get("id").asText());
+                largada.countDown();
+                for (Future<Resposta> futura : respostas) {
+                    Resposta r = futura.get(30, TimeUnit.SECONDS);
+                    assertTrue(List.of(200, 201, 409).contains(r.status()), r.status() + " " + r.corpo());
+                    if (r.status() == 201) {
+                        criadas++;
+                    }
+                    if (r.status() == 409) {
+                        assertEquals("ANALISE_EM_ANDAMENTO", r.json().get("codigo").asText());
+                    } else {
+                        ids.add(r.json().get("id").asText());
+                    }
                 }
+            } finally {
+                encerrar(threads, respostas);
             }
-            threads.shutdown();
 
             assertEquals(1, criadas);
             assertEquals(1, ids.size(), "todas as respostas de sucesso trazem a mesma analise");
@@ -71,6 +74,13 @@ class ConcorrenciaAnaliseTest {
             assertEquals(EstadoSolicitacao.SEM_PENDENCIAS_IDENTIFICADAS,
                     c.cenario.solicitacoes.buscarDaPaciente(p.numero(), 1).orElseThrow().estado());
         }
+    }
+
+    /** Cancela o que nao terminou (falha no meio do teste) e espera, com prazo, as threads acabarem. */
+    static void encerrar(ExecutorService threads, List<? extends Future<?>> pendentes) throws InterruptedException {
+        pendentes.forEach(futura -> futura.cancel(true));
+        threads.shutdownNow();
+        assertTrue(threads.awaitTermination(30, TimeUnit.SECONDS), "threads do teste nao terminaram");
     }
 
     @Test

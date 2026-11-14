@@ -47,7 +47,7 @@ public final class ConferenciaRepositoryJdbc implements ConferenciaRepository {
     private static final String SQL_BLOQUEAR = """
             SELECT ESTADO, REVISAO_ATUAL FROM RC_SOLICITACAO WHERE ID = ? AND PACIENTE_ID = ? FOR UPDATE""";
     private static final String SQL_LEITURA = """
-            SELECT REVISAO FROM RC_EXTRACAO WHERE ID = ? AND SOLICITACAO_ID = ?""";
+            SELECT REVISAO, CRIADA_EM FROM RC_EXTRACAO WHERE ID = ? AND SOLICITACAO_ID = ?""";
     private static final String SQL_CAMPOS_DA_LEITURA = """
             SELECT ed.ID AS LEITURA_DOCUMENTO_ID, ed.DOCUMENTO_ID, c.CODIGO, c.SITUACAO
               FROM RC_EXTRACAO_DOCUMENTO ed
@@ -130,6 +130,7 @@ public final class ConferenciaRepositoryJdbc implements ConferenciaRepository {
             }
         }
         int revisaoDaLeitura;
+        Instant leituraCriadaEm;
         try (PreparedStatement leitura = conexao.prepareStatement(SQL_LEITURA)) {
             leitura.setLong(1, extracaoId);
             leitura.setLong(2, solicitacaoId);
@@ -138,6 +139,7 @@ public final class ConferenciaRepositoryJdbc implements ConferenciaRepository {
                     return ResultadoRegistroDecisao.naoEncontrado();
                 }
                 revisaoDaLeitura = linha.getInt("REVISAO");
+                leituraCriadaEm = linha.getObject("CRIADA_EM", OffsetDateTime.class).toInstant();
             }
         }
         if (estado == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
@@ -162,9 +164,16 @@ public final class ConferenciaRepositoryJdbc implements ConferenciaRepository {
             }
         }
         Map<String, DecisaoConferencia> vigentes = new HashMap<>();
+        Instant ultimo = leituraCriadaEm;
         for (DecisaoConferencia vigente : decisoesDaLeitura(conexao, extracaoId)) {
             vigentes.put(chave(vigente.documentoId(), vigente.codigo()), vigente);
+            ultimo = vigente.decididaEm().isAfter(ultimo) ? vigente.decididaEm() : ultimo;
         }
+        // RC-13: o instante da conferencia (ultima decisao ou, sem decisao, a leitura) identifica a conferencia
+        // avaliada numa analise. O "agora" foi capturado antes do bloqueio: duas gravacoes concorrentes podem chegar
+        // aqui fora de ordem, ou no mesmo microssegundo. Por isso a gravacao que muda algo sempre leva o instante
+        // para depois do ultimo, sob o bloqueio; assim toda mudanca de conteudo muda o instante da conferencia.
+        Instant instante = InstanteDaConferencia.depoisDe(ultimo, agora);
         int gravadas = 0;
         for (DecisaoNova decisao : decisoes) {
             DecisaoConferencia vigente = vigentes.get(chave(decisao.documentoId(), decisao.codigo()));
@@ -173,9 +182,9 @@ public final class ConferenciaRepositoryJdbc implements ConferenciaRepository {
             }
             long leituraDocumentoId = documentos.get(decisao.documentoId()).leituraDocumentoId();
             if (vigente == null) {
-                inserir(conexao, leituraDocumentoId, decisao, agora);
+                inserir(conexao, leituraDocumentoId, decisao, instante);
             } else {
-                atualizar(conexao, leituraDocumentoId, decisao, agora);
+                atualizar(conexao, leituraDocumentoId, decisao, instante);
             }
             gravadas++;
         }

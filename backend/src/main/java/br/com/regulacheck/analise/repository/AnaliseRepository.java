@@ -35,8 +35,10 @@ public interface AnaliseRepository {
 
     /**
      * Grava a analise, se a entrada ainda for a avaliada. Sob o bloqueio do pedido: confere que a analise em
-     * andamento ainda e esta ({@code iniciadaEm}); confere que a revisao atual e o instante atual da conferencia
-     * sao os avaliados (senao encerra como {@link Encerramento#DESCARTE}); entao, na mesma transacao, tira a
+     * andamento ainda e esta ({@code iniciadaEm}; senao nada muda); confere que ela nao passou do {@code limite}
+     * (senao o resultado tardio nao e publicado e o pedido vai a {@code FALHA_ANALISE}); confere que a revisao atual
+     * e o instante atual da conferencia sao os avaliados (senao encerra como {@link Encerramento#DESCARTE}); entao,
+     * na mesma transacao, tira a
      * vigencia da anterior, grava a analise, um resultado por regra, as pendencias com motivo e evidencias, poe o
      * pedido no resultado geral e devolve a analise lida de volta. Ou existe tudo ou nada.
      *
@@ -45,11 +47,13 @@ public interface AnaliseRepository {
      * @param iniciadaEm instante de inicio devolvido por {@link #iniciar}
      * @param analise avaliacao e a entrada que ela considerou
      * @param agora data de execucao
+     * @param limite tempo maximo de uma analise em andamento; o resultado so e publicado antes de
+     *     {@code iniciadaEm + limite}
      * @return o desfecho; nunca {@code null}
      * @throws br.com.regulacheck.common.exception.ExcecaoNegocio 503 se o banco estiver indisponivel
      */
     PublicacaoAnalise publicar(long pacienteId, long solicitacaoId, Instant iniciadaEm, AnaliseParaGravar analise,
-            Instant agora);
+            Instant agora, Duration limite);
 
     /**
      * Encerra sem resultado a analise em andamento, se ainda for esta ({@code iniciadaEm}); senao nao faz nada.
@@ -66,7 +70,7 @@ public interface AnaliseRepository {
     boolean encerrar(long pacienteId, long solicitacaoId, Instant iniciadaEm, Encerramento tipo, Instant agora);
 
     /**
-     * Le, sem bloqueio, o historico de analises do pedido da paciente.
+     * Le, sem bloqueio e num unico retrato do banco, o historico de analises do pedido da paciente.
      *
      * @param pacienteId conta dona (a da sessao)
      * @param solicitacaoId pedido

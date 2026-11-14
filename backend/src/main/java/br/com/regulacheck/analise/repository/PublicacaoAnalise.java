@@ -24,6 +24,11 @@ public record PublicacaoAnalise(Situacao situacao, Analise analise) {
          * nada foi gravado nem alterado.
          */
         SUBSTITUIDA,
+        /**
+         * Esta analise ainda era a em andamento, mas passou do limite de tempo: o resultado tardio nao foi publicado
+         * e o pedido foi a {@code FALHA_ANALISE} (a paciente pode pedir de novo).
+         */
+        PRAZO_ESGOTADO,
         /** Pedido inexistente ou de outra paciente. */
         NAO_ENCONTRADO
     }
@@ -41,6 +46,11 @@ public record PublicacaoAnalise(Situacao situacao, Analise analise) {
     /** @return desfecho de analise substituida */
     public static PublicacaoAnalise substituida() {
         return new PublicacaoAnalise(Situacao.SUBSTITUIDA, null);
+    }
+
+    /** @return desfecho de analise que passou do limite sem ser assumida */
+    public static PublicacaoAnalise prazoEsgotado() {
+        return new PublicacaoAnalise(Situacao.PRAZO_ESGOTADO, null);
     }
 
     /** @return desfecho de pedido nao encontrado */

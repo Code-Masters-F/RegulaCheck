@@ -116,6 +116,22 @@ class PrazoEFalhaAnaliseTest {
     }
 
     @Test
+    void resultadoQueChegaDepoisDoLimiteSemNinguemAssumirNaoEPublicadoEVaiAFalha() throws Exception {
+        AnaliseService lenta = servico(c, avaliacaoComIntervalo(c,
+                () -> c.cenario.relogio.avancar(Duration.ofSeconds(61))));
+
+        ExcecaoNegocio recusa = assertThrows(ExcecaoNegocio.class, () -> lenta.analisar(PACIENTE_A, p.numero()));
+
+        assertEquals(409, recusa.status());
+        assertEquals("A análise passou do tempo limite e não foi publicada. Consulte as análises ou peça de novo.",
+                recusa.getMessage());
+        assertEquals(0, c.cenario.analises.totalDoPedido(p.numero()), "o resultado tardio nao e gravado (FR-018)");
+        assertEquals(EstadoSolicitacao.FALHA_ANALISE, estado(), "a analise interrompida libera o pedido como falha");
+        assertTrue(c.cenario.analises.iniciadaEm(p.numero()).isEmpty());
+        assertEquals(201, pedir(c, c.authA, p.id()).status(), "a paciente pode pedir de novo");
+    }
+
+    @Test
     void versaoDoProtocoloNaoAplicavelVaiAFalhaAnaliseENovaTentativaGrava() throws Exception {
         c.cenario.protocolos.definirRegras(1, List.of());
 

@@ -102,7 +102,9 @@ class AvaliacaoServiceTest {
         assertEquals(Long.parseLong(pedido.leitura()), a.extracaoId());
         assertEquals("PROTOCOLO-ACADEMICO-FICTICIO-v0.1", a.protocolo().protocoloId());
         assertEquals(LocalDate.of(2026, 11, 12), a.dataReferencia());
-        assertEquals(Instant.parse("2026-11-12T20:00:00Z"), a.conferenciaAtualizadaEm());
+        // Relogio parado: a leitura e as decisoes caem no mesmo instante; desde a RC-13 a decisao que muda a conferencia
+        // e gravada 1 microssegundo depois do instante atual da conferencia, para que ele sempre mude.
+        assertEquals(Instant.parse("2026-11-12T20:00:00.000001Z"), a.conferenciaAtualizadaEm());
         assertTrue(a.leituraSimulada());
     }
 

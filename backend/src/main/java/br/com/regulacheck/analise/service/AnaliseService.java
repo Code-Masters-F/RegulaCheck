@@ -30,8 +30,9 @@ import org.slf4j.LoggerFactory;
  *       vale para a versao atual; senao grava {@code PROCESSANDO} e o instante de inicio, que identifica esta
  *       analise.</li>
  *   <li>{@link AvaliacaoService#avaliar}: a avaliacao da RC-12, que so le.</li>
- *   <li>{@link AnaliseRepository#publicar}: sob o bloqueio, so grava se esta ainda e a analise em andamento e se a
- *       revisao e o instante da conferencia ainda sao os avaliados; ou {@link AnaliseRepository#encerrar}, em falha
+ *   <li>{@link AnaliseRepository#publicar}: sob o bloqueio, so grava se esta ainda e a analise em andamento, se nao
+ *       passou do limite e se a revisao e o instante da conferencia ainda sao os avaliados; ou
+ *       {@link AnaliseRepository#encerrar}, em falha
  *       ({@code FALHA_ANALISE}) ou descarte (estado da ultima analise concluida ou {@code RASCUNHO}).</li>
  * </ol>
  * Assim, um resultado calculado sobre documentos ou conferencia antigos nunca vira vigente, um segundo pedido
@@ -114,7 +115,8 @@ public class AnaliseService {
         AvaliacaoDoPedido avaliacao = avaliarOuEncerrar(sessao, solicitacaoId, iniciadaEm);
         PublicacaoAnalise publicacao;
         try {
-            publicacao = analises.publicar(pacienteId, solicitacaoId, iniciadaEm, paraGravar(avaliacao), agora());
+            publicacao = analises.publicar(pacienteId, solicitacaoId, iniciadaEm, paraGravar(avaliacao), agora(),
+                    LIMITE_EM_ANDAMENTO);
         } catch (RuntimeException falha) {
             // Nada foi gravado (a publicacao e tudo ou nada). Se o banco voltou, o pedido nao fica preso ate o limite.
             encerrarSemEsconder(pacienteId, solicitacaoId, iniciadaEm, Encerramento.FALHA, falha);
@@ -135,8 +137,9 @@ public class AnaliseService {
                         + "revisaoAvaliada={}", solicitacaoId, avaliacao.revisao());
                 throw entradaMudou();
             }
-            case SUBSTITUIDA -> {
-                LOG.warn("Resultado de analise que passou do limite descartado. solicitacaoId={}", solicitacaoId);
+            case SUBSTITUIDA, PRAZO_ESGOTADO -> {
+                LOG.warn("Resultado de analise que passou do limite descartado. solicitacaoId={} desfecho={}",
+                        solicitacaoId, publicacao.situacao());
                 throw new ExcecaoNegocio(409, "CONFLITO_ESTADO",
                         "A análise passou do tempo limite e não foi publicada. Consulte as análises ou peça de novo.");
             }

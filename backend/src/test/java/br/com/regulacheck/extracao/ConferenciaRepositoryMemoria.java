@@ -5,6 +5,7 @@ import br.com.regulacheck.extracao.entity.ExtracaoDocumento;
 import br.com.regulacheck.extracao.repository.ConferenciaRegistrada;
 import br.com.regulacheck.extracao.repository.ConferenciaRepository;
 import br.com.regulacheck.extracao.repository.DecisaoNova;
+import br.com.regulacheck.extracao.repository.InstanteDaConferencia;
 import br.com.regulacheck.extracao.repository.ExtracaoRegistrada;
 import br.com.regulacheck.extracao.repository.ResultadoRegistroDecisao;
 import br.com.regulacheck.extracao.service.SituacaoConferencia;
@@ -101,6 +102,13 @@ public final class ConferenciaRepositoryMemoria implements ConferenciaRepository
             Map<String, DecisaoConferencia> doPedido = decisoes.computeIfAbsent(solicitacaoId,
                     id -> new TreeMap<>()).computeIfAbsent(extracaoId, id -> new TreeMap<>());
             int alteradas = 0;
+            // Como o JDBC (RC-13): sob o "bloqueio", o instante das decisoes que mudam algo fica sempre depois do
+            // instante atual da conferencia, mesmo com relogio parado ou fora de ordem.
+            Instant ultimo = leitura.get().extracao().criadaEm();
+            for (DecisaoConferencia vigente : doPedido.values()) {
+                ultimo = vigente.decididaEm().isAfter(ultimo) ? vigente.decididaEm() : ultimo;
+            }
+            Instant instante = InstanteDaConferencia.depoisDe(ultimo, agora);
             for (DecisaoNova nova : novas) {
                 String chave = chave(nova.documentoId(), nova.codigo());
                 DecisaoConferencia vigente = doPedido.get(chave);
@@ -108,7 +116,7 @@ public final class ConferenciaRepositoryMemoria implements ConferenciaRepository
                     continue; // repetir a mesma decisao nao muda nada, nem o instante
                 }
                 doPedido.put(chave, new DecisaoConferencia(nova.documentoId(), nova.codigo(), nova.tipo(),
-                        nova.motivo(), agora));
+                        nova.motivo(), instante));
                 gravacoes++;
                 alteradas++;
             }

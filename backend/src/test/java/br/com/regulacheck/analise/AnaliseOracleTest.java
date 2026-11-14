@@ -244,22 +244,28 @@ class AnaliseOracleTest {
             String[] pronto = pedidoLido(api, auth);
             confirmarTudo(api, auth, pronto[0], pronto[1]);
             ExecutorService threads = Executors.newFixedThreadPool(4);
-            CountDownLatch largada = new CountDownLatch(1);
             List<Future<Resposta>> respostas = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
-                respostas.add(threads.submit(() -> {
-                    largada.await();
-                    return api.enviar("POST", "/solicitacoes/" + pronto[0] + "/analises", null, auth);
-                }));
-            }
-            largada.countDown();
             int criadas = 0;
-            for (Future<Resposta> futura : respostas) {
-                Resposta r = futura.get(60, TimeUnit.SECONDS);
-                assertTrue(List.of(200, 201, 409).contains(r.status()), r.status() + " " + r.corpo());
-                criadas += r.status() == 201 ? 1 : 0;
+            try {
+                CountDownLatch largada = new CountDownLatch(1);
+                for (int i = 0; i < 4; i++) {
+                    respostas.add(threads.submit(() -> {
+                        largada.await();
+                        return api.enviar("POST", "/solicitacoes/" + pronto[0] + "/analises", null, auth);
+                    }));
+                }
+                largada.countDown();
+                for (Future<Resposta> futura : respostas) {
+                    Resposta r = futura.get(60, TimeUnit.SECONDS);
+                    assertTrue(List.of(200, 201, 409).contains(r.status()), r.status() + " " + r.corpo());
+                    criadas += r.status() == 201 ? 1 : 0;
+                }
+            } finally {
+                // Falha no meio nao deixa threads vivas: cancela o que nao terminou e espera, com prazo.
+                respostas.forEach(futura -> futura.cancel(true));
+                threads.shutdownNow();
+                assertTrue(threads.awaitTermination(60, TimeUnit.SECONDS), "threads do teste nao terminaram");
             }
-            threads.shutdown();
             assertEquals(1, criadas);
             assertEquals(1, contar("SELECT COUNT(*) FROM RC_ANALISE WHERE SOLICITACAO_ID = ?",
                     Long.parseLong(pronto[0])));

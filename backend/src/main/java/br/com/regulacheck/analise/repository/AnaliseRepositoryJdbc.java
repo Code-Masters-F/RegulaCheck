@@ -102,36 +102,31 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
             INSERT INTO RC_PENDENCIA_EVIDENCIA (ANALISE_ID, REGRA_ID, ORDEM, DOCUMENTO_ID, CODIGO, SITUACAO)
             VALUES (?, ?, ?, ?, ?, ?)""";
 
-    // Leitura do historico: tudo por pedido, em poucas consultas, e filtrado pelas analises carregadas.
+    // Leitura do historico. As analises carregadas sao as N mais recentes do pedido, ou uma so (somenteId); a mesma
+    // selecao filtra o cabecalho e as consultas auxiliares, para que so as linhas das analises da resposta sejam
+    // lidas. Parametros de ANALISES_SELECIONADAS, nesta ordem: pedido, id (ou nulo), id (ou nulo), limite.
+    private static final String ANALISES_SELECIONADAS = """
+            SELECT ID FROM (SELECT ID FROM RC_ANALISE
+                             WHERE SOLICITACAO_ID = ? AND (? IS NULL OR ID = ?)
+                             ORDER BY CRIADA_EM DESC, ID DESC
+                             FETCH FIRST ? ROWS ONLY)""";
     private static final String SQL_ANALISES = """
             SELECT a.ID, a.REVISAO, a.VIGENTE, a.CRIADA_EM, a.CONFERENCIA_EM, a.DATA_REFERENCIA, a.RESULTADO_GERAL,
                    p.IDENTIFICADOR, p.VERSAO
               FROM RC_ANALISE a
-              JOIN RC_PROTOCOLO p ON p.ID = a.PROTOCOLO_ID
-             WHERE a.SOLICITACAO_ID = ?
-             ORDER BY a.CRIADA_EM DESC, a.ID DESC
-             FETCH FIRST ? ROWS ONLY""";
-    private static final String SQL_ANALISE_POR_ID = """
-            SELECT a.ID, a.REVISAO, a.VIGENTE, a.CRIADA_EM, a.CONFERENCIA_EM, a.DATA_REFERENCIA, a.RESULTADO_GERAL,
-                   p.IDENTIFICADOR, p.VERSAO
-              FROM RC_ANALISE a
-              JOIN RC_PROTOCOLO p ON p.ID = a.PROTOCOLO_ID
-             WHERE a.SOLICITACAO_ID = ? AND a.ID = ?""";
+              JOIN RC_PROTOCOLO p ON p.ID = a.PROTOCOLO_ID""" + " WHERE a.ID IN (" + ANALISES_SELECIONADAS
+            + ") ORDER BY a.CRIADA_EM DESC, a.ID DESC";
     private static final String SQL_RESULTADOS = """
             SELECT rr.ANALISE_ID, r.CODIGO, r.DESCRICAO, rr.RESULTADO, pe.MOTIVO
               FROM RC_RESULTADO_REGRA rr
-              JOIN RC_ANALISE a ON a.ID = rr.ANALISE_ID
               JOIN RC_REGRA r ON r.ID = rr.REGRA_ID
-              LEFT JOIN RC_PENDENCIA pe ON pe.ANALISE_ID = rr.ANALISE_ID AND pe.REGRA_ID = rr.REGRA_ID
-             WHERE a.SOLICITACAO_ID = ?
-             ORDER BY rr.ANALISE_ID, r.ORDEM, r.CODIGO""";
+              LEFT JOIN RC_PENDENCIA pe ON pe.ANALISE_ID = rr.ANALISE_ID AND pe.REGRA_ID = rr.REGRA_ID""" + " WHERE rr.ANALISE_ID IN (" + ANALISES_SELECIONADAS
+            + ") ORDER BY rr.ANALISE_ID, r.ORDEM, r.CODIGO";
     private static final String SQL_PENDENCIAS = """
             SELECT pe.ANALISE_ID, pe.REGRA_ID, r.CODIGO, r.DESCRICAO, pe.TIPO, pe.MENSAGEM, pe.RESPONSAVEL, pe.MOTIVO
               FROM RC_PENDENCIA pe
-              JOIN RC_ANALISE a ON a.ID = pe.ANALISE_ID
-              JOIN RC_REGRA r ON r.ID = pe.REGRA_ID
-             WHERE a.SOLICITACAO_ID = ?
-             ORDER BY pe.ANALISE_ID, r.ORDEM, r.CODIGO""";
+              JOIN RC_REGRA r ON r.ID = pe.REGRA_ID""" + " WHERE pe.ANALISE_ID IN (" + ANALISES_SELECIONADAS
+            + ") ORDER BY pe.ANALISE_ID, r.ORDEM, r.CODIGO";
     // A origem vem da leitura da mesma revisao (uma por revisao, nunca alterada): o trecho nao e copiado.
     private static final String SQL_EVIDENCIAS = """
             SELECT ev.ANALISE_ID, ev.REGRA_ID, ev.DOCUMENTO_ID, ev.CODIGO, ev.SITUACAO, c.PAGINA, c.TRECHO
@@ -139,9 +134,10 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
               JOIN RC_ANALISE a ON a.ID = ev.ANALISE_ID
               LEFT JOIN RC_EXTRACAO e ON e.SOLICITACAO_ID = a.SOLICITACAO_ID AND e.REVISAO = a.REVISAO
               LEFT JOIN RC_EXTRACAO_DOCUMENTO ed ON ed.EXTRACAO_ID = e.ID AND ed.DOCUMENTO_ID = ev.DOCUMENTO_ID
-              LEFT JOIN RC_EXTRACAO_CAMPO c ON c.EXTRACAO_DOCUMENTO_ID = ed.ID AND c.CODIGO = ev.CODIGO
-             WHERE a.SOLICITACAO_ID = ?
-             ORDER BY ev.ANALISE_ID, ev.REGRA_ID, ev.ORDEM""";
+              LEFT JOIN RC_EXTRACAO_CAMPO c ON c.EXTRACAO_DOCUMENTO_ID = ed.ID AND c.CODIGO = ev.CODIGO""" + " WHERE ev.ANALISE_ID IN (" + ANALISES_SELECIONADAS
+            + ") ORDER BY ev.ANALISE_ID, ev.REGRA_ID, ev.ORDEM";
+    // O historico le o pedido e as analises num unico retrato do banco (consistencia de leitura do Oracle).
+    private static final String SQL_SOMENTE_LEITURA = "SET TRANSACTION READ ONLY";
     private static final String SQL_DOCUMENTOS = """
             SELECT ID, NOME_ORIGINAL, TIPO_DOCUMENTAL, REVISAO_ENVIO, REVISAO_REMOCAO
               FROM RC_DOCUMENTO
@@ -162,9 +158,9 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
 
     @Override
     public PublicacaoAnalise publicar(long pacienteId, long solicitacaoId, Instant iniciadaEm,
-            AnaliseParaGravar analise, Instant agora) {
+            AnaliseParaGravar analise, Instant agora, Duration limite) {
         return emTransacao(conexao -> publicarBloqueado(conexao, pacienteId, solicitacaoId, iniciadaEm, analise,
-                agora));
+                agora, limite));
     }
 
     @Override
@@ -185,26 +181,45 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
     @Override
     public Optional<HistoricoDeAnalises> historico(long pacienteId, long solicitacaoId, int limite) {
         try (Connection conexao = banco.conexao()) {
-            EstadoSolicitacao estado;
-            int revisaoAtual;
-            Instant iniciadaEm;
-            try (PreparedStatement consulta = conexao.prepareStatement(SQL_PEDIDO)) {
-                consulta.setLong(1, solicitacaoId);
-                consulta.setLong(2, pacienteId);
-                try (ResultSet linha = consulta.executeQuery()) {
-                    if (!linha.next()) {
-                        return Optional.empty();
-                    }
-                    estado = EstadoSolicitacao.valueOf(linha.getString("ESTADO"));
-                    revisaoAtual = linha.getInt("REVISAO_ATUAL");
-                    iniciadaEm = instanteOuNulo(linha, "ANALISE_INICIADA_EM");
-                }
+            // Uma transacao so de leitura: o estado do pedido e as analises vem do mesmo instante, sem bloqueio. Sem
+            // isso, uma publicacao confirmada entre as consultas poderia mostrar PROCESSANDO junto da analise nova.
+            conexao.setAutoCommit(false);
+            try {
+                Optional<HistoricoDeAnalises> historico = historicoNoRetrato(conexao, pacienteId, solicitacaoId,
+                        limite);
+                conexao.commit();
+                return historico;
+            } catch (SQLException | RuntimeException falha) {
+                desfazer(conexao);
+                throw traduzir(falha);
             }
-            List<Analise> analises = carregar(conexao, solicitacaoId, null, limite);
-            return Optional.of(new HistoricoDeAnalises(estado, revisaoAtual, iniciadaEm, analises));
         } catch (SQLException falha) {
             throw traduzir(falha);
         }
+    }
+
+    private static Optional<HistoricoDeAnalises> historicoNoRetrato(Connection conexao, long pacienteId,
+            long solicitacaoId, int limite) throws SQLException {
+        try (PreparedStatement somenteLeitura = conexao.prepareStatement(SQL_SOMENTE_LEITURA)) {
+            somenteLeitura.execute();
+        }
+        EstadoSolicitacao estado;
+        int revisaoAtual;
+        Instant iniciadaEm;
+        try (PreparedStatement consulta = conexao.prepareStatement(SQL_PEDIDO)) {
+            consulta.setLong(1, solicitacaoId);
+            consulta.setLong(2, pacienteId);
+            try (ResultSet linha = consulta.executeQuery()) {
+                if (!linha.next()) {
+                    return Optional.empty();
+                }
+                estado = EstadoSolicitacao.valueOf(linha.getString("ESTADO"));
+                revisaoAtual = linha.getInt("REVISAO_ATUAL");
+                iniciadaEm = instanteOuNulo(linha, "ANALISE_INICIADA_EM");
+            }
+        }
+        List<Analise> analises = carregar(conexao, solicitacaoId, null, limite);
+        return Optional.of(new HistoricoDeAnalises(estado, revisaoAtual, iniciadaEm, analises));
     }
 
     // ---------------------------------------------------------------------------------------------------------
@@ -242,13 +257,19 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
     }
 
     private PublicacaoAnalise publicarBloqueado(Connection conexao, long pacienteId, long solicitacaoId,
-            Instant iniciadaEm, AnaliseParaGravar analise, Instant agora) throws SQLException {
+            Instant iniciadaEm, AnaliseParaGravar analise, Instant agora, Duration limite) throws SQLException {
         Pedido pedido = bloquear(conexao, pacienteId, solicitacaoId);
         if (pedido == null) {
             return PublicacaoAnalise.naoEncontrado();
         }
         if (!pedido.emAndamentoPor(iniciadaEm)) {
             return PublicacaoAnalise.substituida();
+        }
+        if (!agora.isBefore(iniciadaEm.plus(limite))) {
+            // Passou do limite sem ninguem assumir: e uma analise interrompida, nao publicada (FR-018). Esta ainda e a
+            // dona do PROCESSANDO, entao o libera como falha recuperavel, como a tomada da trava faria.
+            alterarEstado(conexao, solicitacaoId, EstadoSolicitacao.FALHA_ANALISE, null, agora);
+            return PublicacaoAnalise.prazoEsgotado();
         }
         // Revisao e conferencia relidas sob o bloqueio: nenhuma escrita de documento, leitura ou conferencia do mesmo
         // pedido pode acontecer entre esta conferencia e o COMMIT.
@@ -475,21 +496,38 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
         }
     }
 
+    /** Quais analises carregar: as {@code limite} mais recentes do pedido ou so a {@code somenteId}. */
+    private record Selecao(long solicitacaoId, Long somenteId, int limite) {
+
+        /** Preenche, a partir de {@code primeiro}, os quatro parametros de {@link #ANALISES_SELECIONADAS}. */
+        void aplicar(PreparedStatement consulta, int primeiro) throws SQLException {
+            consulta.setLong(primeiro, solicitacaoId);
+            if (somenteId == null) {
+                consulta.setNull(primeiro + 1, Types.NUMERIC);
+                consulta.setNull(primeiro + 2, Types.NUMERIC);
+            } else {
+                consulta.setLong(primeiro + 1, somenteId);
+                consulta.setLong(primeiro + 2, somenteId);
+            }
+            consulta.setInt(primeiro + 3, limite);
+        }
+    }
+
     /**
      * Carrega as analises do pedido (uma, se {@code somenteId} vier preenchido), da mais recente para a mais antiga.
-     * Resultados, pendencias, evidencias e documentos vem em uma consulta cada, por pedido.
+     * Resultados, pendencias e evidencias vem em uma consulta cada, so das analises selecionadas; documentos, em uma
+     * consulta por pedido.
      */
     private static List<Analise> carregar(Connection conexao, long solicitacaoId, Long somenteId, int limite)
             throws SQLException {
-        List<Cabecalho> cabecalhos = somenteId == null
-                ? cabecalhos(conexao, SQL_ANALISES, solicitacaoId, limite)
-                : cabecalhos(conexao, SQL_ANALISE_POR_ID, solicitacaoId, somenteId);
+        Selecao selecao = new Selecao(solicitacaoId, somenteId, somenteId == null ? limite : 1);
+        List<Cabecalho> cabecalhos = cabecalhos(conexao, selecao);
         if (cabecalhos.isEmpty()) {
             return List.of();
         }
-        Map<Long, List<ResultadoGravado>> resultados = resultados(conexao, solicitacaoId);
-        Map<Long, Map<Long, List<EvidenciaGravada>>> evidencias = evidencias(conexao, solicitacaoId);
-        Map<Long, List<PendenciaGravada>> pendencias = pendencias(conexao, solicitacaoId, evidencias);
+        Map<Long, List<ResultadoGravado>> resultados = resultados(conexao, selecao);
+        Map<Long, Map<Long, List<EvidenciaGravada>>> evidencias = evidencias(conexao, selecao);
+        Map<Long, List<PendenciaGravada>> pendencias = pendencias(conexao, selecao, evidencias);
         List<DocumentoDoPedido> documentos = documentos(conexao, solicitacaoId);
         List<Analise> analises = new ArrayList<>();
         for (Cabecalho c : cabecalhos) {
@@ -507,15 +545,10 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
         return analises;
     }
 
-    /**
-     * @param sql {@link #SQL_ANALISES} (segundo parametro = limite) ou {@link #SQL_ANALISE_POR_ID} (segundo = id)
-     */
-    private static List<Cabecalho> cabecalhos(Connection conexao, String sql, long solicitacaoId, long segundo)
-            throws SQLException {
+    private static List<Cabecalho> cabecalhos(Connection conexao, Selecao selecao) throws SQLException {
         List<Cabecalho> cabecalhos = new ArrayList<>();
-        try (PreparedStatement consulta = conexao.prepareStatement(sql)) {
-            consulta.setLong(1, solicitacaoId);
-            consulta.setLong(2, segundo);
+        try (PreparedStatement consulta = conexao.prepareStatement(SQL_ANALISES)) {
+            selecao.aplicar(consulta, 1);
             try (ResultSet linha = consulta.executeQuery()) {
                 while (linha.next()) {
                     LocalDateTime conferencia = linha.getObject("CONFERENCIA_EM", LocalDateTime.class);
@@ -531,11 +564,11 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
         return cabecalhos;
     }
 
-    private static Map<Long, List<ResultadoGravado>> resultados(Connection conexao, long solicitacaoId)
+    private static Map<Long, List<ResultadoGravado>> resultados(Connection conexao, Selecao selecao)
             throws SQLException {
         Map<Long, List<ResultadoGravado>> porAnalise = new HashMap<>();
         try (PreparedStatement consulta = conexao.prepareStatement(SQL_RESULTADOS)) {
-            consulta.setLong(1, solicitacaoId);
+            selecao.aplicar(consulta, 1);
             try (ResultSet linha = consulta.executeQuery()) {
                 while (linha.next()) {
                     porAnalise.computeIfAbsent(linha.getLong("ANALISE_ID"), id -> new ArrayList<>()).add(
@@ -547,11 +580,11 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
         return porAnalise;
     }
 
-    private static Map<Long, List<PendenciaGravada>> pendencias(Connection conexao, long solicitacaoId,
+    private static Map<Long, List<PendenciaGravada>> pendencias(Connection conexao, Selecao selecao,
             Map<Long, Map<Long, List<EvidenciaGravada>>> evidencias) throws SQLException {
         Map<Long, List<PendenciaGravada>> porAnalise = new HashMap<>();
         try (PreparedStatement consulta = conexao.prepareStatement(SQL_PENDENCIAS)) {
-            consulta.setLong(1, solicitacaoId);
+            selecao.aplicar(consulta, 1);
             try (ResultSet linha = consulta.executeQuery()) {
                 while (linha.next()) {
                     long analiseId = linha.getLong("ANALISE_ID");
@@ -568,11 +601,11 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
     }
 
     /** Evidencias por analise e por regra, na ordem gravada. */
-    private static Map<Long, Map<Long, List<EvidenciaGravada>>> evidencias(Connection conexao, long solicitacaoId)
+    private static Map<Long, Map<Long, List<EvidenciaGravada>>> evidencias(Connection conexao, Selecao selecao)
             throws SQLException {
         Map<Long, Map<Long, List<EvidenciaGravada>>> porAnalise = new HashMap<>();
         try (PreparedStatement consulta = conexao.prepareStatement(SQL_EVIDENCIAS)) {
-            consulta.setLong(1, solicitacaoId);
+            selecao.aplicar(consulta, 1);
             try (ResultSet linha = consulta.executeQuery()) {
                 while (linha.next()) {
                     Integer pagina = linha.getObject("PAGINA") == null ? null : linha.getInt("PAGINA");

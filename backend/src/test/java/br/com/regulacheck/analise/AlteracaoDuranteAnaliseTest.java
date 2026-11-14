@@ -98,6 +98,31 @@ class AlteracaoDuranteAnaliseTest {
     }
 
     @Test
+    void decisaoNoMesmoInstanteOuComRelogioAtrasadoTambemDescarta() throws Exception {
+        // O instante da conferencia anda a cada gravacao que muda algo, mesmo com o relogio parado (mesmo
+        // microssegundo) ou atrasado (gravacoes concorrentes confirmadas fora de ordem).
+        for (Duration ajuste : List.of(Duration.ZERO, Duration.ofSeconds(-10))) {
+            Pedido p = lido(c, AmostrasSinteticas.ENCAMINHAMENTO, AmostrasSinteticas.IDENTIFICACAO);
+            confirmarTudo(c, p);
+            String encaminhamento = p.documentos().get(0);
+            AnaliseService servico = servico(c, avaliacaoComIntervalo(c, () -> {
+                c.cenario.relogio.avancar(ajuste);
+                var r = c.decidir(c.authA, p.id(), p.leitura(),
+                        lote(divergir(encaminhamento, "NOME", "VALOR_DIFERENTE_DO_DOCUMENTO")));
+                assertEquals(200, r.status());
+                c.cenario.relogio.avancar(ajuste.negated());
+            }));
+
+            ExcecaoNegocio recusa = assertThrows(ExcecaoNegocio.class,
+                    () -> servico.analisar(PACIENTE_A, p.numero()), "ajuste " + ajuste);
+
+            assertEquals(MUDOU, recusa.getMessage(), "ajuste " + ajuste);
+            assertEquals(0, c.cenario.analises.totalDoPedido(p.numero()), "ajuste " + ajuste);
+            assertEquals(EstadoSolicitacao.RASCUNHO, estado(p), "ajuste " + ajuste);
+        }
+    }
+
+    @Test
     void depoisDoDescarteUmaNovaAnaliseDaVersaoAtualEGravada() throws Exception {
         Pedido p = lido(c, AmostrasSinteticas.ENCAMINHAMENTO, AmostrasSinteticas.IDENTIFICACAO);
         confirmarTudo(c, p);

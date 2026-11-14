@@ -153,7 +153,7 @@ public final class AnaliseRepositoryMemoria implements AnaliseRepository {
 
     @Override
     public PublicacaoAnalise publicar(long pacienteId, long solicitacaoId, Instant iniciadaEm,
-            AnaliseParaGravar analise, Instant agora) {
+            AnaliseParaGravar analise, Instant agora, Duration limite) {
         synchronized (pedidos) {
             if (falhaNaPublicacao != null) {
                 RuntimeException falha = falhaNaPublicacao;
@@ -168,6 +168,11 @@ public final class AnaliseRepositoryMemoria implements AnaliseRepository {
             if (pedido.estado() != EstadoSolicitacao.PROCESSANDO
                     || !iniciadaEm.equals(emAndamento.get(solicitacaoId))) {
                 return PublicacaoAnalise.substituida();
+            }
+            if (!agora.isBefore(iniciadaEm.plus(limite))) {
+                emAndamento.remove(solicitacaoId);
+                pedidos.alterarEstado(solicitacaoId, EstadoSolicitacao.FALHA_ANALISE, agora);
+                return PublicacaoAnalise.prazoEsgotado();
             }
             Optional<Extracao> leitura = extracoes.daRevisao(solicitacaoId, analise.revisao());
             if (pedido.revisaoAtual() != analise.revisao() || leitura.isEmpty()
