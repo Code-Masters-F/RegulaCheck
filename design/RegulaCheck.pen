@@ -10,7 +10,7 @@
       "context": "Identidade aprovada em 13/11/2026. Parcial de E1.2: somente sucesso. GET /solicitacoes é referência do app futuro; nenhum acesso à API neste desenho.",
       "clip": true,
       "width": 390,
-      "height": 904,
+      "height": 912,
       "fill": "$rc-bg",
       "layout": "vertical",
       "gap": 16,
@@ -7446,6 +7446,30 @@
                               "ref": "ONwnK",
                               "name": "Selo simulado",
                               "enabled": false
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ZaXxn",
+                              "x": 0,
+                              "y": 0,
+                              "name": "Mais opções · alvo 48",
+                              "enabled": false,
+                              "width": 48,
+                              "height": 48,
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "PYvb4",
+                                  "name": "Mais opções",
+                                  "width": 20,
+                                  "height": 20,
+                                  "icon": "ellipsis-vertical",
+                                  "library": "lucide",
+                                  "fill": "$rc-text"
+                                }
+                              ]
                             }
                           ]
                         }
@@ -20237,7 +20261,7 @@
       "type": "note",
       "id": "yFtPw",
       "x": 8960,
-      "y": 924,
+      "y": 932,
       "name": "Nota · E1.2 Meus pedidos — Sucesso · v1.0",
       "width": 390,
       "height": 150,
@@ -20262,6 +20286,3390 @@
       "width": 390,
       "height": 150,
       "content": "E3.4 Detalhe da pendência — Unidade emissora\nOperações: GET …/analises † · GET …/documentos/{docId} ✅ · PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-13/RC-15)\nDados: Pedido 2 da carga (R04 pendente); textos exemplares"
+    },
+    {
+      "type": "frame",
+      "id": "KulXG",
+      "x": 5670,
+      "y": 0,
+      "name": "E1.1 Login — Padrão",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Fcz0C",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "Yvr0K",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "rerwT": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "pwQ3T",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Entrar"
+                },
+                "yQSkI": {
+                  "content": "Use o e-mail e a senha da sua conta."
+                }
+              }
+            },
+            {
+              "id": "sLRoP",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso de entrada"
+            },
+            {
+              "type": "frame",
+              "id": "XdzU3",
+              "name": "Formulário",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "ChQd5",
+                  "type": "ref",
+                  "ref": "qcOwk",
+                  "width": "fill_container",
+                  "name": "E-mail",
+                  "descendants": {
+                    "iD0Jx": {
+                      "content": "E-mail"
+                    },
+                    "VDMor": {
+                      "content": "ana.moreira@email.test"
+                    },
+                    "lrozq": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "l1HdiJ",
+                  "type": "ref",
+                  "ref": "N6lj9",
+                  "width": "fill_container",
+                  "name": "Senha"
+                }
+              ]
+            },
+            {
+              "id": "Ouxkw",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Entrar",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Entrar"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "B8ihvI",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "r75FX",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "H6F5s",
+      "x": 5670,
+      "y": 864,
+      "name": "Nota · E1.1 Login — Padrão",
+      "width": 390,
+      "height": 150,
+      "content": "E1.1 Login — Padrão\nOperação: POST /auth/login ✅ (401 credenciais inválidas · 503 indisponível · falha de rede)\nFR-020, FR-021 · paciente → E1.2; administrador → E4.2\nDados: e-mail exemplar; senha nunca em texto"
+    },
+    {
+      "type": "frame",
+      "id": "ht04w",
+      "x": 6140,
+      "y": 0,
+      "name": "E1.1 Login — Enviando",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "dGwfP",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "zjpCK",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "rerwT": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "P7laJ",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Entrar"
+                },
+                "yQSkI": {
+                  "content": "Use o e-mail e a senha da sua conta."
+                }
+              }
+            },
+            {
+              "id": "asu5F",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso de entrada"
+            },
+            {
+              "type": "frame",
+              "id": "bHpOR",
+              "name": "Formulário",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "F6jfw",
+                  "type": "ref",
+                  "ref": "wt9m2",
+                  "width": "fill_container",
+                  "name": "E-mail",
+                  "descendants": {
+                    "jeTUA": {
+                      "content": "E-mail"
+                    },
+                    "bRXUB": {
+                      "content": "ana.moreira@email.test"
+                    },
+                    "aZpDc": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "eccBo",
+                  "type": "ref",
+                  "ref": "wt9m2",
+                  "width": "fill_container",
+                  "name": "Senha",
+                  "descendants": {
+                    "jeTUA": {
+                      "content": "Senha"
+                    },
+                    "bRXUB": {
+                      "content": "••••••••"
+                    },
+                    "aZpDc": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "uK1u7",
+              "type": "ref",
+              "ref": "RuAVY",
+              "width": "fill_container",
+              "name": "Entrando",
+              "descendants": {
+                "r4K7G8": {
+                  "content": "Entrando…"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "d6Vxd",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "HimiI",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "bdJQm",
+      "x": 6140,
+      "y": 864,
+      "name": "Nota · E1.1 Login — Enviando",
+      "width": 390,
+      "height": 150,
+      "content": "E1.1 Login — Enviando\nOperação: POST /auth/login ✅ (401 credenciais inválidas · 503 indisponível · falha de rede)\nFR-020, FR-021 · paciente → E1.2; administrador → E4.2\nDados: e-mail exemplar; senha nunca em texto"
+    },
+    {
+      "type": "frame",
+      "id": "o1mx3h",
+      "x": 6610,
+      "y": 0,
+      "name": "E1.1 Login — Credenciais inválidas",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "A9ijRo",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "u3yKM",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "rerwT": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "wMz8O",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Entrar"
+                },
+                "yQSkI": {
+                  "content": "Use o e-mail e a senha da sua conta."
+                }
+              }
+            },
+            {
+              "id": "a2S0H",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso de entrada"
+            },
+            {
+              "type": "frame",
+              "id": "bgTjs",
+              "name": "Formulário",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "e2stap",
+                  "type": "ref",
+                  "ref": "qcOwk",
+                  "width": "fill_container",
+                  "name": "E-mail",
+                  "descendants": {
+                    "iD0Jx": {
+                      "content": "E-mail"
+                    },
+                    "VDMor": {
+                      "content": "ana.moreira@email.test"
+                    },
+                    "lrozq": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "vncnN",
+                  "type": "ref",
+                  "ref": "ziOJN",
+                  "width": "fill_container",
+                  "name": "Senha",
+                  "descendants": {
+                    "d7fXi": {
+                      "content": "Senha"
+                    },
+                    "ZBJkH": {
+                      "content": " "
+                    },
+                    "SFL5J": {
+                      "content": "E-mail ou senha incorretos."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "a49v2Y",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Entrar",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Entrar"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "jlBAE",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "jEcBK",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "EnhjE",
+      "x": 6610,
+      "y": 864,
+      "name": "Nota · E1.1 Login — Credenciais inválidas",
+      "width": 390,
+      "height": 150,
+      "content": "E1.1 Login — Credenciais inválidas\nOperação: POST /auth/login ✅ (401 credenciais inválidas · 503 indisponível · falha de rede)\nFR-020, FR-021 · paciente → E1.2; administrador → E4.2\nDados: e-mail exemplar; senha nunca em texto"
+    },
+    {
+      "type": "frame",
+      "id": "r5kJX",
+      "x": 7080,
+      "y": 0,
+      "name": "E1.1 Login — Serviço indisponível",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "BOulx",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "R4gr3G",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "rerwT": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "jw5gV",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Entrar"
+                },
+                "yQSkI": {
+                  "content": "Use o e-mail e a senha da sua conta."
+                }
+              }
+            },
+            {
+              "id": "O7aFK8",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso de entrada"
+            },
+            {
+              "type": "frame",
+              "id": "z2k308",
+              "name": "Formulário",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "xehM6",
+                  "type": "ref",
+                  "ref": "qcOwk",
+                  "width": "fill_container",
+                  "name": "E-mail",
+                  "descendants": {
+                    "iD0Jx": {
+                      "content": "E-mail"
+                    },
+                    "VDMor": {
+                      "content": "ana.moreira@email.test"
+                    },
+                    "lrozq": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "wksVr",
+                  "type": "ref",
+                  "ref": "N6lj9",
+                  "width": "fill_container",
+                  "name": "Senha"
+                }
+              ]
+            },
+            {
+              "id": "r0uW2w",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Serviço indisponível",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "O serviço está indisponível agora."
+                },
+                "h7SWfJ": {
+                  "content": "Tente de novo em alguns instantes. Seu e-mail foi mantido."
+                },
+                "zKudv": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "w8aBY",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Entrar",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "B5U8LV",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "x9jVU",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "sjWOl",
+      "x": 7080,
+      "y": 864,
+      "name": "Nota · E1.1 Login — Serviço indisponível",
+      "width": 390,
+      "height": 150,
+      "content": "E1.1 Login — Serviço indisponível\nOperação: POST /auth/login ✅ (401 credenciais inválidas · 503 indisponível · falha de rede)\nFR-020, FR-021 · paciente → E1.2; administrador → E4.2\nDados: e-mail exemplar; senha nunca em texto"
+    },
+    {
+      "type": "frame",
+      "id": "V9Q1Ku",
+      "x": 7550,
+      "y": 0,
+      "name": "E1.1 Login — Sem conexão",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "xEfK8",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "h1Qswd",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "rerwT": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "XWoFI",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Entrar"
+                },
+                "yQSkI": {
+                  "content": "Use o e-mail e a senha da sua conta."
+                }
+              }
+            },
+            {
+              "id": "xXo04",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso de entrada"
+            },
+            {
+              "type": "frame",
+              "id": "dfRnm",
+              "name": "Formulário",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "id": "nlr3r",
+                  "type": "ref",
+                  "ref": "qcOwk",
+                  "width": "fill_container",
+                  "name": "E-mail",
+                  "descendants": {
+                    "iD0Jx": {
+                      "content": "E-mail"
+                    },
+                    "VDMor": {
+                      "content": "ana.moreira@email.test"
+                    },
+                    "lrozq": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "xCHAE",
+                  "type": "ref",
+                  "ref": "N6lj9",
+                  "width": "fill_container",
+                  "name": "Senha"
+                }
+              ]
+            },
+            {
+              "id": "K3qCV",
+              "type": "ref",
+              "ref": "LMZKx",
+              "width": "fill_container",
+              "name": "Sem conexão",
+              "descendants": {
+                "X9ta8": {
+                  "content": "Sem conexão com a internet."
+                },
+                "N6KO2F": {
+                  "content": "Verifique sua rede e tente de novo. Seu e-mail foi mantido."
+                },
+                "OP4oH": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "UXKbH",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Entrar",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "vLZNP",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "QCrjd",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "JzoX1",
+      "x": 7550,
+      "y": 864,
+      "name": "Nota · E1.1 Login — Sem conexão",
+      "width": 390,
+      "height": 150,
+      "content": "E1.1 Login — Sem conexão\nOperação: POST /auth/login ✅ (401 credenciais inválidas · 503 indisponível · falha de rede)\nFR-020, FR-021 · paciente → E1.2; administrador → E4.2\nDados: e-mail exemplar; senha nunca em texto"
+    },
+    {
+      "type": "frame",
+      "id": "HX74z",
+      "x": 8020,
+      "y": 0,
+      "name": "E1.2 Meus pedidos — Carregando",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "m1J5l",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "mZC1n",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "u2Ktj",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Saudação e título",
+              "descendants": {
+                "Fj83F": {
+                  "enabled": true,
+                  "content": "Olá, Ana"
+                },
+                "ptFtO": {
+                  "content": "Meus pedidos"
+                },
+                "yQSkI": {
+                  "content": "Retome de onde parou.",
+                  "fontSize": "$rc-size-lead",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "KgAAc",
+              "type": "ref",
+              "ref": "CA7PM",
+              "width": "fill_container",
+              "name": "Carregando 1"
+            },
+            {
+              "id": "kCxjl",
+              "type": "ref",
+              "ref": "CA7PM",
+              "width": "fill_container",
+              "name": "Carregando 2",
+              "descendants": {
+                "AHOkK": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "l2N1j",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "IogJI",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "ludkn",
+      "x": 8020,
+      "y": 864,
+      "name": "Nota · E1.2 Meus pedidos — Carregando",
+      "width": 390,
+      "height": 150,
+      "content": "E1.2 Meus pedidos — Carregando\nOperação: GET /solicitacoes ✅\nFR-024 · texto acessível \"Carregando seus pedidos…\""
+    },
+    {
+      "type": "frame",
+      "id": "v6aVEO",
+      "x": 8490,
+      "y": 0,
+      "name": "E1.2 Meus pedidos — Vazia",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "I9r7S",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "b7YnE",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "a86BLu",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Saudação e título",
+              "descendants": {
+                "Fj83F": {
+                  "enabled": true,
+                  "content": "Olá, Ana"
+                },
+                "ptFtO": {
+                  "content": "Meus pedidos"
+                },
+                "yQSkI": {
+                  "content": "Retome de onde parou.",
+                  "fontSize": "$rc-size-lead",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "Z71il",
+              "type": "ref",
+              "ref": "ZMnIc",
+              "width": "fill_container",
+              "name": "Vazio"
+            },
+            {
+              "type": "frame",
+              "id": "vopDX",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "mI2NM",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "EcTyf",
+      "x": 8490,
+      "y": 864,
+      "name": "Nota · E1.2 Meus pedidos — Vazia",
+      "width": 390,
+      "height": 150,
+      "content": "E1.2 Meus pedidos — Vazia\nOperação: GET /solicitacoes ✅ (itens vazio)\nFR-024 · ação principal \"Novo pedido\" → E2.1"
+    },
+    {
+      "type": "frame",
+      "id": "FzpeX",
+      "x": 9430,
+      "y": 0,
+      "name": "E1.2 Meus pedidos — Erro",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "c6XdM",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "IBysa",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "kEszZ",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Saudação e título",
+              "descendants": {
+                "Fj83F": {
+                  "enabled": true,
+                  "content": "Olá, Ana"
+                },
+                "ptFtO": {
+                  "content": "Meus pedidos"
+                },
+                "yQSkI": {
+                  "content": "Retome de onde parou.",
+                  "fontSize": "$rc-size-lead",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "xCxOn",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Erro",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "Não foi possível carregar seus pedidos."
+                },
+                "h7SWfJ": {
+                  "content": "Tente de novo. Se o problema continuar, volte mais tarde."
+                }
+              }
+            },
+            {
+              "id": "oSF1M",
+              "type": "ref",
+              "ref": "Rmpba",
+              "width": "fit_content",
+              "name": "Novo pedido"
+            },
+            {
+              "type": "frame",
+              "id": "EJ8gJ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "BnQh4",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "RPNLT",
+      "x": 9430,
+      "y": 864,
+      "name": "Nota · E1.2 Meus pedidos — Erro",
+      "width": 390,
+      "height": 150,
+      "content": "E1.2 Meus pedidos — Erro\nOperação: GET /solicitacoes ✅ (503 ou falha)\nFR-024 · \"Tentar de novo\" repete a consulta"
+    },
+    {
+      "type": "frame",
+      "id": "MKpMg",
+      "x": 9900,
+      "y": 0,
+      "name": "E1.2 Meus pedidos — Sem conexão",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "qL3x0",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "o2P71",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "Wv6La",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Saudação e título",
+              "descendants": {
+                "Fj83F": {
+                  "enabled": true,
+                  "content": "Olá, Ana"
+                },
+                "ptFtO": {
+                  "content": "Meus pedidos"
+                },
+                "yQSkI": {
+                  "content": "Retome de onde parou.",
+                  "fontSize": "$rc-size-lead",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "Z6rzUB",
+              "type": "ref",
+              "ref": "LMZKx",
+              "width": "fill_container",
+              "name": "Sem conexão",
+              "descendants": {
+                "X9ta8": {
+                  "content": "Sem conexão com a internet."
+                },
+                "N6KO2F": {
+                  "content": "Seus pedidos aparecerão quando a conexão voltar."
+                },
+                "OP4oH/bD8Xp": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "d9iq1",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "g6ZKIO",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "Gt3Mu",
+      "x": 9900,
+      "y": 864,
+      "name": "Nota · E1.2 Meus pedidos — Sem conexão",
+      "width": 390,
+      "height": 150,
+      "content": "E1.2 Meus pedidos — Sem conexão\nFalha de rede (sem chamada concluída)\nFR-024, FR-052"
+    },
+    {
+      "type": "frame",
+      "id": "toyoT",
+      "x": 10370,
+      "y": 0,
+      "name": "E1.3 Pedido — Carregando",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "GLzrV",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "z6fxCh",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "jwKnp",
+              "type": "ref",
+              "ref": "CA7PM",
+              "width": "fill_container",
+              "name": "Carregando",
+              "descendants": {
+                "AHOkK": {
+                  "content": "Carregando o pedido…"
+                }
+              }
+            },
+            {
+              "id": "GhnEm",
+              "type": "ref",
+              "ref": "CA7PM",
+              "width": "fill_container",
+              "name": "Carregando 2",
+              "descendants": {
+                "AHOkK": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "w4xznY",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "LkxBP",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "rN1ma",
+      "x": 10370,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Carregando",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Carregando\nOperações: GET /solicitacoes/{id} ✅ + documentos, leitura e conferência ✅\nFR-028"
+    },
+    {
+      "type": "frame",
+      "id": "hC19p",
+      "x": 10840,
+      "y": 0,
+      "name": "E1.3 Pedido — Rascunho sem documentos",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Kq8kn",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "j6DtAb",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                },
+                "ZaXxn": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "mqoSu",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 5"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "mnjYh",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "GH8CA": {
+                  "content": "Anexe o encaminhamento e um documento de identificação para começar."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Anexar documentos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "DDZHh",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "DCKw1",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "Nenhum anexado"
+                    }
+                  }
+                },
+                {
+                  "id": "isxK5",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Disponível depois de anexar"
+                    },
+                    "MGnMr": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "wT5Gp",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 10:05 · revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "M114lb",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "iC49t",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "QHUAi",
+      "x": 10840,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Rascunho sem documentos",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Rascunho sem documentos\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes, GET …/conferencia ✅\nFR-012, FR-025–FR-027 · Serviço com seta = trocar serviço (E2.1)\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "xRLu9",
+      "x": 11310,
+      "y": 0,
+      "name": "E1.3 Pedido — Rascunho sem leitura",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "MWPV8",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "pCre1",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                },
+                "ZaXxn": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "t4Bhk",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 4"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "jylQ6",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "GH8CA": {
+                  "content": "Leia os documentos para conferir o que foi encontrado."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Ler documentos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "P8c47d",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "SyxzJ",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "1 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "yTpl0",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Ainda não lida"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "g3G4n",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 12/11/2026 às 16:20 · atualizado em 13/11/2026 às 09:40 · revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "fQ7eG",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "N3B3r",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "EVt8A",
+      "x": 11310,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Rascunho sem leitura",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Rascunho sem leitura\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes, GET …/conferencia ✅\nFR-012, FR-025–FR-027 · Serviço com seta = trocar serviço (E2.1)\nDados: Pedido 4 da carga"
+    },
+    {
+      "type": "frame",
+      "id": "Z3WVJ",
+      "x": 11780,
+      "y": 0,
+      "name": "E1.3 Pedido — Rascunho a conferir",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "fzybg",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "GXfBV",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                },
+                "ZaXxn": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "m4J2a",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 5"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "N9exNv",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "GH8CA": {
+                  "content": "Confira se a leitura corresponde aos seus documentos."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Conferir leitura"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "AQ2zd",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "guQ8F",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "qfOzM",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Falta conferir · 8 sem decisão"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "lkbc9",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 10:05 · atualizado em 13/11/2026 às 10:15 · revisão 3 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "KHAHP",
+              "name": "Ações de apoio",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "JOky6",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Verificar critérios",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Verificar critérios"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UWKn6",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "Qjguw",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "OITPp",
+      "x": 11780,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Rascunho a conferir",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Rascunho a conferir\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes, GET …/conferencia ✅\nFR-012, FR-025–FR-027 · Serviço com seta = trocar serviço (E2.1)\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "LP6Ni",
+      "x": 12250,
+      "y": 0,
+      "name": "E1.3 Pedido — Rascunho pronto para verificar",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "u4hiL",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "VxXKe",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                },
+                "ZaXxn": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "gWmUm",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 5"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "k7vrh",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "GH8CA": {
+                  "content": "Leitura conferida. Verifique os critérios do protocolo de teste."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Verificar critérios"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "OGlFg",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "J4qxN",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "A8nCjl",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Leitura conferida"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "gftg6",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 10:05 · atualizado em 13/11/2026 às 10:15 · revisão 3 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "gJpMO",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "AvhVg",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "zCjrS",
+      "x": 12250,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Rascunho pronto para verificar",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Rascunho pronto para verificar\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes, GET …/conferencia ✅\nFR-012, FR-025–FR-027 · Serviço com seta = trocar serviço (E2.1)\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "frame",
+      "id": "ppR8m",
+      "x": 12720,
+      "y": 0,
+      "name": "E1.3 Pedido — Em verificação",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Hw4d4",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "UHFaR",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "CfoUL",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 6"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "hRoO5",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "u3BufM",
+                  "type": "ref",
+                  "ref": "BscFB",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "A verificação ainda não terminou. Isso não é um resultado."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Atualizar"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "c0uCe",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "UqS2p",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "wDEPV",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Leitura conferida"
+                    }
+                  }
+                },
+                {
+                  "id": "L5FTg",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Aguardando a verificação"
+                    },
+                    "MGnMr": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "AKb5Y",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 09:50 · atualizado em 13/11/2026 às 10:20 · revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "rrE6U",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "rq0H3",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "AmTGm",
+      "x": 12720,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Em verificação",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Em verificação\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 6 — só no design"
+    },
+    {
+      "type": "frame",
+      "id": "V2Gp00",
+      "x": 13190,
+      "y": 0,
+      "name": "E1.3 Pedido — Confira a leitura",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "F7Rjw4",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "bCFhZ",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "xkZVC",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 7"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "X5yEe",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "HuMUo",
+                  "type": "ref",
+                  "ref": "T2rFPT",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "Alguma informação não pôde ser verificada. Confira a leitura ou envie um arquivo mais nítido."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Ver o que conferir"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "UOPcj",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "nJAfL",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "AHtxz",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Há informações não verificadas"
+                    }
+                  }
+                },
+                {
+                  "id": "n4ITJD",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Confira a leitura · 2 critérios não verificáveis"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "WuUyh",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 09:55 · atualizado em 13/11/2026 às 10:25 · revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "e6s10",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "kwqNN",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "bgHo0",
+      "x": 13190,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Confira a leitura",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Confira a leitura\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 7 — só no design"
+    },
+    {
+      "type": "frame",
+      "id": "DGEB7",
+      "x": 13660,
+      "y": 0,
+      "name": "E1.3 Pedido — Com pendências",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "lc3B6",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "dOXCy",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "h7YNt",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 2"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "CKP0N",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "DbSH3",
+                  "type": "ref",
+                  "ref": "gaBUw",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "Veja o que falta e quem pode resolver."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Ver pendências"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "m10j7j",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "g3Q3Un",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "S3GuA",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Leitura conferida"
+                    }
+                  }
+                },
+                {
+                  "id": "YyNJG",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Com pendências · 2 critérios"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "X7E42I",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 11/11/2026 às 14:30 · atualizado em 12/11/2026 às 10:06 · revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "a3kqas",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "lUrVD",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "n3jg2F",
+      "x": 13660,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Com pendências",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Com pendências\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 2 — carga"
+    },
+    {
+      "type": "frame",
+      "id": "rr205",
+      "x": 14130,
+      "y": 0,
+      "name": "E1.3 Pedido — Sem pendências identificadas",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "q4tmRi",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "QunKN",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "KT4DM",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 1"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "FR7AT",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "bS7of",
+                  "type": "ref",
+                  "ref": "xPZ4q",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "Você pode concluir a simulação. Isso não é aprovação do SUS."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Concluir simulação"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "E7FaOF",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "RvGhT",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "bXp0f",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Leitura conferida"
+                    }
+                  }
+                },
+                {
+                  "id": "ZQ3oK",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Sem pendências identificadas · revisão 2"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "hFLZE",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 10/11/2026 às 15:00 · atualizado em 12/11/2026 às 11:30 · revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "skNNh",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "a497q",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "Mx3ZF",
+      "x": 14130,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Sem pendências identificadas",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Sem pendências identificadas\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13/RC-17)\nDados: Pedido 1 — carga (revisão 2, antes da conclusão)"
+    },
+    {
+      "type": "frame",
+      "id": "a6MB6X",
+      "x": 14600,
+      "y": 0,
+      "name": "E1.3 Pedido — Falha na verificação",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "XUAMt",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "m1Xi2",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "gjVpB",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 8"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "qULy5",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "WDUWG",
+                  "type": "ref",
+                  "ref": "y0gquj",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "Nenhuma conclusão foi tirada. Tente de novo."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "RNMfk",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "gKUsO",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "YrmnU",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Leitura conferida"
+                    }
+                  }
+                },
+                {
+                  "id": "yqRDq",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Falha na verificação"
+                    },
+                    "MGnMr": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ypFl4",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 09:58 · atualizado em 13/11/2026 às 10:30 · revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uSXdY",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "P4IV2L",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "BcuUM",
+      "x": 14600,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Falha na verificação",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Falha na verificação\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 8 — só no design"
+    },
+    {
+      "type": "frame",
+      "id": "STo2u",
+      "x": 15070,
+      "y": 0,
+      "name": "E1.3 Pedido — Resultado não vigente",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "uXUi9",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "yLcFO",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "VgcEQ",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 2"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "XcOtq",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "RIOhJ",
+                  "type": "ref",
+                  "ref": "gaBUw",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "Os documentos mudaram. O resultado anterior não vale mais. Leia os documentos de novo para ter um resultado atualizado."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Ler documentos de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "F6EGlA",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "yLcqP",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados · encaminhamento substituído"
+                    }
+                  }
+                },
+                {
+                  "id": "kJx3p",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Os documentos mudaram"
+                    }
+                  }
+                },
+                {
+                  "id": "npS0k",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Resultado anterior · não vale mais"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ntaHN",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 11/11/2026 às 14:30 · atualizado em 13/11/2026 às 11:02 · revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "MofBh",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "j4DJBi",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "L3Vx1f",
+      "x": 15070,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Resultado não vigente",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Resultado não vigente\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13/RC-16)\nDados: Pedido 2 — carga, depois de substituir o encaminhamento"
+    },
+    {
+      "type": "frame",
+      "id": "jGzFh",
+      "x": 15540,
+      "y": 0,
+      "name": "E1.3 Pedido — Simulação concluída",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "dZZYp",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "xR1ot",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "fE4AS",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 1"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "h5cHM",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "RYWbc": {
+                  "id": "Oknao",
+                  "type": "ref",
+                  "ref": "Q2KIl",
+                  "name": "Estado"
+                },
+                "GH8CA": {
+                  "content": "Nada foi enviado ao SUS. Consulte o comprovante."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Ver comprovante"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "v7SWY",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "nCDbH",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 documentos · só consulta"
+                    }
+                  }
+                },
+                {
+                  "id": "TdprD",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Leitura conferida"
+                    }
+                  }
+                },
+                {
+                  "id": "D7Fj0",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Resultado",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Resultado"
+                    },
+                    "YScCY": {
+                      "content": "Sem pendências identificadas · revisão 2"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "HijkZ",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 10/11/2026 às 15:00 · atualizado em 12/11/2026 às 11:45 · revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "T8BYZ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "rHNHc",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "W5SlM",
+      "x": 15540,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Simulação concluída",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Simulação concluída\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-17)\nDados: Pedido 1 — carga · referência SIM-2026-0001"
+    },
+    {
+      "type": "frame",
+      "id": "wgjxU",
+      "x": 16010,
+      "y": 0,
+      "name": "E1.3 Pedido — Não encontrado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "XBfUZ",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "E2y44V",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "GwQL3",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido não encontrado"
+                },
+                "yQSkI": {
+                  "content": "Ele pode ter sido excluído ou não estar disponível para você."
+                }
+              }
+            },
+            {
+              "id": "vMUNx",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Voltar para meus pedidos",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Voltar para meus pedidos"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "sluQq",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "EZRqa",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "FRqag",
+      "x": 16010,
+      "y": 864,
+      "name": "Nota · E1.3 Pedido — Não encontrado",
+      "width": 390,
+      "height": 150,
+      "content": "E1.3 Pedido — Não encontrado\nOperação: GET /solicitacoes/{id} ✅ → 404 NAO_ENCONTRADO\nFR-010, FR-028 · mesma resposta para pedido inexistente ou de outra paciente (ex.: Pedido 3, de Bruno)"
+    },
+    {
+      "type": "frame",
+      "id": "s25M7",
+      "x": 16480,
+      "y": 0,
+      "name": "E1.4 Sessão expirada",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "uZVWx",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "b1V6fy",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "rerwT": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "s4VQw",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Sua sessão terminou"
+                },
+                "yQSkI": {
+                  "content": "Por segurança, entre de novo para continuar."
+                }
+              }
+            },
+            {
+              "id": "OYXqD",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Entrar",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Entrar"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "gGEh2",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "K31XT",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "ZIirJ",
+      "x": 16480,
+      "y": 864,
+      "name": "Nota · E1.4 Sessão expirada",
+      "width": 390,
+      "height": 150,
+      "content": "E1.4 Sessão expirada\nQualquer rota privada → 401 NAO_AUTENTICADO (sessão de 30 min)\nFR-010 · volta ao login (E1.1)"
+    },
+    {
+      "type": "frame",
+      "id": "pijJA",
+      "x": 16950,
+      "y": 0,
+      "name": "E1.5 Sem permissão",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "M9PXRI",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "wvsIr",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "mW4jQ",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Sem permissão"
+                },
+                "yQSkI": {
+                  "content": "Você não tem permissão para ver esta tela."
+                }
+              }
+            },
+            {
+              "id": "EcgWT",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Voltar"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "y8Dht",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "c2h872",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "FcRat",
+      "x": 16950,
+      "y": 864,
+      "name": "Nota · E1.5 Sem permissão",
+      "width": 390,
+      "height": 150,
+      "content": "E1.5 Sem permissão\nRota de outro perfil → 403 ACESSO_NEGADO (ex.: paciente em /admin/indicadores; administrador em /protocolos)\nFR-010"
     }
   ],
   "variables": {

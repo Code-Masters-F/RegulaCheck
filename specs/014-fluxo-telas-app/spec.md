@@ -251,7 +251,7 @@ O administrador entra e vê o protocolo ativo com suas regras e totais agregados
 **E1.3 Pedido (central de próximo passo)**
 - **FR-025**: Mostrar "Pedido {número}", especialidade e localidade, protocolo (versão, identificado como fictício), estado com sua mensagem, revisão atual, criado em e atualizado em.
 - **FR-026**: Mostrar a superfície "Próximo passo" com a ação principal de FR-012 e as seções Documentos ({n} de 3), Leitura e conferência (situação) e Resultado (quando houver), cada uma com acesso à tela correspondente.
-- **FR-027**: Em rascunho, a ação de apoio "Excluir rascunho" (E2.6) e "Trocar serviço" (E2.1) ficam disponíveis; fora de rascunho, não aparecem.
+- **FR-027**: Em rascunho, o menu "Mais opções" do cabeçalho oferece "Trocar serviço" (E2.1) e "Excluir rascunho" (E2.6); o serviço aparece abaixo do título. Fora de rascunho, o menu não aparece.
 - **FR-028**: Estados: carregando, não encontrado, erro, sem conexão.
 
 **E2.1 Novo pedido / trocar serviço**

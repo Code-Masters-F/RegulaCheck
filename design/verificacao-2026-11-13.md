@@ -77,3 +77,11 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 **Ajustes durante a execução**: nome do arquivo passou a 13 e saiu o ícone decorativo para caber numa linha; botões de decisão usam a pergunta "Confere com o seu documento?" com "Está correto" / "Está diferente" para caberem lado a lado (spec FR-039 atualizada); E1.2 virou tela com rolagem porque os três pedidos da carga não cabem em 844.
 
 **Não verificado**: fonte ampliada, TalkBack, interação real; nenhum teste Java/Android (sem mudança de código).
+
+## Feature 014 — US1 / RC-36 (T026–T031), 14/11/2026
+
+- Commit da Fase 0: `988ac68` (enviado).
+- 25 quadros na faixa RC-36: E1.1 Login (5), E1.2 Meus pedidos (5, incluindo `H0BJi`), E1.3 Pedido (13: carregando, 4 situações de rascunho, 7 estados verificados, não encontrado), E1.4 e E1.5.
+- Consulta de limites: 0 problemas; 0 componentes `Legado/*`; todos com aviso acadêmico; nenhuma ação fora de `specs/014-fluxo-telas-app/contracts/telas-operacoes.md`; ação principal de cada E1.3 confere com FR-012 e há no máximo uma por quadro.
+- Correções feitas na revisão: rascunho com "Mais opções" no cabeçalho (excesso de altura); texto de E1.4 que afirmava algo não garantido pelo backend foi trocado pelo texto aprovado.
+- Não verificado: compreensão por pessoa que não desenhou (SC-003), fonte ampliada, TalkBack, interação.

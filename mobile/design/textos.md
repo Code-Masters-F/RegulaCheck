@@ -55,10 +55,10 @@ Dados (todos os estados): "Pedido {número}" no cabeçalho; título "{serviço}"
 
 | Situação | Mensagem em "Próximo passo" | Ação principal | Apoio |
 |---|---|---|---|
-| Rascunho sem documentos | "Anexe o encaminhamento e um documento de identificação para começar." | "Anexar documentos" | "Trocar serviço", "Excluir rascunho" |
+| Rascunho sem documentos | "Anexe o encaminhamento e um documento de identificação para começar." | "Anexar documentos" | "Mais opções": "Trocar serviço", "Excluir rascunho" |
 | Rascunho sem leitura atual | "Leia os documentos para conferir o que foi encontrado." | "Ler documentos" | idem |
-| Rascunho a conferir | "Confira se a leitura corresponde aos seus documentos." | "Conferir leitura" | "Verificar critérios", "Trocar serviço", "Excluir rascunho" |
-| Rascunho pronto para verificar | "Leitura conferida. Verifique os critérios do protocolo de teste." | "Verificar critérios" | "Trocar serviço", "Excluir rascunho" |
+| Rascunho a conferir | "Confira se a leitura corresponde aos seus documentos." | "Conferir leitura" | "Verificar critérios"; "Mais opções" idem |
+| Rascunho pronto para verificar | "Leitura conferida. Verifique os critérios do protocolo de teste." | "Verificar critérios" | "Mais opções" idem |
 | Em verificação | "A verificação ainda não terminou. Isso não é um resultado." | "Atualizar" | — |
 | Confira a leitura | "Alguma informação não pôde ser verificada." | "Ver o que conferir" | — |
 | Com pendências | "Veja o que falta e quem pode resolver." | "Ver pendências" | — |
