@@ -93,3 +93,11 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Consulta de limites: 0 problemas reais (avisos restantes vêm de elementos ocultos por padrão); 0 componentes `Legado/*`; aviso acadêmico em todos; "Anexar" nunca aparece fora de rascunho; no máximo uma ação principal por quadro.
 - Correções na revisão: nome longo truncado com reticências; terceiro documento `exames-anteriores.pdf`; "Não enviado" com "Tentar de novo" como única ação; linha de limites removida onde a mensagem já a cobre (3 quadros).
 - Não verificado: fonte ampliada, TalkBack, interação.
+
+## Feature 014 — US3 / RC-38 leitura e conferência (T039–T042), 14/11/2026
+
+- Commit da US2: `0eb5296` (enviado).
+- 12 quadros: E3.1 Leitura simulada (lendo, indisponível, sem documentos, documentos mudaram) e E3.2 Conferência (documento lido, decisões registradas, não localizado indicado, campo ilegível, documento não lido, texto do documento como dado, desatualizada, erro ao salvar).
+- Telas de conferência desenhadas inteiras com marca da dobra em 844; capa da RC-39 movida para y=5000.
+- Consulta de limites: 0 problemas; 0 `Legado/*`; selo SIMULADO em todos; nenhum campo de digitação; decisões oferecidas só as aceitas pelo backend (RC-11).
+- Não verificado: fonte ampliada, TalkBack, interação.
