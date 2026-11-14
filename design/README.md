@@ -36,11 +36,17 @@ Linha superior (y=0), da esquerda para a direita:
 | E2.2 Documentos — Com arquivos · v1.0 | `CvQRm` | [PNG](previas/CvQRm.png) |
 | E3.4 Pendência — Unidade emissora · v1.0 | `XCNVm` | [PNG](previas/XCNVm.png) |
 
-As três telas agora são montadas só com instâncias dos componentes v1.0 (56 componentes; ver F2–F4). Componentes mais usados: `Botão/Primário` `YNfQA`, `Botão/Contorno` `DpTaD`, `Botão/Texto` `j97Pe`, `Cabeçalho/Voltar` `PbS1q`, `Tela/Título` `YtzRv`, `Pedido/Destaque` `bwbsT`, `Pedido/Linha` `D4QLJd`, `Documento/Linha` `N6LHC`, `Pendência/Orientação` `tAmsl`, `Aviso/Rodapé` `zX8C6`, `Selo/Simulado` `ONwnK`, `Estado/*` em F4.
+As três telas agora são montadas só com instâncias dos componentes v1.0 (71 componentes desde a Fase 0 da feature 014; ver F2–F4). Componentes mais usados: `Botão/Primário` `YNfQA`, `Botão/Contorno` `DpTaD`, `Botão/Texto` `j97Pe`, `Cabeçalho/Voltar` `PbS1q`, `Tela/Título` `YtzRv`, `Pedido/Destaque` `bwbsT`, `Pedido/Linha` `D4QLJd`, `Documento/Linha` `N6LHC`, `Pendência/Orientação` `tAmsl`, `Aviso/Rodapé` `zX8C6`, `Selo/Simulado` `ONwnK`, `Estado/*` em F4.
 
 **Arquivo** `Wo9WQ` (y=7000): F1–F4 anteriores, biblioteca antiga e prévia `O84XR`, com componentes renomeados `Legado/*`. Não usar; pode ser apagado quando o grupo decidir. `rc-font-family`/Plus Jakarta Sans e `rc-review` (roxo) são legado.
 
-Para montar uma tela nova: copiar uma das três telas (390 × 844, padding 24/24/16, conteúdo vertical com gap 24, `Respiro flexível` antes do rodapé) e trocar as instâncias. Altura de controle deve ser **numérica (52)**: o pen.dev ignora variável em `height`.
+Para montar uma tela nova: copiar uma das três telas (390 × 844, padding 24/24/16, conteúdo vertical com gap 24, `Respiro flexível` antes do rodapé) e trocar as instâncias. Altura de controle deve ser **numérica (52)**: o pen.dev ignora variável em `height`. Telas de lista que passam da altura são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar (ex.: E1.2 `H0BJi`).
+
+### Montagem das telas (feature 014, desde 13/11/2026)
+
+O fluxo, o conteúdo por tela, as ações permitidas pelo backend e o inventário de 94 quadros estão em [specs/014-fluxo-telas-app/](../specs/014-fluxo-telas-app/) (`spec.md`, `data-model.md`, `contracts/`, `tasks.md`). No canvas, cada história tem uma faixa com capa em x=5200: RC-36 (y=0), RC-37 (y=1200), RC-38 (y=2400), RC-39 (y=3600); os quadros seguem à direita, passo 470, com uma nota de operação abaixo. Textos dos quadros: [mobile/design/textos.md](../mobile/design/textos.md); dados exemplares: [mobile/design/dados-ficticios.md](../mobile/design/dados-ficticios.md) — estrutura do backend, textos realistas, nunca os literais de teste.
+
+Fase 0 concluída em 13/11: 13 componentes novos ou ajustados (`Folha/Escolha`, `Campo/Senha`, `Botão/Decisão`, `Conferência/*`, `Pedido/Próximo passo`, `Linha/Navegação`, `Dado/Linha`, `Critério/Linha`, `Comparação/*`, `Aviso/Resultado não vigente`, "Sair" no cabeçalho, data no pedido, nome do arquivo e "Mais opções" no documento) e os três exemplos alinhados ao backend.
 
 ## Ferramentas e conexões
 

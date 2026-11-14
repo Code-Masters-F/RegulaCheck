@@ -52,7 +52,7 @@ Notação de origem: `Operação → campo`. Operações marcadas † são **con
 | `documentos[].situacao` | `LIDO` → (nada; mostra os campos) · `PROTEGIDO` e `LEITURA_VAZIA` → mostra `motivo` e `orientacao` do backend |
 | Situação da leitura | `ATUAL` → (nada) · `DESATUALIZADA` → "Os documentos mudaram. Leia os documentos de novo." |
 | Decisão registrada | `CONFIRMADA` → Confirmado por você · `DIVERGENTE`+`VALOR_DIFERENTE_DO_DOCUMENTO` → Você apontou diferença · `DIVERGENTE`+`CAMPO_EXISTE_E_NAO_FOI_LIDO` → Você indicou que está no documento |
-| Botões de decisão | Está correto · Está diferente do documento · Esta informação está no documento |
+| Botões de decisão | pergunta "Confere com o seu documento?" + Está correto · Está diferente · Esta informação está no documento |
 | Situação da conferência | `PENDENTE` → Falta conferir · `REQUER_CONFERENCIA` → Há informações não verificadas · `CONFERIDA` → Leitura conferida · `DESATUALIZADA` → Os documentos mudaram |
 
 ### Verificação (RC-12 a RC-15) †

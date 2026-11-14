@@ -4,13 +4,13 @@
     {
       "type": "frame",
       "id": "H0BJi",
-      "x": 5200,
+      "x": 8960,
       "y": 0,
       "name": "E1.2 Meus pedidos — Sucesso · v1.0",
       "context": "Identidade aprovada em 13/11/2026. Parcial de E1.2: somente sucesso. GET /solicitacoes é referência do app futuro; nenhum acesso à API neste desenho.",
       "clip": true,
       "width": 390,
-      "height": 844,
+      "height": 904,
       "fill": "$rc-bg",
       "layout": "vertical",
       "gap": 16,
@@ -78,7 +78,25 @@
                   "type": "ref",
                   "ref": "D4QLJd",
                   "width": "fill_container",
-                  "name": "PED-0001 · Rascunho"
+                  "name": "Pedido 2 · Com pendências"
+                },
+                {
+                  "id": "hbT88",
+                  "type": "ref",
+                  "ref": "D4QLJd",
+                  "name": "Pedido 1 · Simulação concluída",
+                  "width": "fill_container",
+                  "descendants": {
+                    "xDPrf": {
+                      "content": "Pedido 1 · atualizado em 12/11/2026 às 11:45"
+                    },
+                    "B8T6z": {
+                      "id": "pIDxo",
+                      "type": "ref",
+                      "ref": "Q2KIl",
+                      "name": "Estado"
+                    }
+                  }
                 },
                 {
                   "id": "I3T9t",
@@ -103,14 +121,49 @@
           "ref": "zX8C6",
           "name": "Aviso acadêmico",
           "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "WEflA",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "rvHsZ",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "N0tQhz",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
         }
       ]
     },
     {
       "type": "frame",
       "id": "CvQRm",
-      "x": 5670,
-      "y": 0,
+      "x": 8490,
+      "y": 1200,
       "name": "E2.2 Documentos — Com arquivos · v1.0",
       "context": "Aplicação parcial de E2.2. PED-0001. POST/GET /solicitacoes/{id}/documentos é referência planejada; não implementada neste desenho. Ver contrato e dados sintéticos em mobile/design.",
       "clip": true,
@@ -141,7 +194,12 @@
               "type": "ref",
               "ref": "PbS1q",
               "width": "fill_container",
-              "name": "Voltar · PED-0001"
+              "name": "Voltar · PED-0001",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
             },
             {
               "id": "S1zRMk",
@@ -202,13 +260,16 @@
                       "type": "ref",
                       "ref": "N6LHC",
                       "width": "fill_container",
-                      "name": "Cartão do SUS · Enviado",
+                      "name": "Identificação · Enviado",
                       "descendants": {
                         "WL6qI": {
-                          "content": "Cartão do SUS"
+                          "content": "Identificação ou cartão do SUS"
+                        },
+                        "wFeTH": {
+                          "content": "documento-identidade.jpg"
                         },
                         "UjUmc": {
-                          "content": "JPG · 1,4 MB"
+                          "content": "JPG · 1,2 MB"
                         }
                       }
                     }
@@ -219,7 +280,12 @@
                   "type": "ref",
                   "ref": "DpTaD",
                   "width": "fill_container",
-                  "name": "Anexar arquivo"
+                  "name": "Anexar arquivo",
+                  "descendants": {
+                    "bD8Xp": {
+                      "content": "Anexar documento"
+                    }
+                  }
                 },
                 {
                   "type": "text",
@@ -228,7 +294,7 @@
                   "fill": "$rc-text-muted",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Até 3 arquivos · 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+                  "content": "2 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
                   "lineHeight": 1.5,
                   "fontFamily": "$rc-font-body",
                   "fontSize": "$rc-size-meta",
@@ -256,10 +322,10 @@
                   "type": "ref",
                   "ref": "YNfQA",
                   "width": "fill_container",
-                  "name": "Enviar para conferência",
+                  "name": "Ler documentos",
                   "descendants": {
                     "irqwJ": {
-                      "content": "Enviar para conferência"
+                      "content": "Ler documentos"
                     }
                   }
                 },
@@ -270,7 +336,7 @@
                   "fill": "$rc-text-muted",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Você poderá conferir a leitura simulada.",
+                  "content": "Leitura simulada. Depois você confere o que foi lido.",
                   "lineHeight": 1.4,
                   "textAlign": "center",
                   "fontFamily": "$rc-font-body",
@@ -293,8 +359,8 @@
     {
       "type": "frame",
       "id": "XCNVm",
-      "x": 6140,
-      "y": 0,
+      "x": 14130,
+      "y": 2400,
       "name": "E3.4 Pendência — Unidade emissora · v1.0",
       "context": "Aplicação parcial E3.4, PED-0004, RC-R04, PROTOCOLO-ACADEMICO-FICTICIO v0.1, encaminhamento-sintetico.pdf página 2. GET /solicitacoes/{id}/analises é referência planejada; resultado SIMULADO. Não encontrar campo não comprova ausência. Não permite editar documento clínico.",
       "clip": true,
@@ -324,10 +390,10 @@
               "type": "ref",
               "ref": "PbS1q",
               "width": "fill_container",
-              "name": "Voltar · PED-0004 · simulado",
+              "name": "Voltar · Pedido 2 · simulado",
               "descendants": {
                 "Fi0ec": {
-                  "content": "PED-0004"
+                  "content": "Pedido 2"
                 },
                 "ck3vo": {
                   "enabled": true
@@ -345,7 +411,7 @@
                   "content": "O que falta resolver"
                 },
                 "yQSkI": {
-                  "content": "Encaminhamento · página 2",
+                  "content": "RC-R04 · Protocolo acadêmico fictício, versão 0.1",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -366,7 +432,7 @@
                   "fill": "$rc-text",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Motivo do encaminhamento",
+                  "content": "Motivo do encaminhamento informado",
                   "lineHeight": 1.2,
                   "fontFamily": "$rc-font-heading",
                   "fontSize": "$rc-size-heading",
@@ -379,10 +445,23 @@
                   "fill": "$rc-text",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Não localizamos o motivo nesta página. Confira o documento original.",
+                  "content": "O encaminhamento não traz o motivo. Peça à unidade emissora que complete o documento.",
                   "lineHeight": 1.5,
                   "fontFamily": "$rc-font-body",
                   "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "v5dzAm",
+                  "name": "Origem",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Documento: encaminhamento-ubs-santa-aurora.pdf · campo não localizado",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-caption",
                   "fontWeight": "normal"
                 }
               ]
@@ -420,10 +499,10 @@
                   "type": "ref",
                   "ref": "YNfQA",
                   "width": "fill_container",
-                  "name": "Conferir documento",
+                  "name": "Abrir documento",
                   "descendants": {
                     "irqwJ": {
-                      "content": "Conferir documento"
+                      "content": "Abrir documento"
                     }
                   }
                 },
@@ -3071,7 +3150,7 @@
                       "fill": "$rc-text-muted",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "PED-0004 · Atualizado em 12/11/2026 às 10:06",
+                      "content": "Pedido 4 · Atualizado em 12/11/2026 às 10:06",
                       "lineHeight": 1.4,
                       "fontFamily": "$rc-font-body",
                       "fontSize": "$rc-size-meta",
@@ -6112,7 +6191,7 @@
                                   "fill": "$rc-text",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "paciente.a@exemplo.invalid",
+                                  "content": "ana.moreira@email.test",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-body",
@@ -6230,7 +6309,7 @@
                                   "fill": "$rc-text",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "paciente.a@exemplo.invalid",
+                                  "content": "ana.moreira@email.test",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-body",
@@ -6326,7 +6405,7 @@
                                   "fill": "$rc-text",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "paciente.a@",
+                                  "content": "ana.moreira@",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-body",
@@ -6473,7 +6552,7 @@
                                   "fill": "$rc-text-muted",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "paciente.a@exemplo.invalid",
+                                  "content": "ana.moreira@email.test",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-body",
@@ -6733,7 +6812,7 @@
                                   "fill": "$rc-text-muted",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "Município Exemplo (fictício)",
+                                  "content": "Santa Aurora (município fictício)",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-meta",
@@ -6800,7 +6879,7 @@
                                   "fill": "$rc-text-muted",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "Município Exemplo (fictício)",
+                                  "content": "Santa Aurora (município fictício)",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-meta",
@@ -6841,6 +6920,314 @@
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
                           "content": "Item de escolha única; a linha inteira é o alvo.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "zTxgm",
+              "name": "Linha do mostruário",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "RWa8v",
+                  "name": "Exemplar · Campo/Senha",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "AcoF3",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "N6lj9",
+                          "name": "Campo/Senha",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "GNGXn",
+                              "name": "Rótulo",
+                              "fill": "$rc-text",
+                              "content": "Senha",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "igjlR",
+                              "name": "Caixa",
+                              "width": "fill_container",
+                              "height": 52,
+                              "fill": "$rc-bg",
+                              "cornerRadius": "$rc-radius-16",
+                              "stroke": "$rc-border",
+                              "strokeWidth": "$rc-stroke-control",
+                              "gap": 4,
+                              "padding": [
+                                0,
+                                4,
+                                0,
+                                16
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "ueaSt",
+                                  "name": "Valor",
+                                  "fill": "$rc-text",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "••••••••",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-body",
+                                  "fontWeight": "normal",
+                                  "letterSpacing": 2
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "SsGXY",
+                                  "name": "Mostrar senha · alvo 48",
+                                  "width": 48,
+                                  "height": 48,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "YSGjd",
+                                      "name": "Mostrar senha",
+                                      "width": 20,
+                                      "height": 20,
+                                      "icon": "eye",
+                                      "library": "lucide",
+                                      "fill": "$rc-text"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "uz8et",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "NLve5",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Campo/Senha",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "UbBuT",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Senha nunca aparece em texto; alvo 48 para mostrar ou ocultar.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QfXKN",
+                  "name": "Exemplar · Folha/Escolha",
+                  "width": 390,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Fobl3",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "M0wDl9",
+                          "name": "Folha/Escolha",
+                          "reusable": true,
+                          "width": 390,
+                          "fill": "$rc-bg",
+                          "cornerRadius": [
+                            24,
+                            24,
+                            0,
+                            0
+                          ],
+                          "stroke": "$rc-divider",
+                          "strokeWidth": 1,
+                          "layout": "vertical",
+                          "gap": 16,
+                          "padding": [
+                            12,
+                            24,
+                            24,
+                            24
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "SWbPL",
+                              "name": "Alça",
+                              "width": "fill_container",
+                              "justifyContent": "center",
+                              "children": [
+                                {
+                                  "type": "rectangle",
+                                  "cornerRadius": 2,
+                                  "id": "DybaR",
+                                  "name": "Alça",
+                                  "fill": "$rc-divider",
+                                  "width": 40,
+                                  "height": 4
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "cRtAf",
+                              "name": "Título",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Que documento você vai anexar?",
+                              "lineHeight": 1.2,
+                              "fontFamily": "$rc-font-heading",
+                              "fontSize": "$rc-size-heading",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ApkHu",
+                              "name": "Opções",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "children": [
+                                {
+                                  "id": "MdvYO",
+                                  "type": "ref",
+                                  "ref": "bwP65",
+                                  "name": "Encaminhamento",
+                                  "width": "fill_container",
+                                  "descendants": {
+                                    "RTyxX": {
+                                      "content": "Encaminhamento"
+                                    },
+                                    "uCGef": {
+                                      "content": "Pedido de consulta emitido pela unidade de saúde"
+                                    }
+                                  }
+                                },
+                                {
+                                  "id": "hOXGv",
+                                  "type": "ref",
+                                  "ref": "bwP65",
+                                  "name": "Identificação ou cartão do SUS",
+                                  "width": "fill_container",
+                                  "descendants": {
+                                    "RTyxX": {
+                                      "content": "Identificação ou cartão do SUS"
+                                    },
+                                    "uCGef": {
+                                      "content": "RG, CNH ou cartão do SUS"
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "id": "VcVPu",
+                              "type": "ref",
+                              "ref": "j97Pe",
+                              "name": "Cancelar",
+                              "width": "fill_container",
+                              "descendants": {
+                                "yjg4m": {
+                                  "content": "Cancelar"
+                                },
+                                "DqGNz": {
+                                  "enabled": false
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "IHqHj",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "C9AWFa",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Folha/Escolha",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "QRSmm",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Folha inferior sobre rc-scrim: tipo do documento, origem do arquivo e opções do documento.",
                           "lineHeight": 1.4,
                           "fontFamily": "$rc-font-body",
                           "fontSize": 14,
@@ -6927,6 +7314,7 @@
                           "reusable": true,
                           "width": "fill_container",
                           "height": 48,
+                          "justifyContent": "space_between",
                           "alignItems": "center",
                           "children": [
                             {
@@ -6939,6 +7327,32 @@
                               "fontFamily": "$rc-font-heading",
                               "fontSize": "$rc-size-heading",
                               "fontWeight": "600"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "rerwT",
+                              "name": "Sair · alvo 48",
+                              "height": 48,
+                              "padding": [
+                                0,
+                                0,
+                                0,
+                                12
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "B9XCJ",
+                                  "name": "Sair",
+                                  "fill": "$rc-action",
+                                  "content": "Sair",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-body",
+                                  "fontWeight": "700"
+                                }
+                              ]
                             }
                           ]
                         }
@@ -7020,7 +7434,7 @@
                               "fill": "$rc-text",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "PED-0001",
+                              "content": "Pedido 1",
                               "lineHeight": 1.4,
                               "fontFamily": "$rc-font-body",
                               "fontSize": 16,
@@ -7184,6 +7598,344 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "frame",
+              "id": "BliDt",
+              "name": "Linha do mostruário",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "pvkDJ",
+                  "name": "Exemplar · Pedido/Próximo passo",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tAIPF",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "MUJZL",
+                          "name": "Pedido/Próximo passo",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "fill": "$rc-surface",
+                          "cornerRadius": "$rc-radius-task",
+                          "layout": "vertical",
+                          "gap": 12,
+                          "padding": "$rc-surface-padding",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "RqwzW",
+                              "name": "Rótulo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Próximo passo",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "700"
+                            },
+                            {
+                              "id": "RYWbc",
+                              "type": "ref",
+                              "ref": "xlZvN",
+                              "name": "Estado"
+                            },
+                            {
+                              "type": "text",
+                              "id": "GH8CA",
+                              "name": "Mensagem",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Anexe o encaminhamento e um documento de identificação para começar.",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "MDoFD",
+                              "type": "ref",
+                              "ref": "YNfQA",
+                              "name": "Ação principal",
+                              "width": "fill_container",
+                              "descendants": {
+                                "irqwJ": {
+                                  "content": "Anexar documentos"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "M8w34",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nD9p9",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Pedido/Próximo passo",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "xvXQ0",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Superfície única da tela do pedido, com a ação principal de FR-012.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "lgRqn",
+                  "name": "Exemplar · Linha/Navegação",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "xSxFc",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "RvCJo",
+                          "name": "Linha/Navegação",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "gap": 12,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "J0faSf",
+                              "name": "Texto",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "n5H6Db",
+                                  "name": "Rótulo",
+                                  "fill": "$rc-text",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Documentos",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": 16,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "YScCY",
+                                  "name": "Situação",
+                                  "fill": "$rc-text-muted",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "2 de 3 anexados",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "icon",
+                              "id": "MGnMr",
+                              "name": "Abrir",
+                              "width": 20,
+                              "height": 20,
+                              "icon": "chevron-right",
+                              "library": "lucide",
+                              "fill": "$rc-text-muted"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "E8em83",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "b0eWT",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Linha/Navegação",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "KeGtt",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Seções do pedido. A linha inteira é o alvo.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "VjnUz",
+                  "name": "Exemplar · Dado/Linha",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "IOLWG",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "GQWGd",
+                          "name": "Dado/Linha",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 2,
+                          "padding": [
+                            10,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "HYKFX",
+                              "name": "Rótulo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Protocolo",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "unazT",
+                              "name": "Valor",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Protocolo acadêmico fictício · versão 0.1",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "JxK7n",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Y60Xl",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Dado/Linha",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "QMrvT",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Dados do pedido, da pendência e do comprovante.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -7272,7 +8024,7 @@
                               "fill": "$rc-text-muted",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "PED-0004",
+                              "content": "Pedido 4 · atualizado em 13/11/2026 às 09:40",
                               "lineHeight": 1.4,
                               "fontFamily": "$rc-font-body",
                               "fontSize": "$rc-size-meta",
@@ -7292,23 +8044,10 @@
                               "fontWeight": "600"
                             },
                             {
-                              "id": "yZMlN",
+                              "id": "Z5A829",
                               "type": "ref",
-                              "ref": "gaBUw",
+                              "ref": "xlZvN",
                               "name": "Estado"
-                            },
-                            {
-                              "type": "text",
-                              "id": "e8Nu3Y",
-                              "name": "Atualização",
-                              "fill": "$rc-text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Atualizado em 12/11/2026 às 10:06",
-                              "lineHeight": 1.4,
-                              "fontFamily": "$rc-font-body",
-                              "fontSize": "$rc-size-meta",
-                              "fontWeight": "normal"
                             },
                             {
                               "type": "text",
@@ -7317,7 +8056,7 @@
                               "fill": "$rc-text",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Veja o que precisa ser corrigido.",
+                              "content": "Leia os documentos para conferir o que foi encontrado.",
                               "lineHeight": 1.5,
                               "fontFamily": "$rc-font-body",
                               "fontSize": 16,
@@ -7331,7 +8070,7 @@
                               "width": "fill_container",
                               "descendants": {
                                 "irqwJ": {
-                                  "content": "Ver pendências"
+                                  "content": "Ler documentos"
                                 }
                               }
                             }
@@ -7424,10 +8163,10 @@
                                   "fill": "$rc-text-muted",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "PED-0001",
+                                  "content": "Pedido 2 · atualizado em 12/11/2026 às 10:06",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
-                                  "fontSize": "$rc-size-meta",
+                                  "fontSize": "$rc-size-caption",
                                   "fontWeight": "600"
                                 },
                                 {
@@ -7437,16 +8176,16 @@
                                   "fill": "$rc-text",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "Cardiologia",
+                                  "content": "Consulta ambulatorial em cardiologia",
                                   "lineHeight": 1.25,
                                   "fontFamily": "$rc-font-heading",
                                   "fontSize": "$rc-size-title",
                                   "fontWeight": "600"
                                 },
                                 {
-                                  "id": "x4SYM",
+                                  "id": "B8T6z",
                                   "type": "ref",
-                                  "ref": "xlZvN",
+                                  "ref": "gaBUw",
                                   "name": "Estado"
                                 }
                               ]
@@ -7455,16 +8194,20 @@
                               "type": "frame",
                               "id": "Qqlkn",
                               "name": "Abrir pedido · alvo 48",
+                              "width": 32,
                               "height": 48,
-                              "gap": 6,
+                              "justifyContent": "end",
                               "alignItems": "center",
                               "children": [
                                 {
                                   "type": "text",
                                   "id": "ILJfi",
+                                  "x": 0,
+                                  "y": 13,
                                   "name": "Ação",
+                                  "enabled": false,
                                   "fill": "$rc-action",
-                                  "content": "Continuar",
+                                  "content": "Ver",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": 16,
@@ -7476,9 +8219,9 @@
                                   "name": "Seta",
                                   "width": 20,
                                   "height": 20,
-                                  "icon": "arrow-right",
+                                  "icon": "chevron-right",
                                   "library": "lucide",
-                                  "fill": "$rc-action"
+                                  "fill": "$rc-text-muted"
                                 }
                               ]
                             }
@@ -7545,7 +8288,7 @@
                           "name": "Documento/Linha",
                           "reusable": true,
                           "width": "fill_container",
-                          "gap": 12,
+                          "gap": 10,
                           "padding": [
                             14,
                             0
@@ -7555,7 +8298,10 @@
                             {
                               "type": "frame",
                               "id": "WTTCA",
+                              "x": 0,
+                              "y": 50.5,
                               "name": "Ícone · alinhado ao título",
+                              "enabled": false,
                               "alignItems": "center",
                               "children": [
                                 {
@@ -7593,12 +8339,25 @@
                                 },
                                 {
                                   "type": "text",
+                                  "id": "wFeTH",
+                                  "name": "Nome do arquivo",
+                                  "fill": "$rc-text-muted",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "encaminhamento-cardiologia.pdf",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-caption",
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
                                   "id": "UjUmc",
                                   "name": "Tipo, tamanho e páginas",
                                   "fill": "$rc-text-muted",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "PDF · 120 KB · 2 páginas",
+                                  "content": "PDF · 184 KB · 2 páginas",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-meta"
@@ -7615,8 +8374,8 @@
                               "type": "frame",
                               "id": "bmp24",
                               "name": "Estado e abertura",
-                              "layout": "vertical",
                               "justifyContent": "center",
+                              "alignItems": "center",
                               "children": [
                                 {
                                   "type": "frame",
@@ -7625,9 +8384,9 @@
                                   "height": 48,
                                   "padding": [
                                     0,
+                                    4,
                                     0,
-                                    0,
-                                    12
+                                    8
                                   ],
                                   "justifyContent": "end",
                                   "alignItems": "center",
@@ -7642,6 +8401,27 @@
                                       "fontFamily": "$rc-font-body",
                                       "fontSize": 16,
                                       "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "j40sY",
+                                  "name": "Mais opções · alvo 48",
+                                  "width": 48,
+                                  "height": 48,
+                                  "justifyContent": "end",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "wSrEO",
+                                      "name": "Mais opções",
+                                      "width": 20,
+                                      "height": 20,
+                                      "icon": "ellipsis-vertical",
+                                      "library": "lucide",
+                                      "fill": "$rc-text"
                                     }
                                   ]
                                 }
@@ -7971,26 +8751,121 @@
                       ]
                     }
                   ]
-                },
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uwLIW",
+              "name": "Linha do mostruário",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
                 {
                   "type": "frame",
-                  "id": "Q00TMK",
-                  "name": "Exemplar · Extração/Campo",
+                  "id": "cZfQY",
+                  "name": "Exemplar · Botão/Decisão",
                   "width": 342,
                   "layout": "vertical",
                   "gap": 12,
                   "children": [
                     {
                       "type": "frame",
-                      "id": "F6fk2",
+                      "id": "s78wT",
                       "name": "Área do componente",
                       "width": "fill_container",
                       "layout": "vertical",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "Ln2n6",
-                          "name": "Extração/Identificado",
+                          "id": "js3yc",
+                          "name": "Botão/Decisão",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "height": 48,
+                          "fill": "$rc-bg",
+                          "cornerRadius": "$rc-radius-999",
+                          "stroke": "$rc-action",
+                          "strokeWidth": "$rc-stroke-control",
+                          "padding": [
+                            0,
+                            12
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "A5FRi",
+                              "name": "Rótulo",
+                              "fill": "$rc-action",
+                              "content": "Está correto",
+                              "lineHeight": 1.3,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 15,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Fln87",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "r62XBe",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Botão/Decisão",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "GcYhl",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Decisão da conferência. Altura 48; sempre em par ou sozinho, nunca como ação principal.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mmSpD",
+                  "name": "Exemplar · Conferência/Identificado",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tyCAO",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "mSIlI",
+                          "name": "Conferência/Identificado",
                           "reusable": true,
                           "width": "fill_container",
                           "stroke": "$rc-divider",
@@ -8006,12 +8881,12 @@
                           "children": [
                             {
                               "type": "text",
-                              "id": "C9CHn0",
+                              "id": "Y5ddCV",
                               "name": "Campo",
                               "fill": "$rc-text-muted",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Data de emissão",
+                              "content": "Nome",
                               "lineHeight": 1.4,
                               "fontFamily": "$rc-font-body",
                               "fontSize": "$rc-size-meta",
@@ -8019,12 +8894,12 @@
                             },
                             {
                               "type": "text",
-                              "id": "XW7IH",
+                              "id": "Wvj6m",
                               "name": "Valor",
                               "fill": "$rc-text",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "05/11/2026",
+                              "content": "Ana Beatriz Moreira",
                               "lineHeight": 1.5,
                               "fontFamily": "$rc-font-body",
                               "fontSize": 16,
@@ -8032,7 +8907,7 @@
                             },
                             {
                               "type": "frame",
-                              "id": "Neffb",
+                              "id": "Rfwfh",
                               "name": "Situação e origem",
                               "width": "fill_container",
                               "gap": 8,
@@ -8040,24 +8915,24 @@
                               "children": [
                                 {
                                   "type": "frame",
-                                  "id": "rxRLP",
+                                  "id": "lEKKb",
                                   "name": "Situação",
                                   "gap": 6,
                                   "alignItems": "center",
                                   "children": [
                                     {
                                       "type": "icon",
-                                      "id": "Cbwxs",
+                                      "id": "m6gYH",
                                       "name": "Ícone",
                                       "width": 16,
                                       "height": 16,
-                                      "icon": "circle-check",
+                                      "icon": "scan-text",
                                       "library": "lucide",
-                                      "fill": "$rc-success"
+                                      "fill": "$rc-action"
                                     },
                                     {
                                       "type": "text",
-                                      "id": "RK0aY",
+                                      "id": "Pm9Un",
                                       "name": "Rótulo",
                                       "fill": "$rc-text",
                                       "content": "Identificado",
@@ -8070,212 +8945,57 @@
                                 },
                                 {
                                   "type": "text",
-                                  "id": "IoALN",
+                                  "id": "yaMkq",
                                   "name": "Origem",
                                   "fill": "$rc-text-muted",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "· encaminhamento, página 1",
+                                  "content": "pág. 1 · “Paciente: Ana Beatriz Moreira”",
                                   "lineHeight": 1.4,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": "$rc-size-caption",
                                   "fontWeight": "normal"
                                 }
                               ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "F3FVEq",
-                          "name": "Extração/Não localizado",
-                          "reusable": true,
-                          "width": "fill_container",
-                          "stroke": "$rc-divider",
-                          "strokeWidth": {
-                            "bottom": 1
-                          },
-                          "layout": "vertical",
-                          "gap": 6,
-                          "padding": [
-                            14,
-                            0
-                          ],
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "P2dhY3",
-                              "name": "Campo",
-                              "fill": "$rc-text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Motivo do encaminhamento",
-                              "lineHeight": 1.4,
-                              "fontFamily": "$rc-font-body",
-                              "fontSize": "$rc-size-meta",
-                              "fontWeight": "600"
                             },
                             {
                               "type": "text",
-                              "id": "n5V1NF",
-                              "name": "Valor",
+                              "id": "vkZaL",
+                              "name": "Pergunta",
                               "fill": "$rc-text-muted",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Não localizado no documento.",
-                              "lineHeight": 1.5,
+                              "content": "Confere com o seu documento?",
+                              "lineHeight": 1.4,
                               "fontFamily": "$rc-font-body",
-                              "fontSize": 16,
+                              "fontSize": "$rc-size-meta",
                               "fontWeight": "normal"
                             },
                             {
                               "type": "frame",
-                              "id": "B68yi",
-                              "name": "Situação e origem",
+                              "id": "ZYJ9N",
+                              "name": "Decisões",
                               "width": "fill_container",
                               "gap": 8,
-                              "alignItems": "center",
                               "children": [
                                 {
-                                  "type": "frame",
-                                  "id": "CeQhh",
-                                  "name": "Situação",
-                                  "gap": 6,
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "icon",
-                                      "id": "k8KEEp",
-                                      "name": "Ícone",
-                                      "width": 16,
-                                      "height": 16,
-                                      "icon": "circle-alert",
-                                      "library": "lucide",
-                                      "fill": "$rc-pending"
-                                    },
-                                    {
-                                      "type": "text",
-                                      "id": "sSj1k",
-                                      "name": "Rótulo",
-                                      "fill": "$rc-text",
-                                      "content": "Não localizado",
-                                      "lineHeight": 1.4,
-                                      "fontFamily": "$rc-font-body",
-                                      "fontSize": "$rc-size-meta",
-                                      "fontWeight": "700"
-                                    }
-                                  ]
+                                  "id": "fjRPR",
+                                  "type": "ref",
+                                  "ref": "js3yc",
+                                  "name": "Está correto",
+                                  "width": "fill_container"
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "Tc4vK",
-                                  "name": "Origem",
-                                  "fill": "$rc-text-muted",
-                                  "textGrowth": "fixed-width",
+                                  "id": "Vh3Hl",
+                                  "type": "ref",
+                                  "ref": "js3yc",
+                                  "name": "Está diferente",
                                   "width": "fill_container",
-                                  "content": "· encaminhamento, página 2",
-                                  "lineHeight": 1.4,
-                                  "fontFamily": "$rc-font-body",
-                                  "fontSize": "$rc-size-caption",
-                                  "fontWeight": "normal"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "zd5wX",
-                          "name": "Extração/Ilegível",
-                          "reusable": true,
-                          "width": "fill_container",
-                          "stroke": "$rc-divider",
-                          "strokeWidth": {
-                            "bottom": 1
-                          },
-                          "layout": "vertical",
-                          "gap": 6,
-                          "padding": [
-                            14,
-                            0
-                          ],
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "iU823",
-                              "name": "Campo",
-                              "fill": "$rc-text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Número do cartão",
-                              "lineHeight": 1.4,
-                              "fontFamily": "$rc-font-body",
-                              "fontSize": "$rc-size-meta",
-                              "fontWeight": "600"
-                            },
-                            {
-                              "type": "text",
-                              "id": "p0onC",
-                              "name": "Valor",
-                              "fill": "$rc-text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
-                              "content": "Não foi possível confirmar este campo.",
-                              "lineHeight": 1.5,
-                              "fontFamily": "$rc-font-body",
-                              "fontSize": 16,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "KIc6U",
-                              "name": "Situação e origem",
-                              "width": "fill_container",
-                              "gap": 8,
-                              "alignItems": "center",
-                              "children": [
-                                {
-                                  "type": "frame",
-                                  "id": "cTNzf",
-                                  "name": "Situação",
-                                  "gap": 6,
-                                  "alignItems": "center",
-                                  "children": [
-                                    {
-                                      "type": "icon",
-                                      "id": "f9Y40",
-                                      "name": "Ícone",
-                                      "width": 16,
-                                      "height": 16,
-                                      "icon": "eye-off",
-                                      "library": "lucide",
-                                      "fill": "$rc-pending"
-                                    },
-                                    {
-                                      "type": "text",
-                                      "id": "c4bcbY",
-                                      "name": "Rótulo",
-                                      "fill": "$rc-text",
-                                      "content": "Ilegível",
-                                      "lineHeight": 1.4,
-                                      "fontFamily": "$rc-font-body",
-                                      "fontSize": "$rc-size-meta",
-                                      "fontWeight": "700"
+                                  "descendants": {
+                                    "A5FRi": {
+                                      "content": "Está diferente"
                                     }
-                                  ]
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "k0OfT",
-                                  "name": "Origem",
-                                  "fill": "$rc-text-muted",
-                                  "textGrowth": "fixed-width",
-                                  "width": "fill_container",
-                                  "content": "· cartão do SUS, página 1",
-                                  "lineHeight": 1.4,
-                                  "fontFamily": "$rc-font-body",
-                                  "fontSize": "$rc-size-caption",
-                                  "fontWeight": "normal"
+                                  }
                                 }
                               ]
                             }
@@ -8285,7 +9005,7 @@
                     },
                     {
                       "type": "frame",
-                      "id": "X5nUrv",
+                      "id": "kRm6e",
                       "name": "Legenda",
                       "width": "fill_container",
                       "layout": "vertical",
@@ -8293,12 +9013,12 @@
                       "children": [
                         {
                           "type": "text",
-                          "id": "o0XJ3f",
+                          "id": "H1u5i9",
                           "name": "Componente",
                           "fill": "$rc-text",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Extração/Campo",
+                          "content": "Conferência/Identificado",
                           "lineHeight": 1.4,
                           "fontFamily": "$rc-font-body",
                           "fontSize": 14,
@@ -8306,12 +9026,1186 @@
                         },
                         {
                           "type": "text",
-                          "id": "Q5bnXn",
+                          "id": "d8CB9",
                           "name": "Uso",
                           "fill": "$rc-text-muted",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Campo lido na conferência. Três situações abaixo; nunca editar o conteúdo clínico.",
+                          "content": "Campo lido: a paciente confirma ou aponta diferença. Nunca digita.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "odbg5",
+                  "name": "Exemplar · Conferência/Identificado · confirmado",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "HmZ7w",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "c5ifnR",
+                          "name": "Conferência/Identificado · confirmado",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "layout": "vertical",
+                          "gap": 6,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "Clgp2",
+                              "name": "Campo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Nome",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "b6Smk",
+                              "name": "Valor",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Ana Beatriz Moreira",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "f8Bzt5",
+                              "name": "Situação e origem",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "Mb4xg",
+                                  "name": "Situação",
+                                  "gap": 6,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "P27rjs",
+                                      "name": "Ícone",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "scan-text",
+                                      "library": "lucide",
+                                      "fill": "$rc-action"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "uhflr",
+                                      "name": "Rótulo",
+                                      "fill": "$rc-text",
+                                      "content": "Identificado",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "QSVmn",
+                                  "name": "Origem",
+                                  "fill": "$rc-text-muted",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "pág. 1 · “Paciente: Ana Beatriz Moreira”",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-caption",
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "C6eEYL",
+                              "name": "Decisão registrada",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "kw8HV",
+                                  "name": "Situação",
+                                  "gap": 6,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "igYv8",
+                                      "name": "Ícone",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "circle-check",
+                                      "library": "lucide",
+                                      "fill": "$rc-success"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "dpVOM",
+                                      "name": "Rótulo",
+                                      "fill": "$rc-text",
+                                      "content": "Confirmado por você",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "hbrV4",
+                                  "name": "Mudar decisão · alvo 48",
+                                  "height": 48,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "z4CSSQ",
+                                      "name": "Ação",
+                                      "fill": "$rc-action",
+                                      "content": "Mudar decisão",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lzGbt",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BPXRU",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Conferência/Identificado · confirmado",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "agm0g",
+              "name": "Linha do mostruário",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "yXJHl",
+                  "name": "Exemplar · Conferência/Identificado · com diferença",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "eXksE",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "oeygJ",
+                          "name": "Conferência/Identificado · com diferença",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "layout": "vertical",
+                          "gap": 6,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "fktVA",
+                              "name": "Campo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Nome",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "M3Jbey",
+                              "name": "Valor",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Ana Beatriz Moreira",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "OqstX",
+                              "name": "Situação e origem",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "LXzPu",
+                                  "name": "Situação",
+                                  "gap": 6,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "K67By",
+                                      "name": "Ícone",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "scan-text",
+                                      "library": "lucide",
+                                      "fill": "$rc-action"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "MI49p",
+                                      "name": "Rótulo",
+                                      "fill": "$rc-text",
+                                      "content": "Identificado",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "E2r1cn",
+                                  "name": "Origem",
+                                  "fill": "$rc-text-muted",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "pág. 1 · “Paciente: Ana Beatriz Moreira”",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-caption",
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "g4U5wV",
+                              "name": "Decisão registrada",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "justifyContent": "space_between",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "ofa4l",
+                                  "name": "Situação",
+                                  "gap": 6,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "IsLsj",
+                                      "name": "Ícone",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "circle-alert",
+                                      "library": "lucide",
+                                      "fill": "$rc-pending"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "Wg4Yf",
+                                      "name": "Rótulo",
+                                      "fill": "$rc-text",
+                                      "content": "Você apontou diferença",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "qoHOy",
+                                  "name": "Mudar decisão · alvo 48",
+                                  "height": 48,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "jEbWH",
+                                      "name": "Ação",
+                                      "fill": "$rc-action",
+                                      "content": "Mudar decisão",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZTy9X",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dumWr",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Conferência/Identificado · com diferença",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "MEPdP",
+                  "name": "Exemplar · Conferência/Não localizado",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "j9un42",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "tNiWJ",
+                          "name": "Conferência/Não localizado",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "layout": "vertical",
+                          "gap": 6,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SC1bR",
+                              "name": "Campo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Autorização assinada",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "z7v4f0",
+                              "name": "Valor",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Não localizado nesta leitura",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "GPOPB",
+                              "name": "Situação",
+                              "gap": 6,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "ElxUE",
+                                  "name": "Ícone",
+                                  "width": 16,
+                                  "height": 16,
+                                  "icon": "circle-dashed",
+                                  "library": "lucide",
+                                  "fill": "$rc-text-muted"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "JWw1c",
+                                  "name": "Rótulo",
+                                  "fill": "$rc-text",
+                                  "content": "Não localizado",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "fgSYt",
+                              "name": "Orientação",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Esta informação não consta no documento lido. Se ela for necessária, peça um documento corrigido à unidade emissora. Não é possível preencher aqui.",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "GPt9r",
+                              "type": "ref",
+                              "ref": "js3yc",
+                              "name": "Esta informação está no documento",
+                              "width": "fill_container",
+                              "descendants": {
+                                "A5FRi": {
+                                  "content": "Esta informação está no documento"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Mus0L",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nww5k",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Conferência/Não localizado",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mdBJI",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Só cabe indicar que a informação existe. Sem campo de digitação.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "V21s6p",
+                  "name": "Exemplar · Conferência/Não localizado · indicado",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cKvJ5",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Zgit7",
+                          "name": "Conferência/Não localizado · indicado",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "layout": "vertical",
+                          "gap": 6,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "VT7F0",
+                              "name": "Campo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Autorização assinada",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "f7GK4O",
+                              "name": "Valor",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Não localizado nesta leitura",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "oIYgI",
+                              "name": "Situação",
+                              "gap": 6,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "i0dCzB",
+                                  "name": "Ícone",
+                                  "width": 16,
+                                  "height": 16,
+                                  "icon": "circle-dashed",
+                                  "library": "lucide",
+                                  "fill": "$rc-text-muted"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "yO6ne",
+                                  "name": "Rótulo",
+                                  "fill": "$rc-text",
+                                  "content": "Não localizado",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "xMvTD",
+                              "name": "Decisão registrada",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "justifyContent": "space_between",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "Hfub6",
+                                  "name": "Situação",
+                                  "gap": 6,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "dQXyg",
+                                      "name": "Ícone",
+                                      "width": 16,
+                                      "height": 16,
+                                      "icon": "circle-alert",
+                                      "library": "lucide",
+                                      "fill": "$rc-pending"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "ytHzk",
+                                      "name": "Rótulo",
+                                      "fill": "$rc-text",
+                                      "content": "Você indicou que está no documento",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "q8Nll2",
+                                  "name": "Mudar decisão · alvo 48",
+                                  "height": 48,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "LY36D",
+                                      "name": "Ação",
+                                      "fill": "$rc-action",
+                                      "content": "Mudar decisão",
+                                      "lineHeight": 1.4,
+                                      "fontFamily": "$rc-font-body",
+                                      "fontSize": "$rc-size-meta",
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ss2YV",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "HHitm",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Conferência/Não localizado · indicado",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GqKuT",
+              "name": "Linha do mostruário",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "OMTz0",
+                  "name": "Exemplar · Conferência/Ilegível",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "UDyQX",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "WaUJ6",
+                          "name": "Conferência/Ilegível",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "layout": "vertical",
+                          "gap": 6,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "IJ7Vt",
+                              "name": "Campo",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Data de nascimento",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "text",
+                              "id": "hPqFv",
+                              "name": "Valor",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Ilegível nesta leitura",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "IysuO",
+                              "name": "Situação",
+                              "gap": 6,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "S40A5H",
+                                  "name": "Ícone",
+                                  "width": 16,
+                                  "height": 16,
+                                  "icon": "eye-off",
+                                  "library": "lucide",
+                                  "fill": "$rc-pending"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "MlwCk",
+                                  "name": "Rótulo",
+                                  "fill": "$rc-text",
+                                  "content": "Ilegível",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "C55Yf",
+                              "name": "Orientação",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Não foi possível confirmar este campo. Envie uma foto mais nítida do documento.",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "NkKZl",
+                              "type": "ref",
+                              "ref": "j97Pe",
+                              "name": "Substituir arquivo",
+                              "width": "fit_content",
+                              "descendants": {
+                                "yjg4m": {
+                                  "content": "Substituir arquivo"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "oKbR0",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "HZTyo",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Conferência/Ilegível",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "gzu1D",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Sem decisão: a saída é enviar um arquivo mais nítido.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "td5Cg",
+                  "name": "Exemplar · Conferência/Documento não lido",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "XFxeE",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "CDVgc",
+                          "name": "Conferência/Documento não lido",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "fill": "$rc-surface",
+                          "cornerRadius": "$rc-radius-task",
+                          "layout": "vertical",
+                          "gap": 10,
+                          "padding": "$rc-surface-padding",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "KspLg",
+                              "name": "Título",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "jYp8j",
+                                  "name": "Ícone",
+                                  "height": 22,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "n34Y53",
+                                      "name": "file-x",
+                                      "width": 20,
+                                      "height": 20,
+                                      "icon": "file-x",
+                                      "library": "lucide",
+                                      "fill": "$rc-pending"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "FO0bw",
+                                  "name": "Mensagem",
+                                  "fill": "$rc-text",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Não foi possível ler este arquivo",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": 16,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "wOmUs",
+                              "name": "Motivo",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Não foi possível extrair informações deste arquivo.",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "J4xbpc",
+                              "name": "Orientação",
+                              "fill": "$rc-text-muted",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Envie um arquivo mais nítido.",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "Rik4t",
+                              "type": "ref",
+                              "ref": "DpTaD",
+                              "name": "Substituir arquivo",
+                              "width": "fill_container",
+                              "descendants": {
+                                "CS3YG": {
+                                  "icon": "refresh-cw"
+                                },
+                                "bD8Xp": {
+                                  "content": "Substituir arquivo"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ZoUQ2",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "JmFMe",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Conferência/Documento não lido",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "q23dlB",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Arquivo protegido ou leitura vazia: motivo e orientação vêm do backend.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "gqJIu",
+                  "name": "Exemplar · Critério/Linha",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "zI3cj",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "M3pWj",
+                          "name": "Critério/Linha",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "stroke": "$rc-divider",
+                          "strokeWidth": {
+                            "bottom": 1
+                          },
+                          "gap": 12,
+                          "padding": [
+                            14,
+                            0
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "fC7Jf",
+                              "name": "Critério",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "EqxjL",
+                                  "name": "Nome",
+                                  "fill": "$rc-text",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Motivo do encaminhamento informado",
+                                  "lineHeight": 1.5,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": 16,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Sl3xl",
+                                  "name": "Código",
+                                  "fill": "$rc-text-muted",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "RC-R04",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-caption",
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "G9QBc",
+                              "type": "ref",
+                              "ref": "EltLN",
+                              "name": "Resultado"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "mE4xT",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "AWnET",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Critério/Linha",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "zbdT0",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Resultado por critério na tela de resultado e no administrador.",
                           "lineHeight": 1.4,
                           "fontFamily": "$rc-font-body",
                           "fontSize": 14,
@@ -9773,7 +11667,7 @@
                                   "fill": "$rc-text",
                                   "textGrowth": "fixed-width",
                                   "width": "fill_container",
-                                  "content": "O rascunho PED-0001 e os 2 documentos anexados serão apagados. Isso não pode ser desfeito.",
+                                  "content": "O rascunho Pedido 5 e os 2 documentos anexados serão apagados. Isso não pode ser desfeito.",
                                   "lineHeight": 1.5,
                                   "fontFamily": "$rc-font-body",
                                   "fontSize": 16,
@@ -9864,6 +11758,153 @@
                   "name": "Espaço",
                   "width": 342,
                   "height": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gnCZ1",
+              "name": "Linha do mostruário",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "R2ohez",
+                  "name": "Exemplar · Aviso/Resultado não vigente",
+                  "width": 342,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Zk6no",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "vJ9Db",
+                          "name": "Aviso/Resultado não vigente",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "fill": "$rc-info-bg",
+                          "cornerRadius": "$rc-radius-task",
+                          "layout": "vertical",
+                          "gap": 12,
+                          "padding": "$rc-surface-padding",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "eZVg4",
+                              "name": "Título",
+                              "width": "fill_container",
+                              "gap": 10,
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "Hrhok",
+                                  "name": "Ícone",
+                                  "height": 22,
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "icon",
+                                      "id": "WT8hK",
+                                      "name": "refresh-cw",
+                                      "width": 20,
+                                      "height": 20,
+                                      "icon": "refresh-cw",
+                                      "library": "lucide",
+                                      "fill": "$rc-text"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "p1Hc9v",
+                                  "name": "Mensagem",
+                                  "fill": "$rc-text",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Os documentos mudaram. O resultado anterior não vale mais.",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": 16,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "YT3Wp",
+                              "name": "Explicação",
+                              "fill": "$rc-text",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Leia os documentos de novo, confira a leitura e verifique os critérios para ter um resultado atualizado.",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": 16,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "id": "w4IAxj",
+                              "type": "ref",
+                              "ref": "DpTaD",
+                              "name": "Ler documentos de novo",
+                              "width": "fill_container",
+                              "descendants": {
+                                "CS3YG": {
+                                  "icon": "refresh-cw"
+                                },
+                                "bD8Xp": {
+                                  "content": "Ler documentos de novo"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Pzdkw",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Ch9c6",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Aviso/Resultado não vigente",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "CvBGY",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Depois de trocar ou remover documento: o resultado anterior não vale mais.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -10979,7 +13020,7 @@
                 {
                   "type": "frame",
                   "id": "UbDjG",
-                  "name": "Estado/Em conferência",
+                  "name": "Estado/Em verificação",
                   "width": "fill_container",
                   "stroke": "$rc-divider",
                   "strokeWidth": {
@@ -11001,7 +13042,7 @@
                         {
                           "type": "frame",
                           "id": "BscFB",
-                          "name": "Estado/Em conferência",
+                          "name": "Estado/Em verificação",
                           "reusable": true,
                           "gap": 6,
                           "alignItems": "center",
@@ -11021,7 +13062,7 @@
                               "id": "yVjmj",
                               "name": "Rótulo",
                               "fill": "$rc-text",
-                              "content": "Em conferência",
+                              "content": "Em verificação",
                               "lineHeight": 1.4,
                               "fontFamily": "$rc-font-body",
                               "fontSize": "$rc-size-meta",
@@ -11051,7 +13092,7 @@
                       "fill": "$rc-text",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "A leitura simulada ainda não terminou. Isso não é um resultado.",
+                      "content": "A verificação ainda não terminou. Isso não é um resultado.",
                       "lineHeight": 1.45,
                       "fontFamily": "$rc-font-body",
                       "fontSize": 15,
@@ -11363,7 +13404,7 @@
                 {
                   "type": "frame",
                   "id": "Qns4p",
-                  "name": "Estado/Falha na conferência",
+                  "name": "Estado/Falha na verificação",
                   "width": "fill_container",
                   "stroke": "$rc-divider",
                   "strokeWidth": {
@@ -11385,7 +13426,7 @@
                         {
                           "type": "frame",
                           "id": "y0gquj",
-                          "name": "Estado/Falha na conferência",
+                          "name": "Estado/Falha na verificação",
                           "reusable": true,
                           "gap": 6,
                           "alignItems": "center",
@@ -11405,7 +13446,7 @@
                               "id": "o9CI3S",
                               "name": "Rótulo",
                               "fill": "$rc-text",
-                              "content": "Falha na conferência",
+                              "content": "Falha na verificação",
                               "lineHeight": 1.4,
                               "fontFamily": "$rc-font-body",
                               "fontSize": "$rc-size-meta",
@@ -12435,6 +14476,271 @@
                       "textGrowth": "fixed-width",
                       "width": 190,
                       "content": "Ninguém",
+                      "lineHeight": 1.45,
+                      "fontFamily": "$rc-font-body",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qSKe1",
+          "name": "04 · Comparação entre resultados",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "WooW7",
+              "name": "Cabeçalho da seção",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "K7Mexm",
+                  "name": "Título",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "04 · Comparação entre resultados",
+                  "lineHeight": 1.2,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": 30,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "EqYdT",
+                  "name": "Descrição",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 760,
+                  "content": "Só aparece depois de um novo resultado. Antes disso, nenhuma pendência é marcada como resolvida.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "W9KJoG",
+              "name": "Tabela",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "CC2aw",
+                  "name": "Comparação/Resolvida",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 24,
+                  "padding": [
+                    18,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "wPzQ9",
+                      "name": "Componente",
+                      "width": 260,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "OHYCp",
+                          "name": "Comparação/Resolvida",
+                          "reusable": true,
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "Qamdp",
+                              "name": "Ícone",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "circle-check",
+                              "library": "lucide",
+                              "fill": "$rc-success"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ugkN5",
+                              "name": "Rótulo",
+                              "fill": "$rc-text",
+                              "content": "Resolvida",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "700"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "QNtVx",
+                      "name": "Significado",
+                      "fill": "$rc-text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Estava pendente ou não verificável e agora atende.",
+                      "lineHeight": 1.45,
+                      "fontFamily": "$rc-font-body",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QUblz",
+                  "name": "Comparação/Continua",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 24,
+                  "padding": [
+                    18,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "to64b",
+                      "name": "Componente",
+                      "width": 260,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "V6oIId",
+                          "name": "Comparação/Continua",
+                          "reusable": true,
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "DdrBr",
+                              "name": "Ícone",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "circle-alert",
+                              "library": "lucide",
+                              "fill": "$rc-pending"
+                            },
+                            {
+                              "type": "text",
+                              "id": "GBz84",
+                              "name": "Rótulo",
+                              "fill": "$rc-text",
+                              "content": "Continua",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "700"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "f0jj3",
+                      "name": "Significado",
+                      "fill": "$rc-text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Segue pendente ou não verificável na nova verificação.",
+                      "lineHeight": 1.45,
+                      "fontFamily": "$rc-font-body",
+                      "fontSize": 15,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "IOM8k",
+                  "name": "Comparação/Nova",
+                  "width": "fill_container",
+                  "stroke": "$rc-divider",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "gap": 24,
+                  "padding": [
+                    18,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "T4vi6",
+                      "name": "Componente",
+                      "width": 260,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "WNWLb",
+                          "name": "Comparação/Nova",
+                          "reusable": true,
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "GxBnB",
+                              "name": "Ícone",
+                              "width": 16,
+                              "height": 16,
+                              "icon": "circle-plus",
+                              "library": "lucide",
+                              "fill": "$rc-pending"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ePY4F",
+                              "name": "Rótulo",
+                              "fill": "$rc-text",
+                              "content": "Nova",
+                              "lineHeight": 1.4,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "700"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "erVPM",
+                      "name": "Significado",
+                      "fill": "$rc-text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Não existia na verificação anterior.",
                       "lineHeight": 1.45,
                       "fontFamily": "$rc-font-body",
                       "fontSize": 15,
@@ -17566,6 +19872,396 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "OJbNN",
+      "x": 5200,
+      "y": 0,
+      "name": "Capa · RC-36 · Entrada e pedidos",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-surface",
+      "cornerRadius": 24,
+      "layout": "vertical",
+      "gap": 16,
+      "padding": 32,
+      "children": [
+        {
+          "type": "text",
+          "id": "bVOdg",
+          "name": "Identificação",
+          "fill": "$rc-action",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "REGULACHECK · FEATURE 014 · RC-36",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "800",
+          "letterSpacing": 1
+        },
+        {
+          "type": "text",
+          "id": "R2pZvk",
+          "name": "Título",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Entrada e pedidos",
+          "lineHeight": 1.15,
+          "fontFamily": "$rc-font-heading",
+          "fontSize": 32,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "KkqyP",
+          "name": "Prioridade",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "P1 · 25 quadros",
+          "lineHeight": 1.5,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 16,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "G8ViOv",
+          "name": "Telas",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "E1.1 Login\nE1.2 Meus pedidos\nE1.3 Pedido\nE1.4 Sessão expirada\nE1.5 Sem permissão",
+          "lineHeight": 1.6,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 15,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "hcoI4",
+          "name": "Respiro",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "text",
+          "id": "e0p5m",
+          "name": "Fonte",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Inventário: specs/014-fluxo-telas-app/contracts/inventario-quadros.md. Quadros 390 × 844 à direita, na ordem do inventário; nota de operação abaixo de cada quadro.",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "IWWRJ",
+      "x": 5200,
+      "y": 1200,
+      "name": "Capa · RC-37 · Envio de documentos",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-surface",
+      "cornerRadius": 24,
+      "layout": "vertical",
+      "gap": 16,
+      "padding": 32,
+      "children": [
+        {
+          "type": "text",
+          "id": "PyY51",
+          "name": "Identificação",
+          "fill": "$rc-action",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "REGULACHECK · FEATURE 014 · RC-37",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "800",
+          "letterSpacing": 1
+        },
+        {
+          "type": "text",
+          "id": "RLDiy",
+          "name": "Título",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Envio de documentos",
+          "lineHeight": 1.15,
+          "fontFamily": "$rc-font-heading",
+          "fontSize": 32,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "YY3Rh",
+          "name": "Prioridade",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "P1 · 28 quadros",
+          "lineHeight": 1.5,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 16,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "tqAhV",
+          "name": "Telas",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "E2.1 Novo pedido\nE2.2 Documentos\nE2.7 Anexar\nE2.3 Recusas\nE2.4 Substituir\nE2.5 Remover\nE2.6 Excluir rascunho",
+          "lineHeight": 1.6,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 15,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "EoOMx",
+          "name": "Respiro",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "text",
+          "id": "C6y5U",
+          "name": "Fonte",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Inventário: specs/014-fluxo-telas-app/contracts/inventario-quadros.md. Quadros 390 × 844 à direita, na ordem do inventário; nota de operação abaixo de cada quadro.",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "TPTR3",
+      "x": 5200,
+      "y": 2400,
+      "name": "Capa · RC-38 · Leitura, conferência e resultado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-surface",
+      "cornerRadius": 24,
+      "layout": "vertical",
+      "gap": 16,
+      "padding": 32,
+      "children": [
+        {
+          "type": "text",
+          "id": "G7I7Y6",
+          "name": "Identificação",
+          "fill": "$rc-action",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "REGULACHECK · FEATURE 014 · RC-38",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "800",
+          "letterSpacing": 1
+        },
+        {
+          "type": "text",
+          "id": "i3ki0",
+          "name": "Título",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Leitura, conferência e resultado",
+          "lineHeight": 1.15,
+          "fontFamily": "$rc-font-heading",
+          "fontSize": 32,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "zAveu",
+          "name": "Prioridade",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "P1 22 · P2 4 quadros",
+          "lineHeight": 1.5,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 16,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "AH4sF",
+          "name": "Telas",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "E3.1 Leitura simulada\nE3.2 Conferência\nE3.8 Verificar critérios\nE3.3 Resultado\nE3.4 Pendência\nE3.5 Correção\nE3.7 Concluir simulação\nE3.6 Comprovante",
+          "lineHeight": 1.6,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 15,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "hxeoW",
+          "name": "Respiro",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "text",
+          "id": "CHctr",
+          "name": "Fonte",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Inventário: specs/014-fluxo-telas-app/contracts/inventario-quadros.md. Quadros 390 × 844 à direita, na ordem do inventário; nota de operação abaixo de cada quadro.",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "YCL6d",
+      "x": 5200,
+      "y": 3600,
+      "name": "Capa · RC-39 · Sensores, administrador e transversais",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-surface",
+      "cornerRadius": 24,
+      "layout": "vertical",
+      "gap": 16,
+      "padding": 32,
+      "children": [
+        {
+          "type": "text",
+          "id": "em2t5",
+          "name": "Identificação",
+          "fill": "$rc-action",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "REGULACHECK · FEATURE 014 · RC-39",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "800",
+          "letterSpacing": 1
+        },
+        {
+          "type": "text",
+          "id": "L5KiuB",
+          "name": "Título",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Sensores, administrador e transversais",
+          "lineHeight": 1.15,
+          "fontFamily": "$rc-font-heading",
+          "fontSize": 32,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "E4tibF",
+          "name": "Prioridade",
+          "fill": "$rc-text",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "P3 · 15 quadros",
+          "lineHeight": 1.5,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 16,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "fEm7D",
+          "name": "Telas",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "E4.1 Condições da captura\nE4.2 Protocolo e indicadores\nE4.3 Conexão ruim\nE4.4 Acessibilidade",
+          "lineHeight": 1.6,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 15,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "dYAwK",
+          "name": "Respiro",
+          "width": "fill_container",
+          "height": "fill_container"
+        },
+        {
+          "type": "text",
+          "id": "rhPUg",
+          "name": "Fonte",
+          "fill": "$rc-text-muted",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Inventário: specs/014-fluxo-telas-app/contracts/inventario-quadros.md. Quadros 390 × 844 à direita, na ordem do inventário; nota de operação abaixo de cada quadro.",
+          "lineHeight": 1.4,
+          "fontFamily": "$rc-font-body",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "yFtPw",
+      "x": 8960,
+      "y": 924,
+      "name": "Nota · E1.2 Meus pedidos — Sucesso · v1.0",
+      "width": 390,
+      "height": 150,
+      "content": "E1.2 Meus pedidos — Sucesso\nOperações: GET /auth/sessao, GET /solicitacoes ✅\nFR-022–FR-024 · FR-012 (destaque)\nDados: estrutura da carga (Pedidos 4, 2 e 1); textos exemplares"
+    },
+    {
+      "type": "note",
+      "id": "Zr6un",
+      "x": 8490,
+      "y": 2064,
+      "name": "Nota · E2.2 Documentos — Com arquivos · v1.0",
+      "width": 390,
+      "height": 150,
+      "content": "E2.2 Documentos — Com arquivos\nOperações: GET …/documentos, POST …/extracoes ✅\nFR-030, FR-031\nDados: Pedido 5 (só no design); arquivos exemplares"
+    },
+    {
+      "type": "note",
+      "id": "VW2Fy",
+      "x": 14130,
+      "y": 3264,
+      "name": "Nota · E3.4 Pendência — Unidade emissora · v1.0",
+      "width": 390,
+      "height": 150,
+      "content": "E3.4 Detalhe da pendência — Unidade emissora\nOperações: GET …/analises † · GET …/documentos/{docId} ✅ · PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-13/RC-15)\nDados: Pedido 2 da carga (R04 pendente); textos exemplares"
     }
   ],
   "variables": {

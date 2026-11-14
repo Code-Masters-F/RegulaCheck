@@ -1,5 +1,7 @@
 # Contrato de design: inventário de telas, estados e dependências da API
 
+> **Substituído em 13/11/2026.** O inventário e o conteúdo por tela abaixo foram escritos antes das specs 008–013 e divergem do backend atual. A fonte vigente é [specs/014-fluxo-telas-app/contracts/inventario-quadros.md](../../014-fluxo-telas-app/contracts/inventario-quadros.md) (94 quadros) com [telas-operacoes.md](../../014-fluxo-telas-app/contracts/telas-operacoes.md). O épico 007 continua dono do processo de design (pen.dev, revisão, aprovação). Este arquivo fica como histórico.
+
 Cada linha é um **quadro** (ou um conjunto de quadros) a ser desenhado. A coluna "API" é só referência para a implementação futura: **nenhuma tela chama a API**. Rotas marcadas *planejada* ainda não existem no backend; a tela segue o contrato proposto em `CONTRATO_API.md`. Convenção de nomes: `<ID> <Tela> — <Estado>` (ver `data-model.md`).
 
 ## F — Fundamentos (`00-fundamentos.pen`)

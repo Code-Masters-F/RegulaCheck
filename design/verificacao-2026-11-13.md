@@ -59,3 +59,21 @@ Escopo: avaliação das três telas novas, refação de F1–F4 com base nelas e
 - Prévias: `design/previas/*.png` (2×) e `design/previas/fundamentos/*.png` (1×). Documento salvo pelo MCP.
 
 **Não verificado:** fonte ampliada, TalkBack, foco por teclado, insets, interação, compreensão com pacientes, demais estados do épico. Nenhum teste Java/Android executado (sem mudança de código).
+
+## Feature 014 — Fase 0 (T001–T025), 13/11/2026
+
+Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias RC-36 a RC-39 (`specs/014-fluxo-telas-app/tasks.md`).
+
+**Executado**
+- Commit `9f8a6c6` enviado para `origin/codex/007-design-system-exploracao` antes da fase; capturas de terceiros em `design/referencias/*.webp` mantidas fora do repositório público.
+- Capas das quatro faixas (x=5200; y=0, 1200, 2400, 3600) e exemplos movidos para suas posições do inventário (`H0BJi` x=8960, `CvQRm` x=8490/y=1200, `XCNVm` x=14130/y=2400), com nota de operação abaixo de cada exemplo.
+- Componentes (A1–A13): F4 com "Em verificação" e "Falha na verificação" e nova seção `Comparação/*`; "Sair" no `Cabeçalho/Marca`; `Pedido/Linha` e `Pedido/Destaque` com número e data numa linha (linha com seta); `Documento/Linha` com nome do arquivo e "Mais opções", sem ícone decorativo; novos `Campo/Senha`, `Folha/Escolha`, `Pedido/Próximo passo`, `Linha/Navegação`, `Dado/Linha`, `Botão/Decisão`, `Conferência/*` (7), `Critério/Linha`, `Aviso/Resultado não vigente`. `Extração/*` removidos (sem instâncias). Total: 71 componentes v1.0; 0 instâncias `Legado/*` nos quadros v1.0.
+- Varredura de valores não imersivos em F1–F4 e capas: 9 textos trocados por exemplares (`ana.moreira@email.test`, "Santa Aurora (município fictício)", "Pedido N"); nenhum resíduo.
+- Exemplos (X1–X3): E1.2 com Pedidos 4 (destaque), 2 e 1 e "Olá, Ana", desenhada com rolagem (904 de altura, linha "dobra · 844"); E2.2 do Pedido 5 com arquivos exemplares e ação principal "Ler documentos"; E3.4 do Pedido 2 com RC-R04, origem e "Abrir documento".
+- Documentos (X4–X7): `mobile/design/dados-ficticios.md` e `textos.md` reescritos; nota de substituição em `specs/007-epico-telas-pendev/contracts/telas.md`; `design/README.md`, `mobile/design/INDEX.md` e `design-system.md` atualizados.
+
+**Verificado**: consulta de limites com instâncias resolvidas — 0 problemas em F1–F4, capas e nos três exemplos (desconsiderados a saudação oculta de `Tela/Título`, o `Respiro flexível` com altura zero na tela com rolagem e a linha absoluta da dobra); screenshots revisadas; prévias exportadas (`design/previas/*.png` 2×, `design/previas/fundamentos/*.png` 1×); documento salvo pelo MCP.
+
+**Ajustes durante a execução**: nome do arquivo passou a 13 e saiu o ícone decorativo para caber numa linha; botões de decisão usam a pergunta "Confere com o seu documento?" com "Está correto" / "Está diferente" para caberem lado a lado (spec FR-039 atualizada); E1.2 virou tela com rolagem porque os três pedidos da carga não cabem em 844.
+
+**Não verificado**: fonte ampliada, TalkBack, interação real; nenhum teste Java/Android (sem mudança de código).

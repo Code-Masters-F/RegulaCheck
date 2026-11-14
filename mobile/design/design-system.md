@@ -80,13 +80,16 @@ Consolidação feita nas telas: títulos 18/20/21/22 → 18 ou 22; corpo 17/18 �
 | Grupo | Componentes |
 |---|---|
 | Ações | `Botão/Primário`, `/Pressionado`, `/Carregando`, `/Desabilitado`, `/Contorno`, `/Texto`, `/Adicionar`, `/Destrutivo` (contorno vermelho), `/Voltar` (48 × 48); anel de foco como composição |
-| Campos | `Campo/Padrão`, `/Foco`, `/Erro`, `/Desabilitado`, `Seletor/Padrão`, `Opção/Selecionada`, `Opção/Não selecionada` |
-| Estrutura | `Cabeçalho/Marca`, `Cabeçalho/Voltar` (selo SIMULADO oculto por padrão), `Tela/Título` (saudação oculta por padrão) |
-| Percurso | `Pedido/Destaque`, `Pedido/Linha`, `Documento/Linha`, `Pendência/Linha`, `Pendência/Orientação`, `Extração/Identificado`, `/Não localizado`, `/Ilegível` |
+| Campos | `Campo/Padrão`, `/Foco`, `/Erro`, `/Desabilitado`, `Campo/Senha`, `Seletor/Padrão`, `Opção/Selecionada`, `Opção/Não selecionada`, `Folha/Escolha` (folha inferior sobre `rc-scrim`) |
+| Estrutura | `Cabeçalho/Marca` (com "Sair"), `Cabeçalho/Voltar` (selo SIMULADO oculto por padrão), `Tela/Título` (saudação oculta por padrão), `Pedido/Próximo passo`, `Linha/Navegação`, `Dado/Linha` |
+| Percurso | `Pedido/Destaque`, `Pedido/Linha` (número e data numa linha; seta, a linha toda abre), `Documento/Linha` (tipo, nome do arquivo, formato, "Abrir" e "Mais opções"), `Pendência/Linha`, `Pendência/Orientação`, `Critério/Linha` |
+| Conferência | `Botão/Decisão`; `Conferência/Identificado` (sem decisão · confirmado · com diferença), `Conferência/Não localizado` (· indicado), `Conferência/Ilegível`, `Conferência/Documento não lido`. Pergunta "Confere com o seu documento?" com "Está correto" / "Está diferente"; nunca campo de digitação |
 | Sensores e indicadores | `Sensor/Na faixa`, `/Fora da faixa`, `/Indisponível`, `Indicador/Total` |
-| Retorno | `Retorno/Erro`, `Retorno/Sem conexão`, `Carregando/Esqueleto`, `Vazio/Pedidos`, `Diálogo/Confirmação` |
+| Retorno | `Retorno/Erro`, `Retorno/Sem conexão`, `Aviso/Resultado não vigente`, `Carregando/Esqueleto`, `Vazio/Pedidos`, `Diálogo/Confirmação` |
 | Confiança (F3) | `Aviso/Rodapé`, `Aviso/Entrada`, `Selo/Simulado`, `Resumo/Simulado`, `Comprovante/Simulado` |
-| Estados (F4) | `Estado/*` (7 do pedido), `Arquivo/*` (aguardando, enviando, enviado, não enviado), `Critério/*` (atende, pendente, não verificável, não se aplica) |
+| Estados (F4) | `Estado/*` (7 do pedido; `PROCESSANDO` = "Em verificação", `FALHA_ANALISE` = "Falha na verificação"), `Arquivo/*` (enviando, enviado, não enviado; "aguardando" não é usado), `Critério/*` (atende, pendente, não verificável, não se aplica), `Comparação/*` (resolvida, continua, nova) |
+
+"Conferência" nomeia só a etapa em que a paciente confere a leitura; a análise dos critérios é a "verificação". Os componentes `Extração/*` da primeira versão foram removidos em 13/11, substituídos por `Conferência/*`.
 
 Estados: ícone 16 na cor do significado + rótulo 14/700 em `rc-text`. Rótulos na linguagem da paciente; o código da API (`COM_PENDENCIAS` etc.) aparece só na documentação. Mensagens e próxima ação por estado estão em F4 e em `textos.md`.
 
@@ -98,7 +101,9 @@ Estados: ícone 16 na cor do significado + rótulo 14/700 em `rc-text`. Rótulos
 - Exclusão sempre por `Diálogo/Confirmação`, com “Cancelar” em destaque e consequência nomeada.
 - Documento clínico não é editável; ausência de informação clínica é resolvida pela unidade emissora. “Não localizado” não prova ausência.
 - Sensores: valores demonstrativos (200–1000 lux; 15–40 cm), idade da leitura visível, indisponibilidade nunca bloqueia envio.
-- Sem barra de navegação inferior no percurso da paciente (linear, volta pelo cabeçalho). **Pendente de confirmação do grupo**, pois T006 previa o componente.
+- Sem barra de navegação inferior no percurso da paciente (linear, volta pelo cabeçalho), decisão registrada na feature 014 (FR-011).
+- Telas de lista mais altas que 844 são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar.
+- Exemplos nos quadros: estrutura do backend, textos realistas em português correto (`mobile/design/dados-ficticios.md`); nunca "Exemplo", "sintético" ou texto sem acento.
 
 ## Faça e evite
 

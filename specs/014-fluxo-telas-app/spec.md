@@ -97,7 +97,7 @@ A paciente pede a leitura simulada dos documentos e confere, documento por docum
 **Acceptance Scenarios**:
 
 1. **Given** um pedido com documentos, **When** a paciente toca em "Ler documentos", **Then** vê o estado de leitura com o selo SIMULADO e, ao concluir, a conferência do primeiro documento.
-2. **Given** um campo identificado, **When** a paciente o vê, **Then** vê valor, origem (página e trecho, quando houver) e pode escolher "Está correto" ou "Está diferente do documento".
+2. **Given** um campo identificado, **When** a paciente o vê, **Then** vê valor, origem (página e trecho, quando houver) e pode escolher a pergunta "Confere com o seu documento?" com "Está correto" ou "Está diferente".
 3. **Given** um campo não localizado, **When** a paciente o vê, **Then** pode apenas indicar "Esta informação está no documento" e lê a orientação do sistema; não há como preencher o valor.
 4. **Given** um campo ilegível ou um documento não lido, **When** a paciente o vê, **Then** não há decisão possível e a tela oferece substituir o arquivo, com a orientação fornecida.
 5. **Given** decisões em um documento, **When** a paciente toca em "Salvar e continuar", **Then** todas as decisões daquele documento são salvas juntas ou nenhuma é, e a tela avança para o próximo documento.
@@ -277,7 +277,7 @@ O administrador entra e vê o protocolo ativo com suas regras e totais agregados
 
 **E3.2 Conferência da leitura (um documento por vez)**
 - **FR-038**: Mostrar "Documento {i} de {n}", tipo e nome do arquivo, o aviso de leitura simulada e o resumo da conferência (campos não verificados, campos sem decisão, divergências). Os seis campos lidos aparecem com rótulos legíveis: Tipo do documento, Nome, Data de nascimento, Motivo do encaminhamento, Data de emissão, Autorização assinada; primeiro os identificados e ilegíveis, depois os não localizados.
-- **FR-039**: Por situação do campo, só as decisões que o backend aceita: identificado → "Está correto" ou "Está diferente do documento"; não localizado → apenas "Esta informação está no documento"; ilegível → nenhuma decisão, com a orientação e "Substituir arquivo". Documento não lido (protegido ou leitura vazia) → motivo, orientação e "Substituir arquivo". Decidir de novo troca a decisão anterior.
+- **FR-039**: Por situação do campo, só as decisões que o backend aceita: identificado → a pergunta "Confere com o seu documento?" com "Está correto" ou "Está diferente"; não localizado → apenas "Esta informação está no documento"; ilegível → nenhuma decisão, com a orientação e "Substituir arquivo". Documento não lido (protegido ou leitura vazia) → motivo, orientação e "Substituir arquivo". Decidir de novo troca a decisão anterior.
 - **FR-040**: Ação principal "Salvar e continuar" por documento; no último, "Concluir conferência", que leva ao pedido (E1.3). "Verificar critérios" abre o diálogo **E3.8** (tela nova): na primeira verificação de um rascunho, avisa "Depois de verificar, você não poderá anexar novos documentos, só substituir ou remover os enviados."; se houver campos identificados sem decisão, informa a quantidade e que eles contarão como não verificados, sem bloquear.
 - **FR-041**: Leitura desatualizada ou pedido concluído: conferência só consulta, com a mensagem correspondente.
 

@@ -1,6 +1,7 @@
 # Índice das telas
 
-> Inventário dos 73 quadros do épico (fonte: `specs/007-epico-telas-pendev/contracts/telas.md`). **Atualização de 13/11/2026:** três exemplos da identidade aprovada estão editáveis em `design/RegulaCheck.pen`, com consulta pelo MCP e revisão visual. Isso não conclui conjuntos inteiros de estados. Fonte de continuidade e IDs: `design/README.md`.
+> **Fonte vigente desde 13/11/2026:** [specs/014-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/014-fluxo-telas-app/contracts/inventario-quadros.md) — 94 quadros em quatro faixas por história no `design/RegulaCheck.pen` (capas RC-36 a RC-39 em x=5200), alinhados às rotas reais da API. As seções abaixo preservam o inventário anterior de 73 quadros como histórico; a T059 da feature 014 substitui esta lista.
+> Inventário anterior (fonte histórica: `specs/007-epico-telas-pendev/contracts/telas.md`). **Atualização de 13/11/2026:** três exemplos da identidade aprovada estão editáveis em `design/RegulaCheck.pen`, com consulta pelo MCP e revisão visual. Isso não conclui conjuntos inteiros de estados. Fonte de continuidade e IDs: `design/README.md`.
 > Nenhuma tela chama a API: a coluna "API" é só referência para o app futuro. Rotas *planejada* ainda não existem no backend; a tela segue o contrato proposto em `CONTRATO_API.md`.
 > Textos de cada quadro: [textos.md](textos.md). Dados: [dados-ficticios.md](dados-ficticios.md). Percursos: [mapa-de-percursos.md](mapa-de-percursos.md).
 

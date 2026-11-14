@@ -48,7 +48,7 @@ Fontes lidas em `origin/main` (merge do PR #13, `0091634`, 13/11/2026): `CONTRAT
 
 ## D8. Decisões possíveis por situação do campo
 
-- **Decision**: identificado → "Está correto" (`CONFIRMADA`) ou "Está diferente do documento" (`DIVERGENTE` + `VALOR_DIFERENTE_DO_DOCUMENTO`); não localizado → só "Esta informação está no documento" (`DIVERGENTE` + `CAMPO_EXISTE_E_NAO_FOI_LIDO`); ilegível → nenhuma; documento não lido → nenhuma, com "Substituir arquivo".
+- **Decision**: identificado → "Está correto" (`CONFIRMADA`) ou "Está diferente", sob a pergunta "Confere com o seu documento?" (`DIVERGENTE` + `VALOR_DIFERENTE_DO_DOCUMENTO`); não localizado → só "Esta informação está no documento" (`DIVERGENTE` + `CAMPO_EXISTE_E_NAO_FOI_LIDO`); ilegível → nenhuma; documento não lido → nenhuma, com "Substituir arquivo".
 - **Rationale**: é exatamente o que o PUT da conferência aceita; o resto é 422 `DECISAO_NAO_APLICAVEL` (RC-11). Oferecer só o aceito evita o erro.
 - **Alternatives considered**: nenhuma; outro conjunto contradiz o contrato.
 
