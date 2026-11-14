@@ -135,3 +135,17 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - O quadro de arquivo `Wo9WQ` (biblioteca anterior a 13/11) não está mais no documento aberto. Esta implementação não o excluiu. O commit `0e4cdb6` retirou cerca de 10 mil linhas do `.pen`; provavelmente foi aí que o quadro saiu. A versão de `efc76d1` pode recuperá-lo. A remoção fica para o grupo confirmar.
 - Faixas RC-36 a RC-39 completas: 94 quadros, como no inventário.
 - Não verificado: fonte ampliada e TalkBack em aparelho, interação e percurso com pessoa (T060).
+
+## Feature 014 — Polimento e auditorias (T057–T061), 14/11/2026
+
+- Commit da RC-39: `2e41703` (enviado).
+- **SC-001 (ações):** os rótulos de ação dos 94 quadros foram extraídos pelo MCP e comparados com `specs/014-fluxo-telas-app/contracts/telas-operacoes.md`. Nenhuma ação ficou sem operação ou navegação. As ações só de navegação ou locais foram acrescentadas ao contrato, na seção "Navegação e ações locais".
+- **SC-002 (dados):** os textos com dados (pedidos, datas, revisões, arquivos, tamanhos, regras, sensores, comprovante) foram comparados com a carga e com `data-model.md` §5. Havia uma divergência: no E3.8, o fundo dizia "8 sem decisão" e o diálogo "3". Foi corrigida para "3" nos dois.
+- **SC-005:** os 7 estados do pedido, as 3 situações de campo e as 4 decisões aparecem em pelo menos um quadro cada.
+- **SC-006:** termos proibidos só em negações ou como dado do documento. Aviso acadêmico em 94 de 94 quadros. SIMULADO em todos os quadros de leitura, conferência, resumo, comprovante e sensores.
+- **SC-007:** 0 instâncias `Legado/*`.
+- **FR-005:** no máximo uma ação principal por quadro. Nos quadros com folha ou diálogo, conta só a camada de cima.
+- Ajuste de componente: o "Voltar" dos diálogos E3.7 e E3.8 passou de `Botão/Destrutivo` restilizado para `Botão/Contorno`. A aparência é a mesma.
+- **Limites:** 0 cortes de conteúdo visível nos 102 quadros. Em 5 quadros (E1.1 serviço indisponível e sem conexão, E1.3 resultado não vigente, E2.2 limite atingido, E2.3 pedido não aceita documentos) o espaçador flexível fica com altura 0, porque o conteúdo ocupa toda a altura útil.
+- **SC-003 e SC-004 (T060): não verificados.** Ainda não houve percurso com uma pessoa que não desenhou.
+- Prévias finais: 98 PNG 2× em `design/previas/` (94 telas e 4 capas) e 4 em `design/previas/fundamentos/`. Documento salvo pelo MCP.

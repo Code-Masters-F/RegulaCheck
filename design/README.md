@@ -1,12 +1,12 @@
 # RegulaCheck — continuidade do design
 
-**Atualizado em 13/11/2026. Leia este arquivo primeiro ao retomar com outro agente.**
+**Atualizado em 14/11/2026. Leia este arquivo primeiro ao retomar com outro agente.**
 
 ## Situação atual
 
-O responsável aprovou **seguir com a identidade dos três exemplos inspirados no Headspace** e levá-la ao pen.dev. A identidade está aprovada como direção. **Em 13/11 os fundamentos e o catálogo foram refeitos como design system v1.0** a partir das três telas (T044–T047); os 73 estados do épico e a usabilidade Android continuam pendentes. O trabalho atual é somente desenho: não há aplicativo Android implementado por este trabalho.
+O responsável aprovou **seguir com a identidade dos três exemplos inspirados no Headspace** e levá-la ao pen.dev. A identidade está aprovada como direção. **Em 13/11 os fundamentos e o catálogo foram refeitos como design system v1.0.** Em 14/11 a feature 014 desenhou **os 94 quadros do fluxo de telas**, alinhados ao backend, em quatro faixas (RC-36 a RC-39). Eles estão listados em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Os quadros foram revisados por quem desenhou, mas ainda não foram aprovados pelo grupo nem percorridos por outra pessoa (T060). O trabalho é somente desenho: não há aplicativo Android implementado por ele.
 
-- Workspace: `RegulaCheck`; branch local: `codex/007-design-system-exploracao`. Há alterações locais sem commit; preservar o trabalho existente.
+- Workspace: `RegulaCheck`; branch: `codex/007-design-system-exploracao`, enviada ao GitHub. Preservar o trabalho existente.
 - Fonte nativa: **`design/RegulaCheck.pen`**. Não ler, buscar ou editar `.pen` como texto; usar exclusivamente o MCP `pencil`.
 - URI do MCP nesta máquina: `file:///C:/Users/Eliseu%20Santos/Desktop/fiap-faculdade/RegulaCheck/design/RegulaCheck.pen`.
 - Rastreabilidade: `specs/007-epico-telas-pendev/`, recorte **T040–T043**. Reutilizar este épico, sem criar outra feature para pequenas alterações.
@@ -65,10 +65,9 @@ Não usar geração/exportação do Refcat que consuma cota sem pedido. Os perma
 ## Retomar com segurança
 
 1. Ler `AGENTS.md`, `CLAUDE.md`, `.specify/memory/constitution.md` e este resumo; preservar alterações locais.
-2. Abrir o `.pen`, consultar os IDs e editar o conjunto `Atual/*`, mantendo a direção aprovada. Conferir os exemplos e textos antes de desenhar outra tela.
-3. Usar o épico 007 explicitamente no processo, sem mudar o ponteiro global da feature 008:
+2. Abrir o `.pen` e consultar os IDs em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Usar só os componentes v1.0 de F2–F4 e manter a direção aprovada. Conferir textos e dados antes de mudar uma tela.
+3. A feature ativa do Spec Kit é a 014 (`.specify/feature.json`). Rodar os scripts a partir da raiz do repositório:
    ```powershell
-   $env:SPECIFY_FEATURE_DIRECTORY = 'specs/007-epico-telas-pendev'
    & ./.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
    ```
    O script preservado do projeto não aceita `-RequireSpec`; não regenerar scripts/backlog por causa disso.
@@ -76,7 +75,20 @@ Não usar geração/exportação do Refcat que consuma cota sem pedido. Os perma
 
 **Limites do produto:** só dados sintéticos; extração/IA simuladas e identificadas. A paciente confere transcrição; a unidade emissora corrige conteúdo clínico. Sem diagnóstico, urgência, autorização, promessa de vaga ou envio real ao SUS.
 
-**Verificado:** quadros F1–F4 v1.0 e três telas revisados visualmente; consulta de limites sem recorte/colapso (exceto a saudação oculta por padrão em `Tela/Título`, esperado); contraste calculado de todos os pares do catálogo; prévias exportadas e documento salvo pelo MCP. **Pendente:** estados completos, protótipo navegável, revisão com pessoas, texto ampliado/TalkBack/teclado/insets no Android e integração com API. Detalhes: [verificação](verificacao-2026-11-13.md).
+**Verificado em 14/11/2026:**
+- F1–F4 v1.0 e os 94 quadros foram revisados visualmente. A consulta de limites não encontrou recorte nem colapso, fora elementos ocultos por padrão.
+- Contraste calculado para todos os pares do catálogo.
+- Auditorias T057/T058: toda ação tem operação ou navegação registrada; dados conferidos com a carga; 7 estados, 3 situações de campo e 4 decisões desenhados; linguagem proibida só aparece em negações; aviso acadêmico em 100% dos quadros; SIMULADO onde é exigido; 0 `Legado/*`; no máximo uma ação principal por quadro.
+- Prévias exportadas e documento salvo pelo MCP.
+
+**Pendente:**
+- Percurso com uma pessoa que não desenhou (T060, SC-003 e SC-004).
+- Aprovação do grupo e protótipo navegável.
+- Fonte ampliada, TalkBack, teclado e insets em aparelho Android.
+- Integração com a API, inclusive as rotas † ainda não implementadas (RC-13, 14, 17, 20, 21 e 22).
+- Confirmação do grupo sobre a saída do quadro de arquivo `Wo9WQ`.
+
+Detalhes: [verificação](verificacao-2026-11-13.md).
 
 Material de apoio: [prompts/conceitos](exploracoes/headspace-direcao-2026-11-13.md), `mobile/design/textos.md`, `dados-ficticios.md`, `mapa-de-percursos.md`, `design-system.md`. Os documentos antigos devem ser lidos com o status de entrega parcial acima.
 

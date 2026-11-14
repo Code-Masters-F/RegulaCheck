@@ -26516,7 +26516,7 @@
                       "content": "Leitura e conferência"
                     },
                     "YScCY": {
-                      "content": "Falta conferir · 8 sem decisão"
+                      "content": "Falta conferir · 3 sem decisão"
                     }
                   }
                 }
@@ -26608,14 +26608,19 @@
               "content": "Verificar critérios"
             },
             "sqmw0": {
-              "stroke": "$rc-action"
-            },
-            "sqmw0/jGFGo": {
-              "enabled": false
-            },
-            "sqmw0/iQQmX": {
-              "content": "Voltar",
-              "fill": "$rc-action"
+              "id": "EO0qR",
+              "type": "ref",
+              "ref": "DpTaD",
+              "name": "Voltar",
+              "width": "fill_container",
+              "descendants": {
+                "CS3YG": {
+                  "enabled": false
+                },
+                "bD8Xp": {
+                  "content": "Voltar"
+                }
+              }
             }
           }
         }
@@ -29409,14 +29414,19 @@
               "content": "Concluir simulação"
             },
             "sqmw0": {
-              "stroke": "$rc-action"
-            },
-            "sqmw0/jGFGo": {
-              "enabled": false
-            },
-            "sqmw0/iQQmX": {
-              "content": "Voltar",
-              "fill": "$rc-action"
+              "id": "uWmQT",
+              "type": "ref",
+              "ref": "DpTaD",
+              "name": "Voltar",
+              "width": "fill_container",
+              "descendants": {
+                "CS3YG": {
+                  "enabled": false
+                },
+                "bD8Xp": {
+                  "content": "Voltar"
+                }
+              }
             }
           }
         }

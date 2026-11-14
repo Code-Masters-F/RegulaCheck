@@ -55,6 +55,27 @@ Respostas comuns a toda rota privada (FR-010): **401** → E1.4 Sessão expirada
 | E4.2 Abrir | `GET /admin/indicadores` | † RC-20 | protocolo, regras, totais | 403 (paciente) → E1.5 |
 | E4.2 Sair | `POST /auth/logout` | ✅ RC-04 | E1.1 | — |
 
+## Navegação e ações locais (sem operação própria)
+
+Ações desenhadas que só mudam de tela ou ajustam a escolha antes de salvar. Registradas na auditoria T057 (14/11/2026) para que toda ação dos quadros tenha correspondência (SC-001).
+
+| Tela · ação | Efeito | Operação usada depois |
+|---|---|---|
+| E1.2 Abrir pedido (linha) · E1.3 linhas de navegação (Documentos, Leitura e conferência, Resultado) | abre E1.3, E2.2, E3.2 ou E3.3 | as de "Abrir" da tela de destino |
+| E1.2 Novo pedido | abre E2.1 | `POST /solicitacoes` em E2.1 |
+| E1.3 / E2.1 / E3.6 Voltar para meus pedidos · E1.5 Voltar · E2.3 Voltar ao pedido | volta à tela anterior | — |
+| E1.3 Mais opções (rascunho) → Trocar serviço · Excluir rascunho | abre E2.1 (troca) ou E2.6 | `PUT /solicitacoes/{id}` · `DELETE /solicitacoes/{id}` |
+| E1.4 Entrar | abre E1.1 | `POST /auth/login` |
+| E2.2 Anexar documento · E2.3 Escolher outro arquivo · E3.1 Anexar documento | abre E2.7 (tipo e origem) | `POST …/documentos` |
+| E2.2 Mais opções do arquivo → Substituir · Remover | abre E2.4 ou E2.5 | `PUT` / `DELETE …/documentos/{docId}` |
+| E2.7 Fotografar · E4.1 Fotografar / Fotografar mesmo assim · E4.1 Escolher arquivo | câmera ou seletor do aparelho | `POST …/documentos` (ou `PUT` na substituição) |
+| E2.7 / Folhas Cancelar · Diálogos Cancelar / Voltar | fecha a folha ou o diálogo sem chamada | — |
+| E3.2 Mudar decisão | reabre as decisões do campo antes de salvar | `PUT …/conferencia` em "Salvar e continuar" |
+| E3.2 Substituir arquivo (documento não lido ou campo ilegível) | abre E2.7 em modo substituição | `PUT …/documentos/{docId}`, como E2.4 |
+| E3.3 Conferir leitura · E3.4 Conferir leitura | abre E3.2 | `PUT …/conferencia` |
+| E3.3 Concluir simulação · E1.3 Concluir simulação | abre E3.7 | `POST …/submissoes-simuladas` † |
+| E4.3 Tentar novamente | repete a operação que falhou, com os dados mantidos | a mesma operação. No envio de arquivo, a mesma `X-Chave-Envio` evita duplicar. Em `POST /solicitacoes`, repetir depois de um tempo esgotado pode criar um segundo rascunho, porque o backend não deduplica; a tela não promete o contrário |
+
 ## Operações que as telas **não** usam
 
 `POST …/documentos` fora de rascunho (409), `DELETE /solicitacoes/{id}` fora de rascunho (409), decisão em campo ilegível ou confirmação de campo não localizado (422), qualquer valor digitado na conferência (400), `POST /sessoes-captura/{id}/leituras` (credencial do simulador, não da paciente), rotas de administrador para paciente e vice-versa.

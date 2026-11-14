@@ -199,11 +199,11 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 - [x] T055 Desenhar E4.3 Conexão ruim (2 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Tempo esgotado (E2.1 com serviço preservado, `Retorno/Sem conexão` "Não foi possível confirmar a operação. O que você escolheu foi mantido.", "Tentar novamente") e Sem conexão (E2.2 do Pedido 5 com "Se for preciso, escolha o arquivo de novo depois de reconectar."); nota FR-052
 - [x] T056 Desenhar E4.4 Acessibilidade (4 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Anotações (contraste dos pares de F1, alvos 48, ordem de leitura e rótulos de E1.2/E2.2/E3.3) e Fonte ampliada de E1.2, E2.2 e E3.3 (texto a 200%, quadro com altura livre, sem cortar conteúdo essencial); nota FR-053
-- [ ] T057 Auditar SC-001 e SC-002: para os 94 quadros de `design/RegulaCheck.pen`, cada ação e cada dado conferidos contra `specs/014-fluxo-telas-app/contracts/telas-operacoes.md` e `data-model.md` §3 e §5; registrar divergências e correções em `design/verificacao-2026-11-13.md` (ou arquivo do dia)
-- [ ] T058 Auditar SC-005, SC-006, SC-007 e FR-005 em `design/RegulaCheck.pen` e `mobile/design/textos.md`: 7 estados, 3 situações de campo e 4 decisões desenhados; busca de linguagem proibida (só negações); aviso acadêmico em 100% dos quadros e SIMULADO nos de leitura, conferência, resumo, comprovante e sensores; 0 instâncias `Legado/*`; no máximo uma ação principal por quadro; registrar resultado
-- [ ] T059 [P] Atualizar `mobile/design/INDEX.md` com os 94 quadros (ID, nome, faixa, situação: desenhado/revisado, operação) e `design/README.md` com o estado final e as pendências
+- [x] T057 Auditar SC-001 e SC-002: para os 94 quadros de `design/RegulaCheck.pen`, cada ação e cada dado conferidos contra `specs/014-fluxo-telas-app/contracts/telas-operacoes.md` e `data-model.md` §3 e §5; registrar divergências e correções em `design/verificacao-2026-11-13.md` (ou arquivo do dia)
+- [x] T058 Auditar SC-005, SC-006, SC-007 e FR-005 em `design/RegulaCheck.pen` e `mobile/design/textos.md`: 7 estados, 3 situações de campo e 4 decisões desenhados; busca de linguagem proibida (só negações); aviso acadêmico em 100% dos quadros e SIMULADO nos de leitura, conferência, resumo, comprovante e sensores; 0 instâncias `Legado/*`; no máximo uma ação principal por quadro; registrar resultado
+- [x] T059 [P] Atualizar `mobile/design/INDEX.md` com os 94 quadros (ID, nome, faixa, situação: desenhado/revisado, operação) e `design/README.md` com o estado final e as pendências
 - [ ] T060 Executar o percurso de `specs/014-fluxo-telas-app/quickstart.md` com uma pessoa que não desenhou (SC-003, SC-004: Pedido 1 rev 2 → comprovante `SIM-2026-0001`) e registrar o resultado real em `design/verificacao-2026-11-13.md`; sem execução, registrar como não verificado
-- [ ] T061 Exportar as prévias finais (`design/previas/`), salvar `design/RegulaCheck.pen` pelo MCP e marcar as tarefas concluídas nesta lista com evidência
+- [x] T061 Exportar as prévias finais (`design/previas/`), salvar `design/RegulaCheck.pen` pelo MCP e marcar as tarefas concluídas nesta lista com evidência
 
 ---
 
@@ -347,3 +347,19 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
   - Revisão e registro: screenshots e PNG 2× revisados; documento salvo pelo MCP.
 - Constatado: o quadro de arquivo `Wo9WQ` (biblioteca anterior, `Legado/*`) não existe mais no documento aberto, e nenhuma exclusão dele foi feita por esta implementação. Provavelmente saiu no commit `0e4cdb6`, que retirou cerca de 10 mil linhas do `.pen`; a versão de `efc76d1` pode recuperá-lo. A remoção fica para o grupo confirmar.
 - Não verificado: fonte ampliada em aparelho, TalkBack, interação e percurso com pessoa (T060).
+
+### 14/11/2026 — Phase 11 / polimento (T057–T061)
+
+- Commit da RC-39: `2e41703` (enviado).
+- **T057 (SC-001, SC-002):** foram extraídos dos 94 quadros os rótulos de toda ação (botões, linhas de navegação, decisões, alvos de 48) e os textos com dados (pedidos, datas, arquivos, valores, regras).
+  - Ações: cada uma corresponde a uma linha de `contracts/telas-operacoes.md`. As ações só de navegação ou locais (abrir linha, cancelar folha, mudar decisão, substituir arquivo na conferência, "Tentar novamente") ganharam a seção "Navegação e ações locais" no contrato. Nessa seção ficou registrado que repetir `POST /solicitacoes` depois de um tempo esgotado pode criar um segundo rascunho, porque o backend não deduplica.
+  - Dados: conferem com a carga e com `data-model.md` §5.
+  - Correções: o E3.8 mostrava "8 sem decisão" no fundo e "3 informações sem decisão" no diálogo, e passou a "3" nos dois. O "Voltar" dos diálogos E3.7 e E3.8 era uma instância de `Botão/Destrutivo` com aparência de contorno e virou `Botão/Contorno`.
+- **T058 (SC-005, SC-006, SC-007, FR-005):**
+  - Estados e conferência: os 7 estados do pedido aparecem (de 1 a 11 quadros cada); as 3 situações de campo e as 4 decisões também (sem decisão, confirmada, com diferença e "está no documento").
+  - Linguagem: termos proibidos só em negações ("não é aprovação do SUS", "não garantem vaga", "não coloca você em fila real") ou como dado do documento (campo "Autorização", texto de injeção exibido como dado).
+  - Avisos e componentes: aviso acadêmico em 94 de 94 quadros; SIMULADO em todos os quadros de leitura, conferência, resumo, comprovante e sensores; 0 `Legado/*`.
+  - Ação principal: no máximo uma por quadro. Em quadros com folha ou diálogo, conta só a camada de cima.
+- **T059:** `mobile/design/INDEX.md` reescrito com os 94 quadros (ID, faixa, operação, situação "revisado" e prévia); `design/README.md` atualizado com o estado de 14/11 e as pendências.
+- **T060: não executada.** Depende de uma pessoa que não desenhou percorrer o caminho login → comprovante `SIM-2026-0001` (SC-003, SC-004). Fica registrada como **não verificada**.
+- **T061:** consulta de limites final nos 102 quadros (94 telas, 4 capas e F1–F4). Em 5 quadros o `Respiro flexível` fica com altura 0 porque o conteúdo ocupa toda a altura útil; nenhum elemento visível é cortado. Foram exportadas 102 prévias 2× e o documento foi salvo pelo MCP.
