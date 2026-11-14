@@ -164,3 +164,5 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
   - Consulta de limites com 0 problemas (conteúdo dos quadros inalterado).
   - Screenshots do cartão de leitura, de um cabeçalho e de um cartão de linha revisados; documento salvo pelo MCP.
 - Não verificado: leitura da nova disposição por quem não desenhou.
+- Commit da organização: `8148594` (enviado).
+- Capturas de referência `design/referencias/*.webp` (5 arquivos, 0,43 MB) incluídas na branch por decisão do responsável, para o grupo avaliar. Registro em `design/referencias.md`.

@@ -4,6 +4,8 @@ Histórico da pesquisa em 13/11/2026. **Estado atual:** o responsável aprovou s
 
 Por solicitação do responsável, o painel de referências foi removido de `design/RegulaCheck.pen` em 13/11/2026 para manter o canvas limpo. O repertório permanece somente neste registro textual, para contexto de trabalho. As fontes são exemplos reais; as adaptações abaixo são hipóteses para discussão, sem validação com pacientes.
 
+Em 14/11/2026, por decisão do responsável, as cinco capturas de `design/referencias/*.webp` passaram a ser versionadas na branch para que o grupo possa avaliá-las. Elas são telas de terceiros, servem só para estudo e não são arte nem ativo do RegulaCheck.
+
 ## As seis referências
 
 | Referência | O que foi observado | Hipótese para o RegulaCheck | Limite |
