@@ -119,3 +119,19 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Consulta de limites: 0 problemas reais; 0 `Legado/*`.
 - Percurso principal completo no pen.dev (RC-36 a RC-38, 79 quadros). Falta a faixa RC-39 (P3) e a validação com pessoa (T060).
 - Não verificado: fonte ampliada, TalkBack, interação.
+
+## Feature 014 — US7, US8 e transversais / RC-39 (T051–T056), 14/11/2026
+
+- Commit de US5/US6: `0e4cdb6` (enviado).
+- 15 quadros na faixa RC-39 (y=5000):
+  - E4.1 Condições da captura (6).
+  - E4.2 Protocolo e indicadores (3).
+  - E4.3 Conexão ruim (2).
+  - E4.4 Acessibilidade: anotações e fonte ampliada de E1.2, E2.2 e E3.3 (4).
+- Sensores: leituras do Pedido 4 iguais às da carga (410 lux, 31,5 cm). Os valores fora da faixa (60 lux, 8 cm) existem só no design. "Fotografar" está presente em todos os estados.
+- Administrador: só agregados (protocolo, 6 regras da carga, totais ilustrativos). Nenhum nome, documento ou número de pedido aparece.
+- Fonte ampliada: texto a 200% pela escala não linear do Android 14 (aproximação). Na primeira versão, as linhas de arquivo e de critério quebravam palavras no meio e o selo do resumo cobria o título. Corrigido nos quadros ampliados: as ações e o resultado passam para baixo do nome, e o selo para baixo do título. Com isso, o conteúdo essencial fica visível nos três quadros.
+- Consulta de limites: 0 problemas nos 15 quadros. Componentes `Legado/*`: 0. Aviso acadêmico em todos os quadros; SIMULADO nos de sensores e no resumo; no máximo uma ação principal por quadro.
+- O quadro de arquivo `Wo9WQ` (biblioteca anterior a 13/11) não está mais no documento aberto. Esta implementação não o excluiu. O commit `0e4cdb6` retirou cerca de 10 mil linhas do `.pen`; provavelmente foi aí que o quadro saiu. A versão de `efc76d1` pode recuperá-lo. A remoção fica para o grupo confirmar.
+- Faixas RC-36 a RC-39 completas: 94 quadros, como no inventário.
+- Não verificado: fonte ampliada e TalkBack em aparelho, interação e percurso com pessoa (T060).

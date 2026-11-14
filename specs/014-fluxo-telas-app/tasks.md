@@ -177,8 +177,8 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 **Independent Test**: com as leituras da carga do Pedido 4 e os valores fora da faixa "só no design", cada quadro mostra valor, classificação, idade da leitura e mantém "Fotografar"
 
-- [ ] T051 [US7] Desenhar E4.1 Condições da captura do Pedido 4 (6 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: `Cabeçalho/Voltar` "Pedido 4" + SIMULADO, título "Condições da captura", `Sensor/Na faixa`/`Sensor/Fora da faixa`/`Sensor/Indisponível` para luminosidade e distância, nota "Valores de demonstração. Eles não comprovam que o documento ficará legível.", `Botão/Primário` "Fotografar" (ou "Fotografar mesmo assim" em desatualizada e indisponível); estados Normal (410 lux, 31,5 cm — carga), Luminosidade fora (60 lux, só no design), Distância fora (8 cm, só no design), Recuperada (de 60 para 410 lux), Desatualizada (há 3 min), Indisponível; classificação anotada como "fornecida pelo backend" e frequência de atualização só anotada (FR-050); nota `GET /solicitacoes/{id}/leituras` † (RC-21/RC-22), research D14
-- [ ] T052 [US7] Verificar US7 em `design/RegulaCheck.pen`: 6 quadros; "Fotografar" sempre disponível; unidades lux e cm; SIMULADO; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
+- [x] T051 [US7] Desenhar E4.1 Condições da captura do Pedido 4 (6 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: `Cabeçalho/Voltar` "Pedido 4" + SIMULADO, título "Condições da captura", `Sensor/Na faixa`/`Sensor/Fora da faixa`/`Sensor/Indisponível` para luminosidade e distância, nota "Valores de demonstração. Eles não comprovam que o documento ficará legível.", `Botão/Primário` "Fotografar" (ou "Fotografar mesmo assim" em desatualizada e indisponível); estados Normal (410 lux, 31,5 cm — carga), Luminosidade fora (60 lux, só no design), Distância fora (8 cm, só no design), Recuperada (de 60 para 410 lux), Desatualizada (há 3 min), Indisponível; classificação anotada como "fornecida pelo backend" e frequência de atualização só anotada (FR-050); nota `GET /solicitacoes/{id}/leituras` † (RC-21/RC-22), research D14
+- [x] T052 [US7] Verificar US7 em `design/RegulaCheck.pen`: 6 quadros; "Fotografar" sempre disponível; unidades lux e cm; SIMULADO; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
 
 ---
 
@@ -188,8 +188,8 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 **Independent Test**: os quadros mostram protocolo, regras e totais, sem nenhum dado individual de paciente
 
-- [ ] T053 [US8] Desenhar E4.2 Protocolo e indicadores (3 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Padrão (`Cabeçalho/Marca` com "Sair", título "Protocolo e indicadores", `Dado/Linha` Protocolo ativo "Protocolo acadêmico fictício · versão 0.1 · 6 regras", `Critério/Linha` sem marcador para as 6 regras da carga, `Indicador/Total` "Total de pedidos" 24 (ilustrativo; a carga atual tem 4), análises e regras com mais pendências como valores provisórios anotados, nota "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos."), Carregando, Erro; nota `GET /admin/indicadores` † (RC-20)
-- [ ] T054 [US8] Verificar US8 em `design/RegulaCheck.pen`: 3 quadros; nenhum nome, documento ou pedido individual; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
+- [x] T053 [US8] Desenhar E4.2 Protocolo e indicadores (3 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Padrão (`Cabeçalho/Marca` com "Sair", título "Protocolo e indicadores", `Dado/Linha` Protocolo ativo "Protocolo acadêmico fictício · versão 0.1 · 6 regras", `Critério/Linha` sem marcador para as 6 regras da carga, `Indicador/Total` "Total de pedidos" 24 (ilustrativo; a carga atual tem 4), análises e regras com mais pendências como valores provisórios anotados, nota "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos."), Carregando, Erro; nota `GET /admin/indicadores` † (RC-20)
+- [x] T054 [US8] Verificar US8 em `design/RegulaCheck.pen`: 3 quadros; nenhum nome, documento ou pedido individual; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
 
 ---
 
@@ -197,8 +197,8 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 **Purpose**: quadros transversais (RC-39) e conferência dos critérios de sucesso
 
-- [ ] T055 Desenhar E4.3 Conexão ruim (2 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Tempo esgotado (E2.1 com serviço preservado, `Retorno/Sem conexão` "Não foi possível confirmar a operação. O que você escolheu foi mantido.", "Tentar novamente") e Sem conexão (E2.2 do Pedido 5 com "Se for preciso, escolha o arquivo de novo depois de reconectar."); nota FR-052
-- [ ] T056 Desenhar E4.4 Acessibilidade (4 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Anotações (contraste dos pares de F1, alvos 48, ordem de leitura e rótulos de E1.2/E2.2/E3.3) e Fonte ampliada de E1.2, E2.2 e E3.3 (texto a 200%, quadro com altura livre, sem cortar conteúdo essencial); nota FR-053
+- [x] T055 Desenhar E4.3 Conexão ruim (2 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Tempo esgotado (E2.1 com serviço preservado, `Retorno/Sem conexão` "Não foi possível confirmar a operação. O que você escolheu foi mantido.", "Tentar novamente") e Sem conexão (E2.2 do Pedido 5 com "Se for preciso, escolha o arquivo de novo depois de reconectar."); nota FR-052
+- [x] T056 Desenhar E4.4 Acessibilidade (4 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Anotações (contraste dos pares de F1, alvos 48, ordem de leitura e rótulos de E1.2/E2.2/E3.3) e Fonte ampliada de E1.2, E2.2 e E3.3 (texto a 200%, quadro com altura livre, sem cortar conteúdo essencial); nota FR-053
 - [ ] T057 Auditar SC-001 e SC-002: para os 94 quadros de `design/RegulaCheck.pen`, cada ação e cada dado conferidos contra `specs/014-fluxo-telas-app/contracts/telas-operacoes.md` e `data-model.md` §3 e §5; registrar divergências e correções em `design/verificacao-2026-11-13.md` (ou arquivo do dia)
 - [ ] T058 Auditar SC-005, SC-006, SC-007 e FR-005 em `design/RegulaCheck.pen` e `mobile/design/textos.md`: 7 estados, 3 situações de campo e 4 decisões desenhados; busca de linguagem proibida (só negações); aviso acadêmico em 100% dos quadros e SIMULADO nos de leitura, conferência, resumo, comprovante e sensores; 0 instâncias `Legado/*`; no máximo uma ação principal por quadro; registrar resultado
 - [ ] T059 [P] Atualizar `mobile/design/INDEX.md` com os 94 quadros (ID, nome, faixa, situação: desenhado/revisado, operação) e `design/README.md` com o estado final e as pendências
@@ -331,3 +331,19 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 - Faixa RC-38 com 26 quadros, como no inventário.
 - Verificação: 0 problemas de limites (o aviso restante é do botão oculto de propósito no `Aviso/Resultado não vigente`); 0 `Legado/*`; nenhuma pendência marcada como resolvida antes do novo resultado; nenhum número com aparência de protocolo oficial além da referência simulada; PNG 2× exportados; documento salvo.
 - Não verificado: SC-004 com pessoa (T060), fonte ampliada, TalkBack.
+
+### 14/11/2026 — Phases 9 e 10 / US7 e US8 e quadros transversais (T051–T056) concluídos · faixa RC-39 completa
+
+- Commit de US5/US6: `0e4cdb6` (enviado).
+- 15 quadros na faixa RC-39 (x 5670–12250, y=5000), cada um com nota de operação, FR e origem dos dados:
+  - E4.1 Condições da captura (6): normal (410 lux e 31,5 cm, da carga), luminosidade fora (60 lux) e distância fora (8 cm), só no design, recuperada, desatualizada (há 3 min) e indisponível. "Fotografar" nunca é bloqueado; a frequência de atualização só aparece na nota.
+  - E4.2 Protocolo e indicadores (3): padrão (1.614 de altura, dobra em 844), carregando e erro. Só dados agregados; o total 24 e as análises são ilustrativos, porque a carga tem 4 pedidos.
+  - E4.3 Conexão ruim (2): tempo esgotado ao criar o rascunho, com o serviço mantido, e sem conexão ao anexar, que diz qual arquivo escolher de novo.
+  - E4.4 Acessibilidade (4): anotações (contraste, alvos de 48, cor e estado, ordem de leitura e rótulos de E1.2, E2.2 e E3.3) e fonte ampliada de E1.2, E2.2 e E3.3. O texto vai a 200% pela escala não linear do Android 14 (aproximada: 13→25, 16→28, 22→35, 32→40) e o quadro tem altura livre.
+- Decisão de tela para fonte ampliada: `Documento/Linha` e `Critério/Linha` empilham as ações e o resultado abaixo do nome, e o selo SIMULADO de `Resumo/Simulado` desce para baixo do título. São ajustes por instância, só nos quadros ampliados; os componentes não mudam.
+- Verificação:
+  - Limites: 0 problemas nos 15 quadros (desconsiderados os elementos ocultos por padrão e a dobra).
+  - Componentes: 0 `Legado/*`; aviso acadêmico nos 15 quadros; SIMULADO nos 6 quadros de sensores; no máximo uma ação principal por quadro.
+  - Revisão e registro: screenshots e PNG 2× revisados; documento salvo pelo MCP.
+- Constatado: o quadro de arquivo `Wo9WQ` (biblioteca anterior, `Legado/*`) não existe mais no documento aberto, e nenhuma exclusão dele foi feita por esta implementação. Provavelmente saiu no commit `0e4cdb6`, que retirou cerca de 10 mil linhas do `.pen`; a versão de `efc76d1` pode recuperá-lo. A remoção fica para o grupo confirmar.
+- Não verificado: fonte ampliada em aparelho, TalkBack, interação e percurso com pessoa (T060).

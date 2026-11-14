@@ -38,7 +38,7 @@ Linha superior (y=0), da esquerda para a direita:
 
 As três telas agora são montadas só com instâncias dos componentes v1.0 (71 componentes desde a Fase 0 da feature 014; ver F2–F4). Componentes mais usados: `Botão/Primário` `YNfQA`, `Botão/Contorno` `DpTaD`, `Botão/Texto` `j97Pe`, `Cabeçalho/Voltar` `PbS1q`, `Tela/Título` `YtzRv`, `Pedido/Destaque` `bwbsT`, `Pedido/Linha` `D4QLJd`, `Documento/Linha` `N6LHC`, `Pendência/Orientação` `tAmsl`, `Aviso/Rodapé` `zX8C6`, `Selo/Simulado` `ONwnK`, `Estado/*` em F4.
 
-**Arquivo** `Wo9WQ` (y=7000): F1–F4 anteriores, biblioteca antiga e prévia `O84XR`, com componentes renomeados `Legado/*`. Não usar; pode ser apagado quando o grupo decidir. `rc-font-family`/Plus Jakarta Sans e `rc-review` (roxo) são legado.
+**Arquivo** `Wo9WQ` (antes em y=7000): F1–F4 anteriores, biblioteca antiga e prévia `O84XR`, com componentes renomeados `Legado/*`. Não usar. Em 14/11/2026 o quadro não estava mais no documento aberto, e a feature 014 não o excluiu. A remoção provavelmente aconteceu no commit `0e4cdb6`; a versão de `efc76d1` pode recuperar o quadro. Fica para o grupo confirmar. `rc-font-family`/Plus Jakarta Sans e `rc-review` (roxo) são legado.
 
 Para montar uma tela nova: copiar uma das três telas (390 × 844, padding 24/24/16, conteúdo vertical com gap 24, `Respiro flexível` antes do rodapé) e trocar as instâncias. Altura de controle deve ser **numérica (52)**: o pen.dev ignora variável em `height`. Telas de lista ou de conferência que passam da altura são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar (ex.: E1.2 `H0BJi`).
 

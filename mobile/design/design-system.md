@@ -12,7 +12,7 @@ Fundamentos refeitos a partir das três telas de exemplo aprovadas (Meus pedidos
 | F2 · Componentes | `t9lvSH` | Ações, campos, estrutura de tela, objetos do percurso, sensores, retorno |
 | F3 · Confiança e simulação | `EVIof` | Aviso acadêmico, selo SIMULADO, resumo e comprovante simulados, linguagem |
 | F4 · Estados | `HBByt` | 7 estados do pedido, 4 do arquivo, 4 resultados por critério |
-| Arquivo · biblioteca anterior | `Wo9WQ` | F1–F4 e prévia antigos; componentes com prefixo `Legado/`. Não usar |
+| Arquivo · biblioteca anterior | `Wo9WQ` | F1–F4 e prévia antigos; componentes com prefixo `Legado/`. Não usar. Em 14/11/2026 não estava mais no documento aberto; provavelmente saiu no commit `0e4cdb6` (recuperável de `efc76d1`); a remoção fica para o grupo confirmar |
 
 Prévias PNG: `design/previas/fundamentos/` (quadros) e `design/previas/` (telas).
 
@@ -103,6 +103,7 @@ Estados: ícone 16 na cor do significado + rótulo 14/700 em `rc-text`. Rótulos
 - Sensores: valores demonstrativos (200–1000 lux; 15–40 cm), idade da leitura visível, indisponibilidade nunca bloqueia envio.
 - Sem barra de navegação inferior no percurso da paciente (linear, volta pelo cabeçalho), decisão registrada na feature 014 (FR-011).
 - Telas de lista mais altas que 844 são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar.
+- Fonte ampliada: o texto acompanha a escala do sistema (até 200%, escala não linear do Android 14). Quando o texto não cabe, `Documento/Linha` e `Critério/Linha` passam as ações e o resultado para baixo do nome, e `Resumo/Simulado` põe o selo abaixo do título. Nunca cortar palavra ou esconder ação. Exemplos: quadros E4.4.
 - Exemplos nos quadros: estrutura do backend, textos realistas em português correto (`mobile/design/dados-ficticios.md`); nunca "Exemplo", "sintético" ou texto sem acento.
 
 ## Faça e evite

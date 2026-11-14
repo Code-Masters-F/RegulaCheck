@@ -2,7 +2,7 @@
 
 > Como as telas se ligam, conforme [specs/014-fluxo-telas-app/spec.md](../../specs/014-fluxo-telas-app/spec.md) (fluxo que acompanha o backend). IDs dos quadros: [specs/014-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/014-fluxo-telas-app/contracts/inventario-quadros.md). Dados: [dados-ficticios.md](dados-ficticios.md). Mapa em texto, sem protótipo executável.
 >
-> **Situação em 14/11/2026:** faixas RC-36 (E1.1–E1.5, 25 quadros) e RC-37 (E2.1–E2.7, 28 quadros) desenhadas; RC-38 completa (E3.1–E3.8, 26 quadros). RC-39 planejada.
+> **Situação em 14/11/2026:** as quatro faixas estão desenhadas, com os 94 quadros do inventário: RC-36 (E1.1–E1.5, 25 quadros), RC-37 (E2.1–E2.7, 28), RC-38 (E3.1–E3.8, 26) e RC-39 (E4.1–E4.4, 15). Falta o percurso com uma pessoa que não desenhou (T060).
 
 ## Percurso de entrada (RC-36) — desenhado
 
@@ -69,8 +69,14 @@ flowchart TD
 | Sem conexão ou tempo esgotado | **E4.3** (o que foi digitado é mantido; diz se é preciso escolher o arquivo de novo) |
 | Erro do servidor | `Retorno/Erro` com "Tentar de novo" |
 
-## Administrador
-**E1.1** (conta de coordenação) → **E4.2** Protocolo e indicadores, só dados agregados; "Sair" → **E1.1**. Telas de paciente respondem **E1.5**.
+## Captura por foto (RC-39) — desenhado
+**E2.7** Origem → "Fotografar" → **E4.1** Condições da captura do Pedido 4. A tela mostra luminosidade (lux) e distância (cm) com classificação e idade da leitura. Os estados são: normal, fora da faixa, recuperada, desatualizada e indisponível. "Fotografar" nunca é bloqueado; nos estados desatualizada e indisponível o botão vira "Fotografar mesmo assim". "Escolher arquivo" é a alternativa.
+
+## Administrador — desenhado
+**E1.1** (conta de coordenação) → **E4.2** Protocolo e indicadores, só com dados agregados (estados padrão, carregando e erro); "Sair" → **E1.1**. Telas de paciente respondem **E1.5**.
+
+## Acessibilidade (E4.4) — desenhado
+O quadro de anotações registra contraste, alvos de 48, ordem de leitura e rótulos de **E1.2**, **E2.2** e **E3.3**; essas três telas também têm versão com fonte ampliada. Com fonte grande, as ações do arquivo, o resultado do critério e o selo do resumo descem para baixo do texto.
 
 ## Limitação registrada (backend, RC-16)
 Depois da primeira verificação, o backend não aceita documento novo; a correção é sempre substituir ou remover. A tela explica isso em **E3.4** "Documento ausente".

@@ -29678,6 +29678,3489 @@
       "width": 390,
       "height": 150,
       "content": "E3.6 Comprovante simulado\nOperação: POST …/submissoes-simuladas † (RC-17; repetir devolve o mesmo)\nFR-049 · destaque obrigatório; download fora (RC-34, P1)\nDados: Pedido 1 da carga, referência SIM-2026-0001"
+    },
+    {
+      "type": "frame",
+      "id": "o3kkGI",
+      "x": 5670,
+      "y": 5000,
+      "name": "E4.1 Condições da captura — Normal",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "JZCo8",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "uHtMW",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 4"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "mH3iT",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Condições da captura"
+                },
+                "yQSkI": {
+                  "content": "Posicione o documento sob a estação de captura. As leituras se atualizam enquanto esta tela está aberta.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "W5iNGB",
+              "name": "Sensores",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "aaPnB",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Luminosidade",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "sun"
+                    },
+                    "ycidD": {
+                      "content": "Luminosidade"
+                    },
+                    "MKqQG": {
+                      "content": "410 lux"
+                    },
+                    "vYpCw": {
+                      "content": "Adequada"
+                    },
+                    "OEqeZ": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                },
+                {
+                  "id": "ZCT7Y",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Distância",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "ruler"
+                    },
+                    "ycidD": {
+                      "content": "Distância"
+                    },
+                    "MKqQG": {
+                      "content": "31,5 cm"
+                    },
+                    "vYpCw": {
+                      "content": "Adequada"
+                    },
+                    "OEqeZ": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "F1dMg4",
+              "name": "Nota de demonstração",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Valores de demonstração. Eles não comprovam que o documento ficará legível.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "kxsz2",
+              "name": "Ações",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "L82eHn",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Fotografar",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Fotografar"
+                    }
+                  }
+                },
+                {
+                  "id": "pXsk8",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Escolher arquivo",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Escolher arquivo"
+                    },
+                    "DqGNz": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "VANJI",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "ICiEY",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "I73N8",
+      "x": 5670,
+      "y": 5864,
+      "name": "Nota · E4.1 Condições da captura — Normal",
+      "width": 390,
+      "height": 150,
+      "content": "E4.1 Condições da captura — Normal\nOperação: GET /solicitacoes/{id}/leituras † (RC-21/RC-22), repetida enquanto a tela está aberta (frequência anotada, não desenhada)\nFR-050 · classificação e orientação vêm do backend; \"Fotografar\" nunca é bloqueado\nDados: Pedido 4 — carga (410 lux; 31,5 cm)"
+    },
+    {
+      "type": "frame",
+      "id": "fOrmB",
+      "x": 6140,
+      "y": 5000,
+      "name": "E4.1 Condições da captura — Luminosidade fora",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Tpaud",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "Y7TyQx",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 4"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "P4QYWf",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Condições da captura"
+                },
+                "yQSkI": {
+                  "content": "Posicione o documento sob a estação de captura. As leituras se atualizam enquanto esta tela está aberta.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "GoSXK",
+              "name": "Sensores",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "KbW9L",
+                  "type": "ref",
+                  "ref": "RdLsV",
+                  "width": "fill_container",
+                  "name": "Luminosidade",
+                  "descendants": {
+                    "P53dv": {
+                      "icon": "sun"
+                    },
+                    "Xr7Fa": {
+                      "content": "Luminosidade"
+                    },
+                    "w8K3Aj": {
+                      "content": "60 lux"
+                    },
+                    "F1fe9u": {
+                      "content": "Baixa"
+                    },
+                    "SZjwg": {
+                      "content": "Melhore a iluminação e tente de novo."
+                    },
+                    "ttAlW": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                },
+                {
+                  "id": "P9La5g",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Distância",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "ruler"
+                    },
+                    "ycidD": {
+                      "content": "Distância"
+                    },
+                    "MKqQG": {
+                      "content": "31,5 cm"
+                    },
+                    "vYpCw": {
+                      "content": "Adequada"
+                    },
+                    "OEqeZ": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "fRy8s",
+              "name": "Nota de demonstração",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Valores de demonstração. Eles não comprovam que o documento ficará legível.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "z0Xenf",
+              "name": "Ações",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "tkFTg",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Fotografar",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Fotografar"
+                    }
+                  }
+                },
+                {
+                  "id": "Orwad",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Escolher arquivo",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Escolher arquivo"
+                    },
+                    "DqGNz": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "m7CDdJ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "OGA5Y",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "d6KvD",
+      "x": 6140,
+      "y": 5864,
+      "name": "Nota · E4.1 Condições da captura — Luminosidade fora",
+      "width": 390,
+      "height": 150,
+      "content": "E4.1 Condições da captura — Luminosidade fora\nOperação: GET /solicitacoes/{id}/leituras † (RC-21/RC-22), repetida enquanto a tela está aberta (frequência anotada, não desenhada)\nFR-050 · classificação e orientação vêm do backend; \"Fotografar\" nunca é bloqueado\nDados: Pedido 4 — só no design (60 lux)"
+    },
+    {
+      "type": "frame",
+      "id": "NyDDm",
+      "x": 6610,
+      "y": 5000,
+      "name": "E4.1 Condições da captura — Distância fora",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "tvvHV",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "VKQFV",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 4"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "LVBfi",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Condições da captura"
+                },
+                "yQSkI": {
+                  "content": "Posicione o documento sob a estação de captura. As leituras se atualizam enquanto esta tela está aberta.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "LtNUk",
+              "name": "Sensores",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "FM2bf",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Luminosidade",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "sun"
+                    },
+                    "ycidD": {
+                      "content": "Luminosidade"
+                    },
+                    "MKqQG": {
+                      "content": "410 lux"
+                    },
+                    "vYpCw": {
+                      "content": "Adequada"
+                    },
+                    "OEqeZ": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                },
+                {
+                  "id": "gjtTG",
+                  "type": "ref",
+                  "ref": "RdLsV",
+                  "width": "fill_container",
+                  "name": "Distância",
+                  "descendants": {
+                    "P53dv": {
+                      "icon": "ruler"
+                    },
+                    "Xr7Fa": {
+                      "content": "Distância"
+                    },
+                    "w8K3Aj": {
+                      "content": "8 cm"
+                    },
+                    "F1fe9u": {
+                      "content": "Fora do ideal"
+                    },
+                    "SZjwg": {
+                      "content": "Afaste o celular do documento."
+                    },
+                    "ttAlW": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "s0ore",
+              "name": "Nota de demonstração",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Valores de demonstração. Eles não comprovam que o documento ficará legível.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "ZjqqP",
+              "name": "Ações",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "cBoVU",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Fotografar",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Fotografar"
+                    }
+                  }
+                },
+                {
+                  "id": "sp91Z",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Escolher arquivo",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Escolher arquivo"
+                    },
+                    "DqGNz": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "romPK",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "ZyZuw",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "DPZqF",
+      "x": 6610,
+      "y": 5864,
+      "name": "Nota · E4.1 Condições da captura — Distância fora",
+      "width": 390,
+      "height": 150,
+      "content": "E4.1 Condições da captura — Distância fora\nOperação: GET /solicitacoes/{id}/leituras † (RC-21/RC-22), repetida enquanto a tela está aberta (frequência anotada, não desenhada)\nFR-050 · classificação e orientação vêm do backend; \"Fotografar\" nunca é bloqueado\nDados: Pedido 4 — só no design (8 cm)"
+    },
+    {
+      "type": "frame",
+      "id": "DGf2T",
+      "x": 7080,
+      "y": 5000,
+      "name": "E4.1 Condições da captura — Recuperada",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "xESfb",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "m3VLAe",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 4"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "N7Hpuq",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Condições da captura"
+                },
+                "yQSkI": {
+                  "content": "Posicione o documento sob a estação de captura. As leituras se atualizam enquanto esta tela está aberta.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "s6P1YT",
+              "name": "Sensores",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "P0HXW4",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Luminosidade",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "sun"
+                    },
+                    "ycidD": {
+                      "content": "Luminosidade"
+                    },
+                    "MKqQG": {
+                      "content": "410 lux"
+                    },
+                    "vYpCw": {
+                      "content": "Adequada de novo"
+                    },
+                    "OEqeZ": {
+                      "content": "Leitura há 4 s · antes: 60 lux · sensor simulado"
+                    }
+                  }
+                },
+                {
+                  "id": "rakke",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Distância",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "ruler"
+                    },
+                    "ycidD": {
+                      "content": "Distância"
+                    },
+                    "MKqQG": {
+                      "content": "31,5 cm"
+                    },
+                    "vYpCw": {
+                      "content": "Adequada"
+                    },
+                    "OEqeZ": {
+                      "content": "Leitura há 5 s · sensor simulado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "WciIp",
+              "name": "Nota de demonstração",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Valores de demonstração. Eles não comprovam que o documento ficará legível.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "PsQeT",
+              "name": "Ações",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "T6Tb1",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Fotografar",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Fotografar"
+                    }
+                  }
+                },
+                {
+                  "id": "M2rjSi",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Escolher arquivo",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Escolher arquivo"
+                    },
+                    "DqGNz": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "f3qWwR",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "Ilc08",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "TwNyF",
+      "x": 7080,
+      "y": 5864,
+      "name": "Nota · E4.1 Condições da captura — Recuperada",
+      "width": 390,
+      "height": 150,
+      "content": "E4.1 Condições da captura — Recuperada\nOperação: GET /solicitacoes/{id}/leituras † (RC-21/RC-22), repetida enquanto a tela está aberta (frequência anotada, não desenhada)\nFR-050 · classificação e orientação vêm do backend; \"Fotografar\" nunca é bloqueado\nDados: Pedido 4 — carga + valor anterior só no design"
+    },
+    {
+      "type": "frame",
+      "id": "Cna25",
+      "x": 7550,
+      "y": 5000,
+      "name": "E4.1 Condições da captura — Desatualizada",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "TKjVM",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "zjCUn",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 4"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "DYopV",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Condições da captura"
+                },
+                "yQSkI": {
+                  "content": "Posicione o documento sob a estação de captura. As leituras se atualizam enquanto esta tela está aberta.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "mAzDh",
+              "name": "Sensores",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "VCehP",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Luminosidade",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "sun"
+                    },
+                    "ycidD": {
+                      "content": "Luminosidade"
+                    },
+                    "MKqQG": {
+                      "content": "410 lux"
+                    },
+                    "tiGxG": {
+                      "icon": "clock-3",
+                      "fill": "$rc-text-muted"
+                    },
+                    "vYpCw": {
+                      "content": "Desatualizada"
+                    },
+                    "OEqeZ": {
+                      "content": "Última leitura há 3 min · sensor simulado"
+                    }
+                  }
+                },
+                {
+                  "id": "rsAvz",
+                  "type": "ref",
+                  "ref": "exmh3",
+                  "width": "fill_container",
+                  "name": "Distância",
+                  "descendants": {
+                    "jpUO4": {
+                      "icon": "ruler"
+                    },
+                    "ycidD": {
+                      "content": "Distância"
+                    },
+                    "MKqQG": {
+                      "content": "31,5 cm"
+                    },
+                    "tiGxG": {
+                      "icon": "clock-3",
+                      "fill": "$rc-text-muted"
+                    },
+                    "vYpCw": {
+                      "content": "Desatualizada"
+                    },
+                    "OEqeZ": {
+                      "content": "Última leitura há 3 min · sensor simulado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "MGa2A",
+              "name": "Nota de demonstração",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Valores de demonstração. Eles não comprovam que o documento ficará legível.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "NluAi",
+              "name": "Ações",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "Cz24F",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Fotografar mesmo assim",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Fotografar mesmo assim"
+                    }
+                  }
+                },
+                {
+                  "id": "m57k8",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Escolher arquivo",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Escolher arquivo"
+                    },
+                    "DqGNz": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nX4H3",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "A1eln",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "wRLOc",
+      "x": 7550,
+      "y": 5864,
+      "name": "Nota · E4.1 Condições da captura — Desatualizada",
+      "width": 390,
+      "height": 150,
+      "content": "E4.1 Condições da captura — Desatualizada\nOperação: GET /solicitacoes/{id}/leituras † (RC-21/RC-22), repetida enquanto a tela está aberta (frequência anotada, não desenhada)\nFR-050 · classificação e orientação vêm do backend; \"Fotografar\" nunca é bloqueado\nDados: Pedido 4 — carga com idade ilustrativa"
+    },
+    {
+      "type": "frame",
+      "id": "kaHJz",
+      "x": 8020,
+      "y": 5000,
+      "name": "E4.1 Condições da captura — Indisponível",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "J2ft3",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "lEbIq",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 4"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "Y8S6S",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Condições da captura"
+                },
+                "yQSkI": {
+                  "content": "Posicione o documento sob a estação de captura. As leituras se atualizam enquanto esta tela está aberta.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "RWKQ8",
+              "name": "Sensores",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "JEcNP",
+                  "type": "ref",
+                  "ref": "Dhfcw",
+                  "width": "fill_container",
+                  "name": "Luminosidade",
+                  "descendants": {
+                    "U5JLCd": {
+                      "icon": "sun"
+                    },
+                    "xF6ve": {
+                      "content": "Luminosidade"
+                    },
+                    "Fq8mV": {
+                      "content": "Sem leitura disponível · sensor simulado"
+                    }
+                  }
+                },
+                {
+                  "id": "CwSTI",
+                  "type": "ref",
+                  "ref": "Dhfcw",
+                  "width": "fill_container",
+                  "name": "Distância",
+                  "descendants": {
+                    "U5JLCd": {
+                      "icon": "ruler"
+                    },
+                    "xF6ve": {
+                      "content": "Distância"
+                    },
+                    "t5sei": {
+                      "enabled": false
+                    },
+                    "Fq8mV": {
+                      "content": "Sem leitura disponível · sensor simulado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "hBe7K",
+              "name": "Nota de demonstração",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Valores de demonstração. Eles não comprovam que o documento ficará legível.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "W4Avc",
+              "name": "Ações",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "LZPnv",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Fotografar mesmo assim",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Fotografar mesmo assim"
+                    }
+                  }
+                },
+                {
+                  "id": "jKjlr",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Escolher arquivo",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Escolher arquivo"
+                    },
+                    "DqGNz": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "g6Sli",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "uWjs7",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "j4HWdl",
+      "x": 8020,
+      "y": 5864,
+      "name": "Nota · E4.1 Condições da captura — Indisponível",
+      "width": 390,
+      "height": 150,
+      "content": "E4.1 Condições da captura — Indisponível\nOperação: GET /solicitacoes/{id}/leituras † (RC-21/RC-22), repetida enquanto a tela está aberta (frequência anotada, não desenhada)\nFR-050 · classificação e orientação vêm do backend; \"Fotografar\" nunca é bloqueado\nDados: Pedido 4 — só no design"
+    },
+    {
+      "type": "frame",
+      "id": "T8XMZ",
+      "x": 8490,
+      "y": 5000,
+      "name": "E4.2 Protocolo e indicadores — Padrão",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "CkHTj",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "ildpf",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "T379sC",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Protocolo e indicadores"
+                },
+                "yQSkI": {
+                  "content": "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "ThO3E",
+              "type": "ref",
+              "ref": "GQWGd",
+              "width": "fill_container",
+              "name": "Protocolo ativo",
+              "descendants": {
+                "HYKFX": {
+                  "content": "Protocolo ativo"
+                },
+                "unazT": {
+                  "content": "Protocolo acadêmico fictício · versão 0.1 · 6 regras"
+                }
+              }
+            },
+            {
+              "id": "w0DuVS",
+              "type": "ref",
+              "ref": "EUrBm",
+              "width": "fill_container",
+              "name": "Total de pedidos",
+              "descendants": {
+                "B31u6": {
+                  "content": "Total de pedidos"
+                },
+                "IFgRG": {
+                  "content": "24"
+                },
+                "V3Y2l": {
+                  "content": "Valor ilustrativo de demonstração."
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "sRZVy",
+              "name": "Análises por resultado",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Análises por resultado",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "Vg8HU",
+              "name": "Análises por resultado",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "Q4Ahd",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Sem pendências identificadas",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Sem pendências identificadas"
+                    },
+                    "unazT": {
+                      "content": "6"
+                    }
+                  }
+                },
+                {
+                  "id": "yyOaT",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Com pendências",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Com pendências"
+                    },
+                    "unazT": {
+                      "content": "11"
+                    }
+                  }
+                },
+                {
+                  "id": "tGARZ",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Confira a leitura",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Confira a leitura"
+                    },
+                    "unazT": {
+                      "content": "5"
+                    }
+                  }
+                },
+                {
+                  "id": "jQQE9",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Falha na verificação",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Falha na verificação"
+                    },
+                    "unazT": {
+                      "content": "2"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "RBQXF",
+              "name": "Regras com mais pendências",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Regras com mais pendências",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "MnGeV",
+              "name": "Regras com mais pendências",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "ea7VF",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "RC-R04 · Motivo do encaminhamento informado",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "RC-R04 · Motivo do encaminhamento informado"
+                    },
+                    "unazT": {
+                      "content": "7 pendências"
+                    }
+                  }
+                },
+                {
+                  "id": "Xz8e6",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "RC-R05 · Encaminhamento dentro da validade",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "RC-R05 · Encaminhamento dentro da validade"
+                    },
+                    "unazT": {
+                      "content": "5 pendências"
+                    }
+                  }
+                },
+                {
+                  "id": "qytoF",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "RC-R03 · Documento de identificação",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "RC-R03 · Documento de identificação"
+                    },
+                    "unazT": {
+                      "content": "4 pendências"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "HbULN",
+              "name": "Regras do protocolo",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Regras do protocolo",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "m3nrOS",
+              "name": "Regras do protocolo",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "P3q6r",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R01",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento presente"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R01"
+                    },
+                    "G9QBc": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "k8ddp7",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R02",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Identificação coerente entre documentos"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R02"
+                    },
+                    "G9QBc": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "ugwsQ",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R03",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Documento de identificação"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R03"
+                    },
+                    "G9QBc": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "a1rej",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R04",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Motivo do encaminhamento informado"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R04"
+                    },
+                    "G9QBc": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "hqrKH",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R05",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento dentro da validade"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R05"
+                    },
+                    "G9QBc": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "xnujw",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R06",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Autorização do responsável legal"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R06"
+                    },
+                    "G9QBc": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hrBRb",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "uzHVI",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "G8ZiO",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "Mkk2T",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "RX3xq",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Ifg71",
+      "x": 8960,
+      "y": 5000,
+      "name": "E4.2 Protocolo e indicadores — Carregando",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "f191EP",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "tnDwJ",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "ga2RP",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Protocolo e indicadores"
+                },
+                "yQSkI": {
+                  "content": "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "T1gOt4",
+              "type": "ref",
+              "ref": "CA7PM",
+              "width": "fill_container",
+              "name": "Carregando",
+              "descendants": {
+                "AHOkK": {
+                  "content": "Carregando indicadores…"
+                }
+              }
+            },
+            {
+              "id": "y4VqOq",
+              "type": "ref",
+              "ref": "CA7PM",
+              "width": "fill_container",
+              "name": "Carregando 2",
+              "descendants": {
+                "AHOkK": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "YaiQe",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "Ykq7a",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "LuVKI",
+      "x": 8960,
+      "y": 5864,
+      "name": "Nota · E4.2 Protocolo e indicadores — Carregando",
+      "width": 390,
+      "height": 150,
+      "content": "E4.2 Protocolo e indicadores — Carregando\nOperação: GET /admin/indicadores † (RC-20)\nFR-051"
+    },
+    {
+      "type": "frame",
+      "id": "mcN6S",
+      "x": 9430,
+      "y": 5000,
+      "name": "E4.2 Protocolo e indicadores — Erro",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "PqSnP",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "uVs8u",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca"
+            },
+            {
+              "id": "s7RPpa",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Protocolo e indicadores"
+                },
+                "yQSkI": {
+                  "content": "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos.",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "wnMOL",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Erro",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "Não foi possível carregar os indicadores."
+                },
+                "h7SWfJ": {
+                  "content": "Tente de novo. Se o problema continuar, volte mais tarde."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "kj9zc",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "TBSfU",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "IMGGi",
+      "x": 9430,
+      "y": 5864,
+      "name": "Nota · E4.2 Protocolo e indicadores — Erro",
+      "width": 390,
+      "height": 150,
+      "content": "E4.2 Protocolo e indicadores — Erro\nOperação: GET /admin/indicadores † (RC-20) → 503 ou falha\nFR-051"
+    },
+    {
+      "type": "frame",
+      "id": "ZPo7y",
+      "x": 9900,
+      "y": 5000,
+      "name": "E4.3 Conexão ruim — Tempo esgotado",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "lz3sE",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "umASO",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                }
+              }
+            },
+            {
+              "id": "BTzRn",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Novo pedido"
+                },
+                "yQSkI": {
+                  "content": "Escolha o serviço para preparar seus documentos."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "mtGh7",
+              "name": "Serviços",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "M8c32g",
+                  "type": "ref",
+                  "ref": "NLIXG",
+                  "width": "fill_container",
+                  "name": "Consulta ambulatorial em cardiologia",
+                  "descendants": {
+                    "Df2K4": {
+                      "content": "Consulta ambulatorial em cardiologia"
+                    },
+                    "G2kiZ": {
+                      "content": "Santa Aurora (município fictício) · Protocolo acadêmico fictício · versão 0.1"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "q6UorJ",
+              "type": "ref",
+              "ref": "LMZKx",
+              "width": "fill_container",
+              "name": "Tempo esgotado",
+              "descendants": {
+                "TCgSR": {
+                  "icon": "timer-off"
+                },
+                "X9ta8": {
+                  "content": "Não foi possível confirmar a operação."
+                },
+                "N6KO2F": {
+                  "content": "O que você escolheu foi mantido. Nada é dado como criado até recebermos a confirmação."
+                },
+                "OP4oH/bD8Xp": {
+                  "content": "Tentar novamente"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "IEyct",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "mgx44",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "VMj9N",
+      "x": 9900,
+      "y": 5864,
+      "name": "Nota · E4.3 Conexão ruim — Tempo esgotado",
+      "width": 390,
+      "height": 150,
+      "content": "E4.3 Conexão ruim — Tempo esgotado\nOperação: POST /solicitacoes ✅ sem resposta (tempo esgotado)\nFR-052 · a escolha do serviço é mantida; nada é dado como criado sem a confirmação do backend\nDados: Santa Aurora (município fictício)"
+    },
+    {
+      "type": "frame",
+      "id": "j9cJY",
+      "x": 10370,
+      "y": 5000,
+      "name": "E4.3 Conexão ruim — Sem conexão",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "gVZr1",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "Iw5Q4",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5"
+                }
+              }
+            },
+            {
+              "id": "CsAGT",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Seus documentos"
+                },
+                "yQSkI": {
+                  "content": "Anexe o encaminhamento e seu documento de identificação."
+                }
+              }
+            },
+            {
+              "id": "OVKN0",
+              "type": "ref",
+              "ref": "LMZKx",
+              "width": "fill_container",
+              "name": "Sem conexão",
+              "descendants": {
+                "X9ta8": {
+                  "content": "Sem conexão com a internet."
+                },
+                "N6KO2F": {
+                  "content": "O que você digitou foi mantido. O arquivo “documento-identidade.jpg” não foi enviado: escolha o arquivo de novo depois de reconectar."
+                },
+                "OP4oH/bD8Xp": {
+                  "content": "Tentar novamente"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "M6yUX",
+              "name": "Arquivos deste pedido",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "padding": [
+                20,
+                20,
+                6,
+                20
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "wGftP",
+                  "name": "Título da lista",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Arquivos deste pedido",
+                  "lineHeight": 1.25,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-title",
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "Ujcof",
+                  "type": "ref",
+                  "ref": "N6LHC",
+                  "width": "fill_container",
+                  "name": "Encaminhamento",
+                  "descendants": {
+                    "WL6qI": {
+                      "content": "Encaminhamento"
+                    },
+                    "wFeTH": {
+                      "content": "encaminhamento-cardiologia.pdf"
+                    },
+                    "UjUmc": {
+                      "content": "PDF · 184 KB · 2 páginas"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Hr6Nn",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "sh0i4",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "A5w51X",
+      "x": 10370,
+      "y": 5864,
+      "name": "Nota · E4.3 Conexão ruim — Sem conexão",
+      "width": 390,
+      "height": 150,
+      "content": "E4.3 Conexão ruim — Sem conexão\nFalha de rede durante POST …/documentos ✅ (repetir com a mesma X-Chave-Envio não duplica)\nFR-052 · informa quando é preciso escolher o arquivo de novo\nDados: Pedido 5 (só no design)"
+    },
+    {
+      "type": "note",
+      "id": "D2KdTi",
+      "x": 8490,
+      "y": 6634,
+      "name": "Nota · E4.2 Protocolo e indicadores — Padrão",
+      "width": 390,
+      "height": 150,
+      "content": "E4.2 Protocolo e indicadores — Padrão\nOperação: GET /admin/indicadores † (RC-20) · perfil ADMINISTRADOR\nFR-051 · só agregados; nenhum nome, documento ou número de pedido\nDados: protocolo e 6 regras da carga; totais ilustrativos (a carga tem 4 pedidos)"
+    },
+    {
+      "type": "frame",
+      "id": "YapQA",
+      "x": 10840,
+      "y": 5000,
+      "name": "E4.4 Acessibilidade — Anotações",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "RGkD5",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "Z1ltn",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Acessibilidade"
+                },
+                "yQSkI": {
+                  "content": "Anotações das telas Meus pedidos (E1.2), Seus documentos (E2.2) e Resultado da verificação (E3.3)."
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "tRtOA",
+              "name": "Contraste",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Contraste",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "R6aKJ",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Razões calculadas sobre as cores do design system. Meta: texto ≥ 4,5:1; ícones e bordas ≥ 3:1.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "y0CzrV",
+              "name": "Pares de contraste",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "sTCOs",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Texto #112B3C sobre branco e neutro",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Texto #112B3C sobre branco e neutro"
+                    },
+                    "unazT": {
+                      "content": "14,64:1 · 12,73:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "vvrQV",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Apoio #526774 sobre branco e neutro",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Apoio #526774 sobre branco e neutro"
+                    },
+                    "unazT": {
+                      "content": "5,91:1 · 5,14:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "t3AZEp",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Branco sobre ação #205375",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Branco sobre ação #205375"
+                    },
+                    "unazT": {
+                      "content": "8,22:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "qPLAo",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Pendência #B44809 sobre branco e neutro",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Pendência #B44809 sobre branco e neutro"
+                    },
+                    "unazT": {
+                      "content": "5,42:1 · 4,72:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "b8qlr",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Sucesso #176448 sobre branco",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Sucesso #176448 sobre branco"
+                    },
+                    "unazT": {
+                      "content": "7,11:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "DH8Sk",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Erro #B42335 sobre fundo de erro",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Erro #B42335 sobre fundo de erro"
+                    },
+                    "unazT": {
+                      "content": "5,74:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "M8gzrS",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "SIMULADO #8D3C0C sobre #FFF1E6",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "SIMULADO #8D3C0C sobre #FFF1E6"
+                    },
+                    "unazT": {
+                      "content": "6,82:1 · atende"
+                    }
+                  }
+                },
+                {
+                  "id": "Ni8IX",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Acento #F6680E sobre branco",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Acento #F6680E sobre branco"
+                    },
+                    "unazT": {
+                      "content": "3,04:1 · só decorativo, nunca texto"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "I12Ah",
+              "name": "Alvos de toque",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Alvos de toque",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "fLJN2",
+              "name": "Texto",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Botões têm 52 de altura e ocupam a largura da tela. Ícones pequenos (voltar, mais opções, abrir pedido) ficam dentro de uma área de toque de 48 × 48.",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-body",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "AlCHR",
+              "name": "Cor e estado",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Cor e estado",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "oQgYV",
+              "name": "Texto",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Estado do pedido, resultado de critério e envio de arquivo aparecem sempre com ícone e texto. O laranja de acento nunca carrega informação sozinho.",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-body",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "aPkhS",
+              "name": "Ordem de leitura",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Ordem de leitura",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "M2y61B",
+              "name": "E1.2 Meus pedidos",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "S7dG2",
+                  "name": "Tela",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "E1.2 Meus pedidos",
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "jjiaA",
+                  "name": "Texto",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "1. RegulaCheck · 2. Sair · 3. “Olá, Ana” e título · 4. Pedido 4: data, serviço, estado, próximo passo e “Ler documentos” · 5. Pedido 2 · 6. Pedido 1 · 7. Novo pedido · 8. Aviso acadêmico",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IDm5X",
+              "name": "E2.2 Seus documentos",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "gqcg1",
+                  "name": "Tela",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "E2.2 Seus documentos",
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "F2DvXr",
+                  "name": "Texto",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "1. Voltar · 2. Pedido 5 · 3. Título e instrução · 4. Cada arquivo: tipo, nome, tamanho, estado e ações · 5. Anexar documento · 6. Limites · 7. Ler documentos e nota da leitura simulada · 8. Aviso acadêmico",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IBuj3",
+              "name": "E3.3 Resultado da verificação",
+              "width": "fill_container",
+              "fill": "$rc-surface",
+              "cornerRadius": "$rc-radius-task",
+              "layout": "vertical",
+              "gap": 12,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "knO39",
+                  "name": "Tela",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "E3.3 Resultado da verificação",
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "HWlAG",
+                  "name": "Texto",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "1. Voltar · 2. Pedido 2 e SIMULADO · 3. Título e revisão · 4. Resultado geral · 5. Resumo simulado · 6. O que falta, com quem resolve · 7. Outros critérios · 8. Aviso acadêmico",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-meta",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "VVnUQ",
+              "name": "Rótulos para leitor de tela",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Rótulos para leitor de tela",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "xY92q",
+              "name": "Rótulos",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "ErOBu",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Seta de voltar",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Seta de voltar"
+                    },
+                    "unazT": {
+                      "content": "“Voltar”"
+                    }
+                  }
+                },
+                {
+                  "id": "Mz1ha",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Mais opções do arquivo",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Mais opções do arquivo"
+                    },
+                    "unazT": {
+                      "content": "“Mais opções de encaminhamento-cardiologia.pdf”"
+                    }
+                  }
+                },
+                {
+                  "id": "cMnhK",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Abrir, na linha do arquivo",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Abrir, na linha do arquivo"
+                    },
+                    "unazT": {
+                      "content": "“Abrir encaminhamento-cardiologia.pdf”"
+                    }
+                  }
+                },
+                {
+                  "id": "e7jJzj",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Linha de pedido",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Linha de pedido"
+                    },
+                    "unazT": {
+                      "content": "“Pedido 2, com pendências, atualizado em 12/11/2026 às 10:06. Abrir pedido.” A seta é decorativa."
+                    }
+                  }
+                },
+                {
+                  "id": "Pzx4C",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Selo SIMULADO",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Selo SIMULADO"
+                    },
+                    "unazT": {
+                      "content": "“Conteúdo simulado”"
+                    }
+                  }
+                },
+                {
+                  "id": "ymIyh",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Ícone de estado",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Ícone de estado"
+                    },
+                    "unazT": {
+                      "content": "Decorativo; o texto do estado é lido."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "atJSr",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "AEBmC",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "z7WVDk",
+      "x": 11310,
+      "y": 5000,
+      "name": "E4.4 Acessibilidade — Fonte ampliada E1.2",
+      "context": "Identidade aprovada em 13/11/2026. Parcial de E1.2: somente sucesso. GET /solicitacoes é referência do app futuro; nenhum acesso à API neste desenho.",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "u2sJh",
+          "name": "Conteúdo de Meus pedidos",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "id": "b44YS",
+              "type": "ref",
+              "ref": "wkUiI",
+              "width": "fill_container",
+              "name": "Marca",
+              "descendants": {
+                "cNFiP": {
+                  "fontSize": 35
+                },
+                "B9XCJ": {
+                  "fontSize": 28
+                }
+              }
+            },
+            {
+              "id": "URTbx",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Saudação e título",
+              "descendants": {
+                "Fj83F": {
+                  "enabled": true,
+                  "content": "Olá, Ana",
+                  "fontSize": 30
+                },
+                "ptFtO": {
+                  "content": "Meus pedidos",
+                  "fontSize": 40
+                },
+                "yQSkI": {
+                  "content": "Retome de onde parou.",
+                  "fontSize": 30,
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "zbSZC",
+              "type": "ref",
+              "ref": "bwbsT",
+              "width": "fill_container",
+              "name": "Pedido que precisa de ação",
+              "descendants": {
+                "KrxDI": {
+                  "fontSize": 26
+                },
+                "vk1ZN": {
+                  "fontSize": 35
+                },
+                "Z5A829/XxEW4": {
+                  "fontSize": 26
+                },
+                "R5se6": {
+                  "fontSize": 28
+                },
+                "f2QGd/irqwJ": {
+                  "fontSize": 28
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "u7v9Gt",
+              "name": "Outros pedidos",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "id": "QjIg6",
+                  "type": "ref",
+                  "ref": "D4QLJd",
+                  "width": "fill_container",
+                  "name": "Pedido 2 · Com pendências",
+                  "descendants": {
+                    "xDPrf": {
+                      "fontSize": 25
+                    },
+                    "qEiz4": {
+                      "fontSize": 30
+                    },
+                    "B8T6z/x8CHM": {
+                      "fontSize": 26
+                    }
+                  }
+                },
+                {
+                  "id": "KnQuy",
+                  "type": "ref",
+                  "ref": "D4QLJd",
+                  "name": "Pedido 1 · Simulação concluída",
+                  "width": "fill_container",
+                  "descendants": {
+                    "xDPrf": {
+                      "content": "Pedido 1 · atualizado em 12/11/2026 às 11:45",
+                      "fontSize": 25
+                    },
+                    "qEiz4": {
+                      "fontSize": 30
+                    },
+                    "B8T6z": {
+                      "id": "Nxzu8",
+                      "type": "ref",
+                      "ref": "Q2KIl",
+                      "name": "Estado",
+                      "descendants": {
+                        "E8Q6ky": {
+                          "fontSize": 26
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "C4HRrp",
+                  "type": "ref",
+                  "ref": "Rmpba",
+                  "name": "Novo pedido",
+                  "descendants": {
+                    "X4MyZ": {
+                      "fontSize": 28
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "g7bjQ",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "LPGL8",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container",
+          "descendants": {
+            "I24Ny": {
+              "fontSize": 25
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "E6Lb3E",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "BIzCa",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "c26Ew",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "OzUVO",
+      "x": 11780,
+      "y": 5000,
+      "name": "E4.4 Acessibilidade — Fonte ampliada E2.2",
+      "context": "Aplicação parcial de E2.2. PED-0001. POST/GET /solicitacoes/{id}/documentos é referência planejada; não implementada neste desenho. Ver contrato e dados sintéticos em mobile/design.",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "B5ffFZ",
+          "name": "Conteúdo de Documentos",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "justifyContent": "space_between",
+          "children": [
+            {
+              "id": "uSFaG",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar · PED-0001",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 5",
+                  "fontSize": 28
+                }
+              }
+            },
+            {
+              "id": "Ji9VV",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título e instrução",
+              "descendants": {
+                "ptFtO": {
+                  "fontSize": 40
+                },
+                "yQSkI": {
+                  "fontSize": 28
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "wN4Az",
+              "name": "Arquivos e anexação",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "V1GuvR",
+                  "name": "Arquivos deste pedido",
+                  "width": "fill_container",
+                  "fill": "$rc-surface",
+                  "cornerRadius": "$rc-radius-task",
+                  "layout": "vertical",
+                  "padding": [
+                    20,
+                    20,
+                    6,
+                    20
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NQNp3",
+                      "name": "Título da lista",
+                      "fill": "$rc-text",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Arquivos deste pedido",
+                      "lineHeight": 1.25,
+                      "fontFamily": "$rc-font-heading",
+                      "fontSize": 30,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "id": "H07vL",
+                      "type": "ref",
+                      "ref": "N6LHC",
+                      "width": "fill_container",
+                      "name": "Encaminhamento · Enviado",
+                      "stroke": "$rc-divider",
+                      "strokeWidth": {
+                        "bottom": 1
+                      },
+                      "layout": "vertical",
+                      "alignItems": "start",
+                      "gap": 8,
+                      "descendants": {
+                        "WL6qI": {
+                          "fontSize": 30
+                        },
+                        "wFeTH": {
+                          "fontSize": 25
+                        },
+                        "UjUmc": {
+                          "fontSize": 26
+                        },
+                        "ZDnxF/BXZKR": {
+                          "fontSize": 26
+                        },
+                        "QAm4l": {
+                          "fontSize": 28
+                        }
+                      }
+                    },
+                    {
+                      "id": "dnBeC",
+                      "type": "ref",
+                      "ref": "N6LHC",
+                      "width": "fill_container",
+                      "name": "Identificação · Enviado",
+                      "layout": "vertical",
+                      "alignItems": "start",
+                      "gap": 8,
+                      "descendants": {
+                        "WL6qI": {
+                          "content": "Identificação ou cartão do SUS",
+                          "fontSize": 30
+                        },
+                        "wFeTH": {
+                          "content": "documento-identidade.jpg",
+                          "fontSize": 25
+                        },
+                        "UjUmc": {
+                          "content": "JPG · 1,2 MB",
+                          "fontSize": 26
+                        },
+                        "ZDnxF/BXZKR": {
+                          "fontSize": 26
+                        },
+                        "QAm4l": {
+                          "fontSize": 28
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "BnhA9",
+                  "type": "ref",
+                  "ref": "DpTaD",
+                  "width": "fill_container",
+                  "name": "Anexar arquivo",
+                  "descendants": {
+                    "bD8Xp": {
+                      "content": "Anexar documento",
+                      "fontSize": 28
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "vuv85",
+                  "name": "Limites de arquivo",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "2 de 3 documentos · até 5 MB cada\nPDF até 5 páginas, JPEG ou PNG",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": 26,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "NjUkD",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": 8
+            },
+            {
+              "type": "frame",
+              "id": "kIDtq",
+              "name": "Envio para leitura simulada",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 10,
+              "children": [
+                {
+                  "id": "c1S5S",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Ler documentos",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Ler documentos",
+                      "fontSize": 28
+                    }
+                  }
+                },
+                {
+                  "type": "text",
+                  "id": "B2tx4Z",
+                  "name": "Nota",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Leitura simulada. Depois você confere o que foi lido.",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": 26,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sx6T3",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container",
+          "descendants": {
+            "I24Ny": {
+              "fontSize": 25
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "n5NbdK",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "s9E8wo",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "onDK2",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "VJC8f",
+      "x": 12250,
+      "y": 5000,
+      "name": "E4.4 Acessibilidade — Fonte ampliada E3.3",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "l6sGt",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "j8b9V",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 2",
+                  "fontSize": 28
+                },
+                "ck3vo": {
+                  "enabled": true
+                },
+                "ck3vo/OS6gv": {
+                  "fontSize": 24
+                }
+              }
+            },
+            {
+              "id": "z78D2C",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Resultado da verificação",
+                  "fontSize": 40
+                },
+                "yQSkI": {
+                  "content": "Revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": 26,
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "KpzsQ",
+              "type": "ref",
+              "ref": "gaBUw",
+              "name": "Resultado geral",
+              "descendants": {
+                "x8CHM": {
+                  "fontSize": 26
+                }
+              }
+            },
+            {
+              "id": "t6gXdZ",
+              "type": "ref",
+              "ref": "fUtcU",
+              "width": "fill_container",
+              "name": "Resumo simulado",
+              "descendants": {
+                "uBLvz": {
+                  "layout": "vertical",
+                  "alignItems": "start",
+                  "gap": 8
+                },
+                "A5sDHw": {
+                  "fontSize": 30,
+                  "width": "fill_container",
+                  "textGrowth": "fixed-width"
+                },
+                "JCkhb/OS6gv": {
+                  "fontSize": 24
+                },
+                "CwLLI": {
+                  "content": "O encaminhamento não informa o motivo da consulta e foi emitido há mais de 180 dias. A unidade que emitiu o documento precisa completá-lo e emitir uma via atualizada.",
+                  "fontSize": 28
+                },
+                "jJ6U2": {
+                  "fontSize": 25
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "c2pHuz",
+              "name": "O que falta",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "O que falta",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": 30,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "g2VMRQ",
+              "name": "Pendências",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "oJHDY",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Motivo do encaminhamento informado",
+                  "descendants": {
+                    "JdyIY": {
+                      "content": "Motivo do encaminhamento informado",
+                      "fontSize": 30
+                    },
+                    "eHiDv": {
+                      "content": "RC-R04 · Pendente · encaminhamento-ubs-santa-aurora.pdf",
+                      "fontSize": 26
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: unidade emissora",
+                      "fontSize": 26
+                    }
+                  }
+                },
+                {
+                  "id": "Itjgs",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Encaminhamento dentro da validade",
+                  "descendants": {
+                    "JdyIY": {
+                      "content": "Encaminhamento dentro da validade",
+                      "fontSize": 30
+                    },
+                    "eHiDv": {
+                      "content": "RC-R05 · Pendente · emitido em 02/03/2026",
+                      "fontSize": 26
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: unidade emissora",
+                      "fontSize": 26
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "e7VgLU",
+              "name": "Outros critérios",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Outros critérios",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": 30,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "LQ2on",
+              "name": "Outros critérios",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "J3cL7P",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R01",
+                  "layout": "vertical",
+                  "alignItems": "start",
+                  "gap": 8,
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento presente",
+                      "fontSize": 28
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R01",
+                      "fontSize": 25
+                    },
+                    "G9QBc": {
+                      "id": "AIoCF",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado",
+                      "descendants": {
+                        "b7be18": {
+                          "fontSize": 26
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "jZktJ",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R02",
+                  "layout": "vertical",
+                  "alignItems": "start",
+                  "gap": 8,
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Identificação coerente entre documentos",
+                      "fontSize": 28
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R02",
+                      "fontSize": 25
+                    },
+                    "G9QBc": {
+                      "id": "ljgIj",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado",
+                      "descendants": {
+                        "b7be18": {
+                          "fontSize": 26
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "ACm8C",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R03",
+                  "layout": "vertical",
+                  "alignItems": "start",
+                  "gap": 8,
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Documento de identificação",
+                      "fontSize": 28
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R03",
+                      "fontSize": 25
+                    },
+                    "G9QBc": {
+                      "id": "go9IV",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado",
+                      "descendants": {
+                        "b7be18": {
+                          "fontSize": 26
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": "o1pY9",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R06",
+                  "layout": "vertical",
+                  "alignItems": "start",
+                  "gap": 8,
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Autorização do responsável legal",
+                      "fontSize": 28
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R06",
+                      "fontSize": 25
+                    },
+                    "G9QBc": {
+                      "id": "R30Ff",
+                      "type": "ref",
+                      "ref": "mLB06",
+                      "name": "Resultado",
+                      "descendants": {
+                        "X5iPo6": {
+                          "fontSize": 26
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "yujJv",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "z3ZyUD",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container",
+          "descendants": {
+            "I24Ny": {
+              "fontSize": 25
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "hbtnJ",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "F7zTvl",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "JQa3Q",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "h4XJgx",
+      "x": 10840,
+      "y": 7344,
+      "name": "Nota · E4.4 Acessibilidade — Anotações",
+      "width": 390,
+      "height": 170,
+      "content": "E4.4 Acessibilidade — Anotações\nFR-053 · metas de mobile/design/acessibilidade.md: contraste WCAG AA, alvos de 48, ordem de leitura e rótulos para leitor de tela de E1.2, E2.2 e E3.3\nQuadro de anotação, não é uma tela do aplicativo"
+    },
+    {
+      "type": "note",
+      "id": "F8O9k",
+      "x": 11310,
+      "y": 6468,
+      "name": "Nota · E4.4 Acessibilidade — Fonte ampliada E1.2",
+      "width": 390,
+      "height": 170,
+      "content": "E4.4 Acessibilidade — Fonte ampliada E1.2\nCópia de E1.2 Meus pedidos (H0BJi). Texto a 200% pela escala não linear do Android 14 (aproximada): 13→25 · 14→26 · 16→28 · 18→30 · 22→35 · 32→40.\nFonte ampliada: o conteúdo essencial continua visível.\nFR-053 · não verificado em aparelho"
+    },
+    {
+      "type": "note",
+      "id": "W8VyG",
+      "x": 11780,
+      "y": 6487,
+      "name": "Nota · E4.4 Acessibilidade — Fonte ampliada E2.2",
+      "width": 390,
+      "height": 170,
+      "content": "E4.4 Acessibilidade — Fonte ampliada E2.2\nCópia de E2.2 Seus documentos (CvQRm). Texto a 200% pela escala não linear do Android 14 (aproximada): 13→25 · 14→26 · 16→28 · 18→30 · 22→35 · 32→40.\nCom fonte ampliada, cada linha de arquivo empilha “Abrir” e “Mais opções” abaixo do nome.\nFR-053 · não verificado em aparelho"
+    },
+    {
+      "type": "note",
+      "id": "gY7Q3",
+      "x": 12250,
+      "y": 7687,
+      "name": "Nota · E4.4 Acessibilidade — Fonte ampliada E3.3",
+      "width": 390,
+      "height": 170,
+      "content": "E4.4 Acessibilidade — Fonte ampliada E3.3\nCópia de E3.3 Resultado — Com pendências (L5Keg). Texto a 200% pela escala não linear do Android 14 (aproximada): 13→25 · 14→26 · 16→28 · 18→30 · 22→35 · 32→40.\nCom fonte ampliada, o selo SIMULADO desce para baixo do título do resumo e o resultado de cada critério fica abaixo do nome.\nFR-053 · não verificado em aparelho"
     }
   ],
   "variables": {
