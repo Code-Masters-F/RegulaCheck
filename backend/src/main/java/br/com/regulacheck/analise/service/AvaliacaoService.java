@@ -38,10 +38,12 @@ import org.slf4j.LoggerFactory;
  * documentos, leitura ou decisoes e nao chama IA. Cada consulta abre e fecha a propria conexao, sem transacao nem
  * bloqueio; por isso o retrato e conferido (revisao da leitura, leitura ainda atual e documentos da leitura iguais
  * aos disponiveis) e, se algo mudou no meio, a montagem e recusada em vez de devolver um resultado misturado. Quem
- * publicar o resultado (RC-13) confere de novo sob o bloqueio do pedido.
+ * publica o resultado ({@link AnaliseService}, RC-13) confere de novo, sob o bloqueio do pedido, a revisao e o
+ * instante da conferencia antes de gravar.
  *
- * <p>Sem rota nesta historia (decisao do responsavel, 13/11/2026): a RC-13 instancia este servico na composicao
- * junto com {@code /solicitacoes/{id}/analises}. Nao guarda dados de requisicao em campos.
+ * <p>Sem rota propria: e usado pelo {@link AnaliseService} ({@code POST /solicitacoes/{id}/analises}). Nao e
+ * {@code final} para que os testes da RC-13 provoquem falhas e alteracoes entre a avaliacao e a gravacao. Nao guarda
+ * dados de requisicao em campos.
  */
 public class AvaliacaoService {
 

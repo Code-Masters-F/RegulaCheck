@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao.controller;
 
+import br.com.regulacheck.analise.controller.AnaliseController;
 import br.com.regulacheck.auth.autorizacao.Erros;
 import br.com.regulacheck.auth.controller.AutenticacaoFiltro;
 import br.com.regulacheck.auth.service.SessaoAutenticada;
@@ -49,6 +50,7 @@ public class SolicitacaoController extends ServletJson {
     private final transient DocumentoController documentos;
     private final transient ExtracaoController extracao;
     private final transient ConferenciaController conferencia;
+    private final transient AnaliseController analises;
 
     /**
      * @param servico casos de uso da solicitacao
@@ -58,19 +60,22 @@ public class SolicitacaoController extends ServletJson {
      *     {@code /{id}/extracoes}
      * @param conferencia controller da conferencia da transcricao (RC-11), ao qual este entrega o subcaminho
      *     {@code /{id}/extracoes/{extracaoId}/conferencia}
+     * @param analises controller das analises (RC-13), ao qual este entrega o subcaminho {@code /{id}/analises}
      */
     public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos,
-            ExtracaoController extracao, ConferenciaController conferencia) {
+            ExtracaoController extracao, ConferenciaController conferencia, AnaliseController analises) {
         super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
         this.documentos = documentos;
         this.extracao = extracao;
         this.conferencia = conferencia;
+        this.analises = analises;
     }
 
     /**
      * Entrega ao {@link DocumentoController} os subcaminhos de documentos, ao {@link ConferenciaController} o da
-     * conferencia e ao {@link ExtracaoController} o de extracao; o resto segue o fluxo normal. A RC-05
+     * conferencia, ao {@link ExtracaoController} o de extracao e ao {@link AnaliseController} o de analises; o resto
+     * segue o fluxo normal. A RC-05
      * so aceita um registro por caminho, e {@code /solicitacoes/*} e este.
      */
     @Override
@@ -88,6 +93,10 @@ public class SolicitacaoController extends ServletJson {
         }
         if (ExtracaoController.reconhece(requisicao.getPathInfo())) {
             extracao.atender(requisicao, resposta);
+            return;
+        }
+        if (AnaliseController.reconhece(requisicao.getPathInfo())) {
+            analises.atender(requisicao, resposta);
             return;
         }
         super.service(requisicao, resposta);

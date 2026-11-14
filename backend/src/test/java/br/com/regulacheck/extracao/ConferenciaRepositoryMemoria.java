@@ -100,6 +100,7 @@ public final class ConferenciaRepositoryMemoria implements ConferenciaRepository
             }
             Map<String, DecisaoConferencia> doPedido = decisoes.computeIfAbsent(solicitacaoId,
                     id -> new TreeMap<>()).computeIfAbsent(extracaoId, id -> new TreeMap<>());
+            int alteradas = 0;
             for (DecisaoNova nova : novas) {
                 String chave = chave(nova.documentoId(), nova.codigo());
                 DecisaoConferencia vigente = doPedido.get(chave);
@@ -109,6 +110,11 @@ public final class ConferenciaRepositoryMemoria implements ConferenciaRepository
                 doPedido.put(chave, new DecisaoConferencia(nova.documentoId(), nova.codigo(), nova.tipo(),
                         nova.motivo(), agora));
                 gravacoes++;
+                alteradas++;
+            }
+            if (alteradas > 0) {
+                // RC-13: decisao nova ou diferente tira a vigencia da analise, como o JDBC na mesma transacao.
+                pedidos.invalidarAnaliseVigente(solicitacaoId);
             }
             return ResultadoRegistroDecisao.registrada();
         }
