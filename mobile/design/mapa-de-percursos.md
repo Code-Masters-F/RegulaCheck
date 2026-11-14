@@ -2,7 +2,7 @@
 
 > Como as telas se ligam, conforme [specs/014-fluxo-telas-app/spec.md](../../specs/014-fluxo-telas-app/spec.md) (fluxo que acompanha o backend). IDs dos quadros: [specs/014-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/014-fluxo-telas-app/contracts/inventario-quadros.md). Dados: [dados-ficticios.md](dados-ficticios.md). Mapa em texto, sem protótipo executável.
 >
-> **Situação em 14/11/2026:** faixas RC-36 (E1.1–E1.5, 25 quadros) e RC-37 (E2.1–E2.7, 28 quadros) desenhadas; RC-38 com leitura e conferência (E3.1–E3.2, 12 quadros) desenhadas, verificação em diante planejada. RC-39 planejada.
+> **Situação em 14/11/2026:** faixas RC-36 (E1.1–E1.5, 25 quadros) e RC-37 (E2.1–E2.7, 28 quadros) desenhadas; RC-38 com leitura, conferência, verificação, resultado e pendência (E3.1–E3.4 e E3.8, 22 quadros) desenhadas; correção, conclusão e comprovante planejados. RC-39 planejada.
 
 ## Percurso de entrada (RC-36) — desenhado
 
@@ -25,7 +25,7 @@
 | Resultado não vigente | "Ler documentos de novo" → **E3.1** |
 | Simulação concluída | "Ver comprovante" → **E3.6** |
 
-## Percurso principal da demonstração (até a conferência desenhado; verificação em diante planejado)
+## Percurso principal da demonstração (P1 desenhado; correção e conclusão planejadas)
 
 1. **E1.2** → "Novo pedido" → **E2.1** → "Criar rascunho" → **E2.2** do Pedido 5.
 2. **E2.2** → "Anexar documento" → **E2.7** tipo → origem ("Fotografar" passa por **E4.1**) → linha "Enviando…" → "Enviado"; recusa → **E2.3**.

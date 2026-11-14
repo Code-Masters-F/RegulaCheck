@@ -31502,6 +31502,2242 @@
       "width": 390,
       "height": 150,
       "content": "E3.2 Conferência — Erro ao salvar\nOperação: PUT …/conferencia ✅ → 400/503 · nada é gravado\nFR-040 · decisões mantidas na tela\nDados: Pedido 5"
+    },
+    {
+      "type": "frame",
+      "id": "Xe5GF",
+      "x": 11310,
+      "y": 2400,
+      "name": "E3.8 Verificar critérios — Confirmação",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "lAHGm",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "ZvoGA",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": " "
+                },
+                "ZaXxn": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "Nb39t",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Pedido 5"
+                },
+                "yQSkI": {
+                  "content": "Consulta ambulatorial em cardiologia · Santa Aurora (município fictício)",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "BlZb4",
+              "type": "ref",
+              "ref": "MUJZL",
+              "width": "fill_container",
+              "name": "Próximo passo",
+              "descendants": {
+                "GH8CA": {
+                  "content": "Confira se a leitura corresponde aos seus documentos."
+                },
+                "MDoFD/irqwJ": {
+                  "content": "Conferir leitura"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "K8tA25",
+              "name": "Seções",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "igQ7D",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Documentos",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Documentos"
+                    },
+                    "YScCY": {
+                      "content": "2 de 3 anexados"
+                    }
+                  }
+                },
+                {
+                  "id": "sRYqO",
+                  "type": "ref",
+                  "ref": "RvCJo",
+                  "width": "fill_container",
+                  "name": "Leitura e conferência",
+                  "descendants": {
+                    "n5H6Db": {
+                      "content": "Leitura e conferência"
+                    },
+                    "YScCY": {
+                      "content": "Falta conferir · 8 sem decisão"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "z5eIj",
+              "name": "Dados do pedido",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Criado em 13/11/2026 às 10:05 · atualizado em 13/11/2026 às 10:15 · revisão 3 · Protocolo acadêmico fictício, versão 0.1",
+              "lineHeight": 1.5,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-caption",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "TonzW",
+              "name": "Ações de apoio",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "id": "hpXwJ",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Verificar critérios",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Verificar critérios"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wSMZk",
+              "name": "Respiro flexível",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "xcPHY",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "rectangle",
+          "id": "yJ3vp",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "Véu",
+          "fill": "$rc-scrim",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "id": "l4CnqQ",
+          "type": "ref",
+          "ref": "Y6DS1",
+          "name": "Diálogo",
+          "layoutPosition": "absolute",
+          "x": 24,
+          "y": 223,
+          "width": 342,
+          "descendants": {
+            "n1aZfq": {
+              "icon": "list-checks",
+              "fill": "$rc-action"
+            },
+            "G6EZho": {
+              "content": "Verificar critérios?"
+            },
+            "o0LOO": {
+              "content": "3 informações lidas estão sem decisão e contarão como não verificadas.\n\nDepois de verificar, você não poderá anexar novos documentos, só substituir ou remover os enviados."
+            },
+            "aSRwp/irqwJ": {
+              "content": "Verificar critérios"
+            },
+            "sqmw0": {
+              "stroke": "$rc-action"
+            },
+            "sqmw0/jGFGo": {
+              "enabled": false
+            },
+            "sqmw0/iQQmX": {
+              "content": "Voltar",
+              "fill": "$rc-action"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "L5Keg",
+      "x": 11780,
+      "y": 2400,
+      "name": "E3.3 Resultado — Com pendências",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "P4W9z",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "dzFfx",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 2"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "I7kKDs",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Resultado da verificação"
+                },
+                "yQSkI": {
+                  "content": "Revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "t1n4n",
+              "type": "ref",
+              "ref": "gaBUw",
+              "name": "Resultado geral"
+            },
+            {
+              "id": "lqnJv",
+              "type": "ref",
+              "ref": "fUtcU",
+              "width": "fill_container",
+              "name": "Resumo simulado",
+              "descendants": {
+                "CwLLI": {
+                  "content": "O encaminhamento não informa o motivo da consulta e foi emitido há mais de 180 dias. A unidade que emitiu o documento precisa completá-lo e emitir uma via atualizada."
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "DXHhE",
+              "name": "O que falta",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "O que falta",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "B82Chf",
+              "name": "Pendências",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "L6ewLx",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Motivo do encaminhamento informado",
+                  "descendants": {
+                    "JdyIY": {
+                      "content": "Motivo do encaminhamento informado"
+                    },
+                    "eHiDv": {
+                      "content": "RC-R04 · Pendente · encaminhamento-ubs-santa-aurora.pdf"
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: unidade emissora"
+                    }
+                  }
+                },
+                {
+                  "id": "FJV2g",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Encaminhamento dentro da validade",
+                  "descendants": {
+                    "JdyIY": {
+                      "content": "Encaminhamento dentro da validade"
+                    },
+                    "eHiDv": {
+                      "content": "RC-R05 · Pendente · emitido em 02/03/2026"
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: unidade emissora"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "Z9bkP",
+              "name": "Outros critérios",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Outros critérios",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "QVHl1",
+              "name": "Outros critérios",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "RvlMD",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R01",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento presente"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R01"
+                    },
+                    "G9QBc": {
+                      "id": "I3Icn",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "p9OKa",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R02",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Identificação coerente entre documentos"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R02"
+                    },
+                    "G9QBc": {
+                      "id": "Bzwbr",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "YSuyL",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R03",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Documento de identificação"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R03"
+                    },
+                    "G9QBc": {
+                      "id": "K14uyW",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "PmMou",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R06",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Autorização do responsável legal"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R06"
+                    },
+                    "G9QBc": {
+                      "id": "IkT1b",
+                      "type": "ref",
+                      "ref": "mLB06",
+                      "name": "Resultado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tBLxB",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "FsVhc",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "fZOLT",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "uGjTA",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "FgInW",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "zMx9T",
+      "x": 12250,
+      "y": 2400,
+      "name": "E3.3 Resultado — Confira a leitura",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "oevNh",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "z8Tba",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 7"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "ca13U",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Resultado da verificação"
+                },
+                "yQSkI": {
+                  "content": "Revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "k3qTC",
+              "type": "ref",
+              "ref": "T2rFPT",
+              "name": "Resultado geral"
+            },
+            {
+              "id": "lSWWu",
+              "type": "ref",
+              "ref": "fUtcU",
+              "width": "fill_container",
+              "name": "Resumo simulado",
+              "descendants": {
+                "CwLLI": {
+                  "content": "A data de nascimento não pôde ser lida na foto do documento de identificação. Envie uma foto mais nítida ou confira a leitura."
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "LkbDg",
+              "name": "Texto",
+              "fill": "$rc-text-muted",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Alguma informação não pôde ser verificada. Isso não significa que ela esteja faltando.",
+              "lineHeight": 1.45,
+              "fontFamily": "$rc-font-body",
+              "fontSize": "$rc-size-meta",
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "iPy3Z",
+              "name": "O que falta",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "O que falta",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "QyP5A",
+              "name": "Pendências",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "n1NRKQ",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Identificação coerente entre documentos",
+                  "descendants": {
+                    "EprfV": {
+                      "icon": "circle-dashed",
+                      "fill": "$rc-text-muted"
+                    },
+                    "JdyIY": {
+                      "content": "Identificação coerente entre documentos"
+                    },
+                    "eHiDv": {
+                      "content": "RC-R02 · Não verificável · a leitura ainda não foi conferida"
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: você"
+                    }
+                  }
+                },
+                {
+                  "id": "eLudY",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Documento de identificação",
+                  "descendants": {
+                    "EprfV": {
+                      "icon": "circle-dashed",
+                      "fill": "$rc-text-muted"
+                    },
+                    "JdyIY": {
+                      "content": "Documento de identificação"
+                    },
+                    "eHiDv": {
+                      "content": "RC-R03 · Não verificável · data de nascimento ilegível"
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: você"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "Ti4IX",
+              "name": "Outros critérios",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Outros critérios",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "zXynL",
+              "name": "Outros critérios",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "nfnDI",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R01",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento presente"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R01"
+                    },
+                    "G9QBc": {
+                      "id": "arAKq",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "b1eESB",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R04",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Motivo do encaminhamento informado"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R04"
+                    },
+                    "G9QBc": {
+                      "id": "pJGxm",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "yXoQh",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R05",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento dentro da validade"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R05"
+                    },
+                    "G9QBc": {
+                      "id": "L6gx6f",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "Go23K",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R06",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Autorização do responsável legal"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R06"
+                    },
+                    "G9QBc": {
+                      "id": "Y7lBx",
+                      "type": "ref",
+                      "ref": "mLB06",
+                      "name": "Resultado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "MEs4M",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Conferir leitura",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Conferir leitura"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "IU3uD",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "Dg0hI",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "SKGHi",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "LTcBH",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "vtxa5",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "cAl1Z",
+      "x": 12720,
+      "y": 2400,
+      "name": "E3.3 Resultado — Sem pendências identificadas",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "h4KaM",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "tylb8",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 1"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "WD0ef",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Resultado da verificação"
+                },
+                "yQSkI": {
+                  "content": "Revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "F0Ozrq",
+              "type": "ref",
+              "ref": "xPZ4q",
+              "name": "Resultado geral"
+            },
+            {
+              "id": "m0rxS",
+              "type": "ref",
+              "ref": "fUtcU",
+              "width": "fill_container",
+              "name": "Resumo simulado",
+              "descendants": {
+                "CwLLI": {
+                  "content": "Nenhuma pendência foi identificada nesta revisão. Isso não significa aprovação do SUS."
+                }
+              }
+            },
+            {
+              "id": "ZVNbf",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Aviso",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Isso não é aprovação do SUS. Os critérios são demonstrativos e não garantem vaga nem prazo."
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "a582h",
+              "name": "Critérios",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Critérios",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "YLzzc",
+              "name": "Critérios",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "Ky6zq",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R01",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento presente"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R01"
+                    },
+                    "G9QBc": {
+                      "id": "mu7FA",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "bh0iu",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R02",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Identificação coerente entre documentos"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R02"
+                    },
+                    "G9QBc": {
+                      "id": "DS1Gf",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "ZQgq7",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R03",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Documento de identificação"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R03"
+                    },
+                    "G9QBc": {
+                      "id": "RJ1Wd",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "RwCn6",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R04",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Motivo do encaminhamento informado"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R04"
+                    },
+                    "G9QBc": {
+                      "id": "Cm2nR",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "SjgCh",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R05",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento dentro da validade"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R05"
+                    },
+                    "G9QBc": {
+                      "id": "S8aPPV",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "YIVEH",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R06",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Autorização do responsável legal"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R06"
+                    },
+                    "G9QBc": {
+                      "id": "J40F56",
+                      "type": "ref",
+                      "ref": "mLB06",
+                      "name": "Resultado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "RhQch",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Concluir simulação",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Concluir simulação"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "pW7dJ",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "LJL8V",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "XP5PC",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "y8PNQ",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "PC23w",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "EAe9t",
+      "x": 13190,
+      "y": 2400,
+      "name": "E3.3 Resultado — Falha",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "PPdY5",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "L34FIE",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 8"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "r43C7",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Resultado da verificação"
+                },
+                "yQSkI": {
+                  "content": "Revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "thJUJ",
+              "type": "ref",
+              "ref": "y0gquj",
+              "name": "Resultado geral"
+            },
+            {
+              "id": "FGVIu",
+              "type": "ref",
+              "ref": "E7cU7E",
+              "width": "fill_container",
+              "name": "Falha",
+              "descendants": {
+                "K9yeuX": {
+                  "content": "A verificação não pôde ser feita."
+                },
+                "h7SWfJ": {
+                  "content": "Nenhuma conclusão foi tirada. Você pode tentar de novo."
+                },
+                "zKudv": {
+                  "enabled": false
+                }
+              }
+            },
+            {
+              "id": "IuO7N",
+              "type": "ref",
+              "ref": "YNfQA",
+              "width": "fill_container",
+              "name": "Tentar de novo",
+              "descendants": {
+                "irqwJ": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "JkYYO",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "H2vpb7",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "udibQ",
+      "x": 13660,
+      "y": 2400,
+      "name": "E3.3 Resultado — Resumo indisponível",
+      "clip": true,
+      "width": 390,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "kOWms",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "NUs0g",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 2"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "vwrcA",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "Resultado da verificação"
+                },
+                "yQSkI": {
+                  "content": "Revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "id": "VefIg",
+              "type": "ref",
+              "ref": "gaBUw",
+              "name": "Resultado geral"
+            },
+            {
+              "id": "wv6fC",
+              "type": "ref",
+              "ref": "fUtcU",
+              "width": "fill_container",
+              "name": "Resumo simulado",
+              "descendants": {
+                "CwLLI": {
+                  "content": "O resumo não está disponível agora. Os critérios abaixo continuam valendo."
+                },
+                "jJ6U2": {
+                  "content": "Resumo padrão: o resumo simulado falhou; a lista de critérios continua valendo."
+                }
+              }
+            },
+            {
+              "id": "SwJQM",
+              "type": "ref",
+              "ref": "DpTaD",
+              "width": "fill_container",
+              "name": "Tentar resumo de novo",
+              "descendants": {
+                "CS3YG": {
+                  "icon": "refresh-cw"
+                },
+                "bD8Xp": {
+                  "content": "Tentar de novo"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "id": "al0Zw",
+              "name": "O que falta",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "O que falta",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "o3BlVh",
+              "name": "Pendências",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "CdXUD",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Motivo do encaminhamento informado",
+                  "descendants": {
+                    "JdyIY": {
+                      "content": "Motivo do encaminhamento informado"
+                    },
+                    "eHiDv": {
+                      "content": "RC-R04 · Pendente · encaminhamento-ubs-santa-aurora.pdf"
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: unidade emissora"
+                    }
+                  }
+                },
+                {
+                  "id": "y0b0P",
+                  "type": "ref",
+                  "ref": "x6k96",
+                  "width": "fill_container",
+                  "name": "Encaminhamento dentro da validade",
+                  "descendants": {
+                    "JdyIY": {
+                      "content": "Encaminhamento dentro da validade"
+                    },
+                    "eHiDv": {
+                      "content": "RC-R05 · Pendente · emitido em 02/03/2026"
+                    },
+                    "fGtI1": {
+                      "content": "Quem resolve: unidade emissora"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kn7Yc",
+              "name": "Outros critérios",
+              "fill": "$rc-text",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Outros critérios",
+              "lineHeight": 1.25,
+              "fontFamily": "$rc-font-heading",
+              "fontSize": "$rc-size-title",
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "R5jqpM",
+              "name": "Outros critérios",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "TX8js",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R01",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Encaminhamento presente"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R01"
+                    },
+                    "G9QBc": {
+                      "id": "s0atj",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "g1ZBx5",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R02",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Identificação coerente entre documentos"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R02"
+                    },
+                    "G9QBc": {
+                      "id": "HxIib",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "WHvLS",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R03",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Documento de identificação"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R03"
+                    },
+                    "G9QBc": {
+                      "id": "tBD0H",
+                      "type": "ref",
+                      "ref": "nH0ph",
+                      "name": "Resultado"
+                    }
+                  }
+                },
+                {
+                  "id": "wRp6B",
+                  "type": "ref",
+                  "ref": "M3pWj",
+                  "width": "fill_container",
+                  "name": "RC-R06",
+                  "descendants": {
+                    "EqxjL": {
+                      "content": "Autorização do responsável legal"
+                    },
+                    "Sl3xl": {
+                      "content": "RC-R06"
+                    },
+                    "G9QBc": {
+                      "id": "pkOOl",
+                      "type": "ref",
+                      "ref": "mLB06",
+                      "name": "Resultado"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "L80huX",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": 8
+            }
+          ]
+        },
+        {
+          "id": "EIgVM",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "uEAK0",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 843,
+          "name": "Dobra da tela · 844",
+          "width": 390,
+          "height": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "NYcJL",
+              "x": 0,
+              "y": 0,
+              "name": "Linha da dobra",
+              "fill": "$rc-accent",
+              "width": 390,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "A5cBvl",
+              "x": 262,
+              "y": 3,
+              "name": "Rótulo da dobra",
+              "fill": "$rc-simulated-fg",
+              "content": "dobra · 844",
+              "fontFamily": "$rc-font-body",
+              "fontSize": 11,
+              "fontWeight": "700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "QQLpq",
+      "x": 14600,
+      "y": 2400,
+      "name": "E3.4 Detalhe da pendência — Substituir arquivo",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "NnIio",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "tIzFL",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 7"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "eJBmu",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "O que falta resolver"
+                },
+                "yQSkI": {
+                  "content": "RC-R03 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "rB4XI",
+              "name": "O que foi observado",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DwTss",
+                  "name": "Critério",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Documento de identificação",
+                  "lineHeight": 1.2,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-heading",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "lGmcW",
+                  "name": "Explicação",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando. Envie uma foto ou arquivo mais nítido ou confira a transcrição.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "GCYwJ",
+                  "name": "Origem",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Documento: documento-identidade-foto.jpg · data de nascimento ilegível",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-caption",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "b0fwar",
+              "name": "Dados da pendência",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "oP5Zb",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Situação",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Situação"
+                    },
+                    "unazT": {
+                      "content": "Não verificável · uma informação está ilegível"
+                    }
+                  }
+                },
+                {
+                  "id": "AyHKr",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Quem resolve",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Quem resolve"
+                    },
+                    "unazT": {
+                      "content": "Você"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "i74z9u",
+              "name": "Próximos passos",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "id": "zZOPL",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Substituir arquivo",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Substituir arquivo"
+                    }
+                  }
+                },
+                {
+                  "id": "ouisb",
+                  "type": "ref",
+                  "ref": "j97Pe",
+                  "width": "fill_container",
+                  "name": "Abrir documento",
+                  "descendants": {
+                    "yjg4m": {
+                      "content": "Abrir documento"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "D1gZg7",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "shrHZ",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "HK8ZN",
+      "x": 15070,
+      "y": 2400,
+      "name": "E3.4 Detalhe da pendência — Conferir leitura",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "PCvX2",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "I4n5D",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 7"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "SwpjR",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "O que falta resolver"
+                },
+                "yQSkI": {
+                  "content": "RC-R02 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "oKT6A",
+              "name": "O que foi observado",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Fdkbh",
+                  "name": "Critério",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Identificação coerente entre documentos",
+                  "lineHeight": 1.2,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-heading",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "FAs2z",
+                  "name": "Explicação",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando. Envie uma foto ou arquivo mais nítido ou confira a transcrição.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "V1A1Ze",
+                  "name": "Origem",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Documentos: encaminhamento-cardiologia.pdf e documento-identidade-foto.jpg · nome sem decisão",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-caption",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "fMAuD",
+              "name": "Dados da pendência",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "N8cV6R",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Situação",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Situação"
+                    },
+                    "unazT": {
+                      "content": "Não verificável · a leitura ainda não foi conferida"
+                    }
+                  }
+                },
+                {
+                  "id": "THZdM",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Quem resolve",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Quem resolve"
+                    },
+                    "unazT": {
+                      "content": "Você"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ggpHO",
+              "name": "Próximos passos",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "id": "mElCa",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Conferir leitura",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Conferir leitura"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "FYl5h",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "qy9qs",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "u8AYS3",
+      "x": 15540,
+      "y": 2400,
+      "name": "E3.4 Detalhe da pendência — Documento ausente",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "$rc-bg",
+      "layout": "vertical",
+      "gap": 16,
+      "padding": [
+        24,
+        24,
+        16,
+        24
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "pA7NB",
+          "name": "Conteúdo",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "children": [
+            {
+              "id": "J2IkLZ",
+              "type": "ref",
+              "ref": "PbS1q",
+              "width": "fill_container",
+              "name": "Voltar",
+              "descendants": {
+                "Fi0ec": {
+                  "content": "Pedido 1"
+                },
+                "ck3vo": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "id": "I89wv",
+              "type": "ref",
+              "ref": "YtzRv",
+              "width": "fill_container",
+              "name": "Título",
+              "descendants": {
+                "ptFtO": {
+                  "content": "O que falta resolver"
+                },
+                "yQSkI": {
+                  "content": "RC-R03 · Protocolo acadêmico fictício, versão 0.1",
+                  "fontSize": "$rc-size-meta",
+                  "lineHeight": 1.4
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "e8C4eS",
+              "name": "O que foi observado",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "BHcwJ",
+                  "name": "Critério",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Documento de identificação",
+                  "lineHeight": 1.2,
+                  "fontFamily": "$rc-font-heading",
+                  "fontSize": "$rc-size-heading",
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "WhoyT",
+                  "name": "Explicação",
+                  "fill": "$rc-text",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Envie um documento de identificação ou o cartão do SUS.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-body",
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "e2eFl",
+                  "name": "Origem",
+                  "fill": "$rc-text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Nenhum documento de identificação entre os enviados (revisão 1)",
+                  "lineHeight": 1.4,
+                  "fontFamily": "$rc-font-body",
+                  "fontSize": "$rc-size-caption",
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WVSzs",
+              "name": "Dados da pendência",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "id": "fmaBY",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Situação",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Situação"
+                    },
+                    "unazT": {
+                      "content": "Pendente"
+                    }
+                  }
+                },
+                {
+                  "id": "a17pC",
+                  "type": "ref",
+                  "ref": "GQWGd",
+                  "width": "fill_container",
+                  "name": "Quem resolve",
+                  "descendants": {
+                    "HYKFX": {
+                      "content": "Quem resolve"
+                    },
+                    "unazT": {
+                      "content": "Você"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "id": "YSJwS",
+              "type": "ref",
+              "ref": "hciy3",
+              "width": "fill_container",
+              "name": "Limitação",
+              "descendants": {
+                "W2imMz": {
+                  "content": "Depois da primeira verificação, o app só permite trocar documentos já enviados. Para incluir a identificação, substitua um dos documentos do pedido."
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "q0aVo",
+              "name": "Próximos passos",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "id": "XSiXY",
+                  "type": "ref",
+                  "ref": "YNfQA",
+                  "width": "fill_container",
+                  "name": "Substituir um documento",
+                  "descendants": {
+                    "irqwJ": {
+                      "content": "Substituir um documento"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hv7kQ",
+              "name": "Respiro",
+              "width": "fill_container",
+              "height": "fill_container"
+            }
+          ]
+        },
+        {
+          "id": "Bqh7M",
+          "type": "ref",
+          "ref": "zX8C6",
+          "name": "Aviso acadêmico",
+          "width": "fill_container"
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "id": "UvHpE",
+      "x": 11780,
+      "y": 3731,
+      "name": "Nota · E3.3 Resultado — Com pendências",
+      "width": 390,
+      "height": 150,
+      "content": "E3.3 Resultado — Com pendências\nOperações: GET …/analises † (RC-13) · resumo simulado † (RC-14)\nFR-042, FR-043 · sem data da verificação (campo ausente no contrato)\nDados: Pedido 2 da carga (R04 e R05 pendentes, unidade emissora)"
+    },
+    {
+      "type": "note",
+      "id": "N7FTJ",
+      "x": 12250,
+      "y": 3840,
+      "name": "Nota · E3.3 Resultado — Confira a leitura",
+      "width": 390,
+      "height": 150,
+      "content": "E3.3 Resultado — Confira a leitura\nOperação: GET …/analises † (RC-13)\nFR-042 · não verificável não prova ausência\nDados: Pedido 7 (só no design), como a revisão 2 do Pedido 3"
+    },
+    {
+      "type": "note",
+      "id": "nyLgU",
+      "x": 12720,
+      "y": 3724,
+      "name": "Nota · E3.3 Resultado — Sem pendências identificadas",
+      "width": 390,
+      "height": 150,
+      "content": "E3.3 Resultado — Sem pendências identificadas\nOperação: GET …/analises † (RC-13)\nFR-043 · \"não é aprovação do SUS\" · principal: \"Concluir simulação\" → E3.7\nDados: Pedido 1 da carga, revisão 2 (caso 1)"
+    },
+    {
+      "type": "note",
+      "id": "ayEHh",
+      "x": 13190,
+      "y": 3264,
+      "name": "Nota · E3.3 Resultado — Falha",
+      "width": 390,
+      "height": 150,
+      "content": "E3.3 Resultado — Falha\nOperação: POST …/analises † (RC-13) → FALHA_ANALISE\nFR-043 · nenhuma conclusão é mostrada\nDados: Pedido 8 (só no design)"
+    },
+    {
+      "type": "note",
+      "id": "AsfvR",
+      "x": 13660,
+      "y": 3731,
+      "name": "Nota · E3.3 Resultado — Resumo indisponível",
+      "width": 390,
+      "height": 150,
+      "content": "E3.3 Resultado — Resumo indisponível\nOperação: POST …/analises/{analiseId}/resumo † (RC-14)\nFR-042 · critérios continuam visíveis; resumo padrão identificado\nDados: Pedido 2 da carga"
+    },
+    {
+      "type": "note",
+      "id": "ueMPx",
+      "x": 14600,
+      "y": 3264,
+      "name": "Nota · E3.4 Detalhe da pendência — Substituir arquivo",
+      "width": 390,
+      "height": 150,
+      "content": "E3.4 Detalhe da pendência — Substituir arquivo\nOperações: GET …/analises † · GET/PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-13/RC-15)\nDados: Pedido 7 (só no design)"
+    },
+    {
+      "type": "note",
+      "id": "oogqp",
+      "x": 15070,
+      "y": 3264,
+      "name": "Nota · E3.4 Detalhe da pendência — Conferir leitura",
+      "width": 390,
+      "height": 150,
+      "content": "E3.4 Detalhe da pendência — Conferir leitura\nOperações: GET …/analises † · leva a E3.2\nFR-044, FR-045\nDados: Pedido 7 (só no design)"
+    },
+    {
+      "type": "note",
+      "id": "kdIIO",
+      "x": 15540,
+      "y": 3264,
+      "name": "Nota · E3.4 Detalhe da pendência — Documento ausente",
+      "width": 390,
+      "height": 150,
+      "content": "E3.4 Detalhe da pendência — Documento ausente\nOperações: GET …/analises † · PUT …/documentos/{docId} ✅ (POST fora de rascunho é recusado)\nFR-045 · limitação registrada para a RC-16\nDados: Pedido 1 da carga, revisão 1"
+    },
+    {
+      "type": "note",
+      "id": "iCbU0",
+      "x": 11310,
+      "y": 3264,
+      "name": "Nota · E3.8 Verificar critérios — Confirmação",
+      "width": 390,
+      "height": 150,
+      "content": "E3.8 Verificar critérios — Confirmação\nOperação: POST …/analises † (RC-13)\nFR-040, research D6 · não bloqueia; avisa campos sem decisão e o fim do anexo\nDados: Pedido 5 (só no design)"
     }
   ],
   "variables": {

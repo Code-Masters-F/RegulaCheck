@@ -101,3 +101,12 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Telas de conferência desenhadas inteiras com marca da dobra em 844; capa da RC-39 movida para y=5000.
 - Consulta de limites: 0 problemas; 0 `Legado/*`; selo SIMULADO em todos; nenhum campo de digitação; decisões oferecidas só as aceitas pelo backend (RC-11).
 - Não verificado: fonte ampliada, TalkBack, interação.
+
+## Feature 014 — US4 / RC-38 verificação e pendências (T043–T046), 14/11/2026
+
+- Commit da US3: `74cdfd3` (enviado).
+- 10 quadros: E3.8 Verificar critérios, E3.3 Resultado (5) e E3.4 Detalhe da pendência (`XCNVm` + 3).
+- Critérios e pendências conferidos com `database/scripts/02_carga_sintetica.sql` (Pedidos 1 e 2) e `docs/protocolo-academico.md`.
+- Consulta de limites: 0 problemas; 0 `Legado/*`; selo SIMULADO onde há resumo; negação de aprovação do SUS no resultado sem pendências.
+- Marco: percurso P1 (US1–US4, RC-36 a RC-38) desenhado em 14/11/2026, antes do marco de 16/11.
+- Não verificado: compreensão por pessoa que não desenhou (SC-003, SC-004), fonte ampliada, TalkBack.
