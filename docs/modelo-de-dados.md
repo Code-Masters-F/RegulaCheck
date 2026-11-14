@@ -1,4 +1,4 @@
-# Modelo de dados (RC-03, com a tabela de sessões da RC-04)
+# Modelo de dados (RC-03, com as extensões das histórias seguintes até a RC-13)
 
 Banco **Oracle 19c** da faculdade. Todas as tabelas têm o prefixo `RC_` porque o esquema é compartilhado com outros trabalhos. Os scripts estão em [`database/scripts/`](../database/scripts/README.md); a origem do desenho (decisões e alternativas) está em [`specs/003-modelo-banco-sql/`](../specs/003-modelo-banco-sql/data-model.md). Nomes de estados, resultados e regras coincidem com [api/estados-e-revisoes.md](api/estados-e-revisoes.md) e [protocolo-academico.md](protocolo-academico.md). Dados somente sintéticos; protocolo fictício.
 
@@ -12,7 +12,7 @@ erDiagram
     RC_PROTOCOLO ||--o{ RC_SOLICITACAO : "usa"
     RC_SOLICITACAO ||--|{ RC_REVISAO : "tem"
     RC_REVISAO ||--o{ RC_DOCUMENTO : "recebe (envio)"
-    RC_REVISAO ||--o| RC_ANALISE : "é analisada em"
+    RC_REVISAO ||--o{ RC_ANALISE : "é analisada em (1 por conferência, RC-13)"
     RC_REVISAO ||--o| RC_EXTRACAO : "é lida em (RC-10)"
     RC_EXTRACAO ||--|{ RC_EXTRACAO_DOCUMENTO : "lê cada documento"
     RC_DOCUMENTO ||--o{ RC_EXTRACAO_DOCUMENTO : "é lido em"
@@ -22,6 +22,8 @@ erDiagram
     RC_ANALISE ||--|{ RC_RESULTADO_REGRA : "resultado por regra"
     RC_REGRA ||--o{ RC_RESULTADO_REGRA : "avaliada em"
     RC_RESULTADO_REGRA ||--o| RC_PENDENCIA : "gera"
+    RC_PENDENCIA ||--o{ RC_PENDENCIA_EVIDENCIA : "aponta (RC-13)"
+    RC_DOCUMENTO ||--o{ RC_PENDENCIA_EVIDENCIA : "é evidência em"
     RC_SOLICITACAO ||--o{ RC_SESSAO_CAPTURA : "tem"
     RC_SESSAO_CAPTURA ||--o{ RC_LEITURA_SENSOR : "recebe"
     RC_SOLICITACAO ||--o| RC_SUBMISSAO : "é submetida (simulação)"
@@ -36,6 +38,7 @@ erDiagram
 - **Leitura dos documentos (RC-10):** `RC_EXTRACAO` guarda uma leitura (SIMULADA, `SIMULADA` sempre 1) por pedido e revisão (`UK (SOLICITACAO_ID, REVISAO)`, FK composta para `RC_REVISAO`); `RC_EXTRACAO_DOCUMENTO` guarda a leitura de cada documento (`LIDO`, `PROTEGIDO` ou `LEITURA_VAZIA`); `RC_EXTRACAO_CAMPO` guarda os seis campos de um documento lido (`IDENTIFICADO`, `NAO_LOCALIZADO` ou `ILEGIVEL`). Os `CHECK`s impedem valor ou origem em campo não identificado e campo identificado sem valor. "Atual" não é coluna: é `RC_EXTRACAO.REVISAO = RC_SOLICITACAO.REVISAO_ATUAL`. Criadas pelo `01_` (banco novo) ou pelo `08_extracao.sql` (banco criado antes da RC-10); excluir o rascunho apaga campos → documentos lidos → leitura antes de `RC_DOCUMENTO`.
 - **Conferência da transcrição (RC-11):** `RC_CONFERENCIA_CAMPO` guarda a decisão **vigente** da paciente sobre cada campo lido (`PK (EXTRACAO_DOCUMENTO_ID, CODIGO)`, FK composta para `RC_EXTRACAO_CAMPO`): `DECISAO` (`CONFIRMADA`/`DIVERGENTE`), `MOTIVO` (só e sempre em `DIVERGENTE`: `VALOR_DIFERENTE_DO_DOCUMENTO` ou `CAMPO_EXISTE_E_NAO_FOI_LIDO`) e `DECIDIDA_EM` (UTC). **Não há coluna de valor**: a paciente não digita informação. O banco não impõe qual decisão cabe a qual situação do campo (isso depende de outra tabela): o serviço impõe, sob o bloqueio do pedido. A tabela não altera `RC_SOLICITACAO`, `RC_REVISAO` nem a leitura. Criada pelo `01_` (banco novo) ou pelo `09_conferencia.sql` (banco criado antes da RC-11); excluir o rascunho apaga as decisões antes dos campos da leitura. A situação da conferência é calculada, não gravada.
 - **Versão do protocolo usada** fica em `RC_ANALISE.PROTOCOLO_ID` (a análise guarda a versão com que foi feita).
+- **Análises e histórico (RC-13):** cada `POST …/analises` concluído grava uma linha em `RC_ANALISE` (com `CONFERENCIA_EM` e `DATA_REFERENCIA`), um `RC_RESULTADO_REGRA` por regra, um `RC_PENDENCIA` (com `MOTIVO` quando não verificável) por regra pendente ou não verificável e, para cada pendência, as evidências em `RC_PENDENCIA_EVIDENCIA` (documento, campo e situação, **sem valor nem trecho**: a origem é lida de `RC_EXTRACAO_CAMPO` da leitura da mesma revisão). Nada é reescrito; só `VIGENTE` passa de 1 a 0 (nova análise, documento enviado/substituído/removido ou decisão de conferência que muda algo). Como a conferência não cria revisão, uma revisão pode ter mais de uma análise: a unicidade é `(SOLICITACAO_ID, REVISAO, CONFERENCIA_EM)`. A análise em andamento é `RC_SOLICITACAO.ESTADO = 'PROCESSANDO'` com `ANALISE_INICIADA_EM` (início e base do limite de 1 minuto). Criado pelo `01_` (banco novo) ou pelo `10_analise_historico.sql` (banco criado antes da RC-13).
 - **Uma análise vigente por pedido**: índice único funcional `RC_ANALISE_VIGENTE_UK`.
 - **Pendência** só existe para resultado `PENDENTE` ou `NAO_VERIFICAVEL` e o tipo dela precisa ser igual ao resultado da mesma regra na mesma análise (chave estrangeira composta). `NAO_VERIFICAVEL` se distingue de ausência pelo `TIPO`.
 
@@ -53,7 +56,7 @@ Convenções: `PK` chave primária · `FK` estrangeira · `UK` única · `NN` n�
 `ID` (PK) · `PROTOCOLO_ID` (FK, NN) · `CODIGO` (NN) · `DESCRICAO` · `EVIDENCIA_EXIGIDA` · `NATUREZA` (`OBRIGATORIA`/`CONDICIONAL`) · `CONDICAO_APLICACAO` · `MENSAGEM` · `RESPONSAVEL` (`PACIENTE`/`UNIDADE_EMISSORA`) · `ORDEM`. UK (`PROTOCOLO_ID`, `CODIGO`). `CHECK`: regra condicional exige `CONDICAO_APLICACAO`.
 
 ### RC_SOLICITACAO
-`ID` (PK) · `PACIENTE_ID` (FK → RC_USUARIO, NN) · `PROTOCOLO_ID` (FK, NN) · `ESTADO` (NN; os 7 estados) · `REVISAO_ATUAL` (NN, ≥ 1) · `CRIADA_EM` · `ATUALIZADA_EM`.
+`ID` (PK) · `PACIENTE_ID` (FK → RC_USUARIO, NN) · `PROTOCOLO_ID` (FK, NN) · `ESTADO` (NN; os 7 estados) · `REVISAO_ATUAL` (NN, ≥ 1) · `CRIADA_EM` · `ATUALIZADA_EM` · **RC-13:** `ANALISE_INICIADA_EM` (início da análise em andamento; preenchida se e somente se `ESTADO = 'PROCESSANDO'`, `RC_SOLICITACAO_CK_ANALISE`).
 
 ### RC_REVISAO
 PK composta (`SOLICITACAO_ID` FK, `NUMERO` ≥ 1) · `MOTIVO` (`CRIACAO`, `DOCUMENTO_ENVIADO`, `DOCUMENTO_SUBSTITUIDO`, `DOCUMENTO_REMOVIDO`, `CONFERENCIA_ALTERADA`, `PROTOCOLO_ALTERADO`) · `CRIADA_EM`. `PROTOCOLO_ALTERADO` (RC-07) registra a troca de serviço de um rascunho; bancos criados antes da RC-07 precisam do script aditivo `06_motivo_revisao_protocolo.sql`.
@@ -62,13 +65,16 @@ PK composta (`SOLICITACAO_ID` FK, `NUMERO` ≥ 1) · `MOTIVO` (`CRIACAO`, `DOCUM
 `ID` (PK) · (`SOLICITACAO_ID`, `REVISAO_ENVIO`) FK → RC_REVISAO · `REVISAO_REMOCAO` (nula enquanto ativo; FK composta; `CHECK` > `REVISAO_ENVIO`) · `NOME_ORIGINAL` · `TIPO` (`PDF`/`JPEG`/`PNG`) · `TAMANHO_BYTES` (1 a 5 242 880) · `PAGINAS` (≥ 1, ≤ 5 para PDF) · `CAMINHO_INTERNO` (UK; nome seguro gerado pelo sistema, nunca o nome do usuário) · `ENVIADO_EM` · **RC-08:** `TIPO_DOCUMENTAL` (`ENCAMINHAMENTO`/`IDENTIFICACAO`/`AUTORIZACAO_RESPONSAVEL`/`OUTRO`, NN, `DEFAULT 'OUTRO'` só para as linhas da carga sintética; `RC_DOCUMENTO_CK_TIPO_DOC`) · `CHAVE_ENVIO` (identificação de tentativa de envio, opcional; `RC_DOCUMENTO_UK_CHAVE`, índice único funcional, única por pedido; vários envios sem chave permitidos, o que uma `UNIQUE` composta comum não permite no Oracle) · `HASH_CONTEUDO` (SHA-256 em 64 hexadecimais minúsculos, nulo nas linhas antigas; `RC_DOCUMENTO_CK_HASH`). Bancos criados antes da RC-08 precisam do script aditivo `07_documento_tipo_e_tentativa.sql`. Documentos **disponíveis** são os de `REVISAO_REMOCAO` nula; no máximo 3 por pedido, garantido pela transação do envio (bloqueio da linha do pedido), não por restrição declarativa.
 
 ### RC_ANALISE
-`ID` (PK) · (`SOLICITACAO_ID`, `REVISAO`) FK → RC_REVISAO e UK · `PROTOCOLO_ID` (FK, NN) · `RESULTADO_GERAL` (`COM_PENDENCIAS`/`REQUER_CONFERENCIA`/`SEM_PENDENCIAS_IDENTIFICADAS`) · `VIGENTE` (0/1; no máximo um por pedido) · `SIMULADO` (sempre 1) · `RESUMO_TEXTO` · `RESUMO_ORIGEM` (`ADAPTADOR_MOCKADO`/`PADRAO`) · `CRIADA_EM`.
+`ID` (PK) · (`SOLICITACAO_ID`, `REVISAO`) FK → RC_REVISAO · `PROTOCOLO_ID` (FK, NN) · `RESULTADO_GERAL` (`COM_PENDENCIAS`/`REQUER_CONFERENCIA`/`SEM_PENDENCIAS_IDENTIFICADAS`) · `VIGENTE` (0/1; no máximo um por pedido) · `SIMULADO` (sempre 1) · `RESUMO_TEXTO` · `RESUMO_ORIGEM` (`ADAPTADOR_MOCKADO`/`PADRAO`) · `CRIADA_EM` (data de execução) · **RC-13:** `CONFERENCIA_EM` (`TIMESTAMP(6)` **sem fuso**, gravado em UTC, porque o Oracle não aceita `TIMESTAMP WITH TIME ZONE` em chave única) · `DATA_REFERENCIA` (`DATE`). UK `RC_ANALISE_UK_CONFERENCIA` (`SOLICITACAO_ID`, `REVISAO`, `CONFERENCIA_EM`), que substitui a antiga UK (`SOLICITACAO_ID`, `REVISAO`). As colunas da RC-13 ficam nulas só nas linhas da carga `02_`.
 
 ### RC_RESULTADO_REGRA
 PK composta (`ANALISE_ID` FK, `REGRA_ID` FK) · `RESULTADO` (`ATENDE`/`PENDENTE`/`NAO_VERIFICAVEL`/`NAO_APLICAVEL`). UK adicional (`ANALISE_ID`, `REGRA_ID`, `RESULTADO`) usada pela pendência.
 
 ### RC_PENDENCIA
-`ID` (PK) · `ANALISE_ID`, `REGRA_ID` (UK) · `TIPO` (`PENDENTE`/`NAO_VERIFICAVEL`) · FK composta (`ANALISE_ID`, `REGRA_ID`, `TIPO`) → RC_RESULTADO_REGRA (tipo igual ao resultado) · `MENSAGEM` · `RESPONSAVEL`.
+`ID` (PK) · `ANALISE_ID`, `REGRA_ID` (UK) · `TIPO` (`PENDENTE`/`NAO_VERIFICAVEL`) · FK composta (`ANALISE_ID`, `REGRA_ID`, `TIPO`) → RC_RESULTADO_REGRA (tipo igual ao resultado) · `MENSAGEM` · `RESPONSAVEL` · **RC-13:** `MOTIVO` (lista fechada de motivos de não verificável; nunca em `PENDENTE`, `RC_PENDENCIA_CK_MOTIVO_TIPO`).
+
+### RC_PENDENCIA_EVIDENCIA (RC-13)
+PK composta (`ANALISE_ID`, `REGRA_ID`, `ORDEM` ≥ 1) · FK (`ANALISE_ID`, `REGRA_ID`) → RC_PENDENCIA · `DOCUMENTO_ID` (FK → RC_DOCUMENTO) · `CODIGO` (os seis campos) · `SITUACAO` (`CONFIRMADO`, `NAO_LOCALIZADO`, `ILEGIVEL`, `NAO_CONFERIDO`, `DIVERGENCIA_APONTADA`, `DOCUMENTO_NAO_LIDO`). Sem valor e sem trecho.
 
 ### RC_SESSAO_CAPTURA
 `ID` (PK) · `SOLICITACAO_ID` (FK, NN) · `INICIADA_EM` · `ENCERRADA_EM` (≥ início).
@@ -85,14 +91,15 @@ PK composta (`ANALISE_ID` FK, `REGRA_ID` FK) · `RESULTADO` (`ATENDE`/`PENDENTE`
 ## Cardinalidades
 
 - Usuário 1—N Solicitação · Protocolo 1—N Regra, 1—N Solicitação e 1—N Análise.
-- Solicitação 1—N Revisão (mínimo 1) · Revisão 1—N Documento (envio) · Revisão 1—0..1 Análise.
+- Solicitação 1—N Revisão (mínimo 1) · Revisão 1—N Documento (envio) · Revisão 1—N Análise (uma por conferência considerada, RC-13).
+- Pendência 1—N Evidência (RC-13) · Documento 1—N Evidência.
 - Análise 1—N Resultado de regra (um por regra) · Resultado de regra 1—0..1 Pendência.
 - Solicitação 1—N Sessão de captura · Sessão 1—N Leitura · Solicitação 1—0..1 Submissão.
 - Usuário 1—N Sessão de login (várias sessões simultâneas por conta; encerrar uma não afeta as outras).
 
 ## O que o banco garante e o que fica para a API
 
-- **Banco:** valores permitidos, unicidades (e-mail, código da regra por versão, resultado por regra por análise, revisão por pedido, vigência única, submissão única), referências, tipo da pendência igual ao do resultado, limites de arquivo e unidade de sensor coerente com o tipo.
+- **Banco:** valores permitidos, unicidades (e-mail, código da regra por versão, resultado por regra por análise, revisão por pedido, análise por revisão e conferência, vigência única, submissão única), `PROCESSANDO` sempre com início da análise, referências, tipo da pendência igual ao do resultado, limites de arquivo e unidade de sensor coerente com o tipo.
 - **API (RC-05 em diante):** autorização por recurso, implementada como mecanismo na RC-05 e aplicada por cada história de negócio (o banco não impede a paciente A de apontar para o pedido da paciente B), transições de estado, consistência de `REVISAO_ATUAL` com a revisão mais recente, resultado geral derivado dos resultados por regra, classificação de leitura "antiga" e faixas dos sensores.
 - **Arquivos (RC-06):** a conferência (`ConferenciaDeArquivo`) produz exatamente os valores que `RC_DOCUMENTO` aceita: `TIPO` (PDF/JPEG/PNG), `TAMANHO_BYTES` (1 a 5 242 880), `PAGINAS` (imagem = 1; PDF ≤ 5) e `CAMINHO_INTERNO` (o `IdInterno` de 32 caracteres hexadecimais, nunca caminho absoluto nem o nome enviado); `NOME_ORIGINAL` recebe o nome saneado para exibição. Nenhuma tabela, coluna ou script novo; a linha é gravada pela história de envio depois de guardar o arquivo.
 - **Mudanças futuras do esquema:** sempre por novos scripts numerados e aditivos; nunca por recriação automática.

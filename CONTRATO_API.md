@@ -24,8 +24,8 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | GET    | /solicitacoes/{id}/extracoes                          | Devolve a leitura mais recente, por documento (campos `IDENTIFICADO`, `NAO_LOCALIZADO`, `ILEGIVEL`; motivo e reenvio quando não lido), `ATUAL` ou `DESATUALIZADA`; 404 se nunca houve leitura (**implementada**, RC-10) |
 | GET    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | Devolve a conferência da leitura: campos com origem, destaque dos **não verificados**, decisões da paciente, orientações fixas (sem diagnóstico, urgência ou promessa) e a situação calculada (`PENDENTE`, `REQUER_CONFERENCIA`, `CONFERIDA`, `DESATUALIZADA`); `liberadoParaSubmissao` é sempre `false`; leitura desatualizada só consulta; 404 idêntico se o pedido ou a leitura não for da paciente (**implementada**, RC-11) |
 | PUT    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | A paciente **só confirma ou marca divergência**, campo a campo (`{"decisoes":[{documentoId, codigo, decisao, motivo}]}`, 1 a 18; **nenhum valor digitado é aceito**: chave desconhecida é 400). Lote tudo ou nada; decidir de novo substitui; 409 se a leitura estiver desatualizada ou o pedido submetido; 422 `DECISAO_NAO_APLICAVEL`. Não muda o estado nem a revisão do pedido e nunca libera submissão (**implementada**, RC-11) |
-| POST   | /solicitacoes/{id}/analises                           | Executa regras e resumo de IA              |
-| GET    | /solicitacoes/{id}/analises                           | Consulta resultados e histórico            |
+| POST   | /solicitacoes/{id}/analises                           | Executa e grava as regras (RC-13, implementada; resumo de IA na RC-14) |
+| GET    | /solicitacoes/{id}/analises                           | Consulta resultados e histórico (RC-13, implementada) |
 | POST   | /solicitacoes/{id}/analises/{analiseId}/resumo        | Repete resumo em caso de falha             |
 | POST   | /solicitacoes/{id}/submissoes-simuladas               | Conclui apenas no simulador                |
 | POST   | /sessoes-captura/{id}/leituras                        | Credencial de simulador vinculada à sessão |

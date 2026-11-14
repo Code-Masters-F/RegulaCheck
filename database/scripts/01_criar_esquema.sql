@@ -2,7 +2,9 @@
 -- RegulaCheck - 01_criar_esquema.sql  (RC-03)
 -- Finalidade : criar as tabelas, restricoes e indices do RegulaCheck no Oracle 19c.
 -- Ordem      : 1o script. Depois: 02_carga_sintetica, 03_consultas_uso, 04_testes_restricoes.
--- Efeito     : ADITIVO. Cria 12 tabelas RC_* e seus indices. Nao apaga nem altera nada.
+-- Efeito     : ADITIVO. Cria as tabelas RC_* e seus indices (12 da RC-03 e as das historias seguintes, ja no
+--              formato final: um banco criado com este script NAO precisa dos scripts 06_ a 10_). Nao apaga nem
+--              altera nada.
 -- Pre-requisito: esquema sem objetos RC_*. Se ja existirem, cada CREATE falha com
 --                ORA-00955 e nada e alterado (use o 90_ so se quiser recomecar).
 -- Banco compartilhado: todo objeto criado aqui tem o prefixo RC_. Nenhum outro objeto
@@ -74,6 +76,8 @@ CREATE TABLE RC_REGRA (
 -- ---------------------------------------------------------------------------
 -- RC_SOLICITACAO: pedido de uma paciente. REVISAO_ATUAL aponta a revisao vigente.
 -- As transicoes de estado sao aplicadas pela API; o banco restringe os valores.
+-- RC-13: ANALISE_INICIADA_EM e o inicio da analise em andamento (base do limite de 1 minuto e identificacao de
+-- quem processa); existe se, e somente se, ESTADO = 'PROCESSANDO' (mesma definicao do 10_).
 -- ---------------------------------------------------------------------------
 CREATE TABLE RC_SOLICITACAO (
     ID             NUMBER GENERATED ALWAYS AS IDENTITY,
@@ -83,12 +87,15 @@ CREATE TABLE RC_SOLICITACAO (
     REVISAO_ATUAL  NUMBER(6) DEFAULT 1 NOT NULL,
     CRIADA_EM      TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP AT TIME ZONE 'UTC' NOT NULL,
     ATUALIZADA_EM  TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP AT TIME ZONE 'UTC' NOT NULL,
+    ANALISE_INICIADA_EM TIMESTAMP WITH TIME ZONE,
     CONSTRAINT RC_SOLICITACAO_PK           PRIMARY KEY (ID),
     CONSTRAINT RC_SOLICITACAO_FK_PACIENTE  FOREIGN KEY (PACIENTE_ID) REFERENCES RC_USUARIO (ID),
     CONSTRAINT RC_SOLICITACAO_FK_PROTOCOLO FOREIGN KEY (PROTOCOLO_ID) REFERENCES RC_PROTOCOLO (ID),
     CONSTRAINT RC_SOLICITACAO_CK_ESTADO    CHECK (ESTADO IN ('RASCUNHO', 'PROCESSANDO', 'REQUER_CONFERENCIA',
         'COM_PENDENCIAS', 'SEM_PENDENCIAS_IDENTIFICADAS', 'FALHA_ANALISE', 'SUBMETIDA_SIMULACAO')),
-    CONSTRAINT RC_SOLICITACAO_CK_REVISAO   CHECK (REVISAO_ATUAL >= 1)
+    CONSTRAINT RC_SOLICITACAO_CK_REVISAO   CHECK (REVISAO_ATUAL >= 1),
+    CONSTRAINT RC_SOLICITACAO_CK_ANALISE   CHECK ((ESTADO = 'PROCESSANDO' AND ANALISE_INICIADA_EM IS NOT NULL)
+        OR (ESTADO <> 'PROCESSANDO' AND ANALISE_INICIADA_EM IS NULL))
 );
 
 -- ---------------------------------------------------------------------------
@@ -151,8 +158,12 @@ CREATE UNIQUE INDEX RC_DOCUMENTO_UK_CHAVE ON RC_DOCUMENTO (
 
 -- ---------------------------------------------------------------------------
 -- RC_ANALISE: resultado da analise de uma revisao, com a versao do protocolo usada.
--- Uma analise por (pedido, revisao). VIGENTE = 1 em no maximo uma analise por pedido
--- (indice unico funcional abaixo). SIMULADO e sempre 1 neste MVP (IA/extracao mockadas).
+-- VIGENTE = 1 em no maximo uma analise por pedido (indice unico funcional abaixo). SIMULADO e sempre 1 neste
+-- MVP (IA/extracao mockadas). RC-13: uma analise por (pedido, revisao, conferencia considerada) - a decisao de
+-- conferencia nao cria revisao, entao completar a conferencia e analisar de novo gera outra analise da mesma
+-- revisao. CONFERENCIA_EM e TIMESTAMP (sem fuso) gravado em UTC porque o Oracle nao aceita TIMESTAMP WITH TIME
+-- ZONE em chave unica. CONFERENCIA_EM e DATA_REFERENCIA so ficam nulas nas linhas da carga 02_. CRIADA_EM e a data
+-- de execucao (conclusao).
 -- ---------------------------------------------------------------------------
 CREATE TABLE RC_ANALISE (
     ID               NUMBER GENERATED ALWAYS AS IDENTITY,
@@ -165,8 +176,10 @@ CREATE TABLE RC_ANALISE (
     RESUMO_TEXTO     VARCHAR2(2000 CHAR),
     RESUMO_ORIGEM    VARCHAR2(20 CHAR),
     CRIADA_EM        TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP AT TIME ZONE 'UTC' NOT NULL,
+    CONFERENCIA_EM   TIMESTAMP(6),
+    DATA_REFERENCIA  DATE,
     CONSTRAINT RC_ANALISE_PK            PRIMARY KEY (ID),
-    CONSTRAINT RC_ANALISE_UK_REVISAO    UNIQUE (SOLICITACAO_ID, REVISAO),
+    CONSTRAINT RC_ANALISE_UK_CONFERENCIA UNIQUE (SOLICITACAO_ID, REVISAO, CONFERENCIA_EM),
     CONSTRAINT RC_ANALISE_FK_REVISAO    FOREIGN KEY (SOLICITACAO_ID, REVISAO)
         REFERENCES RC_REVISAO (SOLICITACAO_ID, NUMERO),
     CONSTRAINT RC_ANALISE_FK_PROTOCOLO  FOREIGN KEY (PROTOCOLO_ID) REFERENCES RC_PROTOCOLO (ID),
@@ -198,7 +211,8 @@ CREATE TABLE RC_RESULTADO_REGRA (
 -- ---------------------------------------------------------------------------
 -- RC_PENDENCIA: existe somente para resultado PENDENTE ou NAO_VERIFICAVEL, e o TIPO deve
 -- coincidir com o resultado da mesma regra na mesma analise (FK composta).
--- NAO_VERIFICAVEL e distinguivel de ausencia pelo TIPO.
+-- NAO_VERIFICAVEL e distinguivel de ausencia pelo TIPO. RC-13: MOTIVO (lista fechada) so em NAO_VERIFICAVEL; as
+-- pendencias da carga 02_ ficam sem motivo.
 -- ---------------------------------------------------------------------------
 CREATE TABLE RC_PENDENCIA (
     ID           NUMBER GENERATED ALWAYS AS IDENTITY,
@@ -207,12 +221,40 @@ CREATE TABLE RC_PENDENCIA (
     TIPO         VARCHAR2(20 CHAR)  NOT NULL,
     MENSAGEM     VARCHAR2(400 CHAR) NOT NULL,
     RESPONSAVEL  VARCHAR2(20 CHAR)  NOT NULL,
+    MOTIVO       VARCHAR2(40 CHAR),
     CONSTRAINT RC_PENDENCIA_PK            PRIMARY KEY (ID),
     CONSTRAINT RC_PENDENCIA_UK_REGRA      UNIQUE (ANALISE_ID, REGRA_ID),
     CONSTRAINT RC_PENDENCIA_FK_RESULTADO  FOREIGN KEY (ANALISE_ID, REGRA_ID, TIPO)
         REFERENCES RC_RESULTADO_REGRA (ANALISE_ID, REGRA_ID, RESULTADO),
     CONSTRAINT RC_PENDENCIA_CK_TIPO       CHECK (TIPO IN ('PENDENTE', 'NAO_VERIFICAVEL')),
-    CONSTRAINT RC_PENDENCIA_CK_RESPONSAVEL CHECK (RESPONSAVEL IN ('PACIENTE', 'UNIDADE_EMISSORA'))
+    CONSTRAINT RC_PENDENCIA_CK_RESPONSAVEL CHECK (RESPONSAVEL IN ('PACIENTE', 'UNIDADE_EMISSORA')),
+    CONSTRAINT RC_PENDENCIA_CK_MOTIVO     CHECK (MOTIVO IS NULL OR MOTIVO IN ('CAMPO_ILEGIVEL', 'DOCUMENTO_NAO_LIDO',
+        'TRANSCRICAO_NAO_CONFERIDA', 'DIVERGENCIA_APONTADA', 'VALOR_NAO_INTERPRETAVEL', 'CONDICAO_INDETERMINADA',
+        'DOCUMENTOS_INSUFICIENTES', 'DEPENDE_DE_DOCUMENTO_AUSENTE')),
+    CONSTRAINT RC_PENDENCIA_CK_MOTIVO_TIPO CHECK (TIPO = 'NAO_VERIFICAVEL' OR MOTIVO IS NULL)
+);
+
+-- ---------------------------------------------------------------------------
+-- RC_PENDENCIA_EVIDENCIA (RC-13): documento, campo e situacao de cada evidencia de uma pendencia, na ordem do
+-- motor. SEM valor e SEM trecho: a origem (pagina, trecho) vem de RC_EXTRACAO_CAMPO da leitura da mesma revisao.
+-- A situacao e gravada porque a decisao de conferencia pode mudar depois. Mesma definicao do 10_.
+-- ---------------------------------------------------------------------------
+CREATE TABLE RC_PENDENCIA_EVIDENCIA (
+    ANALISE_ID    NUMBER NOT NULL,
+    REGRA_ID      NUMBER NOT NULL,
+    ORDEM         NUMBER(3) NOT NULL,
+    DOCUMENTO_ID  NUMBER NOT NULL,
+    CODIGO        VARCHAR2(40 CHAR) NOT NULL,
+    SITUACAO      VARCHAR2(30 CHAR) NOT NULL,
+    CONSTRAINT RC_PEND_EVIDENCIA_PK        PRIMARY KEY (ANALISE_ID, REGRA_ID, ORDEM),
+    CONSTRAINT RC_PEND_EVIDENCIA_FK_PEND   FOREIGN KEY (ANALISE_ID, REGRA_ID)
+        REFERENCES RC_PENDENCIA (ANALISE_ID, REGRA_ID),
+    CONSTRAINT RC_PEND_EVIDENCIA_FK_DOC    FOREIGN KEY (DOCUMENTO_ID) REFERENCES RC_DOCUMENTO (ID),
+    CONSTRAINT RC_PEND_EVIDENCIA_CK_ORDEM  CHECK (ORDEM >= 1),
+    CONSTRAINT RC_PEND_EVIDENCIA_CK_CODIGO CHECK (CODIGO IN ('TIPO_DOCUMENTO', 'NOME', 'DATA_NASCIMENTO',
+        'MOTIVO_ENCAMINHAMENTO', 'DATA_EMISSAO', 'AUTORIZACAO_ASSINADA')),
+    CONSTRAINT RC_PEND_EVIDENCIA_CK_SIT    CHECK (SITUACAO IN ('CONFIRMADO', 'NAO_LOCALIZADO', 'ILEGIVEL',
+        'NAO_CONFERIDO', 'DIVERGENCIA_APONTADA', 'DOCUMENTO_NAO_LIDO'))
 );
 
 -- ---------------------------------------------------------------------------
@@ -347,3 +389,4 @@ CREATE INDEX RC_RESULTADO_REGRA_IX_REGRA ON RC_RESULTADO_REGRA (REGRA_ID);
 CREATE INDEX RC_SESSAO_CAPTURA_IX_SOLIC  ON RC_SESSAO_CAPTURA (SOLICITACAO_ID);
 CREATE INDEX RC_LEITURA_SENSOR_IX_SESSAO ON RC_LEITURA_SENSOR (SESSAO_ID);
 CREATE INDEX RC_SUBMISSAO_IX_ANALISE     ON RC_SUBMISSAO (ANALISE_ID);
+CREATE INDEX RC_PEND_EVID_IX_DOCUMENTO   ON RC_PENDENCIA_EVIDENCIA (DOCUMENTO_ID);

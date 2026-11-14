@@ -108,6 +108,7 @@ public final class DocumentoRepositoryMemoria implements DocumentoRepository {
                     MotivoRevisao.DOCUMENTO_REMOVIDO, agora);
             marcarRemovido(vivo);
             pedidosComAnaliseVigente.remove(solicitacaoId);
+            pedidos.invalidarAnaliseVigente(solicitacaoId);
             return ResultadoRemocao.removido(vivo, atualizado.revisaoAtual(), disponiveis(solicitacaoId));
         }
     }
@@ -149,6 +150,7 @@ public final class DocumentoRepositoryMemoria implements DocumentoRepository {
                     novo.caminhoInterno(), novo.hashConteudo(), novo.chaveEnvio());
             porId.put(id, documento);
             pedidosComAnaliseVigente.remove(solicitacaoId);
+            pedidos.invalidarAnaliseVigente(solicitacaoId);
             return ResultadoSubstituicao.substituido(documento, antigo, atualizado.revisaoAtual(),
                     disponiveis(solicitacaoId));
         }
@@ -208,8 +210,8 @@ public final class DocumentoRepositoryMemoria implements DocumentoRepository {
     }
 
     /**
-     * Monta uma analise vigente para o pedido, como se uma historia futura a tivesse produzido (nenhuma rota a
-     * produz hoje).
+     * Marca o pedido como tendo analise vigente, sem gravar analise (testes da RC-09). Remover e substituir tiram
+     * esta marca e tambem avisam o dobro de analises da RC-13 ({@link SolicitacaoRepositoryMemoria#invalidarAnaliseVigente}).
      *
      * @param solicitacaoId pedido
      */

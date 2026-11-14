@@ -8,6 +8,7 @@ import br.com.regulacheck.solicitacao.entity.Solicitacao;
 import br.com.regulacheck.solicitacao.repository.ResultadoExclusao;
 import br.com.regulacheck.solicitacao.repository.ResultadoTroca;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepository;
+import br.com.regulacheck.validacao.model.ResultadoGeral;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,6 +49,8 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
     private long proximoId = 1;
     private LongToIntFunction contadorDeDocumentos = id -> 0;
     private LongFunction<List<IdInterno>> apagadorDeDocumentos = id -> List.of();
+    private LongFunction<ResultadoGeral> consultaDeVigente = id -> null;
+    private final List<java.util.function.LongConsumer> invalidadoresDeAnalise = new java.util.ArrayList<>();
     private final Set<Long> pedidosComDependencias = new HashSet<>();
     private RuntimeException falhaNaExclusao;
 
@@ -105,6 +108,49 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
         Solicitacao p = pedidos.get(id);
         pedidos.put(id, new Solicitacao(p.id(), p.pacienteId(), p.protocolo(), estado, p.revisaoAtual(),
                 p.criadaEm(), p.atualizadaEm()));
+    }
+
+    /**
+     * Muda o estado do pedido e o instante da ultima alteracao (so o dobro de analises chama; equivale ao
+     * {@code UPDATE RC_SOLICITACAO SET ESTADO = ?, ATUALIZADA_EM = ?} da transacao do JDBC).
+     *
+     * @param id pedido existente
+     * @param estado novo estado
+     * @param agora instante da alteracao
+     */
+    public synchronized void alterarEstado(long id, EstadoSolicitacao estado, Instant agora) {
+        Solicitacao p = pedidos.get(id);
+        pedidos.put(id, new Solicitacao(p.id(), p.pacienteId(), p.protocolo(), estado, p.revisaoAtual(),
+                p.criadaEm(), agora));
+    }
+
+    /**
+     * Liga o dobro de analises a este: o resultado vigente da revisao atual de cada pedido passa a vir dele
+     * (espelha a subconsulta de {@code RC_ANALISE} do JDBC).
+     *
+     * @param consulta devolve o resultado geral da vigente da revisao atual, ou {@code null}
+     */
+    public synchronized void usarConsultaDeVigente(LongFunction<ResultadoGeral> consulta) {
+        this.consultaDeVigente = consulta;
+    }
+
+    /**
+     * Registra quem tira a vigencia da analise quando documentos ou conferencia mudam (o dobro de analises).
+     *
+     * @param invalidador recebe o id do pedido
+     */
+    public synchronized void aoInvalidarAnalise(java.util.function.LongConsumer invalidador) {
+        invalidadoresDeAnalise.add(invalidador);
+    }
+
+    /**
+     * Tira a vigencia da analise vigente do pedido (os dobros de documentos e de conferencia chamam; equivale ao
+     * {@code UPDATE RC_ANALISE SET VIGENTE = 0} feito na mesma transacao pelo JDBC).
+     *
+     * @param id pedido
+     */
+    public synchronized void invalidarAnaliseVigente(long id) {
+        invalidadoresDeAnalise.forEach(invalidador -> invalidador.accept(id));
     }
 
     /**
@@ -224,7 +270,8 @@ public final class SolicitacaoRepositoryMemoria implements SolicitacaoRepository
     }
 
     private Solicitacao comContagem(Solicitacao pedido) {
-        return pedido.comDocumentos(contadorDeDocumentos.applyAsInt(pedido.id()));
+        return pedido.comDocumentos(contadorDeDocumentos.applyAsInt(pedido.id()))
+                .comResultadoVigente(consultaDeVigente.apply(pedido.id()));
     }
 
     /** @return quantos pedidos existem, de qualquer paciente */

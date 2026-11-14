@@ -1,5 +1,6 @@
 package br.com.regulacheck.config;
 
+import br.com.regulacheck.analise.repository.AnaliseRepository;
 import br.com.regulacheck.auth.repository.SessaoRepository;
 import br.com.regulacheck.documento.repository.DocumentoRepository;
 import br.com.regulacheck.extracao.repository.ConferenciaRepository;
@@ -22,10 +23,11 @@ import java.time.Clock;
  * @param documentos persistencia dos documentos anexados aos pedidos (RC-08)
  * @param extracoes persistencia das leituras dos documentos (RC-10)
  * @param conferencias persistencia das decisoes de conferencia da transcricao (RC-11)
+ * @param analises persistencia das analises, do historico e da analise em andamento (RC-13)
  * @param leitor leitor de documentos (simulado hoje; RC-10)
  * @param relogio relogio da aplicacao
  */
 public record Dependencias(UsuarioRepository usuarios, SessaoRepository sessoes, ProtocoloRepository protocolos,
         SolicitacaoRepository solicitacoes, DocumentoRepository documentos, ExtracaoRepository extracoes,
-        ConferenciaRepository conferencias, LeitorDeDocumento leitor, Clock relogio) {
+        ConferenciaRepository conferencias, AnaliseRepository analises, LeitorDeDocumento leitor, Clock relogio) {
 }

@@ -28,7 +28,9 @@ public interface ConferenciaRepository {
      * dona, a leitura e o estado ({@code SUBMETIDA_SIMULACAO} recusa), confere que a leitura ainda e a da versao
      * atual dos documentos (lida <em>sob o bloqueio</em>), confere cada decisao contra a situacao do campo e so
      * entao grava (decidir de novo substitui; repetir a mesma nao altera nada). Qualquer recusa desfaz tudo: ou
-     * ficam todas as decisoes ou nenhuma. O estado, a revisao e a leitura original nao mudam.
+     * ficam todas as decisoes ou nenhuma. O estado, a revisao e a leitura original nao mudam. Desde a RC-13, se
+     * alguma decisao foi gravada ou trocada, a analise vigente do pedido deixa de ser vigente na mesma transacao
+     * (compensacao da decisao nao criar revisao); a analise continua no historico.
      *
      * @param pacienteId conta dona (a da sessao)
      * @param solicitacaoId pedido
