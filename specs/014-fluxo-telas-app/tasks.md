@@ -155,8 +155,8 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 **Independent Test**: com o Pedido 2 depois de substituir o encaminhamento e o histórico do Pedido 1 (rev 1 → 2), os quadros mostram o aviso de resultado não vigente e a comparação, sem marcar nada como resolvido antes do novo resultado
 
-- [ ] T047 [US5] Desenhar E3.5 Correção (2 quadros) na faixa RC-38 de `design/RegulaCheck.pen`: Resultado não vigente (E3.3 do Pedido 2 com `Aviso/Resultado não vigente` no topo, pendências como "resultado anterior", ação "Ler documentos de novo") e Comparação † (Pedido 1 rev 2 com seção "Em relação à verificação anterior": RC-R02 e RC-R03 `Comparação/Resolvida`); nota `POST …/extracoes` ✅ e `GET …/analises` † (RC-13/RC-16), dados da carga
-- [ ] T048 [US5] Verificar US5 em `design/RegulaCheck.pen`: 2 quadros; nenhuma pendência marcada como resolvida antes do novo resultado; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
+- [x] T047 [US5] Desenhar E3.5 Correção (2 quadros) na faixa RC-38 de `design/RegulaCheck.pen`: Resultado não vigente (E3.3 do Pedido 2 com `Aviso/Resultado não vigente` no topo, pendências como "resultado anterior", ação "Ler documentos de novo") e Comparação † (Pedido 1 rev 2 com seção "Em relação à verificação anterior": RC-R02 e RC-R03 `Comparação/Resolvida`); nota `POST …/extracoes` ✅ e `GET …/analises` † (RC-13/RC-16), dados da carga
+- [x] T048 [US5] Verificar US5 em `design/RegulaCheck.pen`: 2 quadros; nenhuma pendência marcada como resolvida antes do novo resultado; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
 
 ---
 
@@ -166,8 +166,8 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 **Independent Test**: a partir do Pedido 1 na revisão 2, os quadros levam ao comprovante `SIM-2026-0001` com "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS", data, serviço e versão analisada
 
-- [ ] T049 [US6] Desenhar em `design/RegulaCheck.pen` E3.7 Concluir simulação (`Diálogo/Confirmação` sobre E3.3 Sem pendências do Pedido 1, ícone `receipt-text`, "Concluir a simulação?", "Nada será enviado ao SUS. Depois disso, o pedido só poderá ser consultado.", "Concluir simulação" e "Voltar") e E3.6 Comprovante simulado (`Cabeçalho/Voltar` "Pedido 1" + SIMULADO, `Comprovante/Simulado` com "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS", `Dado/Linha` Referência "SIM-2026-0001", Data e hora, Serviço, Versão analisada "Revisão 2 · Protocolo acadêmico fictício, versão 0.1") (2 quadros); nota `POST …/submissoes-simuladas` † (RC-17), repetição mostra o mesmo comprovante
-- [ ] T050 [US6] Verificar US6 em `design/RegulaCheck.pen`: 2 quadros; destaque e negações presentes; referência igual à da carga; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
+- [x] T049 [US6] Desenhar em `design/RegulaCheck.pen` E3.7 Concluir simulação (`Diálogo/Confirmação` sobre E3.3 Sem pendências do Pedido 1, ícone `receipt-text`, "Concluir a simulação?", "Nada será enviado ao SUS. Depois disso, o pedido só poderá ser consultado.", "Concluir simulação" e "Voltar") e E3.6 Comprovante simulado (`Cabeçalho/Voltar` "Pedido 1" + SIMULADO, `Comprovante/Simulado` com "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS", `Dado/Linha` Referência "SIM-2026-0001", Data e hora, Serviço, Versão analisada "Revisão 2 · Protocolo acadêmico fictício, versão 0.1") (2 quadros); nota `POST …/submissoes-simuladas` † (RC-17), repetição mostra o mesmo comprovante
+- [x] T050 [US6] Verificar US6 em `design/RegulaCheck.pen`: 2 quadros; destaque e negações presentes; referência igual à da carga; no máximo uma ação principal (FR-005); notas; PNG 2×; salvar pelo MCP
 
 ---
 
@@ -323,3 +323,11 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 - Telas de resultado desenhadas inteiras (1.304 a 1.420) com dobra em 844.
 - Verificação: 0 problemas de limites; 0 `Legado/*`; "não é aprovação do SUS" em sem pendências; nenhuma ação fora de `contracts/telas-operacoes.md`; no máximo uma ação principal; PNG 2× exportados; documento salvo.
 - Não verificado: SC-003/SC-004 com pessoa (T060), fonte ampliada, TalkBack.
+
+### 14/11/2026 — Phases 7 e 8 / US5 e US6 (T047–T050) concluídas · faixa RC-38 completa
+
+- Commit da US4: `efc76d1` (enviado).
+- 4 quadros na faixa RC-38 (x 16010–17420): E3.5 Resultado não vigente (Pedido 2 depois de substituir o encaminhamento; pendências anteriores esmaecidas, "Ler documentos de novo" como única ação principal), E3.5 Comparação (Pedido 1, revisão 1 → 2: RC-R02 e RC-R03 com `Comparação/Resolvida`), E3.7 Concluir simulação (diálogo sobre E1.3 sem pendências) e E3.6 Comprovante simulado (`SIM-2026-0001`, destaque obrigatório, dados do comprovante, repetição mostra o mesmo).
+- Faixa RC-38 com 26 quadros, como no inventário.
+- Verificação: 0 problemas de limites (o aviso restante é do botão oculto de propósito no `Aviso/Resultado não vigente`); 0 `Legado/*`; nenhuma pendência marcada como resolvida antes do novo resultado; nenhum número com aparência de protocolo oficial além da referência simulada; PNG 2× exportados; documento salvo.
+- Não verificado: SC-004 com pessoa (T060), fonte ampliada, TalkBack.

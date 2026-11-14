@@ -110,3 +110,12 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Consulta de limites: 0 problemas; 0 `Legado/*`; selo SIMULADO onde há resumo; negação de aprovação do SUS no resultado sem pendências.
 - Marco: percurso P1 (US1–US4, RC-36 a RC-38) desenhado em 14/11/2026, antes do marco de 16/11.
 - Não verificado: compreensão por pessoa que não desenhou (SC-003, SC-004), fonte ampliada, TalkBack.
+
+## Feature 014 — US5 e US6 / RC-38 correção e conclusão (T047–T050), 14/11/2026
+
+- Commit da US4: `efc76d1` (enviado).
+- 4 quadros: E3.5 Resultado não vigente e Comparação, E3.7 Concluir simulação, E3.6 Comprovante simulado. Faixa RC-38 completa com 26 quadros.
+- Comparação conferida com a carga (Pedido 1: revisão 1 com R02 não verificável e R03 pendente; revisão 2 sem pendências); comprovante com a referência da carga `SIM-2026-0001`.
+- Consulta de limites: 0 problemas reais; 0 `Legado/*`.
+- Percurso principal completo no pen.dev (RC-36 a RC-38, 79 quadros). Falta a faixa RC-39 (P3) e a validação com pessoa (T060).
+- Não verificado: fonte ampliada, TalkBack, interação.
