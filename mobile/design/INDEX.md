@@ -4,7 +4,7 @@
 >
 > **Situação em 14/11/2026:** os 94 quadros estão desenhados no `design/RegulaCheck.pen` e foram revisados por quem desenhou: screenshot, consulta de limites, aviso acadêmico, selo SIMULADO e no máximo uma ação principal. Nenhum foi **aprovado** pelo grupo, e nenhum passou pelo percurso com uma pessoa que não desenhou (T060). Nenhuma tela chama a API: a coluna "Operação" diz o que o app vai usar. † indica rota contratada e ainda não implementada no backend; esses quadros levam a nota "contrato provisório".
 
-Legenda de situação: *desenhado* → *revisado* (por quem desenhou) → *aprovado* (pelo grupo). Prévia: PNG 2× em `design/previas/<ID>.png`.
+Legenda de situação: *desenhado* → *revisado* (por quem desenhou) → *aprovado* (pelo grupo). Prévia: PNG 2× em `design/previas/<ID>.png`. Na coluna "Operação", † marca rota contratada e ainda não publicada; as rotas de análises (RC-13) estão na `main` desde 15/11/2026 e perderam a marca aqui, mas os quadros no `.pen` ainda a mostram até a T073.
 
 ## Como o canvas está organizado (research D20)
 
@@ -54,19 +54,19 @@ Regras do design system: [design-system.md](design-system.md). Acessibilidade: [
 
 | Estado (esquerda → direita) | ID | Operação | Situação |
 |---|---|---|---|
-| E1.3 Pedido — Rascunho sem documentos | [`hC19p`](../../design/previas/hC19p.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Rascunho sem leitura | [`xRLu9`](../../design/previas/xRLu9.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Rascunho a conferir | [`Z3WVJ`](../../design/previas/Z3WVJ.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Rascunho pronto para verificar | [`LP6Ni`](../../design/previas/LP6Ni.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Em verificação | [`ppR8m`](../../design/previas/ppR8m.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Confira a leitura | [`V2Gp00`](../../design/previas/V2Gp00.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Com pendências | [`DGEB7`](../../design/previas/DGEB7.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Sem pendências identificadas | [`rr205`](../../design/previas/rr205.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Falha na verificação | [`a6MB6X`](../../design/previas/a6MB6X.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Resultado não vigente | [`STo2u`](../../design/previas/STo2u.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Simulação concluída | [`jGzFh`](../../design/previas/jGzFh.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Carregando | [`toyoT`](../../design/previas/toyoT.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
-| E1.3 Pedido — Não encontrado | [`wgjxU`](../../design/previas/wgjxU.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises † | revisado |
+| E1.3 Pedido — Rascunho sem documentos | [`hC19p`](../../design/previas/hC19p.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Rascunho sem leitura | [`xRLu9`](../../design/previas/xRLu9.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Rascunho a conferir | [`Z3WVJ`](../../design/previas/Z3WVJ.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Rascunho pronto para verificar | [`LP6Ni`](../../design/previas/LP6Ni.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Em verificação | [`ppR8m`](../../design/previas/ppR8m.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Confira a leitura | [`V2Gp00`](../../design/previas/V2Gp00.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Com pendências | [`DGEB7`](../../design/previas/DGEB7.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Sem pendências identificadas | [`rr205`](../../design/previas/rr205.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Falha na verificação | [`a6MB6X`](../../design/previas/a6MB6X.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Resultado não vigente | [`STo2u`](../../design/previas/STo2u.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Simulação concluída | [`jGzFh`](../../design/previas/jGzFh.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Carregando | [`toyoT`](../../design/previas/toyoT.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
+| E1.3 Pedido — Não encontrado | [`wgjxU`](../../design/previas/wgjxU.png) | `GET /solicitacoes/{id}`, documentos, extrações e conferência; análises | revisado |
 
 ## Etapa 3 · Montar o pedido e enviar documentos (RC-37 e RC-39)
 
@@ -164,33 +164,33 @@ Regras do design system: [design-system.md](design-system.md). Acessibilidade: [
 
 | Estado (esquerda → direita) | ID | Operação | Situação |
 |---|---|---|---|
-| E3.8 Verificar critérios — Confirmação | [`Xe5GF`](../../design/previas/Xe5GF.png) | `POST …/analises` † | revisado |
+| E3.8 Verificar critérios — Confirmação | [`Xe5GF`](../../design/previas/Xe5GF.png) | `POST …/analises` | revisado |
 
 ### 13 · E3.3 Resultado
 
 | Estado (esquerda → direita) | ID | Operação | Situação |
 |---|---|---|---|
-| E3.3 Resultado — Com pendências | [`L5Keg`](../../design/previas/L5Keg.png) | `GET …/analises` †; resumo † | revisado |
-| E3.3 Resultado — Confira a leitura | [`zMx9T`](../../design/previas/zMx9T.png) | `GET …/analises` †; resumo † | revisado |
-| E3.3 Resultado — Sem pendências identificadas | [`cAl1Z`](../../design/previas/cAl1Z.png) | `GET …/analises` †; resumo † | revisado |
-| E3.3 Resultado — Falha | [`EAe9t`](../../design/previas/EAe9t.png) | `GET …/analises` †; resumo † | revisado |
-| E3.3 Resultado — Resumo indisponível | [`udibQ`](../../design/previas/udibQ.png) | `GET …/analises` †; resumo † | revisado |
+| E3.3 Resultado — Com pendências | [`L5Keg`](../../design/previas/L5Keg.png) | `GET …/analises`; resumo † | revisado |
+| E3.3 Resultado — Confira a leitura | [`zMx9T`](../../design/previas/zMx9T.png) | `GET …/analises`; resumo † | revisado |
+| E3.3 Resultado — Sem pendências identificadas | [`cAl1Z`](../../design/previas/cAl1Z.png) | `GET …/analises`; resumo † | revisado |
+| E3.3 Resultado — Falha | [`EAe9t`](../../design/previas/EAe9t.png) | `GET …/analises`; resumo † | revisado |
+| E3.3 Resultado — Resumo indisponível | [`udibQ`](../../design/previas/udibQ.png) | `GET …/analises`; resumo † | revisado |
 
 ### 14 · E3.4 Detalhe da pendência
 
 | Estado (esquerda → direita) | ID | Operação | Situação |
 |---|---|---|---|
-| E3.4 Pendência — Unidade emissora | [`XCNVm`](../../design/previas/XCNVm.png) | `GET …/analises` †; `GET` e `PUT …/documentos/{docId}` | revisado |
-| E3.4 Detalhe da pendência — Substituir arquivo | [`QQLpq`](../../design/previas/QQLpq.png) | `GET …/analises` †; `GET` e `PUT …/documentos/{docId}` | revisado |
-| E3.4 Detalhe da pendência — Conferir leitura | [`HK8ZN`](../../design/previas/HK8ZN.png) | `GET …/analises` †; `GET` e `PUT …/documentos/{docId}` | revisado |
-| E3.4 Detalhe da pendência — Documento ausente | [`u8AYS3`](../../design/previas/u8AYS3.png) | `GET …/analises` †; `GET` e `PUT …/documentos/{docId}` | revisado |
+| E3.4 Pendência — Unidade emissora | [`XCNVm`](../../design/previas/XCNVm.png) | `GET …/analises`; `GET` e `PUT …/documentos/{docId}` | revisado |
+| E3.4 Detalhe da pendência — Substituir arquivo | [`QQLpq`](../../design/previas/QQLpq.png) | `GET …/analises`; `GET` e `PUT …/documentos/{docId}` | revisado |
+| E3.4 Detalhe da pendência — Conferir leitura | [`HK8ZN`](../../design/previas/HK8ZN.png) | `GET …/analises`; `GET` e `PUT …/documentos/{docId}` | revisado |
+| E3.4 Detalhe da pendência — Documento ausente | [`u8AYS3`](../../design/previas/u8AYS3.png) | `GET …/analises`; `GET` e `PUT …/documentos/{docId}` | revisado |
 
 ### 15 · E3.5 Correção
 
 | Estado (esquerda → direita) | ID | Operação | Situação |
 |---|---|---|---|
-| E3.5 Correção — Resultado não vigente | [`LGYSw`](../../design/previas/LGYSw.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises † | revisado |
-| E3.5 Correção — Comparação | [`vwCYD`](../../design/previas/vwCYD.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises † | revisado |
+| E3.5 Correção — Resultado não vigente | [`LGYSw`](../../design/previas/LGYSw.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises | revisado |
+| E3.5 Correção — Comparação | [`vwCYD`](../../design/previas/vwCYD.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises | revisado |
 
 ## Etapa 6 · Concluir a simulação (RC-38)
 

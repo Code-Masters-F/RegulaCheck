@@ -2,7 +2,7 @@
 
 Feature de design: não há entidade persistida nova. Este documento define **o que cada tela mostra, de onde vem e com que texto**. Toda informação tem origem em um campo do backend ou em texto fixo; nenhuma é inferida pela tela (FR-002). Operações e respostas por tela: [contracts/telas-operacoes.md](contracts/telas-operacoes.md).
 
-Notação de origem: `Operação → campo`. Operações marcadas † são **contratadas, ainda não implementadas** (formato de `docs/api/contratos-dados.md` e do contrato interno da RC-12); revisar quando publicadas.
+Notação de origem: `Operação → campo`. Operações marcadas † são **contratadas, ainda não implementadas** (formato de `docs/api/contratos-dados.md` e do contrato interno da RC-12); revisar quando publicadas. As da RC-13 foram revistas em 15/11/2026 com o contrato publicado e deixaram de ser †.
 
 ## 1. Convenções de exibição
 
@@ -61,7 +61,7 @@ Notação de origem: `Operação → campo`. Operações marcadas † são **con
 |---|---|
 | Resultado por regra | `ATENDE` → Atende · `PENDENTE` → Pendente · `NAO_VERIFICAVEL` → Não verificável · `NAO_APLICAVEL` → Não se aplica (F4 `Critério/*`) |
 | Resultado geral | mesmos rótulos do estado do pedido |
-| `responsavelCorrecao` | `PACIENTE` → Você · `UNIDADE_EMISSORA` → Unidade emissora |
+| `responsavel` (pendência) | `PACIENTE` → Você · `UNIDADE_EMISSORA` → Unidade emissora |
 | Motivo (não verificável) | `CAMPO_ILEGIVEL` → Uma informação está ilegível · `DOCUMENTO_NAO_LIDO` → Um documento não pôde ser lido · `TRANSCRICAO_NAO_CONFERIDA` → A leitura ainda não foi conferida · `DIVERGENCIA_APONTADA` → Você apontou uma diferença · `VALOR_NAO_INTERPRETAVEL` → Um valor não pôde ser interpretado · `CONDICAO_INDETERMINADA` → Não foi possível saber se o critério se aplica · `DOCUMENTOS_INSUFICIENTES` → Faltam documentos para comparar · `DEPENDE_DE_DOCUMENTO_AUSENTE` → Depende de um documento que não foi enviado |
 | Critério (nome) | RC-R01 Encaminhamento presente · RC-R02 Identificação coerente entre documentos · RC-R03 Documento de identificação · RC-R04 Motivo do encaminhamento informado · RC-R05 Encaminhamento dentro da validade · RC-R06 Autorização do responsável legal (nomes de `docs/protocolo-academico.md`) |
 | Comparação † | Resolvida · Continua · Nova |
@@ -83,13 +83,13 @@ Notação de origem: `Operação → campo`. Operações marcadas † são **con
 | | itens da lista | `GET /solicitacoes` → `itens[]`: `id`, `servico.especialidade`, `estado`, `atualizadaEm` |
 | E1.3 Pedido | dados do pedido | `GET /solicitacoes/{id}` → `id`, `servico.especialidade`, `servico.localidade`, `servico.avisoFicticio`, `protocoloId` (versão), `estado`, `revisao`, `criadaEm`, `atualizadaEm`, `documentosDisponiveis`, `analise.situacao` |
 | | situação da leitura e da conferência | `GET …/extracoes` → `id`, `situacao` (404 = ainda não lido); `GET …/extracoes/{extracaoId}/conferencia` → `situacao`, `resumo` |
-| | resultado vigente † | `GET …/analises` → `resultadoGeral`, `vigente`, `revisao` |
+| | resultado vigente | `GET /solicitacoes/{id}` → `analise.situacao`, `analise.resultadoGeral`; `GET …/analises` → `vigenteId`, `execucao` (só em `PROCESSANDO`) |
 | E2.1 Novo pedido | serviços | `GET /protocolos` → `itens[]`: `especialidade`, `localidade`, `versao`, `avisoFicticio` |
 | E2.2 Documentos | linhas | `GET …/documentos` → `documentos[]`: `tipoDocumental`, `nomeArquivo`, `formato`, `tamanhoBytes`, `paginas`, `estadoEnvio`; `total`, `maximo` |
 | E3.1 Leitura | aviso de simulação | `POST …/extracoes` → `simulada`, `aviso` |
 | E3.2 Conferência | documento i de n, campos, decisões, orientações, resumo | `GET …/conferencia` → `documentos[]` (`tipoDocumental`, `situacao`, `motivo`, `orientacao`, `campos[]`: `codigo`, `situacao`, `valor`, `origem.pagina`, `origem.trecho`, `naoVerificado`, `decisao`, `orientacao`), `resumo`, `situacao`, `aviso`; nome do arquivo de `GET …/documentos` pelo `documentoId` |
-| E3.3 Resultado † | resultado geral, revisão, protocolo, critérios, pendências, resumo | `GET …/analises` → `resultadoGeral`, `revisao`, `versaoProtocolo`, `vigente`, `resultados[]`, `pendencias[]`, `resumo.texto`, `resumo.simulado` |
-| E3.4 Pendência † | critério, explicação, responsável; motivo e origem quando houver | `pendencias[]` → `codigoRegra`, `resultado`, `mensagem`, `responsavelCorrecao`; motivo e evidências (`documentoId`, `codigo`, `pagina`, `trecho`) se a RC-13/15 expuser |
+| E3.3 Resultado | resultado geral, revisão, protocolo, data, critérios, pendências, aviso; resumo † | `GET …/analises` → `vigenteId`; na análise: `resultadoGeral`, `revisao`, `protocolo.identificador`, `protocolo.versao`, `executadaEm`, `vigente`, `resultados[]` (`codigoRegra`, `descricao`, `resultado`, `motivo`), `pendencias[]`, `simulada`, `aviso`; resumo (`resumo.texto`, `resumo.simulado`) só com a RC-14 † |
+| E3.4 Pendência | critério, explicação, responsável; motivo e origem quando houver | `pendencias[]` → `codigoRegra`, `descricaoRegra`, `tipo`, `explicacao`, `responsavel`, `motivo` (só em `NAO_VERIFICAVEL`), `evidencias[]` (`documentoId`, `campo`, `situacao`, `origem.pagina`, `origem.trecho` quando houver); nome do arquivo por `documentos[]` da análise (`disponivel = false` se o arquivo saiu depois). Nenhum valor lido vem nas evidências |
 | E3.6 Comprovante † | referência, data, serviço, versão analisada, aviso | `POST …/submissoes-simuladas` → referência, data, aviso; serviço e revisão do pedido |
 | E4.1 Captura † | luminosidade, distância, instante, classificação | `GET /solicitacoes/{id}/leituras` |
 | E4.2 Administrador † | protocolo, regras, totais | `GET /admin/indicadores` |
@@ -104,7 +104,7 @@ Composição de dados já fornecidos, sem regra nova:
 | Rascunho sem leitura atual | `estado = RASCUNHO`, documentos > 0 e leitura inexistente (404) ou `DESATUALIZADA` |
 | Rascunho a conferir | leitura `ATUAL` e conferência `PENDENTE` |
 | Rascunho pronto para verificar | leitura `ATUAL` e conferência `CONFERIDA` ou `REQUER_CONFERENCIA` |
-| Resultado não vigente | estado de resultado e `analise.situacao = NAO_REALIZADA` para a versão atual (ou `vigente = false` †) |
+| Resultado não vigente | estado de resultado e `analise.situacao = NAO_REALIZADA` para a versão atual (em `GET …/analises`: `vigenteId` omitido com análises na lista) |
 | Demais | o próprio `estado` |
 
 ## 5. Dados de exemplo dos quadros — estrutura do backend, texto exemplar

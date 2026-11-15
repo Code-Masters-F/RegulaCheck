@@ -227,6 +227,19 @@ description: "Tarefas de design da feature 015-fluxo-telas-app"
 
 ---
 
+## Phase 14: Reconciliação com a `main` para o merge do PR #66 (15/11/2026)
+
+**Purpose**: resolver o conflito com a RC-13 (PR #67) e deixar o PR pronto para revisão, sem mudar o conteúdo dos quadros
+
+- [x] T068 Mesclar `origin/main` (RC-13) na branch e renumerar a feature para `specs/015-fluxo-telas-app/` (research D17), com as referências, `.specify/feature.json` e o bloco SPECKIT do `CLAUDE.md` apontando para 015
+- [x] T069 Conferir `contracts/telas-operacoes.md`, `data-model.md` §2–§4, research D1 e D19, as Assumptions da spec e a coluna "Operação" de `mobile/design/INDEX.md` com o contrato publicado da RC-13 (`specs/014-persistir-analises-historico/contracts/api-analises.md`): análise síncrona (201/200, sem 202), 409 `ANALISE_EM_ANDAMENTO`, 503 `ANALISE_INDISPONIVEL`, `vigenteId`, `execucao` e campos de pendência
+- [x] T070 Tirar `.specify/feature.json` do versionamento (já listado em `.specify/.gitignore` pelo Spec Kit 1.4.1) e registrar em `docs/decisoes.md` e `docs/ambiente.md`
+- [x] T071 [P] Otimizar sem perdas as prévias PNG de `design/previas/` (17,1 MB → 10,4 MB), conferindo pixel a pixel que nenhuma imagem mudou
+- [x] T072 [P] Atualizar `AGENTS.md` (fase atual) e a linha "Telas do app" de `docs/decisoes.md` (arquivo único `design/RegulaCheck.pen`, 94 quadros, specs 007 e 015)
+- [ ] T073 No pen.dev (só via MCP): trocar o rótulo "FEATURE 014" do cartão "Como avaliar o fluxo" por "FEATURE 015", rever a marca † dos quadros que dependem só da RC-13 e reexportar as prévias afetadas
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -291,7 +304,7 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 
 ## Notes
 
-- Total: 67 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas; T066–T067 para a limpeza de arquivos) · 94 quadros (3 existentes ajustados).
+- Total: 73 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas; T066–T067 para a limpeza de arquivos; T068–T073 em 15/11/2026 para a reconciliação com a `main`) · 94 quadros (3 existentes ajustados).
 - Nenhum commit, push ou issue sem pedido explícito (constituição, Fluxo de Desenvolvimento).
 - Marcar tarefa como concluída só com evidência (screenshot revisada, consulta de limites, PNG exportado, arquivo salvo).
 - `/speckit-analyze` executado em 13/11/2026; achados F1–F14 corrigidos nesta revisão.
@@ -404,4 +417,13 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 - Pedido do responsável: tirar as capturas do Refcat e os documentos redundantes, ficando com as specs e a documentação em uso. A lista foi apresentada e aprovada antes da exclusão.
 - **T066:** saíram 18 arquivos (cerca de 7,8 MB): 5 capturas, 7 imagens de conceito, 2 registros de prompts, `design/referencias.md`, `scripts/configurar-refcat.ps1` e `mobile/design/checklist-revisao.md`. Os cuidados Android sobre barras do sistema, teclado e conferência no aparelho foram para a seção Comportamentos de `design-system.md`. Ficaram as specs 001–014 (a 007 continua dona do design system), o `.pen`, as prévias e os documentos de `mobile/design/`.
 - **T067:** links ajustados em `design/README.md`, `AGENTS.md`, `mobile/README.md` (a seção de design citava arquivos `.pen` que não existem) e `textos.md`. As menções que sobraram ficam em registros históricos: specs 007 e 014 e o registro de verificação.
-- Os arquivos podem ser recuperados pelo histórico do Git (`b696b1f`).
+- Os arquivos podem ser recuperados pelo histórico do Git (`b696b1f`). Se o PR #66 entrar por squash, esse commit fica só na referência do PR no GitHub (`refs/pull/66/head`).
+
+### 15/11/2026 — Phase 14 / reconciliação com a `main` (T068–T072)
+
+- **T068:** a RC-13 entrou na `main` (PR #67) como `specs/014-persistir-analises-historico` e deixou o PR #66 em conflito (`.specify/feature.json` e bloco SPECKIT do `CLAUDE.md`). Merge `e87aa86`; a pasta virou `specs/015-fluxo-telas-app` sem mudança de conteúdo e as 14 referências em Markdown foram trocadas. Os títulos "Feature 014" das notas e da verificação passaram a "Feature 015". As mensagens dos commits anteriores continuam com "spec 014".
+- **T069:** divergências corrigidas no texto: o `POST …/analises` não responde 202 (é síncrono e responde 201 ou 200 com a análise); "Em verificação" vem de `PROCESSANDO` (409 `ANALISE_EM_ANDAMENTO`, tempo esgotado ou outra sessão); a falha é 503 `ANALISE_INDISPONIVEL` com o pedido em `FALHA_ANALISE`; a vigência vem de `vigenteId`; a pendência traz `descricaoRegra`, `tipo`, `explicacao`, `responsavel`, `motivo` e `evidencias[]`. A decisão de tela D19 continua valendo. Os quadros não foram abertos nem alterados.
+- **T070:** `git rm --cached .specify/feature.json`; o arquivo local continua e é ignorado pelo `.specify/.gitignore`.
+- **T071:** 99 PNGs regravados com compressão máxima sem perdas (Pillow, `optimize=True`, perfil de cor preservado). Para cada arquivo foram comparados modo, tamanho e bytes de pixel antes de gravar; 0 diferenças, 0 arquivos ignorados.
+- **T072:** `AGENTS.md` dizia "não criar outra feature" e citava componentes `Atual/*`; passou a descrever o design system v1.0, os 94 quadros e a feature 015.
+- **Não verificado / pendente:** T073 depende do pen.dev com o MCP do pencil, que não estava disponível nesta sessão; T060 continua sem execução.

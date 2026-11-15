@@ -171,3 +171,9 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 
 - Por pedido do responsável, com a lista aprovada antes, saíram 18 arquivos (cerca de 7,8 MB): as capturas do Refcat, as explorações de conceito e os prompts, `design/referencias.md`, `scripts/configurar-refcat.ps1` e `mobile/design/checklist-revisao.md`. Isso substitui a decisão anterior de versionar as capturas. Recuperáveis pelo commit `b696b1f`.
 - Links ajustados nos documentos em uso. As menções que sobraram estão em registros históricos.
+
+## Feature 015 — Reconciliação com a `main` (T068–T072), 15/11/2026
+
+- Feature renumerada de 014 para 015 (a RC-13 publicou `specs/014-persistir-analises-historico`); referências conferidas: 0 links relativos quebrados nos Markdown alterados pelo PR.
+- Contrato das telas conferido com o contrato publicado da RC-13 (detalhes em `specs/015-fluxo-telas-app/tasks.md`, T069). O `.pen` não foi aberto: o rótulo "FEATURE 014" no canvas e a marca † dos quadros da RC-13 ficam para a T073.
+- Prévias PNG otimizadas sem perdas (17,1 MB → 10,4 MB), com comparação de pixels arquivo a arquivo.

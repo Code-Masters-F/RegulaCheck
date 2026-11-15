@@ -1,6 +1,6 @@
 # Contrato de design: tela × operação
 
-Para cada ação desenhada, a operação do backend que ela usa e o que a tela faz com cada resposta. É o critério de SC-001 (nenhuma ação sem operação) e de FR-001. **Situação**: ✅ implementada em `main` · † contratada, ainda não implementada (anotar o quadro como "contrato provisório").
+Para cada ação desenhada, a operação do backend que ela usa e o que a tela faz com cada resposta. É o critério de SC-001 (nenhuma ação sem operação) e de FR-001. **Situação**: ✅ implementada em `main` · † contratada, ainda não implementada (anotar o quadro como "contrato provisório"). Linhas da RC-13 conferidas em 15/11/2026 com o contrato publicado (`specs/014-persistir-analises-historico/contracts/api-analises.md`, PR #67).
 
 Respostas comuns a toda rota privada (FR-010): **401** → E1.4 Sessão expirada · **403** → E1.5 Sem permissão · **404** de pedido → E1.3 Não encontrado · **503** `DEPENDENCIA_INDISPONIVEL` → `Retorno/Erro` "O serviço está indisponível agora. Tente de novo." · falha de rede ou tempo esgotado → E4.3. Não repetidas abaixo.
 
@@ -11,9 +11,9 @@ Respostas comuns a toda rota privada (FR-010): **401** → E1.4 Sessão expirada
 | E1.1 Entrar | `POST /auth/login` | ✅ RC-04 | perfil `PACIENTE` → E1.2; `ADMINISTRADOR` → E4.2 | 401 `CREDENCIAIS_INVALIDAS` → "E-mail ou senha incorretos." (e-mail mantido, senha limpa) · 400 → campo indicado · 503 → serviço indisponível |
 | E1.2 Abrir | `GET /auth/sessao`, `GET /solicitacoes` | ✅ RC-04, RC-07 | lista (até 50) | vazia → `Vazio/Pedidos` |
 | E1.2 Sair | `POST /auth/logout` | ✅ RC-04 | E1.1 | qualquer falha → E1.1 (sessão local descartada) |
-| E1.3 Abrir | `GET /solicitacoes/{id}`; `GET …/documentos`; `GET …/extracoes`; `GET …/extracoes/{extracaoId}/conferencia`; `GET …/analises` † | ✅ / † | dados + ação de FR-012 | `GET …/extracoes` 404 = sem leitura (não é erro) |
-| E1.3 Atualizar (em verificação) | `GET /solicitacoes/{id}` | ✅ | estado novo | — |
-| E1.3 Tentar de novo (falha) | `POST …/analises` † | † RC-13 | E1.3 "Em verificação" ou resultado | mesmas de "Verificar critérios" |
+| E1.3 Abrir | `GET /solicitacoes/{id}` (com `analise.situacao` e, em `CONCLUIDA`, `analise.resultadoGeral`); `GET …/documentos`; `GET …/extracoes`; `GET …/extracoes/{extracaoId}/conferencia`; `GET …/analises` | ✅ RC-04 a RC-13 | dados + ação de FR-012 | `GET …/extracoes` 404 = sem leitura (não é erro) · `GET …/analises` com lista vazia = nunca verificado (não é erro) |
+| E1.3 Atualizar (em verificação) | `GET /solicitacoes/{id}`; `GET …/analises` para `execucao` | ✅ RC-13 | estado novo | `execucao.situacao = INTERROMPIDA` (passou do limite de 1 minuto sem concluir) → E1.3 com "Verificar critérios" de novo |
+| E1.3 Tentar de novo (falha) | `POST …/analises` | ✅ RC-13 | como "Verificar critérios" | mesmas de "Verificar critérios" |
 
 ## Envio (RC-37)
 
@@ -36,8 +36,8 @@ Respostas comuns a toda rota privada (FR-010): **401** → E1.4 Sessão expirada
 | E3.1 Ler documentos | `POST …/extracoes` | ✅ RC-10 | 201/200 → E3.2 documento 1 | 422 `SEM_DOCUMENTOS` → "Anexe ao menos um documento antes de ler." · 503 `LEITURA_INDISPONIVEL` → "A leitura simulada não está disponível agora. Tente de novo." · 409 documentos mudaram → "Os documentos mudaram; tente de novo." · 409 submetido |
 | E3.2 Abrir | `GET …/extracoes/{extracaoId}/conferencia` | ✅ RC-11 | campos do documento i | `situacao = DESATUALIZADA` → só consulta |
 | E3.2 Salvar e continuar | `PUT …/conferencia` (decisões do documento i) | ✅ RC-11 | 200 → documento i+1 ou E1.3 | 409 desatualizada → "Os documentos mudaram; leia os documentos de novo." · 422 `DECISAO_NAO_APLICAVEL` → "Não foi possível salvar esta decisão." (não deve ocorrer: a tela só oferece as aceitas) · 400 → "Não foi possível salvar. Tente de novo." · nada é salvo em erro |
-| E3.8 → Verificar critérios | `POST …/analises` | † RC-13 | 202 → E1.3 "Em verificação"; 200 → E3.3 | 409 → mensagem do backend · falha → `FALHA_ANALISE` |
-| E3.3 Abrir | `GET …/analises` | † RC-13 | resultado vigente (+ anterior para comparação) | `vigente = false` → aviso de resultado não vigente |
+| E3.8 → Verificar critérios | `POST …/analises` (sem corpo; síncrono: a resposta só chega com a análise concluída) | ✅ RC-13 | 201 (análise nova) ou 200 (já havia análise vigente da versão atual) → E3.3 · botão bloqueado durante a chamada | 409 `ANALISE_EM_ANDAMENTO` (outra verificação do pedido em curso; `Retry-After` em segundos) → E1.3 "Em verificação" · 409 `CONFLITO_ESTADO` → mensagem do backend (ex.: "Leia os documentos antes de pedir a análise."; "Os documentos ou a conferência mudaram durante a análise. Confira e peça a análise de novo.") · 503 `ANALISE_INDISPONIVEL` (nada gravado, pedido em `FALHA_ANALISE`) → E1.3 "Falha na verificação" · tempo esgotado → E1.3 "Atualizar" (o pedido pode estar em `PROCESSANDO`) |
+| E3.3 Abrir | `GET …/analises` | ✅ RC-13 | análise de `vigenteId` (+ a anterior da lista para comparação; a comparação em si é da RC-16 †) | `vigenteId` omitido com análises na lista → aviso de resultado não vigente sobre a mais recente |
 | E3.3 Tentar resumo de novo | `POST …/analises/{analiseId}/resumo` | † RC-14 | resumo | falha → texto padrão identificado |
 | E3.4 Abrir documento | `GET …/documentos/{docId}` | ✅ RC-08 | visualizador | 404 → "Este documento não está mais no pedido." |
 | E3.4 Já tenho uma nova versão / Substituir arquivo | E2.7 + `PUT …/documentos/{docId}` | ✅ RC-09 | aviso de resultado não vigente | como E2.4 |

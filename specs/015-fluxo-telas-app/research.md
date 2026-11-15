@@ -6,7 +6,7 @@ Fontes lidas em `origin/main` (merge do PR #13, `0091634`, 13/11/2026): `CONTRAT
 
 ## D1. Situação de cada operação usada pelas telas
 
-- **Decision**: classificar cada operação em *implementada* (RC-04, RC-07 a RC-11) ou *contratada* (análises RC-13, resumo RC-14, reenvio RC-15/16, submissão RC-17, indicadores RC-20, sensores RC-21/22). Quadros que dependem de operação contratada levam a anotação "contrato provisório".
+- **Decision**: classificar cada operação em *implementada* (RC-04, RC-07 a RC-11) ou *contratada* (análises RC-13, resumo RC-14, reenvio RC-15/16, submissão RC-17, indicadores RC-20, sensores RC-21/22). Quadros que dependem de operação contratada levam a anotação "contrato provisório". Atualização de 15/11/2026: a RC-13 foi publicada (PR #67) e passou a *implementada*; ver D19 e `contracts/telas-operacoes.md`.
 - **Rationale**: as telas de resultado, comprovante, sensores e administrador precisam existir até 16–17/11, antes das histórias de backend. O formato vem de `docs/api/contratos-dados.md` (análise, pendência, submissão) e do contrato interno da RC-12 (`AvaliacaoDoPedido`).
 - **Alternatives considered**: esperar a publicação das rotas (atrasa o percurso principal além do marco de 16/11); desenhar sem anotação (esconde o risco de mudança).
 
@@ -116,7 +116,7 @@ Fontes lidas em `origin/main` (merge do PR #13, `0091634`, 13/11/2026): `CONTRAT
 ## D19. Verificação em andamento só no pedido (correção do analyze)
 
 - **Decision**: o estado "Em verificação" aparece em E1.3; E3.3 não tem quadro de processamento. O quadro liberado vira E3.2 "Texto do documento como dado" (cobre FR-009 com o caso de injeção do catálogo de testes).
-- **Rationale**: o contrato leva a resposta 202 da verificação para E1.3 e nenhuma navegação abre E3.3 durante o processamento.
+- **Rationale**: nenhuma navegação abre E3.3 durante o processamento. Revisto em 15/11/2026 com o contrato publicado da RC-13: `POST …/analises` é síncrono (201/200 com a análise, sem 202); "Em verificação" aparece em E1.3 quando o pedido está em `PROCESSANDO` (409 `ANALISE_EM_ANDAMENTO`, tempo esgotado ou outra sessão), o que mantém a decisão.
 - **Alternatives considered**: manter os dois quadros (duplicação sem caminho de navegação).
 
 Nenhum item da Technical Context ficou como NEEDS CLARIFICATION.
