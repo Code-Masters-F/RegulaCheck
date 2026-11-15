@@ -84,6 +84,21 @@ public final class ExtracaoRepositoryMemoria implements ExtracaoRepository {
         }
     }
 
+    /**
+     * Leitura de uma revisao do pedido, sem falha injetada e sem filtro de dona (usado pelo dobro de analises da
+     * RC-13, que ja conferiu a dona; espelha a consulta por {@code (SOLICITACAO_ID, REVISAO)} do JDBC).
+     *
+     * @param solicitacaoId pedido
+     * @param revisao revisao
+     * @return a leitura daquela revisao, se houver
+     */
+    public Optional<Extracao> daRevisao(long solicitacaoId, int revisao) {
+        synchronized (pedidos) {
+            Map<Integer, Extracao> doPedido = leituras.get(solicitacaoId);
+            return doPedido == null ? Optional.empty() : Optional.ofNullable(doPedido.get(revisao));
+        }
+    }
+
     @Override
     public Optional<ExtracaoRegistrada> buscarPorId(long pacienteId, long solicitacaoId, long extracaoId) {
         synchronized (pedidos) {

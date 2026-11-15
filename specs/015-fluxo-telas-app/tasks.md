@@ -1,11 +1,11 @@
 ---
 
-description: "Tarefas de design da feature 014-fluxo-telas-app"
+description: "Tarefas de design da feature 015-fluxo-telas-app"
 ---
 
 # Tasks: Fluxo de telas e informação de cada tela do aplicativo
 
-**Input**: Design documents from `specs/014-fluxo-telas-app/`
+**Input**: Design documents from `specs/015-fluxo-telas-app/`
 
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/telas-operacoes.md, contracts/inventario-quadros.md, quickstart.md
 
@@ -37,7 +37,7 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 **Purpose**: ambiente e organização do canvas
 
-- [x] T001 Confirmar o ambiente e registrar em `specs/014-fluxo-telas-app/tasks.md` (Notas de execução): branch `codex/007-design-system-exploracao` igual a `origin/main` mais as alterações locais; pen.dev aberto com `design/RegulaCheck.pen`; `get_app_state` e `read_skill` (`execute.md`, `pen-schema.md`) do pencil MCP respondendo; quadros F1 `IkCIw`, F2 `t9lvSH`, F3 `EVIof`, F4 `HBByt` presentes
+- [x] T001 Confirmar o ambiente e registrar em `specs/015-fluxo-telas-app/tasks.md` (Notas de execução): branch `codex/007-design-system-exploracao` igual a `origin/main` mais as alterações locais; pen.dev aberto com `design/RegulaCheck.pen`; `get_app_state` e `read_skill` (`execute.md`, `pen-schema.md`) do pencil MCP respondendo; quadros F1 `IkCIw`, F2 `t9lvSH`, F3 `EVIof`, F4 `HBByt` presentes
 - [x] T002 Em `design/RegulaCheck.pen`, criar as quatro capas de faixa (quadros 390 × 844 em x=5200; y=0, 1200, 2400, 3600) com título da história (RC-36 Entrada e pedidos · RC-37 Envio · RC-38 Leitura, conferência e resultado · RC-39 Sensores, administrador e transversais), prioridade e lista de telas; mover `H0BJi` para a posição de E1.2 Sucesso na faixa RC-36, `CvQRm` para E2.2 Com arquivos na faixa RC-37 e `XCNVm` para E3.4 Unidade emissora na faixa RC-38, conforme a ordem do inventário
 
 ---
@@ -75,10 +75,10 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 ### Documentos (paralelizáveis)
 
-- [x] T022 [P] X4 — Reescrever `mobile/design/dados-ficticios.md` conforme `specs/014-fluxo-telas-app/data-model.md` §5: pessoas exemplares (Ana Beatriz Moreira, Bruno Henrique Costa, coordenação sem nome), serviço em "Santa Aurora (município fictício)"; Pedidos 1–4 com a estrutura da carga (estado, revisão, regras, quantidade e tipo de arquivo) e nomes de arquivo, trechos e resumos exemplares; Pedidos 5–8 "só no design"; leituras exemplares com as situações dos catálogos; sensores da carga (320,5/410 lux; 28/31,5 cm) e valores fora da faixa "só no design"; datas ilustrativas; remover "Exemplo", "sintético" e texto sem acento do arquivo
-- [x] T023 [P] X5 — Em `mobile/design/textos.md`, aplicar os rótulos de `specs/014-fluxo-telas-app/data-model.md` §2 ("Em verificação", "Falha na verificação", decisões da conferência, responsáveis, motivos) e acrescentar seções para E2.7 Anexar, E3.8 Verificar critérios, E3.7 Concluir simulação, E3.5 Correção e E1.3 por situação de FR-012; manter a lista de linguagem proibida
-- [x] T024 [P] X6 — Em `specs/007-epico-telas-pendev/contracts/telas.md`, inserir no topo a nota: inventário e conteúdo por tela substituídos por `specs/014-fluxo-telas-app/contracts/inventario-quadros.md` (94 quadros, alinhados às specs 008–013); o épico 007 segue dono do processo de design
-- [x] T025 [P] X7 — Em `design/README.md` e `mobile/design/INDEX.md`, apontar para `specs/014-fluxo-telas-app/` como fonte do fluxo, das faixas por história e do inventário; registrar os componentes A1–A13 em `mobile/design/design-system.md`
+- [x] T022 [P] X4 — Reescrever `mobile/design/dados-ficticios.md` conforme `specs/015-fluxo-telas-app/data-model.md` §5: pessoas exemplares (Ana Beatriz Moreira, Bruno Henrique Costa, coordenação sem nome), serviço em "Santa Aurora (município fictício)"; Pedidos 1–4 com a estrutura da carga (estado, revisão, regras, quantidade e tipo de arquivo) e nomes de arquivo, trechos e resumos exemplares; Pedidos 5–8 "só no design"; leituras exemplares com as situações dos catálogos; sensores da carga (320,5/410 lux; 28/31,5 cm) e valores fora da faixa "só no design"; datas ilustrativas; remover "Exemplo", "sintético" e texto sem acento do arquivo
+- [x] T023 [P] X5 — Em `mobile/design/textos.md`, aplicar os rótulos de `specs/015-fluxo-telas-app/data-model.md` §2 ("Em verificação", "Falha na verificação", decisões da conferência, responsáveis, motivos) e acrescentar seções para E2.7 Anexar, E3.8 Verificar critérios, E3.7 Concluir simulação, E3.5 Correção e E1.3 por situação de FR-012; manter a lista de linguagem proibida
+- [x] T024 [P] X6 — Em `specs/007-epico-telas-pendev/contracts/telas.md`, inserir no topo a nota: inventário e conteúdo por tela substituídos por `specs/015-fluxo-telas-app/contracts/inventario-quadros.md` (94 quadros, alinhados às specs 008–013); o épico 007 segue dono do processo de design
+- [x] T025 [P] X7 — Em `design/README.md` e `mobile/design/INDEX.md`, apontar para `specs/015-fluxo-telas-app/` como fonte do fluxo, das faixas por história e do inventário; registrar os componentes A1–A13 em `mobile/design/design-system.md`
 
 **Checkpoint**: design system completo, exemplos alinhados ao backend, documentos coerentes — histórias liberadas
 
@@ -95,7 +95,7 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 - [x] T028 [US1] Desenhar E1.3 Pedido em rascunho (5 quadros) em `design/RegulaCheck.pen`: Carregando; Rascunho sem documentos (Pedido 5, "Anexar documentos"); Rascunho sem leitura (Pedido 4, "1 de 3", "Ler documentos"); Rascunho a conferir (Pedido 5, situação "Falta conferir", principal "Conferir leitura", apoio "Verificar critérios"); Rascunho pronto para verificar (Pedido 5, "Leitura conferida", "Verificar critérios"). Estrutura: `Cabeçalho/Voltar` "Pedido N", `Tela/Título` "Consulta ambulatorial em cardiologia" + apoio "Santa Aurora (município fictício)", `Pedido/Próximo passo`, `Linha/Navegação` Documentos ({n} de 3), Leitura e conferência (rótulos de `data-model.md` §2) e Resultado (oculta), `Dado/Linha` Protocolo, Revisão, Criado em, Atualizado em, "Mais opções" no cabeçalho com "Trocar serviço" e "Excluir rascunho" (FR-027); nota com as operações de E1.3 em `contracts/telas-operacoes.md`
 - [x] T029 [US1] Desenhar E1.3 Pedido nos demais estados (7 quadros, †) em `design/RegulaCheck.pen`: Em verificação (Pedido 6, "Atualizar"), Confira a leitura (Pedido 7, "Ver o que conferir"), Com pendências (Pedido 2, revisão 1, "Ver pendências"), Sem pendências identificadas (Pedido 1 na revisão 2, antes da conclusão, "Concluir simulação" + "Isso não é aprovação do SUS."), Falha na verificação (Pedido 8, "Tentar de novo"), Resultado não vigente (Pedido 2 com `Aviso/Resultado não vigente`, "Ler documentos de novo"), Simulação concluída (Pedido 1, "Ver comprovante", P2); sem "Excluir rascunho" nem "Trocar serviço"; seção Resultado visível; nota "contrato provisório (RC-13/RC-17)" e origem (carga ou só no design)
 - [x] T030 [US1] Desenhar E1.3 Não encontrado ("Pedido não encontrado." + `Botão/Primário` "Voltar para meus pedidos"; nota: o Pedido 3 é da paciente B e recebe a mesma resposta de um inexistente), E1.4 Sessão expirada ("Sua sessão terminou. Entre novamente." + "Entrar") e E1.5 Sem permissão ("Você não tem permissão para ver esta tela." + "Voltar") (3 quadros) em `design/RegulaCheck.pen`; nota de FR-010
-- [x] T031 [US1] Verificar US1 em `design/RegulaCheck.pen`: 25 quadros da faixa RC-36 presentes e nomeados; consulta de limites sem recorte; cada ação principal confere com a tabela FR-012 de `specs/014-fluxo-telas-app/spec.md` e há no máximo uma por quadro (FR-005); dados conferem com `data-model.md` §5; notas presentes; exportar PNG 2× para `design/previas/`; atualizar `mobile/design/mapa-de-percursos.md` com o percurso de entrada; salvar pelo MCP
+- [x] T031 [US1] Verificar US1 em `design/RegulaCheck.pen`: 25 quadros da faixa RC-36 presentes e nomeados; consulta de limites sem recorte; cada ação principal confere com a tabela FR-012 de `specs/015-fluxo-telas-app/spec.md` e há no máximo uma por quadro (FR-005); dados conferem com `data-model.md` §5; notas presentes; exportar PNG 2× para `design/previas/`; atualizar `mobile/design/mapa-de-percursos.md` com o percurso de entrada; salvar pelo MCP
 
 **Checkpoint**: MVP de navegação — entrar, ver pedidos e saber o próximo passo em qualquer estado
 
@@ -199,10 +199,10 @@ description: "Tarefas de design da feature 014-fluxo-telas-app"
 
 - [x] T055 Desenhar E4.3 Conexão ruim (2 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Tempo esgotado (E2.1 com serviço preservado, `Retorno/Sem conexão` "Não foi possível confirmar a operação. O que você escolheu foi mantido.", "Tentar novamente") e Sem conexão (E2.2 do Pedido 5 com "Se for preciso, escolha o arquivo de novo depois de reconectar."); nota FR-052
 - [x] T056 Desenhar E4.4 Acessibilidade (4 quadros) na faixa RC-39 de `design/RegulaCheck.pen`: Anotações (contraste dos pares de F1, alvos 48, ordem de leitura e rótulos de E1.2/E2.2/E3.3) e Fonte ampliada de E1.2, E2.2 e E3.3 (texto a 200%, quadro com altura livre, sem cortar conteúdo essencial); nota FR-053
-- [x] T057 Auditar SC-001 e SC-002: para os 94 quadros de `design/RegulaCheck.pen`, cada ação e cada dado conferidos contra `specs/014-fluxo-telas-app/contracts/telas-operacoes.md` e `data-model.md` §3 e §5; registrar divergências e correções em `design/verificacao-2026-11-13.md` (ou arquivo do dia)
+- [x] T057 Auditar SC-001 e SC-002: para os 94 quadros de `design/RegulaCheck.pen`, cada ação e cada dado conferidos contra `specs/015-fluxo-telas-app/contracts/telas-operacoes.md` e `data-model.md` §3 e §5; registrar divergências e correções em `design/verificacao-2026-11-13.md` (ou arquivo do dia)
 - [x] T058 Auditar SC-005, SC-006, SC-007 e FR-005 em `design/RegulaCheck.pen` e `mobile/design/textos.md`: 7 estados, 3 situações de campo e 4 decisões desenhados; busca de linguagem proibida (só negações); aviso acadêmico em 100% dos quadros e SIMULADO nos de leitura, conferência, resumo, comprovante e sensores; 0 instâncias `Legado/*`; no máximo uma ação principal por quadro; registrar resultado
 - [x] T059 [P] Atualizar `mobile/design/INDEX.md` com os 94 quadros (ID, nome, faixa, situação: desenhado/revisado, operação) e `design/README.md` com o estado final e as pendências
-- [ ] T060 Executar o percurso de `specs/014-fluxo-telas-app/quickstart.md` com uma pessoa que não desenhou (SC-003, SC-004: Pedido 1 rev 2 → comprovante `SIM-2026-0001`) e registrar o resultado real em `design/verificacao-2026-11-13.md`; sem execução, registrar como não verificado
+- [ ] T060 Executar o percurso de `specs/015-fluxo-telas-app/quickstart.md` com uma pessoa que não desenhou (SC-003, SC-004: Pedido 1 rev 2 → comprovante `SIM-2026-0001`) e registrar o resultado real em `design/verificacao-2026-11-13.md`; sem execução, registrar como não verificado
 - [x] T061 Exportar as prévias finais (`design/previas/`), salvar `design/RegulaCheck.pen` pelo MCP e marcar as tarefas concluídas nesta lista com evidência
 
 ---
@@ -308,7 +308,7 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 - **T017**: varredura de valores não imersivos (9 textos); 0 problemas de layout em F1–F4 e capas; prévias exportadas; salvo.
 - **T018–T021**: exemplos alinhados; E1.2 com rolagem (904, dobra em 844); prévias 2× exportadas; salvo.
 - **T022–T025**: `dados-ficticios.md` e `textos.md` reescritos; nota de substituição no contrato do 007; README, INDEX e design-system atualizados.
-- Evidência: `design/verificacao-2026-11-13.md`, seção "Feature 014 — Fase 0". Não verificado: fonte ampliada, TalkBack, interação.
+- Evidência: `design/verificacao-2026-11-13.md`, seção "Feature 015 — Fase 0". Não verificado: fonte ampliada, TalkBack, interação.
 
 ### 14/11/2026 — Phase 3 / US1 (T026–T031) concluída
 

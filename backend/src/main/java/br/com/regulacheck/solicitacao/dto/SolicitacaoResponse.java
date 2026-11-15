@@ -1,5 +1,6 @@
 package br.com.regulacheck.solicitacao.dto;
 
+import br.com.regulacheck.solicitacao.entity.EstadoSolicitacao;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -19,7 +20,7 @@ import java.time.temporal.ChronoUnit;
  * @param versaoConjuntoDocumental versao do conjunto de documentos do pedido: e a propria revisao vigente, que
  *     aumenta a cada documento enviado (RC-08)
  * @param documentosDisponiveis quantos documentos disponiveis o pedido tem (RC-08)
- * @param analise situacao da analise para a versao atual dos documentos (RC-08)
+ * @param analise situacao da analise para a versao atual dos documentos (RC-08; calculada desde a RC-13)
  */
 public record SolicitacaoResponse(String id, String protocoloId, Servico servico, String estado, int revisao,
         String criadaEm, String atualizadaEm, boolean simulacao, int versaoConjuntoDocumental,
@@ -36,18 +37,40 @@ public record SolicitacaoResponse(String id, String protocoloId, Servico servico
     }
 
     /**
-     * Situacao da analise. Receber um documento nao e analisa-lo: enquanto nenhuma historia de analise existir,
-     * toda versao dos documentos esta sem analise. Quando a analise existir, esta situacao passa a ser calculada
-     * a partir do resultado vigente da revisao atual, sem mudar o significado dos valores existentes.
+     * Situacao da analise para a versao atual dos documentos. Receber um documento nao e analisa-lo. Desde a RC-13 e
+     * calculada a partir do estado e da analise vigente da revisao atual, sem mudar o significado de
+     * {@code NAO_REALIZADA} (nenhuma analise vale para esta versao). "Interrompida pelo limite de tempo" so aparece na
+     * consulta das analises.
      *
-     * @param situacao valor fechado; hoje apenas {@code NAO_REALIZADA}
+     * @param situacao {@code NAO_REALIZADA}, {@code EM_ANDAMENTO} (pedido em {@code PROCESSANDO}) ou
+     *     {@code CONCLUIDA} (ha analise vigente da revisao atual)
      * @param mensagem texto para a paciente
+     * @param resultadoGeral resultado geral da vigente; so em {@code CONCLUIDA} (omitido nos demais)
      */
-    public record Analise(String situacao, String mensagem) {
+    public record Analise(String situacao, String mensagem, String resultadoGeral) {
 
-        /** Nenhuma analise foi realizada para a versao atual dos documentos. */
+        /** Nenhuma analise vale para a versao atual dos documentos. */
         public static final Analise NAO_REALIZADA = new Analise("NAO_REALIZADA",
-                "Nenhuma análise foi realizada para esta versão dos documentos.");
+                "Nenhuma análise foi realizada para esta versão dos documentos.", null);
+
+        /** A analise do pedido esta em andamento; nao equivale a concluida. */
+        public static final Analise EM_ANDAMENTO = new Analise("EM_ANDAMENTO",
+                "A análise está em andamento. Consulte o resultado em instantes.", null);
+
+        /**
+         * @param pedido pedido lido do banco
+         * @return a situacao da analise para a versao atual dos documentos
+         */
+        public static Analise de(Solicitacao pedido) {
+            if (pedido.estado() == EstadoSolicitacao.PROCESSANDO) {
+                return EM_ANDAMENTO;
+            }
+            if (pedido.resultadoVigente() != null) {
+                return new Analise("CONCLUIDA", "Há uma análise simulada para esta versão dos documentos.",
+                        pedido.resultadoVigente().name());
+            }
+            return NAO_REALIZADA;
+        }
     }
 
     /**
@@ -59,7 +82,7 @@ public record SolicitacaoResponse(String id, String protocoloId, Servico servico
                 new Servico(pedido.protocolo().localidade(), pedido.protocolo().especialidade(),
                         pedido.protocolo().avisoFicticio()),
                 pedido.estado().name(), pedido.revisaoAtual(), iso(pedido.criadaEm()), iso(pedido.atualizadaEm()),
-                true, pedido.revisaoAtual(), pedido.documentosDisponiveis(), Analise.NAO_REALIZADA);
+                true, pedido.revisaoAtual(), pedido.documentosDisponiveis(), Analise.de(pedido));
     }
 
     private static String iso(Instant instante) {

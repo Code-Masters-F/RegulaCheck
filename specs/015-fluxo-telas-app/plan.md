@@ -1,8 +1,8 @@
 # Implementation Plan: Fluxo de telas e informação de cada tela do aplicativo
 
-**Branch**: `codex/007-design-system-exploracao` (feature `014-fluxo-telas-app`, sem branch própria) | **Date**: 2026-11-13 | **Spec**: [spec.md](spec.md)
+**Branch**: `codex/007-design-system-exploracao` (feature `015-fluxo-telas-app`, sem branch própria) | **Date**: 2026-11-13 | **Spec**: [spec.md](spec.md)
 
-**Input**: Feature specification from `specs/014-fluxo-telas-app/spec.md`
+**Input**: Feature specification from `specs/015-fluxo-telas-app/spec.md`
 
 ## Summary
 
@@ -14,7 +14,7 @@ Desenhar no pen.dev o percurso completo do aplicativo — paciente e administrad
 
 **Primary Dependencies**: pen.dev com o pencil MCP; design system v1.0 em `design/RegulaCheck.pen` (F1 `IkCIw`, F2 `t9lvSH`, F3 `EVIof`, F4 `HBByt`); fontes Bricolage Grotesque e Nunito Sans; ícones Lucide.
 
-**Storage**: `design/RegulaCheck.pen` (somente via MCP); prévias PNG em `design/previas/`; texto em `specs/014-fluxo-telas-app/`, `mobile/design/textos.md`, `mobile/design/dados-ficticios.md`, `mobile/design/INDEX.md`.
+**Storage**: `design/RegulaCheck.pen` (somente via MCP); prévias PNG em `design/previas/`; texto em `specs/015-fluxo-telas-app/`, `mobile/design/textos.md`, `mobile/design/dados-ficticios.md`, `mobile/design/INDEX.md`.
 
 **Testing**: revisão, não teste automatizado — screenshots, consulta de limites (`Get` com `ctx.problems`), busca por componentes `Legado/*`, conferência de rastreabilidade tela × operação, busca de linguagem proibida em `textos.md`, percurso por pessoa que não desenhou. Testes Java não mudam (nenhum código alterado).
 
@@ -51,7 +51,7 @@ Desenhar no pen.dev o percurso completo do aplicativo — paciente e administrad
 ### Documentation (this feature)
 
 ```text
-specs/014-fluxo-telas-app/
+specs/015-fluxo-telas-app/
 ├── spec.md                       # requisitos e fluxo (/speckit-specify)
 ├── plan.md                       # este arquivo
 ├── research.md                   # decisões D1–D17 com fonte no backend
@@ -79,7 +79,7 @@ mobile/design/
 specs/007-epico-telas-pendev/contracts/telas.md   # nota de substituição (X6)
 ```
 
-**Structure Decision**: arquivo único `design/RegulaCheck.pen`, como adotado em 13/11; nenhuma pasta nova fora de `specs/014-fluxo-telas-app/`. O épico 007 continua dono do processo de design; esta feature é dona do fluxo, do conteúdo por tela e do inventário.
+**Structure Decision**: arquivo único `design/RegulaCheck.pen`, como adotado em 13/11; nenhuma pasta nova fora de `specs/015-fluxo-telas-app/`. O épico 007 continua dono do processo de design; esta feature é dona do fluxo, do conteúdo por tela e do inventário.
 
 ## Complexity Tracking
 

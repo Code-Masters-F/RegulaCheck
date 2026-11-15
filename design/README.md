@@ -4,7 +4,7 @@
 
 ## Situação atual
 
-O responsável aprovou **seguir com a identidade dos três exemplos inspirados no Headspace** e levá-la ao pen.dev. A identidade está aprovada como direção. **Em 13/11 os fundamentos e o catálogo foram refeitos como design system v1.0.** Em 14/11 a feature 014 desenhou **os 94 quadros do fluxo de telas**, alinhados ao backend, em quatro faixas (RC-36 a RC-39). Eles estão listados em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Os quadros foram revisados por quem desenhou, mas ainda não foram aprovados pelo grupo nem percorridos por outra pessoa (T060). O trabalho é somente desenho: não há aplicativo Android implementado por ele.
+O responsável aprovou **seguir com a identidade dos três exemplos inspirados no Headspace** e levá-la ao pen.dev. A identidade está aprovada como direção. **Em 13/11 os fundamentos e o catálogo foram refeitos como design system v1.0.** Em 14/11 a feature 015 desenhou **os 94 quadros do fluxo de telas**, alinhados ao backend, em quatro faixas (RC-36 a RC-39). Eles estão listados em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Os quadros foram revisados por quem desenhou, mas ainda não foram aprovados pelo grupo nem percorridos por outra pessoa (T060). O trabalho é somente desenho: não há aplicativo Android implementado por ele.
 
 - Workspace: `RegulaCheck`; branch: `codex/007-design-system-exploracao`, enviada ao GitHub. Preservar o trabalho existente.
 - Fonte nativa: **`design/RegulaCheck.pen`**. Não ler, buscar ou editar `.pen` como texto; usar exclusivamente o MCP `pencil`.
@@ -36,15 +36,15 @@ Linha superior (y=0), da esquerda para a direita:
 | E2.2 Documentos — Com arquivos · v1.0 | `CvQRm` | [PNG](previas/CvQRm.png) |
 | E3.4 Pendência — Unidade emissora · v1.0 | `XCNVm` | [PNG](previas/XCNVm.png) |
 
-As três telas agora são montadas só com instâncias dos componentes v1.0 (71 componentes desde a Fase 0 da feature 014; ver F2–F4). Componentes mais usados: `Botão/Primário` `YNfQA`, `Botão/Contorno` `DpTaD`, `Botão/Texto` `j97Pe`, `Cabeçalho/Voltar` `PbS1q`, `Tela/Título` `YtzRv`, `Pedido/Destaque` `bwbsT`, `Pedido/Linha` `D4QLJd`, `Documento/Linha` `N6LHC`, `Pendência/Orientação` `tAmsl`, `Aviso/Rodapé` `zX8C6`, `Selo/Simulado` `ONwnK`, `Estado/*` em F4.
+As três telas agora são montadas só com instâncias dos componentes v1.0 (71 componentes desde a Fase 0 da feature 015; ver F2–F4). Componentes mais usados: `Botão/Primário` `YNfQA`, `Botão/Contorno` `DpTaD`, `Botão/Texto` `j97Pe`, `Cabeçalho/Voltar` `PbS1q`, `Tela/Título` `YtzRv`, `Pedido/Destaque` `bwbsT`, `Pedido/Linha` `D4QLJd`, `Documento/Linha` `N6LHC`, `Pendência/Orientação` `tAmsl`, `Aviso/Rodapé` `zX8C6`, `Selo/Simulado` `ONwnK`, `Estado/*` em F4.
 
-**Arquivo** `Wo9WQ` (antes em y=7000): F1–F4 anteriores, biblioteca antiga e prévia `O84XR`, com componentes renomeados `Legado/*`. Não usar. Em 14/11/2026 o quadro não estava mais no documento aberto, e a feature 014 não o excluiu. A remoção provavelmente aconteceu no commit `0e4cdb6`; a versão de `efc76d1` pode recuperar o quadro. Fica para o grupo confirmar. `rc-font-family`/Plus Jakarta Sans e `rc-review` (roxo) são legado.
+**Arquivo** `Wo9WQ` (antes em y=7000): F1–F4 anteriores, biblioteca antiga e prévia `O84XR`, com componentes renomeados `Legado/*`. Não usar. Em 14/11/2026 o quadro não estava mais no documento aberto, e a feature 015 não o excluiu. A remoção provavelmente aconteceu no commit `0e4cdb6`; a versão de `efc76d1` pode recuperar o quadro. Fica para o grupo confirmar. `rc-font-family`/Plus Jakarta Sans e `rc-review` (roxo) são legado.
 
 Para montar uma tela nova: copiar uma das três telas (390 × 844, padding 24/24/16, conteúdo vertical com gap 24, `Respiro flexível` antes do rodapé) e trocar as instâncias. Altura de controle deve ser **numérica (52)**: o pen.dev ignora variável em `height`. Telas de lista ou de conferência que passam da altura são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar (ex.: E1.2 `H0BJi`).
 
-### Montagem das telas (feature 014, desde 13/11/2026)
+### Montagem das telas (feature 015, desde 13/11/2026)
 
-O fluxo, o conteúdo por tela, as ações permitidas pelo backend e o inventário de 94 quadros estão em [specs/014-fluxo-telas-app/](../specs/014-fluxo-telas-app/) (`spec.md`, `data-model.md`, `contracts/`, `tasks.md`). No canvas (research D20, 14/11/2026), à direita de F1–F4 (x=5200), o cartão **"Como avaliar o fluxo"** (`io4cw`) explica a leitura e numera o caminho principal. Abaixo dele vêm **8 etapas**, com **uma linha por tela (01 a 21)** na ordem de uso. Em cada linha, um cartão à esquerda diz o propósito da tela, de onde se chega, para onde se vai e a operação; os estados seguem da esquerda para a direita (passo 470, a partir de x=5760), cada um com a sua nota logo abaixo. As linhas estão listadas em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Textos dos quadros: [mobile/design/textos.md](../mobile/design/textos.md); dados exemplares: [mobile/design/dados-ficticios.md](../mobile/design/dados-ficticios.md) — estrutura do backend, textos realistas, nunca os literais de teste.
+O fluxo, o conteúdo por tela, as ações permitidas pelo backend e o inventário de 94 quadros estão em [specs/015-fluxo-telas-app/](../specs/015-fluxo-telas-app/) (`spec.md`, `data-model.md`, `contracts/`, `tasks.md`). No canvas (research D20, 14/11/2026), à direita de F1–F4 (x=5200), o cartão **"Como avaliar o fluxo"** (`io4cw`) explica a leitura e numera o caminho principal. Abaixo dele vêm **8 etapas**, com **uma linha por tela (01 a 21)** na ordem de uso. Em cada linha, um cartão à esquerda diz o propósito da tela, de onde se chega, para onde se vai e a operação; os estados seguem da esquerda para a direita (passo 470, a partir de x=5760), cada um com a sua nota logo abaixo. As linhas estão listadas em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Textos dos quadros: [mobile/design/textos.md](../mobile/design/textos.md); dados exemplares: [mobile/design/dados-ficticios.md](../mobile/design/dados-ficticios.md) — estrutura do backend, textos realistas, nunca os literais de teste.
 
 Fase 0 concluída em 13/11: 13 componentes novos ou ajustados (`Folha/Escolha`, `Campo/Senha`, `Botão/Decisão`, `Conferência/*`, `Pedido/Próximo passo`, `Linha/Navegação`, `Dado/Linha`, `Critério/Linha`, `Comparação/*`, `Aviso/Resultado não vigente`, "Sair" no cabeçalho, data no pedido, nome do arquivo e "Mais opções" no documento) e os três exemplos alinhados ao backend.
 
@@ -61,7 +61,7 @@ A pesquisa de referências (Refcat), as capturas de outros aplicativos e as imag
 
 1. Ler `AGENTS.md`, `CLAUDE.md`, `.specify/memory/constitution.md` e este resumo; preservar alterações locais.
 2. Abrir o `.pen` e consultar os IDs em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Usar só os componentes v1.0 de F2–F4 e manter a direção aprovada. Conferir textos e dados antes de mudar uma tela.
-3. A feature ativa do Spec Kit é a 014 (`.specify/feature.json`). Rodar os scripts a partir da raiz do repositório:
+3. A feature ativa do Spec Kit é a 015 (`.specify/feature.json`). Rodar os scripts a partir da raiz do repositório:
    ```powershell
    & ./.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
    ```

@@ -102,7 +102,7 @@ Fontes lidas em `origin/main` (merge do PR #13, `0091634`, 13/11/2026): `CONTRAT
 
 ## D17. Numeração da feature
 
-- **Decision**: `014-fluxo-telas-app`, próximo número livre em `origin/main`. Se a RC-13 publicar outra `014`, renumerar esta sem mudar conteúdo.
+- **Decision**: criada como `014-fluxo-telas-app`, próximo número livre em `origin/main` em 13/11/2026. Se a RC-13 publicar outra `014`, renumerar esta sem mudar conteúdo. **Aplicado em 15/11/2026:** a RC-13 entrou na `main` como `014-persistir-analises-historico` (PR #67); esta feature passou a `015-fluxo-telas-app` na resolução do conflito do PR #66. Mensagens de commit anteriores continuam citando "spec 014", e o rótulo "FEATURE 014" dentro de `design/RegulaCheck.pen` e das prévias ainda não foi trocado (o `.pen` só é editado via MCP).
 - **Rationale**: numeração sequencial do Spec Kit (`init-options.json`).
 - **Alternatives considered**: número reservado fora da sequência (foge da convenção).
 

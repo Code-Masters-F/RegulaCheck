@@ -2,7 +2,7 @@
 
 > **Dados 100% fictícios.** Nenhum nome, documento, e-mail ou número abaixo pertence a pessoa real. Protocolo acadêmico fictício, não é exigência oficial. Usar **somente** estes dados nos quadros, para que as telas contem a mesma história.
 >
-> **Regra (13/11/2026):** a **estrutura** segue o backend — numeração e estados dos pedidos da carga `database/scripts/02_carga_sintetica.sql`, regras pendentes, quantidade e tipo de arquivo, situação de cada campo lido nos catálogos da leitura simulada. Os **valores exibidos** são exemplares realistas, em português correto: nada de "Exemplo", "sintético", texto sem acento, "[SIMULADO]" dentro de textos ou nomes de arquivo de teste. Detalhamento e origem: [specs/014-fluxo-telas-app/data-model.md](../../specs/014-fluxo-telas-app/data-model.md) §5.
+> **Regra (13/11/2026):** a **estrutura** segue o backend — numeração e estados dos pedidos da carga `database/scripts/02_carga_sintetica.sql`, regras pendentes, quantidade e tipo de arquivo, situação de cada campo lido nos catálogos da leitura simulada. Os **valores exibidos** são exemplares realistas, em português correto: nada de "Exemplo", "sintético", texto sem acento, "[SIMULADO]" dentro de textos ou nomes de arquivo de teste. Detalhamento e origem: [specs/015-fluxo-telas-app/data-model.md](../../specs/015-fluxo-telas-app/data-model.md) §5.
 
 ## Recorte
 - Localidade: **Santa Aurora (município fictício)**.

@@ -60,9 +60,9 @@ Escopo: avaliação das três telas novas, refação de F1–F4 com base nelas e
 
 **Não verificado:** fonte ampliada, TalkBack, foco por teclado, insets, interação, compreensão com pacientes, demais estados do épico. Nenhum teste Java/Android executado (sem mudança de código).
 
-## Feature 014 — Fase 0 (T001–T025), 13/11/2026
+## Feature 015 — Fase 0 (T001–T025), 13/11/2026
 
-Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias RC-36 a RC-39 (`specs/014-fluxo-telas-app/tasks.md`).
+Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias RC-36 a RC-39 (`specs/015-fluxo-telas-app/tasks.md`).
 
 **Executado**
 - Commit `9f8a6c6` enviado para `origin/codex/007-design-system-exploracao` antes da fase; capturas de terceiros em `design/referencias/*.webp` mantidas fora do repositório público.
@@ -78,15 +78,15 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 
 **Não verificado**: fonte ampliada, TalkBack, interação real; nenhum teste Java/Android (sem mudança de código).
 
-## Feature 014 — US1 / RC-36 (T026–T031), 14/11/2026
+## Feature 015 — US1 / RC-36 (T026–T031), 14/11/2026
 
 - Commit da Fase 0: `988ac68` (enviado).
 - 25 quadros na faixa RC-36: E1.1 Login (5), E1.2 Meus pedidos (5, incluindo `H0BJi`), E1.3 Pedido (13: carregando, 4 situações de rascunho, 7 estados verificados, não encontrado), E1.4 e E1.5.
-- Consulta de limites: 0 problemas; 0 componentes `Legado/*`; todos com aviso acadêmico; nenhuma ação fora de `specs/014-fluxo-telas-app/contracts/telas-operacoes.md`; ação principal de cada E1.3 confere com FR-012 e há no máximo uma por quadro.
+- Consulta de limites: 0 problemas; 0 componentes `Legado/*`; todos com aviso acadêmico; nenhuma ação fora de `specs/015-fluxo-telas-app/contracts/telas-operacoes.md`; ação principal de cada E1.3 confere com FR-012 e há no máximo uma por quadro.
 - Correções feitas na revisão: rascunho com "Mais opções" no cabeçalho (excesso de altura); texto de E1.4 que afirmava algo não garantido pelo backend foi trocado pelo texto aprovado.
 - Não verificado: compreensão por pessoa que não desenhou (SC-003), fonte ampliada, TalkBack, interação.
 
-## Feature 014 — US2 / RC-37 (T032–T038), 14/11/2026
+## Feature 015 — US2 / RC-37 (T032–T038), 14/11/2026
 
 - Commit da US1: `f724cd6` (enviado).
 - 28 quadros na faixa RC-37: E2.1 Novo pedido (5), E2.2 Documentos (8, incluindo `CvQRm`), E2.7 Anexar (2), E2.3 Recusa de arquivo (8, uma por resposta do backend: 415 ×2, 413, 400 ×3, 422, 409), E2.4/E2.5 (2 + 2) e E2.6 (1).
@@ -94,7 +94,7 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Correções na revisão: nome longo truncado com reticências; terceiro documento `exames-anteriores.pdf`; "Não enviado" com "Tentar de novo" como única ação; linha de limites removida onde a mensagem já a cobre (3 quadros).
 - Não verificado: fonte ampliada, TalkBack, interação.
 
-## Feature 014 — US3 / RC-38 leitura e conferência (T039–T042), 14/11/2026
+## Feature 015 — US3 / RC-38 leitura e conferência (T039–T042), 14/11/2026
 
 - Commit da US2: `0eb5296` (enviado).
 - 12 quadros: E3.1 Leitura simulada (lendo, indisponível, sem documentos, documentos mudaram) e E3.2 Conferência (documento lido, decisões registradas, não localizado indicado, campo ilegível, documento não lido, texto do documento como dado, desatualizada, erro ao salvar).
@@ -102,7 +102,7 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Consulta de limites: 0 problemas; 0 `Legado/*`; selo SIMULADO em todos; nenhum campo de digitação; decisões oferecidas só as aceitas pelo backend (RC-11).
 - Não verificado: fonte ampliada, TalkBack, interação.
 
-## Feature 014 — US4 / RC-38 verificação e pendências (T043–T046), 14/11/2026
+## Feature 015 — US4 / RC-38 verificação e pendências (T043–T046), 14/11/2026
 
 - Commit da US3: `74cdfd3` (enviado).
 - 10 quadros: E3.8 Verificar critérios, E3.3 Resultado (5) e E3.4 Detalhe da pendência (`XCNVm` + 3).
@@ -111,7 +111,7 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Marco: percurso P1 (US1–US4, RC-36 a RC-38) desenhado em 14/11/2026, antes do marco de 16/11.
 - Não verificado: compreensão por pessoa que não desenhou (SC-003, SC-004), fonte ampliada, TalkBack.
 
-## Feature 014 — US5 e US6 / RC-38 correção e conclusão (T047–T050), 14/11/2026
+## Feature 015 — US5 e US6 / RC-38 correção e conclusão (T047–T050), 14/11/2026
 
 - Commit da US4: `efc76d1` (enviado).
 - 4 quadros: E3.5 Resultado não vigente e Comparação, E3.7 Concluir simulação, E3.6 Comprovante simulado. Faixa RC-38 completa com 26 quadros.
@@ -120,7 +120,7 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Percurso principal completo no pen.dev (RC-36 a RC-38, 79 quadros). Falta a faixa RC-39 (P3) e a validação com pessoa (T060).
 - Não verificado: fonte ampliada, TalkBack, interação.
 
-## Feature 014 — US7, US8 e transversais / RC-39 (T051–T056), 14/11/2026
+## Feature 015 — US7, US8 e transversais / RC-39 (T051–T056), 14/11/2026
 
 - Commit de US5/US6: `0e4cdb6` (enviado).
 - 15 quadros na faixa RC-39 (y=5000):
@@ -136,10 +136,10 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Faixas RC-36 a RC-39 completas: 94 quadros, como no inventário.
 - Não verificado: fonte ampliada e TalkBack em aparelho, interação e percurso com pessoa (T060).
 
-## Feature 014 — Polimento e auditorias (T057–T061), 14/11/2026
+## Feature 015 — Polimento e auditorias (T057–T061), 14/11/2026
 
 - Commit da RC-39: `2e41703` (enviado).
-- **SC-001 (ações):** os rótulos de ação dos 94 quadros foram extraídos pelo MCP e comparados com `specs/014-fluxo-telas-app/contracts/telas-operacoes.md`. Nenhuma ação ficou sem operação ou navegação. As ações só de navegação ou locais foram acrescentadas ao contrato, na seção "Navegação e ações locais".
+- **SC-001 (ações):** os rótulos de ação dos 94 quadros foram extraídos pelo MCP e comparados com `specs/015-fluxo-telas-app/contracts/telas-operacoes.md`. Nenhuma ação ficou sem operação ou navegação. As ações só de navegação ou locais foram acrescentadas ao contrato, na seção "Navegação e ações locais".
 - **SC-002 (dados):** os textos com dados (pedidos, datas, revisões, arquivos, tamanhos, regras, sensores, comprovante) foram comparados com a carga e com `data-model.md` §5. Havia uma divergência: no E3.8, o fundo dizia "8 sem decisão" e o diálogo "3". Foi corrigida para "3" nos dois.
 - **SC-005:** os 7 estados do pedido, as 3 situações de campo e as 4 decisões aparecem em pelo menos um quadro cada.
 - **SC-006:** termos proibidos só em negações ou como dado do documento. Aviso acadêmico em 94 de 94 quadros. SIMULADO em todos os quadros de leitura, conferência, resumo, comprovante e sensores.
@@ -150,7 +150,7 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - **SC-003 e SC-004 (T060): não verificados.** Ainda não houve percurso com uma pessoa que não desenhou.
 - Prévias finais: 98 PNG 2× em `design/previas/` (94 telas e 4 capas) e 4 em `design/previas/fundamentos/`. Documento salvo pelo MCP.
 
-## Feature 014 — Organização do canvas para avaliação (T062–T065), 14/11/2026
+## Feature 015 — Organização do canvas para avaliação (T062–T065), 14/11/2026
 
 - Commit do polimento: `22d9223` (enviado).
 - Disposição nova (research D20):

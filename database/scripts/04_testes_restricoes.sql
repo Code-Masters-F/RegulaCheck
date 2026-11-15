@@ -1,6 +1,6 @@
 -- =============================================================================
 -- RegulaCheck - 04_testes_restricoes.sql  (RC-03)
--- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 27 casos tenta uma
+-- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 31 casos tenta uma
 --              violacao e confere o codigo ORA esperado; imprime "OK" ou "FALHOU".
 --              Os casos 13 e 14 (RC-07) exigem o motivo PROTOCOLO_ALTERADO: em banco criado
 --              antes da RC-07, rode antes o 06_motivo_revisao_protocolo.sql.
@@ -10,6 +10,8 @@
 --              RC-10, rode antes o 08_extracao.sql.
 --              Os casos 23 a 27 (RC-11) exigem RC_CONFERENCIA_CAMPO do 09_: em banco criado antes da
 --              RC-11, rode antes o 09_conferencia.sql.
+--              Os casos 28 a 31 (RC-13) e a contagem final exigem as colunas e RC_PENDENCIA_EVIDENCIA do 10_: em
+--              banco criado antes da RC-13, rode antes o 10_analise_historico.sql.
 -- Ordem      : 4o script, depois do 01 e do 02 (usa os dados da carga como referencia).
 -- Efeito     : NAO DEIXA DADOS. Cada caso termina com ROLLBACK, e o script confere no fim
 --              que a contagem de linhas voltou ao valor da carga original.
@@ -352,11 +354,52 @@ BEGIN
     EXCEPTION WHEN OTHERS THEN confere('decisao para campo inexistente', -2291, SQLCODE);
     END;
 
-    -- Conferencia final: nenhuma linha restante (total da carga original = 77).
+    -- 28. (RC-13) Pedido em PROCESSANDO sem o instante de inicio da analise
+    BEGIN
+        INSERT INTO RC_SOLICITACAO (PACIENTE_ID, PROTOCOLO_ID, ESTADO)
+        VALUES (v_paciente_a, v_protocolo, 'PROCESSANDO');
+        confere('processando sem inicio da analise', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('processando sem inicio da analise', -2290, SQLCODE);
+    END;
+
+    -- 29. (RC-13) Duas analises da mesma revisao com a mesma conferencia considerada
+    BEGIN
+        INSERT INTO RC_ANALISE (SOLICITACAO_ID, REVISAO, PROTOCOLO_ID, RESULTADO_GERAL, VIGENTE, CONFERENCIA_EM)
+        VALUES (v_sol_rasc, 1, v_protocolo, 'REQUER_CONFERENCIA', 0, TIMESTAMP '2026-11-14 12:00:00.000001');
+        INSERT INTO RC_ANALISE (SOLICITACAO_ID, REVISAO, PROTOCOLO_ID, RESULTADO_GERAL, VIGENTE, CONFERENCIA_EM)
+        VALUES (v_sol_rasc, 1, v_protocolo, 'COM_PENDENCIAS', 0, TIMESTAMP '2026-11-14 12:00:00.000001');
+        confere('analise repetida na mesma revisao e conferencia', -1, 0);
+    EXCEPTION WHEN OTHERS THEN confere('analise repetida na mesma revisao e conferencia', -1, SQLCODE);
+    END;
+
+    -- 30. (RC-13) Pendencia PENDENTE com motivo de nao verificavel
+    BEGIN
+        v_an_novo := analise_temporaria;
+        INSERT INTO RC_RESULTADO_REGRA (ANALISE_ID, REGRA_ID, RESULTADO) VALUES (v_an_novo, v_regra, 'PENDENTE');
+        INSERT INTO RC_PENDENCIA (ANALISE_ID, REGRA_ID, TIPO, MENSAGEM, RESPONSAVEL, MOTIVO)
+        VALUES (v_an_novo, v_regra, 'PENDENTE', 'x', 'PACIENTE', 'CAMPO_ILEGIVEL');
+        confere('pendencia PENDENTE com motivo', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('pendencia PENDENTE com motivo', -2290, SQLCODE);
+    END;
+
+    -- 31. (RC-13) Evidencia com situacao fora da lista
+    BEGIN
+        v_an_novo := analise_temporaria;
+        INSERT INTO RC_RESULTADO_REGRA (ANALISE_ID, REGRA_ID, RESULTADO) VALUES (v_an_novo, v_regra, 'NAO_VERIFICAVEL');
+        INSERT INTO RC_PENDENCIA (ANALISE_ID, REGRA_ID, TIPO, MENSAGEM, RESPONSAVEL, MOTIVO)
+        VALUES (v_an_novo, v_regra, 'NAO_VERIFICAVEL', 'x', 'PACIENTE', 'CAMPO_ILEGIVEL');
+        INSERT INTO RC_PENDENCIA_EVIDENCIA (ANALISE_ID, REGRA_ID, ORDEM, DOCUMENTO_ID, CODIGO, SITUACAO)
+        VALUES (v_an_novo, v_regra, 1, (SELECT MIN(ID) FROM RC_DOCUMENTO), 'NOME', 'LIDO_PELA_IA');
+        confere('evidencia com situacao invalida', -2290, 0);
+    EXCEPTION WHEN OTHERS THEN confere('evidencia com situacao invalida', -2290, SQLCODE);
+    END;
+
+    -- Conferencia final: nenhuma linha restante (total da carga original = 77; RC_PENDENCIA_EVIDENCIA comeca vazia).
     SELECT (SELECT COUNT(*) FROM RC_USUARIO) + (SELECT COUNT(*) FROM RC_PROTOCOLO) + (SELECT COUNT(*) FROM RC_REGRA)
          + (SELECT COUNT(*) FROM RC_SOLICITACAO) + (SELECT COUNT(*) FROM RC_REVISAO) + (SELECT COUNT(*) FROM RC_DOCUMENTO)
          + (SELECT COUNT(*) FROM RC_ANALISE) + (SELECT COUNT(*) FROM RC_RESULTADO_REGRA) + (SELECT COUNT(*) FROM RC_PENDENCIA)
          + (SELECT COUNT(*) FROM RC_SESSAO_CAPTURA) + (SELECT COUNT(*) FROM RC_LEITURA_SENSOR) + (SELECT COUNT(*) FROM RC_SUBMISSAO)
+         + (SELECT COUNT(*) FROM RC_PENDENCIA_EVIDENCIA)
       INTO v_linhas FROM DUAL;
     IF v_linhas = 77 THEN
         v_ok := v_ok + 1;

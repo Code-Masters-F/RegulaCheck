@@ -7,6 +7,7 @@ import br.com.regulacheck.protocolo.entity.Protocolo;
 import br.com.regulacheck.solicitacao.entity.EstadoSolicitacao;
 import br.com.regulacheck.solicitacao.entity.MotivoRevisao;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
+import br.com.regulacheck.validacao.model.ResultadoGeral;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +40,9 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
             SELECT s.ID, s.PACIENTE_ID, s.ESTADO, s.REVISAO_ATUAL, s.CRIADA_EM, s.ATUALIZADA_EM,
                    p.ID AS PROTOCOLO_ID, p.IDENTIFICADOR, p.VERSAO, p.LOCALIDADE, p.ESPECIALIDADE, p.AVISO_FICTICIO,
                    (SELECT COUNT(*) FROM RC_DOCUMENTO d
-                     WHERE d.SOLICITACAO_ID = s.ID AND d.REVISAO_REMOCAO IS NULL) AS DOCUMENTOS
+                     WHERE d.SOLICITACAO_ID = s.ID AND d.REVISAO_REMOCAO IS NULL) AS DOCUMENTOS,
+                   (SELECT a.RESULTADO_GERAL FROM RC_ANALISE a
+                     WHERE a.SOLICITACAO_ID = s.ID AND a.VIGENTE = 1 AND a.REVISAO = s.REVISAO_ATUAL) AS RESULTADO_VIGENTE
               FROM RC_SOLICITACAO s
               JOIN RC_PROTOCOLO p ON p.ID = s.PROTOCOLO_ID
              WHERE s.PACIENTE_ID = ?""";
@@ -361,7 +364,15 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
                 EstadoSolicitacao.valueOf(resultado.getString("ESTADO")), resultado.getInt("REVISAO_ATUAL"),
                 resultado.getObject("CRIADA_EM", OffsetDateTime.class).toInstant(),
                 resultado.getObject("ATUALIZADA_EM", OffsetDateTime.class).toInstant(),
-                resultado.getInt("DOCUMENTOS"));
+                resultado.getInt("DOCUMENTOS"), resultadoVigente(resultado.getString("RESULTADO_VIGENTE")));
+    }
+
+    /**
+     * Resultado geral da analise vigente da revisao atual (RC-13). A subconsulta so usa colunas de {@code RC_ANALISE}
+     * que existem desde a RC-03, para que as consultas do pedido nao dependam do script {@code 10_}.
+     */
+    private static ResultadoGeral resultadoVigente(String valor) {
+        return valor == null ? null : ResultadoGeral.valueOf(valor);
     }
 
     private static void desfazer(Connection conexao) {

@@ -80,7 +80,7 @@ Saída do envio (os campos de `versaoConjuntoDocumental` e `documentosDisponivei
 
 **Baixar:** `GET /solicitacoes/{id}/documentos/{docId}` → o arquivo como **anexo** (`Content-Type` do formato real, `nosniff`, `no-store`), só pela dona e só pelo pedido ao qual o documento pertence; documento alheio, de outro pedido ou inexistente → o mesmo 404. O nome interno de armazenamento nunca aparece. Sem `DOCUMENT_STORAGE_PATH`, ou se o arquivo não existir na área privada (como os documentos da carga sintética), responde 503.
 
-**No pedido** (`GET`, `POST` e `PUT /solicitacoes…`, campos aditivos): `versaoConjuntoDocumental` (igual a `revisao`), `documentosDisponiveis` e `"analise": { "situacao": "NAO_REALIZADA", "mensagem": "…" }`. Upload concluído **não** é análise concluída. Desde a RC-09, remover e substituir mudam também `versaoConjuntoDocumental` e `documentosDisponiveis`, e `analise.situacao` segue `NAO_REALIZADA` para a nova versão (seção abaixo).
+**No pedido** (`GET`, `POST` e `PUT /solicitacoes…`, campos aditivos): `versaoConjuntoDocumental` (igual a `revisao`), `documentosDisponiveis` e `"analise": { "situacao": "NAO_REALIZADA", "mensagem": "…" }`. Upload concluído **não** é análise concluída. Desde a RC-09, remover e substituir mudam também `versaoConjuntoDocumental` e `documentosDisponiveis`, e `analise.situacao` segue `NAO_REALIZADA` para a nova versão (seção abaixo). Desde a RC-13 `analise.situacao` é calculada: `NAO_REALIZADA` (nenhuma análise vale para a versão atual), `EM_ANDAMENTO` (pedido em `PROCESSANDO`) ou `CONCLUIDA` com `analise.resultadoGeral` (há análise vigente da revisão atual).
 
 ## Remover, substituir e excluir (RC-09)
 Contrato completo: [specs/010-substituir-excluir-documentos/contracts/api-alteracao-documentos.md](../../specs/010-substituir-excluir-documentos/contracts/api-alteracao-documentos.md). Rotas só de `PACIENTE`; a paciente é a da sessão; o sistema só guarda, troca e apaga arquivos, **sem lê-los**. Pedido ou documento inexistente, alheio, de outro pedido, já removido ou com id malformado → o mesmo 404. Pedido em `SUBMETIDA_SIMULACAO` é só para consulta: remover, substituir e excluir → 409 `CONFLITO_ESTADO` ("Este pedido já foi submetido e só pode ser consultado.").
@@ -90,7 +90,7 @@ Contrato completo: [specs/010-substituir-excluir-documentos/contracts/api-altera
 - **Excluir rascunho:** `DELETE /solicitacoes/{id}` com o cabeçalho **`X-Confirmar-Exclusao: EXCLUIR`** (valor exato) → 204 sem corpo. Sem o cabeçalho ou com outro valor → 400 `REQUISICAO_INVALIDA` (detalhe `confirmacao`) e nada é apagado. Só `RASCUNHO`; outro estado → 409 ("Somente rascunhos podem ser excluídos."). Apaga documentos (disponíveis e removidos), revisões e pedido numa transação; os arquivos saem depois do commit.
 - **Ordem de verificação:** 401 → 403 → 404 (dona) → 400 (confirmação ou contrato) → 413/415 → 409 → 503. A existência do pedido é conferida antes do corpo.
 - **Política de arquivos:** o arquivo de documento removido ou substituído é **apagado**; o registro fica como histórico enquanto o pedido existir (com `REVISAO_REMOCAO` preenchida e a chave de envio anulada); a exclusão do rascunho apaga tudo. Não há lixeira nem desfazer.
-- **Conferência:** remover e substituir tornam não vigente a análise anterior (`RC_ANALISE.VIGENTE = 0`, histórico preservado), **não** iniciam análise e **não** mudam o estado do pedido. Nenhuma rota produz análise ainda, então isso é exercitado só com pedidos montados em memória nos testes.
+- **Conferência:** remover e substituir tornam não vigente a análise anterior (`RC_ANALISE.VIGENTE = 0`, histórico preservado), **não** iniciam análise e **não** mudam o estado do pedido. Desde a RC-13 isso aparece em `GET …/analises` (nenhuma vigente) e em `analise.situacao = NAO_REALIZADA`.
 
 ## Extração das informações dos arquivos (RC-10)
 Contrato completo: [specs/011-extrair-informacoes-arquivos/contracts/api-extracao.md](../../specs/011-extrair-informacoes-arquivos/contracts/api-extracao.md). Rotas só de `PACIENTE`. **A leitura é simulada** (decisão de 12/11/2026): o sistema não lê o arquivo; reconhece os documentos sintéticos de demonstração e devolve dados predefinidos. Toda resposta traz `simulada: true` e um aviso fixo.
@@ -123,7 +123,7 @@ Contrato completo: [specs/012-conferir-transcricao/contracts/api-conferencia.md]
 - **Decidir:** `PUT` na mesma rota, `Content-Type: application/json`, até 4 KB, `{"decisoes":[{"documentoId":"41","codigo":"NOME","decisao":"CONFIRMADA"}]}` com 1 a 18 itens. Só as chaves `documentoId`, `codigo`, `decisao` e `motivo` existem; **qualquer outra (como `valor`) é 400**, inclusive na raiz. `decisao` é `CONFIRMADA` (sem `motivo`) ou `DIVERGENTE` (com `motivo`: `VALOR_DIFERENTE_DO_DOCUMENTO` em campo identificado, `CAMPO_EXISTE_E_NAO_FOI_LIDO` em campo não localizado). Par (documento, campo) repetido no corpo é 400.
 - **Aplicabilidade:** campo `IDENTIFICADO` aceita confirmar ou divergir por valor diferente; `NAO_LOCALIZADO` aceita só divergir por "o campo existe e não foi lido"; `ILEGIVEL` não aceita decisão (resolve-se enviando um arquivo mais nítido); documento não lido não tem campos. Fora disso: 422 `DECISAO_NAO_APLICAVEL`.
 - **Situação** (calculada, nunca gravada; precedência): `DESATUALIZADA` (a leitura não é a da versão atual dos documentos) > `REQUER_CONFERENCIA` (documento não lido, campo ilegível em documento lido ou alguma divergência) > `PENDENTE` (campo identificado sem decisão) > `CONFERIDA`. Campo não localizado sem divergência não pesa. `CONFERIDA` só diz que a paciente conferiu a leitura: **não libera submissão**, não é resultado de regra, pendência nem aprovação.
-- **Efeitos:** uma decisão vigente por campo (decidir de novo substitui; repetir a mesma não muda nada, nem `decididaEm`); lote **tudo ou nada**; a leitura original (valores, situações, origens) e os documentos ficam intactos; **não muda o estado nem a revisão do pedido** (desvio justificado do princípio VI, ver [estados-e-revisoes.md](estados-e-revisoes.md)). `atualizadaEm` é o instante da decisão mais recente (ou o da leitura, se não há decisão).
+- **Efeitos:** uma decisão vigente por campo (decidir de novo substitui; repetir a mesma não muda nada, nem `decididaEm`); desde a RC-13, gravar uma decisão nova ou diferente tira a vigência da análise do pedido (histórico preservado, estado mantido); lote **tudo ou nada**; a leitura original (valores, situações, origens) e os documentos ficam intactos; **não muda o estado nem a revisão do pedido** (desvio justificado do princípio VI, ver [estados-e-revisoes.md](estados-e-revisoes.md)). `atualizadaEm` é o instante da decisão mais recente (ou o da leitura, se não há decisão).
 - **Leitura desatualizada** (depois de enviar, remover ou substituir documento): `GET` mostra `DESATUALIZADA`, somente leitura, com as decisões anteriores; `PUT` → 409 "Os documentos mudaram; leia os documentos de novo."; nova leitura (`POST …/extracoes`) nasce **sem** decisões herdadas. Pedido `SUBMETIDA_SIMULACAO`: `GET` 200 e `PUT` 409.
 - **Ordem de verificação:** 401 → 403 → 404 (pedido ou leitura do pedido, antes de ler o corpo) → 415/400 (corpo, só no `PUT`) → 409 (submetido; leitura desatualizada) → 404 (documento fora da leitura) → 422 → 503. Pedido ou leitura inexistente, alheio, de outro pedido ou id mal formado: o mesmo 404.
 - **Textos:** as orientações são fixas e não repetem valor ou trecho do documento; não há diagnóstico, urgência, prioridade nem promessa de atendimento.
@@ -145,44 +145,41 @@ Contrato completo: [specs/012-conferir-transcricao/contracts/api-conferencia.md]
       "orientacao": "Esta informação não consta no documento lido. Se ela for necessária, peça um documento corrigido à unidade emissora. Não é possível preencher aqui." } ] } ]
 }
 ```
-## Análise
-`POST /solicitacoes/{id}/analises` (202 se assíncrona; 200 se concluída na chamada) · `GET /solicitacoes/{id}/analises` (200)
+## Análise (RC-13)
+Contrato completo: [specs/014-persistir-analises-historico/contracts/api-analises.md](../../specs/014-persistir-analises-historico/contracts/api-analises.md). Rotas só de `PACIENTE`. **A leitura é simulada e o protocolo é acadêmico e fictício**: toda análise traz `simulada: true` e o `aviso`; não há resumo por IA nesta história (RC-14).
+
+- **Pedir:** `POST /solicitacoes/{id}/analises` (sem corpo) → 201 com a análise gravada agora (vigente; pedido no resultado geral) ou 200 com a vigente que já vale para a versão atual dos documentos e a conferência atual. **Síncrona**: o pedido fica em `PROCESSANDO` só enquanto a análise roda.
+- **Consultar:** `GET /solicitacoes/{id}/analises` → `{ solicitacaoId, estado, versaoConjuntoDocumental, execucao?, vigenteId?, limite: 50, analises: [...] }`, da mais recente para a mais antiga. `execucao` só em `PROCESSANDO`: `EM_ANDAMENTO` ou `INTERROMPIDA` (passou do limite de 1 minuto; pode pedir de novo). Pedido nunca analisado → lista vazia.
+- **Erros:** 404 idêntico para pedido alheio ou inexistente; 409 `CONFLITO_ESTADO` (submetido, sem leitura atual, entrada mudou durante a análise, análise assumida depois do limite); 409 `ANALISE_EM_ANDAMENTO` com `Retry-After`; 503 `ANALISE_INDISPONIVEL` (pedido em `FALHA_ANALISE`, pode tentar de novo) ou `DEPENDENCIA_INDISPONIVEL`.
+- **Histórico:** cada análise é gravada uma vez e nunca reescrita; só `vigente` muda (para `false`) quando documentos ou conferência mudam ou quando outra análise vira a vigente. Mais de uma análise da mesma `revisao` é possível (a conferência não cria revisão), distinguidas por `conferenciaConsiderada`.
 
 ```json
 {
-  "id": "ana-0001",
-  "revisao": 2,
-  "versaoProtocolo": "v0.1",
-  "resultadoGeral": "COM_PENDENCIAS",
-  "vigente": true,
-  "simulado": true,
-  "resultados": [
-    { "codigoRegra": "RC-R01", "resultado": "ATENDE" },
-    { "codigoRegra": "RC-R04", "resultado": "PENDENTE" },
-    { "codigoRegra": "RC-R06", "resultado": "NAO_APLICAVEL" }
-  ],
-  "pendencias": [ /* ver Pendência */ ],
-  "resumo": { "texto": "…", "simulado": true, "origem": "ADAPTADOR_MOCKADO" }
+  "id": "31", "revisao": 6, "vigente": true, "executadaEm": "2026-11-14T13:05:10.123Z",
+  "protocolo": { "identificador": "PROTOCOLO-ACADEMICO-FICTICIO", "versao": "v0.1" },
+  "conferenciaConsiderada": "2026-11-14T13:04:58.001Z", "dataReferencia": "2026-11-14",
+  "resultadoGeral": "COM_PENDENCIAS", "simulada": true,
+  "aviso": "Análise simulada: leitura simulada dos documentos e protocolo acadêmico fictício. \"Sem pendências identificadas\" não é aprovação do SUS.",
+  "documentos": [ { "documentoId": "41", "nomeArquivo": "encaminhamento-sintetico.pdf", "tipoDeclarado": "ENCAMINHAMENTO", "disponivel": true } ],
+  "resultados": [ { "codigoRegra": "RC-R01", "descricao": "…", "resultado": "ATENDE" },
+                  { "codigoRegra": "RC-R04", "descricao": "…", "resultado": "PENDENTE" } ],
+  "pendencias": [ { "codigoRegra": "RC-R04", "descricaoRegra": "…", "tipo": "PENDENTE",
+                    "explicacao": "O encaminhamento não traz o motivo…", "responsavel": "UNIDADE_EMISSORA",
+                    "evidencias": [ { "documentoId": "41", "campo": "MOTIVO_ENCAMINHAMENTO", "situacao": "NAO_LOCALIZADO" } ] } ]
 }
 ```
 | Campo | Valores |
 |---|---|
-| `resultadoGeral` | `COM_PENDENCIAS`, `REQUER_CONFERENCIA`, `SEM_PENDENCIAS_IDENTIFICADAS` (regras em [protocolo-academico.md](../protocolo-academico.md)) |
-| `resultados[].resultado` | `ATENDE`, `PENDENTE`, `NAO_VERIFICAVEL`, `NAO_APLICAVEL` |
-| `simulado` / `resumo.simulado` | sempre `true` enquanto IA e extração forem mockadas; a interface deve mostrar a identificação |
+| `resultadoGeral` | `COM_PENDENCIAS`, `REQUER_CONFERENCIA`, `SEM_PENDENCIAS_IDENTIFICADAS` (regras em [protocolo-academico.md](../protocolo-academico.md)); **não** é aprovação do SUS |
+| `resultados[].resultado` | `ATENDE`, `PENDENTE`, `NAO_VERIFICAVEL`, `NAO_APLICAVEL`; `motivo` só em `NAO_VERIFICAVEL` |
+| `conferenciaConsiderada`, `dataReferencia` | omitidos só nas análises da carga sintética (`02_`) |
+| `documentos[]` | documentos da revisão avaliada; `disponivel: false` se depois foram substituídos ou removidos |
+| `simulada` | sempre `true` enquanto extração e IA forem mockadas |
 
-O resultado só é `vigente` se `revisao` da análise for igual à revisão atual da solicitação. `SEM_PENDENCIAS_IDENTIFICADAS` não é aprovação do SUS.
+Campos nulos ficam fora do JSON (convenção da API).
 
 ## Pendência
-```json
-{
-  "codigoRegra": "RC-R04",
-  "resultado": "PENDENTE",
-  "mensagem": "O encaminhamento não traz o motivo. Peça à unidade emissora que complete o documento.",
-  "responsavelCorrecao": "UNIDADE_EMISSORA"
-}
-```
-`codigoRegra` deve existir no protocolo vigente; `responsavelCorrecao` ∈ {`PACIENTE`, `UNIDADE_EMISSORA`}. Mensagens não diagnosticam, não definem urgência, não autorizam atendimento nem prometem vaga.
+Uma por regra `PENDENTE` ou `NAO_VERIFICAVEL` da análise: `codigoRegra` e `descricaoRegra` (da versão do protocolo da análise), `tipo`, `explicacao` (mensagem da regra, se pendente; mensagem padrão de não verificável do protocolo, se não verificável), `motivo` (lista fechada, só não verificável: `CAMPO_ILEGIVEL`, `DOCUMENTO_NAO_LIDO`, `TRANSCRICAO_NAO_CONFERIDA`, `DIVERGENCIA_APONTADA`, `VALOR_NAO_INTERPRETAVEL`, `CONDICAO_INDETERMINADA`, `DOCUMENTOS_INSUFICIENTES`, `DEPENDE_DE_DOCUMENTO_AUSENTE`), `responsavel` ∈ {`PACIENTE`, `UNIDADE_EMISSORA`} e `evidencias[]` (`documentoId`, `campo`, `situacao` no momento da análise e `origem` `{pagina, trecho}` lida da leitura daquela revisão, quando houver). **Nenhum valor lido aparece na pendência.** Mensagens não diagnosticam, não definem urgência, não autorizam atendimento nem prometem vaga.
 
 ## Submissão simulada
 `POST /solicitacoes/{id}/submissoes-simuladas` (201): só a partir de `SEM_PENDENCIAS_IDENTIFICADAS` vigente; repetir devolve a mesma submissão (idempotente). Resposta traz referência interna, data e o aviso `"SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS"`.

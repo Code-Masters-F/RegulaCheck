@@ -101,7 +101,7 @@ Estados: ícone 16 na cor do significado + rótulo 14/700 em `rc-text`. Rótulos
 - Exclusão sempre por `Diálogo/Confirmação`, com “Cancelar” em destaque e consequência nomeada.
 - Documento clínico não é editável; ausência de informação clínica é resolvida pela unidade emissora. “Não localizado” não prova ausência.
 - Sensores: valores demonstrativos (200–1000 lux; 15–40 cm), idade da leitura visível, indisponibilidade nunca bloqueia envio.
-- Sem barra de navegação inferior no percurso da paciente (linear, volta pelo cabeçalho), decisão registrada na feature 014 (FR-011).
+- Sem barra de navegação inferior no percurso da paciente (linear, volta pelo cabeçalho), decisão registrada na feature 015 (FR-011).
 - Telas de lista mais altas que 844 são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar.
 - Fonte ampliada: o texto acompanha a escala do sistema (até 200%, escala não linear do Android 14). Quando o texto não cabe, `Documento/Linha` e `Critério/Linha` passam as ações e o resultado para baixo do nome, e `Resumo/Simulado` põe o selo abaixo do título. Nunca cortar palavra ou esconder ação. Exemplos: quadros E4.4.
 - Exemplos nos quadros: estrutura do backend, textos realistas em português correto (`mobile/design/dados-ficticios.md`); nunca "Exemplo", "sintético" ou texto sem acento.

@@ -1,6 +1,6 @@
 # Feature Specification: Fluxo de telas e informação de cada tela do aplicativo
 
-**Feature Branch**: `014-fluxo-telas-app` (diretório da feature; sem branch própria — trabalho em `codex/007-design-system-exploracao`)
+**Feature Branch**: `015-fluxo-telas-app` (diretório da feature; sem branch própria — trabalho em `codex/007-design-system-exploracao`)
 
 **Created**: 2026-11-13
 

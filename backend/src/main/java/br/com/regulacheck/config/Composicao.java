@@ -1,5 +1,8 @@
 package br.com.regulacheck.config;
 
+import br.com.regulacheck.analise.controller.AnaliseController;
+import br.com.regulacheck.analise.service.AnaliseService;
+import br.com.regulacheck.analise.service.AvaliacaoService;
 import br.com.regulacheck.armazenamento.ArmazenamentoEmDisco;
 import br.com.regulacheck.armazenamento.conferencia.ConferenciaDeArquivo;
 import br.com.regulacheck.armazenamento.conferencia.LimitesArquivo;
@@ -29,6 +32,7 @@ import br.com.regulacheck.solicitacao.service.SolicitacaoService;
 import br.com.regulacheck.saude.SaudeRepositoryMemoria;
 import br.com.regulacheck.saude.SaudeService;
 import br.com.regulacheck.usuario.entity.Perfil;
+import br.com.regulacheck.validacao.motor.MotorDeRegras;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.MultipartConfigElement;
 import java.io.IOException;
@@ -131,11 +135,17 @@ public final class Composicao {
                 armazenamento, dependencias.relogio());
         // RC-11: conferencia da transcricao (decisoes da paciente sobre a leitura); mesma entrega de subcaminho.
         ConferenciaService conferenciaDaLeitura = new ConferenciaService(dependencias.conferencias(), dependencias.relogio());
+        // RC-12/RC-13: avaliacao dos criterios (so leitura) e analises gravadas; mesma entrega de subcaminho.
+        AvaliacaoService avaliacao = new AvaliacaoService(dependencias.solicitacoes(), dependencias.extracoes(),
+                dependencias.conferencias(), dependencias.documentos(), dependencias.protocolos(),
+                MotorDeRegras.doProtocoloAcademico());
+        AnaliseService analises = new AnaliseService(dependencias.analises(), avaliacao, dependencias.relogio());
         MultipartConfigElement multipart = new MultipartConfigElement(conferencia.quarentena().toString(),
                 LimitesArquivo.MAXIMO_BYTES, LimitesArquivo.MAXIMO_BYTES + FOLGA_MULTIPART_BYTES, 0);
         rotas.registrar("/solicitacoes/*",
                 new SolicitacaoController(solicitacoes, new DocumentoController(documentos),
-                        new ExtracaoController(extracao), new ConferenciaController(conferenciaDaLeitura)), multipart,
+                        new ExtracaoController(extracao), new ConferenciaController(conferenciaDaLeitura),
+                        new AnaliseController(analises)), multipart,
                 Perfil.PACIENTE);
         extensao.accept(rotas);
 

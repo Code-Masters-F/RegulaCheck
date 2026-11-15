@@ -1,6 +1,6 @@
 # Mapa de percursos
 
-> Como as telas se ligam, conforme [specs/014-fluxo-telas-app/spec.md](../../specs/014-fluxo-telas-app/spec.md) (fluxo que acompanha o backend). IDs dos quadros: [specs/014-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/014-fluxo-telas-app/contracts/inventario-quadros.md). Dados: [dados-ficticios.md](dados-ficticios.md). Mapa em texto, sem protótipo executável.
+> Como as telas se ligam, conforme [specs/015-fluxo-telas-app/spec.md](../../specs/015-fluxo-telas-app/spec.md) (fluxo que acompanha o backend). IDs dos quadros: [specs/015-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/015-fluxo-telas-app/contracts/inventario-quadros.md). Dados: [dados-ficticios.md](dados-ficticios.md). Mapa em texto, sem protótipo executável.
 >
 > **Situação em 14/11/2026:** os 94 quadros do inventário estão desenhados. No canvas, eles estão organizados por etapa do percurso: uma linha por tela, de 01 a 21, na ordem deste mapa (research D20). Os números de linha estão em [INDEX.md](INDEX.md). Falta o percurso com uma pessoa que não desenhou (T060).
 

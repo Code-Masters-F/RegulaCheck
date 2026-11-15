@@ -74,6 +74,7 @@ Garantias: o lote é **tudo ou nada**; uma só decisão vigente por campo; a lei
 - `situacao`: `PENDENTE`, `REQUER_CONFERENCIA`, `CONFERIDA` ou `DESATUALIZADA` (ver `data-model.md`).
 - `naoVerificado` é `true` para campo ilegível, não localizado ou com divergência apontada (e todo documento não lido é destacado por `reenviar: true`). Campo ilegível e campo não localizado nunca trazem `valor` nem `origem`; um campo identificado com divergência apontada continua mostrando o que foi lido (a paciente não substitui o valor), marcado como não verificado.
 - `atualizadaEm`: instante da decisão mais recente (ou da leitura, se não há decisão); serve à RC-12/RC-13 para saber se uma análise ficou velha frente a uma conferência nova.
+- **Efeito acrescentado pela RC-13** ([specs/014-persistir-analises-historico](../../014-persistir-analises-historico/contracts/api-analises.md)): quando o `PUT` grava ao menos uma decisão nova ou diferente, a análise vigente do pedido deixa de ser vigente na mesma transação (continua no histórico). Repetir decisões iguais não muda nada. A resposta da conferência, o estado e a revisão do pedido não mudam. Para o instante da conferência sempre andar, a decisão que muda algo é gravada com `decididaEm` = `max(agora, atualizadaEm atual + 1 µs)`, calculado sob o bloqueio do pedido (relógio parado ou gravações concorrentes fora de ordem).
 - Nenhuma resposta traz caminho, hash, nome interno, resultado de regra, pendência nem estado novo do pedido; orientações não diagnosticam, não definem urgência nem prometem atendimento.
 
 ## Métodos
