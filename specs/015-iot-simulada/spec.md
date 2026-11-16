@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-15
 
-**Status**: Draft — especificação escrita; aguarda `/speckit-clarify` para as três pendências marcadas
+**Status**: Draft — especificação esclarecida em 16/11/2026 (4 perguntas no `/speckit-clarify`); pronta para `/speckit-plan`
 
 **Backlog**: Épico 7 (IoT simulada)
 - **RC-21** — Gerar leituras de dois sensores (#46) · Tarefa técnica · P0 · D · 2 h · até 15/11/2026 · depende de RC-02 (projeto executável e contratos), RC-05 (perfis e isolamento) e RC-07 (rascunho do pedido)
@@ -29,6 +29,8 @@ O banco já prevê a sessão de captura (vinculada a um pedido) e as leituras de
 
 - Q: Quem cria a sessão de captura? → A: A paciente, pela API, em uma nova rota `POST /solicitacoes/{id}/sessoes-captura`, restrita à dona do pedido (404 idêntico para pedido de outra paciente ou inexistente); a resposta devolve o identificador que o simulador usa. A credencial do simulador continua restrita ao envio de leituras e não cria sessões.
 - Q: Quais faixas demonstrativas adotar? → A: Luminosidade de 300 a 1000 lux e distância de 20 a 40 cm, limites inclusivos; valores demonstrativos, sem calibração real.
+- Q: Qual o prazo para considerar a leitura desatualizada? → A: 60 segundos, contados do instante da medição até o momento da consulta (relógio do servidor, UTC).
+- Q: O que acontece ao abrir uma sessão quando o pedido já tem uma aberta? → A: No máximo uma sessão aberta por pedido; abrir de novo devolve a sessão aberta existente (indicando que já existia) em vez de criar outra. Não há rota de encerramento nesta entrega.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -42,11 +44,12 @@ A equipe executa o simulador apontando para uma sessão de captura de um pedido 
 
 **Acceptance Scenarios**:
 
-0. **Given** uma paciente autenticada com um pedido seu, **When** ela abre uma sessão de captura para esse pedido, **Then** a sessão é criada aberta e a resposta traz o identificador que será informado ao simulador; para pedido de outra paciente ou inexistente a resposta é idêntica de "não encontrado".
-1. **Given** uma sessão de captura aberta vinculada a um pedido de teste e a credencial correta do simulador, **When** o simulador envia uma leitura de luminosidade de 350 lux com instante de medição, **Then** a leitura é gravada para essa sessão com tipo luminosidade, unidade lux, o valor e o instante informados, e a API confirma a criação.
-2. **Given** a mesma sessão, **When** o simulador envia uma leitura de distância de 30 cm, **Then** a leitura é gravada com tipo distância e unidade cm.
-3. **Given** o simulador executado duas vezes com a mesma sequência e a mesma semente, **When** se comparam os valores enviados, **Then** a ordem dos tipos e os valores são idênticos (só os instantes de medição mudam).
-4. **Given** uma leitura gravada, **When** se consulta o registro, **Then** o instante de recebimento é o do servidor (UTC) e não o informado pelo simulador.
+1. **Given** uma paciente autenticada com um pedido seu sem sessão aberta, **When** ela abre uma sessão de captura para esse pedido, **Then** a sessão é criada aberta e a resposta traz o identificador que será informado ao simulador; para pedido de outra paciente ou inexistente a resposta é idêntica de "não encontrado".
+2. **Given** um pedido que já tem sessão aberta, **When** a paciente abre a sessão de novo (inclusive por toque duplicado), **Then** recebe a mesma sessão, indicada como já existente, e nenhuma sessão nova é criada.
+3. **Given** uma sessão de captura aberta vinculada a um pedido de teste e a credencial correta do simulador, **When** o simulador envia uma leitura de luminosidade de 350 lux com instante de medição, **Then** a leitura é gravada para essa sessão com tipo luminosidade, unidade lux, o valor e o instante informados, e a API confirma a criação.
+4. **Given** a mesma sessão, **When** o simulador envia uma leitura de distância de 30 cm, **Then** a leitura é gravada com tipo distância e unidade cm.
+5. **Given** o simulador executado duas vezes com a mesma sequência e a mesma semente, **When** se comparam os valores enviados, **Then** a ordem dos tipos e os valores são idênticos (só os instantes de medição mudam).
+6. **Given** uma leitura gravada, **When** se consulta o registro, **Then** o instante de recebimento é o do servidor (UTC) e não o informado pelo simulador.
 
 ---
 
@@ -124,7 +127,7 @@ A equipe escolhe, ao executar o simulador, uma de três sequências reproduzíve
 
 - Leituras chegando fora de ordem (instante de medição anterior ao da última gravada): são gravadas, mas a "última leitura" mostrada é a de **instante de medição** mais recente, não a última recebida.
 - Leitura exatamente no limite da faixa demonstrativa: conta como dentro da faixa (limites inclusivos).
-- Pedido com mais de uma sessão de captura: a telemetria considera a sessão mais recente do pedido.
+- Pedido com mais de uma sessão de captura (só uma pode estar aberta; as demais vêm, por exemplo, da carga sintética já encerradas): a telemetria considera a sessão mais recente do pedido.
 - Pedido já submetido em simulação ou removido: a consulta segue as regras de acesso do pedido; envio para sessão de pedido removido é tratado como sessão inexistente.
 - Envio repetido da mesma leitura (retentativa do simulador): pode gerar registro duplicado; aceitável na demonstração, desde que o simulador não faça retentativas automáticas ilimitadas.
 - Valor com muitas casas decimais: arredondado/limitado à precisão gravada (três casas), sem rejeitar.
@@ -144,7 +147,7 @@ A equipe escolhe, ao executar o simulador, uma de três sequências reproduzíve
 - **FR-005**: O sistema MUST rejeitar instante de medição ausente, em formato inválido ou no futuro além de uma tolerância curta de relógio, e MUST registrar o instante de recebimento pelo relógio do servidor, em UTC.
 - **FR-006**: O sistema MUST gravar cada leitura válida e só confirmar sucesso depois de gravada; leitura recusada MUST NOT deixar registro.
 - **FR-007**: O sistema MUST responder às recusas no formato de erro padronizado do projeto (código, mensagem e campo quando pertinente), sem expor detalhes internos, e MUST NOT registrar a credencial nem o corpo completo em logs.
-- **FR-008**: A paciente MUST poder abrir uma sessão de captura para um pedido seu; a resposta MUST devolver o identificador da sessão e o instante de início. Pedido de outra paciente ou inexistente MUST receber resposta idêntica de "não encontrado"; administrador e simulador MUST receber "sem permissão". O simulador MUST NOT criar sessões.
+- **FR-008**: A paciente MUST poder abrir uma sessão de captura para um pedido seu; a resposta MUST devolver o identificador da sessão e o instante de início. Pedido de outra paciente ou inexistente MUST receber resposta idêntica de "não encontrado"; administrador e simulador MUST receber "sem permissão". O simulador MUST NOT criar sessões. Cada pedido MUST ter no máximo uma sessão aberta: se já houver uma, abrir de novo (inclusive por toque duplicado ou pedidos simultâneos) MUST devolver essa sessão, indicando que já existia, sem criar outra. Encerrar sessão fica fora desta entrega.
 
 **Simulador (RC-21)**
 
@@ -158,7 +161,7 @@ A equipe escolhe, ao executar o simulador, uma de três sequências reproduzíve
 - **FR-013**: A situação de cada sensor MUST ser uma de: dentro da faixa, abaixo da faixa, acima da faixa, desatualizada, sem leitura. A "última leitura" é a de instante de medição mais recente da sessão mais recente do pedido.
 - **FR-014**: Fora da faixa, a orientação MUST indicar a correção: luminosidade baixa → melhorar a iluminação; alta → reduzir iluminação ou reflexo; distância pequena → afastar o documento; grande → aproximar. Dentro da faixa, a orientação MUST indicar condição adequada.
 - **FR-015**: As faixas demonstrativas MUST ser luminosidade de 300 a 1000 lux e distância de 20 a 40 cm, com limites inclusivos, definidas em um único ponto central e documentadas como não calibradas. Abaixo do mínimo é "abaixo da faixa"; acima do máximo, "acima da faixa".
-- **FR-016**: Uma leitura medida há mais tempo que o prazo de atualidade MUST ser identificada como desatualizada e MUST NOT gerar orientação como se fosse atual. [NEEDS CLARIFICATION: qual o prazo para considerar a leitura desatualizada — sugestão: 60 segundos?]
+- **FR-016**: Uma leitura cujo instante de medição seja anterior a 60 segundos do momento da consulta (relógio do servidor, UTC) MUST ser identificada como desatualizada e MUST NOT gerar orientação como se fosse atual. O prazo MUST ficar no mesmo ponto central das faixas e ser documentado como demonstrativo.
 - **FR-017**: A consulta MUST responder com sucesso e "sem leitura" quando o pedido não tem sessão ou leituras, em vez de erro.
 - **FR-018**: A consulta MUST aplicar o isolamento por paciente: pedido de outra paciente ou inexistente recebe resposta idêntica de "não encontrado"; o administrador recebe "sem permissão".
 - **FR-019**: Toda resposta de telemetria MUST indicar que as leituras são simuladas, que os limites são demonstrativos e que as leituras não comprovam a legibilidade do arquivo.

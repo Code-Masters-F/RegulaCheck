@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [x] No [NEEDS CLARIFICATION] markers remain
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,10 +31,10 @@
 
 ## Notes
 
-- **Marcadores levados ao `/speckit-clarify`** (sessão de 2026-11-16, em andamento):
-  1. FR-008 — quem cria a sessão de captura → **resolvido** (paciente, `POST /solicitacoes/{id}/sessoes-captura`);
+- **Marcadores levados ao `/speckit-clarify`** (sessão de 2026-11-16, concluída com 4 perguntas):
+  1. FR-008 — quem cria a sessão de captura → **resolvido** (paciente, `POST /solicitacoes/{id}/sessoes-captura`), com no máximo uma sessão aberta por pedido e reabertura idempotente;
   2. FR-015 — faixas demonstrativas → **resolvido** (300–1000 lux, 20–40 cm, inclusivos);
-  3. FR-016 — prazo de leitura desatualizada → **pendente** (sugestão em discussão: 60 s).
+  3. FR-016 — prazo de leitura desatualizada → **resolvido** (60 s desde a medição).
 - "JSON por HTTP", "programa executável" e as rotas aparecem só onde são **exigência do backlog/disciplina** (critério 1 da RC-21 e contrato já reservado); não são escolha de implementação desta spec. Linguagem, banco e estrutura de código ficam para o `/speckit-plan`.
 - A tela do app fica fora (dependência do Épico 6); RC-22 é verificada pela API e pela documentação.
-- Próximo passo: `/speckit-clarify` para resolver os três marcadores; depois `/speckit-plan`.
+- Próximo passo: `/speckit-plan`.
