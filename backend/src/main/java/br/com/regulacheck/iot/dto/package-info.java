@@ -1,4 +1,4 @@
 /**
- * Modulo iot, camada dto. Sessao de captura e leituras.
+ * Modulo iot, camada dto. Contratos de entrada e saida das rotas de captura; identificadores como texto e campos nulos omitidos.
  */
 package br.com.regulacheck.iot.dto;

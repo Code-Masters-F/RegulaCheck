@@ -1,6 +1,6 @@
 # Contrato: rotas de IoT simulada (RC-21 + RC-22)
 
-Formato de erro: o padrão do projeto (`codigo`, `mensagem`, `detalhes[]`) em [docs/api/erros.md](../../../docs/api/erros.md). Instantes em ISO-8601 UTC. Todas as respostas de telemetria são **simuladas** e os limites são **demonstrativos**.
+Identificadores nas **respostas** vêm como texto (`"42"`), como no resto da API; no **corpo da leitura** o `sessaoId` é número. Formato de erro: o padrão do projeto (`codigo`, `mensagem`, `detalhes[]`) em [docs/api/erros.md](../../../docs/api/erros.md). Instantes em ISO-8601 UTC. Todas as respostas de telemetria são **simuladas** e os limites são **demonstrativos**.
 
 ## 1. Abrir sessão de captura — `POST /solicitacoes/{id}/sessoes-captura`
 
@@ -10,8 +10,8 @@ Formato de erro: o padrão do projeto (`codigo`, `mensagem`, `detalhes[]`) em [d
 
 ```json
 {
-  "id": 42,
-  "solicitacaoId": 7,
+  "id": "42",
+  "solicitacaoId": "7",
   "iniciadaEm": "2026-11-16T14:00:00Z",
   "aberta": true,
   "criada": true,
@@ -30,7 +30,7 @@ Formato de erro: o padrão do projeto (`codigo`, `mensagem`, `detalhes[]`) em [d
 {
   "sessaoId": 42,
   "tipo": "LUMINOSIDADE",
-  "valor": 350.0,
+  "valor": 350.000,
   "unidade": "LUX",
   "medidaEm": "2026-11-16T14:00:05Z"
 }
@@ -40,10 +40,10 @@ Formato de erro: o padrão do projeto (`codigo`, `mensagem`, `detalhes[]`) em [d
 
 ```json
 {
-  "id": 901,
-  "sessaoId": 42,
+  "id": "901",
+  "sessaoId": "42",
   "tipo": "LUMINOSIDADE",
-  "valor": 350.0,
+  "valor": 350.000,
   "unidade": "LUX",
   "medidaEm": "2026-11-16T14:00:05Z",
   "recebidaEm": "2026-11-16T14:00:05.120Z"
@@ -72,8 +72,8 @@ Regras do 400: `sessaoId` ≠ `{id}`; tipo fora de `LUMINOSIDADE`/`DISTANCIA`; u
 
 ```json
 {
-  "solicitacaoId": 7,
-  "sessao": { "id": 42, "iniciadaEm": "2026-11-16T14:00:00Z", "aberta": true },
+  "solicitacaoId": "7",
+  "sessao": { "id": "42", "iniciadaEm": "2026-11-16T14:00:00Z", "aberta": true },
   "consultadaEm": "2026-11-16T14:00:30Z",
   "prazoAtualidadeSegundos": 60,
   "simulada": true,

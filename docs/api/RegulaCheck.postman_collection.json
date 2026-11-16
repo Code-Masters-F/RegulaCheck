@@ -48,6 +48,10 @@
     {
       "key": "analiseId",
       "value": ""
+    },
+    {
+      "key": "sessaoCapturaId",
+      "value": ""
     }
   ],
   "item": [
@@ -649,6 +653,67 @@
         ],
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/analises",
         "description": "Todas as analises do pedido, da mais recente para a mais antiga (ate 50). Substituir/remover documento ou mudar uma decisao de conferencia tira a vigencia (vigenteId some) sem apagar a analise. Pedido nunca analisado: lista vazia."
+      }
+    },
+    {
+      "name": "RC-21 Abrir sessao de captura (201 criada; 200 se ja havia sessao aberta; guarda em {{sessaoCapturaId}}; 409 se submetido)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201 || pm.response.code === 200) { pm.collectionVariables.set(\"sessaoCapturaId\", pm.response.json().id); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/sessoes-captura",
+        "description": "Estacao de captura SIMULADA. So a dona do pedido; no maximo uma sessao aberta por pedido. Informe o id ao simulador (simulador-iot/SimuladorSensores.java --sessao)."
+      }
+    },
+    {
+      "name": "RC-21 Simulador envia leitura (201; 401 sem chave ou chave errada; 403 com token de conta; 404 sessao inexistente ou encerrada; 400 leitura invalida)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Chave-Simulador",
+            "value": "{{chaveSimulador}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sessaoId\": {{sessaoCapturaId}}, \"tipo\": \"LUMINOSIDADE\", \"valor\": 120, \"unidade\": \"LUX\", \"medidaEm\": \"{{$isoTimestamp}}\"}"
+        },
+        "url": "{{baseUrl}}/sessoes-captura/{{sessaoCapturaId}}/leituras",
+        "description": "Uma leitura por requisicao. Luminosidade em LUX ou distancia (DISTANCIA) em CM; limites fisicos 0-200000 lux e >0-500 cm; medidaEm ate 30 s no futuro. Valores fora da faixa demonstrativa (300-1000 lux, 20-40 cm) sao aceitos e so mudam a orientacao. A chave vem da variavel chaveSimulador (valor local, nunca versionado)."
+      }
+    },
+    {
+      "name": "RC-22 Telemetria do pedido (200 com os dois sensores, situacao e orientacao; DESATUALIZADA apos 60 s; SEM_LEITURA sem sessao)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/leituras",
+        "description": "Leituras simuladas, limites demonstrativos e sem calibracao; nao comprovam a legibilidade do arquivo e nao impedem o envio de documentos. 404 identico para pedido de outra paciente ou inexistente; 403 para administrador."
       }
     }
   ]

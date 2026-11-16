@@ -5,7 +5,7 @@ Roteiro de verificação manual depois da implementação. Comandos a partir da 
 ## 1. Testes automatizados (sem banco)
 
 ```bash
-cd backend && ./mvnw clean verify
+cd backend && sh ./mvnw clean verify   # JDK 21 no JAVA_HOME; o mvnw está no Git sem permissão de execução
 ```
 
 Esperado: os testes novos de `iot` (classificador, rotas, concorrência, higiene de log, simulador por processo) verdes junto com os existentes.
@@ -20,7 +20,7 @@ Esperado: os testes novos de `iot` (classificador, rotas, concorrência, higiene
 
 1. Subir a API com `IOT_API_KEY` definida (valor qualquer, só local) e o banco configurado (ver `docs/ambiente.md`).
 2. Login da paciente sintética A (`POST /auth/login`) e criar ou reusar um pedido.
-3. Abrir a sessão: `POST /solicitacoes/{id}/sessoes-captura` → anotar `id` da sessão (repetir a chamada devolve a mesma, 200).
+3. Abrir a sessão: `POST /solicitacoes/{id}/sessoes-captura` → 201 e anotar o `id` da sessão (repetir a chamada devolve a mesma, 200). Na coleção Postman: "RC-21 Abrir sessao de captura".
 4. Ver a saída do simulador sem enviar:
 
    ```bash

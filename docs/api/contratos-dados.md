@@ -178,6 +178,21 @@ Contrato completo: [specs/014-persistir-analises-historico/contracts/api-analise
 
 Campos nulos ficam fora do JSON (convenção da API).
 
+## Estação de captura simulada (RC-21 + RC-22)
+Contrato completo: [specs/015-iot-simulada/contracts/api-iot.md](../../specs/015-iot-simulada/contracts/api-iot.md). Simulador: [simulador-iot/README.md](../../simulador-iot/README.md). **Os sensores são simulados e os limites são demonstrativos, sem calibração**: toda telemetria traz `simulada: true` e o `aviso`; as leituras **não comprovam a legibilidade** do arquivo e nunca bloqueiam envio, salvamento ou exclusão do rascunho.
+
+- **Abrir sessão (paciente):** `POST /solicitacoes/{id}/sessoes-captura` (sem corpo) → 201 `{ id, solicitacaoId, iniciadaEm, aberta: true, criada: true, simulada: true }` ou 200 com a sessão já aberta (`criada: false`). No máximo uma sessão aberta por pedido; não há rota para encerrar nesta entrega.
+- **Enviar leitura (simulador, `X-Chave-Simulador`):** `POST /sessoes-captura/{id}/leituras` com `{ "sessaoId": 42, "tipo": "LUMINOSIDADE"|"DISTANCIA", "valor": 350, "unidade": "LUX"|"CM", "medidaEm": "2026-11-16T14:00:05Z" }` → 201 com a leitura gravada (`recebidaEm` do servidor). Limites físicos: 0–200000 lux; >0–500 cm; `medidaEm` até 30 s no futuro.
+- **Consultar telemetria (paciente):** `GET /solicitacoes/{id}/leituras` → `{ solicitacaoId, sessao?, consultadaEm, prazoAtualidadeSegundos: 60, simulada, aviso, sensores: [luminosidade, distância] }`; cada sensor com `tipo`, `unidade`, `faixa {minimo, maximo}`, `ultimaLeitura? {valor, medidaEm}`, `situacao` e `orientacao {codigo, mensagem}`.
+
+| Campo | Valores |
+|---|---|
+| `situacao` | `DENTRO_DA_FAIXA`, `ABAIXO_DA_FAIXA`, `ACIMA_DA_FAIXA`, `DESATUALIZADA` (medida há mais de 60 s), `SEM_LEITURA` |
+| `orientacao.codigo` | `CONDICAO_ADEQUADA`, `MELHORAR_ILUMINACAO`, `REDUZIR_ILUMINACAO_OU_REFLEXO`, `AFASTAR_DOCUMENTO`, `APROXIMAR_DOCUMENTO`, `VERIFICAR_ESTACAO`, `CAPTURA_SEGUE_SEM_SENSOR` (o código é o contrato com a tela do Épico 6; a mensagem é texto fixo) |
+| `faixa` | luminosidade 300–1000 lux; distância 20–40 cm; limites inclusivos e demonstrativos |
+
+Sem sessão ou sem leitura a resposta é 200 com os sensores em `SEM_LEITURA` (`sessao` e `ultimaLeitura` omitidos).
+
 ## Pendência
 Uma por regra `PENDENTE` ou `NAO_VERIFICAVEL` da análise: `codigoRegra` e `descricaoRegra` (da versão do protocolo da análise), `tipo`, `explicacao` (mensagem da regra, se pendente; mensagem padrão de não verificável do protocolo, se não verificável), `motivo` (lista fechada, só não verificável: `CAMPO_ILEGIVEL`, `DOCUMENTO_NAO_LIDO`, `TRANSCRICAO_NAO_CONFERIDA`, `DIVERGENCIA_APONTADA`, `VALOR_NAO_INTERPRETAVEL`, `CONDICAO_INDETERMINADA`, `DOCUMENTOS_INSUFICIENTES`, `DEPENDE_DE_DOCUMENTO_AUSENTE`), `responsavel` ∈ {`PACIENTE`, `UNIDADE_EMISSORA`} e `evidencias[]` (`documentoId`, `campo`, `situacao` no momento da análise e `origem` `{pagina, trecho}` lida da leitura daquela revisão, quando houver). **Nenhum valor lido aparece na pendência.** Mensagens não diagnosticam, não definem urgência, não autorizam atendimento nem prometem vaga.
 

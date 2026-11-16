@@ -742,6 +742,110 @@ paths:
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/sessoes-captura:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: Abre a sessão de captura do pedido próprio (RC-21; estação de captura SIMULADA)
+      description: >
+        Sem corpo. No máximo uma sessão aberta por pedido; se já houver, devolve a existente (200) sem gravar nada,
+        inclusive em toques duplicados ou chamadas simultâneas. Não muda estado, revisão nem documentos do pedido.
+        Ordem 401, 403 (administrador ou chave do simulador), 404, 409 (pedido submetido), 201 ou 200.
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Sessão criada agora
+          headers:
+            Location: { description: "/solicitacoes/{id}/leituras", schema: { type: string } }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SessaoCaptura" }
+        "200":
+          description: O pedido já tinha sessão aberta; ela é devolvida com criada=false
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SessaoCaptura" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: CONFLITO_ESTADO (pedido submetido em simulação; só consulta)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/leituras:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    get:
+      summary: Telemetria dos dois sensores simulados do pedido próprio, com orientação (RC-22)
+      description: >
+        Sempre os dois sensores (luminosidade, distância), com a última leitura da sessão mais recente, a situação e a
+        orientação. Faixas demonstrativas (300 a 1000 lux, 20 a 40 cm, sem calibração); leitura medida há mais de
+        60 s é DESATUALIZADA. Sem sessão ou sem leitura, 200 com SEM_LEITURA. As leituras não comprovam a
+        legibilidade do arquivo e não bloqueiam envio de documentos.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Telemetria
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Telemetria" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+  /sessoes-captura/{id}/leituras:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: O simulador envia uma leitura de sensor (RC-21; só a chave do simulador)
+      description: >
+        Uma leitura por requisição. Ordem 401 (sem chave ou chave errada), 403 (conta de paciente ou administrador),
+        404 (sessão inexistente ou encerrada, conferida antes de ler o corpo), 415 ou 400 de formato, 400 de
+        conteúdo, 201. Valor fora da faixa demonstrativa não é erro.
+      security:
+        - chaveSimulador: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LeituraSensorEnvio" }
+      responses:
+        "201":
+          description: Leitura gravada
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LeituraSensorGravada" }
+        "400":
+          description: REQUISICAO_INVALIDA (detalhes[].campo em sessaoId, tipo, unidade, valor, medidaEm ou corpo)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404":
+          description: Sessão de captura inexistente ou encerrada (NAO_ENCONTRADO, resposta idêntica)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "415":
+          description: TIPO_NAO_SUPORTADO (corpo não é application/json)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -754,7 +858,7 @@ components:
       name: X-Chave-Simulador
       description: >
         Chave do simulador de sensores (variável IOT_API_KEY), válida somente na rota de telemetria
-        (planejada). Em qualquer outra rota responde 403; o valor real nunca é versionado.
+        POST /sessoes-captura/{id}/leituras (RC-21). Em qualquer outra rota responde 403; o valor real nunca e versionado.
   responses:
     NaoAutenticado:
       description: Sessão ausente, expirada ou encerrada (NAO_AUTENTICADO)
@@ -1185,3 +1289,83 @@ components:
         texto: { type: string }
         simulado: { type: boolean, enum: [true] }
         formato: { type: string, enum: [texto_puro] }
+    SessaoCaptura:
+      type: object
+      description: Sessão de captura da estação simulada (RC-21).
+      required: [id, solicitacaoId, iniciadaEm, aberta, criada, simulada]
+      properties:
+        id: { type: string, example: "42" }
+        solicitacaoId: { type: string, example: "7" }
+        iniciadaEm: { type: string, format: date-time }
+        aberta: { type: boolean }
+        criada: { type: boolean, description: true se esta chamada criou a sessão }
+        simulada: { type: boolean, enum: [true] }
+    LeituraSensorEnvio:
+      type: object
+      description: Leitura enviada pelo simulador (RC-21). Só estes campos são aceitos.
+      required: [sessaoId, tipo, valor, unidade, medidaEm]
+      properties:
+        sessaoId: { type: integer, description: Igual ao id do caminho, example: 42 }
+        tipo: { type: string, enum: [LUMINOSIDADE, DISTANCIA] }
+        valor: { type: number, description: "Luminosidade de 0 a 200000 lux; distância maior que 0 e até 500 cm; 3 casas", example: 350 }
+        unidade: { type: string, enum: [LUX, CM], description: LUX com LUMINOSIDADE e CM com DISTANCIA }
+        medidaEm: { type: string, format: date-time, description: Com fuso; no máximo 30 s no futuro }
+    LeituraSensorGravada:
+      type: object
+      required: [id, sessaoId, tipo, valor, unidade, medidaEm, recebidaEm]
+      properties:
+        id: { type: string, example: "901" }
+        sessaoId: { type: string, example: "42" }
+        tipo: { type: string, enum: [LUMINOSIDADE, DISTANCIA] }
+        valor: { type: number }
+        unidade: { type: string, enum: [LUX, CM] }
+        medidaEm: { type: string, format: date-time }
+        recebidaEm: { type: string, format: date-time, description: Relógio do servidor (UTC) }
+    Telemetria:
+      type: object
+      description: >
+        Telemetria do pedido (RC-22). Sensores simulados, limites demonstrativos e sem calibração; não comprova a
+        legibilidade do arquivo. Campos nulos ficam fora do JSON (sessao sem sessão; ultimaLeitura sem leitura).
+      required: [solicitacaoId, consultadaEm, prazoAtualidadeSegundos, simulada, aviso, sensores]
+      properties:
+        solicitacaoId: { type: string }
+        sessao:
+          type: object
+          required: [id, iniciadaEm, aberta]
+          properties:
+            id: { type: string }
+            iniciadaEm: { type: string, format: date-time }
+            aberta: { type: boolean }
+        consultadaEm: { type: string, format: date-time }
+        prazoAtualidadeSegundos: { type: integer, example: 60 }
+        simulada: { type: boolean, enum: [true] }
+        aviso: { type: string }
+        sensores:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            type: object
+            required: [tipo, unidade, faixa, situacao, orientacao]
+            properties:
+              tipo: { type: string, enum: [LUMINOSIDADE, DISTANCIA] }
+              unidade: { type: string, enum: [LUX, CM] }
+              faixa:
+                type: object
+                properties:
+                  minimo: { type: number }
+                  maximo: { type: number }
+              ultimaLeitura:
+                type: object
+                properties:
+                  valor: { type: number }
+                  medidaEm: { type: string, format: date-time }
+              situacao: { type: string, enum: [DENTRO_DA_FAIXA, ABAIXO_DA_FAIXA, ACIMA_DA_FAIXA, DESATUALIZADA, SEM_LEITURA] }
+              orientacao:
+                type: object
+                required: [codigo, mensagem]
+                properties:
+                  codigo:
+                    type: string
+                    enum: [CONDICAO_ADEQUADA, MELHORAR_ILUMINACAO, REDUZIR_ILUMINACAO_OU_REFLEXO, AFASTAR_DOCUMENTO, APROXIMAR_DOCUMENTO, VERIFICAR_ESTACAO, CAPTURA_SEGUE_SEM_SENSOR]
+                  mensagem: { type: string }

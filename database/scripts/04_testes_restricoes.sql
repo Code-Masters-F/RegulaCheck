@@ -1,6 +1,6 @@
 -- =============================================================================
 -- RegulaCheck - 04_testes_restricoes.sql  (RC-03)
--- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 31 casos tenta uma
+-- Finalidade : provar que o banco REJEITA dados invalidos. Cada um dos 33 casos tenta uma
 --              violacao e confere o codigo ORA esperado; imprime "OK" ou "FALHOU".
 --              Os casos 13 e 14 (RC-07) exigem o motivo PROTOCOLO_ALTERADO: em banco criado
 --              antes da RC-07, rode antes o 06_motivo_revisao_protocolo.sql.
@@ -12,6 +12,9 @@
 --              RC-11, rode antes o 09_conferencia.sql.
 --              Os casos 28 a 31 (RC-13) e a contagem final exigem as colunas e RC_PENDENCIA_EVIDENCIA do 10_: em
 --              banco criado antes da RC-13, rode antes o 10_analise_historico.sql.
+--              Os casos 32 e 33 (RC-21) exigem o indice RC_SESSAO_CAPTURA_UK_ABERTA do 11_: em banco criado
+--              antes da RC-21, rode antes o 11_iot_sessao_captura.sql. O caso 33 confere uma ACEITACAO
+--              (esperado: nenhum erro): uma sessao nova depois de encerrar a anterior.
 -- Ordem      : 4o script, depois do 01 e do 02 (usa os dados da carga como referencia).
 -- Efeito     : NAO DEIXA DADOS. Cada caso termina com ROLLBACK, e o script confere no fim
 --              que a contagem de linhas voltou ao valor da carga original.
@@ -392,6 +395,21 @@ BEGIN
         VALUES (v_an_novo, v_regra, 1, (SELECT MIN(ID) FROM RC_DOCUMENTO), 'NOME', 'LIDO_PELA_IA');
         confere('evidencia com situacao invalida', -2290, 0);
     EXCEPTION WHEN OTHERS THEN confere('evidencia com situacao invalida', -2290, SQLCODE);
+    END;
+
+    -- 32. (RC-21) Segunda sessao de captura aberta no mesmo pedido (exige o indice do 11_)
+    BEGIN
+        INSERT INTO RC_SESSAO_CAPTURA (SOLICITACAO_ID) VALUES (v_sol_rasc);
+        confere('segunda sessao de captura aberta no mesmo pedido', -1, 0);
+    EXCEPTION WHEN OTHERS THEN confere('segunda sessao de captura aberta no mesmo pedido', -1, SQLCODE);
+    END;
+
+    -- 33. (RC-21) Nova sessao aberta depois de encerrar a anterior: o banco ACEITA (esperado: nenhum erro)
+    BEGIN
+        UPDATE RC_SESSAO_CAPTURA SET ENCERRADA_EM = SYSTIMESTAMP WHERE ID = v_sessao;
+        INSERT INTO RC_SESSAO_CAPTURA (SOLICITACAO_ID) VALUES (v_sol_rasc);
+        confere('nova sessao aberta depois de encerrar a anterior', 0, 0);
+    EXCEPTION WHEN OTHERS THEN confere('nova sessao aberta depois de encerrar a anterior', 0, SQLCODE);
     END;
 
     -- Conferencia final: nenhuma linha restante (total da carga original = 77; RC_PENDENCIA_EVIDENCIA comeca vazia).
