@@ -157,6 +157,11 @@ public final class ServidorDeTeste implements AutoCloseable {
         return new Resposta(r.statusCode(), r.body(), r);
     }
 
+    /** @return porta local em que a API de teste escuta (para clientes externos, como o simulador IoT) */
+    public int porta() {
+        return servidor.porta();
+    }
+
     @Override
     public void close() throws Exception {
         servidor.parar();

@@ -77,10 +77,10 @@ PK composta (`ANALISE_ID` FK, `REGRA_ID` FK) · `RESULTADO` (`ATENDE`/`PENDENTE`
 PK composta (`ANALISE_ID`, `REGRA_ID`, `ORDEM` ≥ 1) · FK (`ANALISE_ID`, `REGRA_ID`) → RC_PENDENCIA · `DOCUMENTO_ID` (FK → RC_DOCUMENTO) · `CODIGO` (os seis campos) · `SITUACAO` (`CONFIRMADO`, `NAO_LOCALIZADO`, `ILEGIVEL`, `NAO_CONFERIDO`, `DIVERGENCIA_APONTADA`, `DOCUMENTO_NAO_LIDO`). Sem valor e sem trecho.
 
 ### RC_SESSAO_CAPTURA
-`ID` (PK) · `SOLICITACAO_ID` (FK, NN) · `INICIADA_EM` · `ENCERRADA_EM` (≥ início).
+`ID` (PK) · `SOLICITACAO_ID` (FK, NN) · `INICIADA_EM` · `ENCERRADA_EM` (≥ início; nula = sessão aberta). Índice único `RC_SESSAO_CAPTURA_UK_ABERTA` (RC-21, script `11_`): no máximo **uma sessão aberta por pedido**; sessões encerradas ficam fora do índice. Aberta pela paciente via API; nenhuma rota encerra sessão nesta entrega. Apagada (com as leituras) quando o rascunho é excluído.
 
 ### RC_LEITURA_SENSOR
-`ID` (PK) · `SESSAO_ID` (FK, NN) · `TIPO` (`LUMINOSIDADE`/`DISTANCIA`) · `VALOR` (`NUMBER(12,3)`) · `UNIDADE` (`LUX` para luminosidade, `CM` para distância) · `MEDIDA_EM` · `RECEBIDA_EM`.
+`ID` (PK) · `SESSAO_ID` (FK, NN) · `TIPO` (`LUMINOSIDADE`/`DISTANCIA`) · `VALOR` (`NUMBER(12,3)`) · `UNIDADE` (`LUX` para luminosidade, `CM` para distância) · `MEDIDA_EM` (informado pelo simulador; a API recusa mais de 30 s no futuro) · `RECEBIDA_EM` (relógio do servidor). A API ainda recusa valores fisicamente implausíveis (luminosidade fora de 0–200000 lux; distância fora de >0–500 cm); as faixas demonstrativas (300–1000 lux, 20–40 cm) e o prazo de 60 s para leitura desatualizada ficam na API (`FaixasDemonstrativas`), não no banco.
 
 ### RC_SESSAO_LOGIN (RC-04, criada por `05_sessao_login.sql`)
 `ID` (PK) · `USUARIO_ID` (FK, NN) · `TOKEN_HASH` (UK, NN; SHA-256 do token em hexadecimal minúsculo, 64 caracteres; nunca o token) · `CRIADA_EM` (NN) · `EXPIRA_EM` (NN; posterior a `CRIADA_EM`) · `ENCERRADA_EM` (nula enquanto a sessão está aberta). Sessão válida: não encerrada, não expirada e conta com `ATIVO = 1`. **Não confundir** com `RC_SESSAO_CAPTURA`: `RC_SESSAO_LOGIN` é a autenticação da paciente na API; `RC_SESSAO_CAPTURA` agrupa as leituras dos sensores simulados de um pedido.
@@ -99,7 +99,7 @@ PK composta (`ANALISE_ID`, `REGRA_ID`, `ORDEM` ≥ 1) · FK (`ANALISE_ID`, `REGR
 
 ## O que o banco garante e o que fica para a API
 
-- **Banco:** valores permitidos, unicidades (e-mail, código da regra por versão, resultado por regra por análise, revisão por pedido, análise por revisão e conferência, vigência única, submissão única), `PROCESSANDO` sempre com início da análise, referências, tipo da pendência igual ao do resultado, limites de arquivo e unidade de sensor coerente com o tipo.
+- **Banco:** valores permitidos, unicidades (e-mail, código da regra por versão, resultado por regra por análise, revisão por pedido, análise por revisão e conferência, vigência única, submissão única, uma sessão de captura aberta por pedido), `PROCESSANDO` sempre com início da análise, referências, tipo da pendência igual ao do resultado, limites de arquivo e unidade de sensor coerente com o tipo.
 - **API (RC-05 em diante):** autorização por recurso, implementada como mecanismo na RC-05 e aplicada por cada história de negócio (o banco não impede a paciente A de apontar para o pedido da paciente B), transições de estado, consistência de `REVISAO_ATUAL` com a revisão mais recente, resultado geral derivado dos resultados por regra, classificação de leitura "antiga" e faixas dos sensores.
 - **Arquivos (RC-06):** a conferência (`ConferenciaDeArquivo`) produz exatamente os valores que `RC_DOCUMENTO` aceita: `TIPO` (PDF/JPEG/PNG), `TAMANHO_BYTES` (1 a 5 242 880), `PAGINAS` (imagem = 1; PDF ≤ 5) e `CAMINHO_INTERNO` (o `IdInterno` de 32 caracteres hexadecimais, nunca caminho absoluto nem o nome enviado); `NOME_ORIGINAL` recebe o nome saneado para exibição. Nenhuma tabela, coluna ou script novo; a linha é gravada pela história de envio depois de guardar o arquivo.
 - **Mudanças futuras do esquema:** sempre por novos scripts numerados e aditivos; nunca por recriação automática.

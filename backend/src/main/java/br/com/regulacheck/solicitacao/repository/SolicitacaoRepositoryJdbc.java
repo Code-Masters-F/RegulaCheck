@@ -81,6 +81,11 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
             DELETE FROM RC_EXTRACAO_DOCUMENTO WHERE EXTRACAO_ID IN (
                 SELECT ID FROM RC_EXTRACAO WHERE SOLICITACAO_ID = ?)""";
     private static final String SQL_APAGAR_EXTRACOES = "DELETE FROM RC_EXTRACAO WHERE SOLICITACAO_ID = ?";
+    // RC-21: telemetria da estacao de captura simulada; leituras antes das sessoes que elas referenciam.
+    private static final String SQL_APAGAR_LEITURAS_SENSOR = """
+            DELETE FROM RC_LEITURA_SENSOR WHERE SESSAO_ID IN (
+                SELECT ID FROM RC_SESSAO_CAPTURA WHERE SOLICITACAO_ID = ?)""";
+    private static final String SQL_APAGAR_SESSOES_CAPTURA = "DELETE FROM RC_SESSAO_CAPTURA WHERE SOLICITACAO_ID = ?";
     private static final String SQL_APAGAR_DOCUMENTOS = "DELETE FROM RC_DOCUMENTO WHERE SOLICITACAO_ID = ?";
     private static final String SQL_APAGAR_REVISOES = "DELETE FROM RC_REVISAO WHERE SOLICITACAO_ID = ?";
     private static final String SQL_APAGAR_PEDIDO = "DELETE FROM RC_SOLICITACAO WHERE ID = ?";
@@ -278,9 +283,14 @@ public final class SolicitacaoRepositoryJdbc implements SolicitacaoRepository {
                 }
             }
         }
-        // Ordem imposta pelas chaves estrangeiras: decisoes -> leituras -> documentos -> revisoes -> pedido.
+        // Ordem imposta pelas chaves estrangeiras: decisoes -> leituras -> telemetria -> documentos -> revisoes ->
+        // pedido. A telemetria (RC-21) e apoio a captura: sem apaga-la, ter aberto uma sessao de captura impediria
+        // excluir o rascunho (FK), e os sensores bloqueariam um fluxo da paciente (FR-020). A gravacao de leitura
+        // usa este mesmo bloqueio do pedido, entao nenhuma leitura nova entra entre os dois DELETE.
         apagarConferencias(conexao, id);
         apagarExtracoes(conexao, id);
+        apagarDoPedido(conexao, SQL_APAGAR_LEITURAS_SENSOR, id);
+        apagarDoPedido(conexao, SQL_APAGAR_SESSOES_CAPTURA, id);
         apagarDoPedido(conexao, SQL_APAGAR_DOCUMENTOS, id);
         apagarDoPedido(conexao, SQL_APAGAR_REVISOES, id);
         apagarDoPedido(conexao, SQL_APAGAR_PEDIDO, id);

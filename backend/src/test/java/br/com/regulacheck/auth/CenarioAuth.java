@@ -11,6 +11,7 @@ import br.com.regulacheck.extracao.ConferenciaRepositoryMemoria;
 import br.com.regulacheck.extracao.ExtracaoRepositoryMemoria;
 import br.com.regulacheck.integracao.extracao.LeitorDeDocumento;
 import br.com.regulacheck.integracao.extracao.LeitorSimulado;
+import br.com.regulacheck.iot.CapturaRepositoryMemoria;
 import br.com.regulacheck.protocolo.ProtocoloRepositoryMemoria;
 import br.com.regulacheck.solicitacao.SolicitacaoRepositoryMemoria;
 import br.com.regulacheck.usuario.entity.Perfil;
@@ -40,6 +41,7 @@ public final class CenarioAuth {
     public final DocumentoRepositoryMemoria documentos = new DocumentoRepositoryMemoria(solicitacoes);
     public final ExtracaoRepositoryMemoria extracoes = new ExtracaoRepositoryMemoria(solicitacoes, documentos);
     public final ConferenciaRepositoryMemoria conferencias = new ConferenciaRepositoryMemoria(solicitacoes, extracoes);
+    public final CapturaRepositoryMemoria capturas = new CapturaRepositoryMemoria(solicitacoes);
     public final AnaliseRepositoryMemoria analises = new AnaliseRepositoryMemoria(solicitacoes, extracoes, conferencias,
             documentos);
     public final RelogioFixo relogio = new RelogioFixo(Instant.parse("2026-11-12T20:00:00Z"));
@@ -87,6 +89,6 @@ public final class CenarioAuth {
      */
     public Dependencias dependencias(LeitorDeDocumento leitor) {
         return new Dependencias(usuarios, sessoes, protocolos, solicitacoes, documentos, extracoes, conferencias,
-                analises, leitor, relogio);
+                analises, capturas, leitor, relogio);
     }
 }

@@ -24,6 +24,9 @@ import br.com.regulacheck.extracao.controller.ConferenciaController;
 import br.com.regulacheck.extracao.controller.ExtracaoController;
 import br.com.regulacheck.extracao.service.ConferenciaService;
 import br.com.regulacheck.extracao.service.ExtracaoService;
+import br.com.regulacheck.iot.controller.CapturaController;
+import br.com.regulacheck.iot.controller.LeituraSensorController;
+import br.com.regulacheck.iot.service.CapturaService;
 import br.com.regulacheck.protocolo.controller.ProtocoloController;
 import br.com.regulacheck.protocolo.service.ProtocoloService;
 import br.com.regulacheck.saude.SaudeController;
@@ -140,13 +143,16 @@ public final class Composicao {
                 dependencias.conferencias(), dependencias.documentos(), dependencias.protocolos(),
                 MotorDeRegras.doProtocoloAcademico());
         AnaliseService analises = new AnaliseService(dependencias.analises(), avaliacao, dependencias.relogio());
+        CapturaService capturas = new CapturaService(dependencias.capturas(), dependencias.relogio());
         MultipartConfigElement multipart = new MultipartConfigElement(conferencia.quarentena().toString(),
                 LimitesArquivo.MAXIMO_BYTES, LimitesArquivo.MAXIMO_BYTES + FOLGA_MULTIPART_BYTES, 0);
         rotas.registrar("/solicitacoes/*",
                 new SolicitacaoController(solicitacoes, new DocumentoController(documentos),
                         new ExtracaoController(extracao), new ConferenciaController(conferenciaDaLeitura),
-                        new AnaliseController(analises)), multipart,
+                        new AnaliseController(analises), new CapturaController(capturas)), multipart,
                 Perfil.PACIENTE);
+        // Telemetria do simulador (RC-21): so a chave X-Chave-Simulador, so esta rota.
+        rotas.registrarTelemetria("/sessoes-captura/*", new LeituraSensorController(capturas));
         extensao.accept(rotas);
 
         // Rota coringa: qualquer caminho sem controller devolve 404 no formato padrao.
