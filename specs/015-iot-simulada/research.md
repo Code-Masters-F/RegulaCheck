@@ -24,7 +24,7 @@ Decisões técnicas da feature `specs/015-iot-simulada`. As decisões de produto
 
 ## D4 — Validação da leitura recebida
 
-- **Decision**: corpo JSON (limite de `CorpoJson`, 4 KB; 415 se não for `application/json`) com `sessaoId`, `tipo`, `valor`, `unidade`, `medidaEm`. Ordem: 401/403 (filtro) → 404 sessão inexistente/encerrada/de pedido inexistente (mesma resposta) → 400 contrato. Regras:
+- **Decision**: corpo JSON (limite de `CorpoJson`, 4 KB; 415 se não for `application/json`) com `sessaoId`, `tipo`, `valor`, `unidade`, `medidaEm`. Ordem: 401/403 (filtro) → 404 sessão inexistente/encerrada/de pedido inexistente (mesma resposta; conferida **antes** de ler o corpo) → 415/400 de formato do corpo → 400 de conteúdo. Regras:
   - `sessaoId` obrigatório e igual ao `{id}` do caminho (o payload identifica a sessão, critério 2 da RC-21);
   - `tipo` ∈ {`LUMINOSIDADE`, `DISTANCIA`}; `unidade` correspondente (`LUX`, `CM`), sem conversão;
   - `valor` numérico finito; limites de **plausibilidade física** (não são a faixa demonstrativa): luminosidade `0 ≤ v ≤ 200000` lux, distância `0 < v ≤ 500` cm; arredondado a 3 casas (precisão de `NUMBER(12,3)`);
@@ -48,14 +48,14 @@ Decisões técnicas da feature `specs/015-iot-simulada`. As decisões de produto
 
 ## D7 — Exclusão de rascunho com sessão de captura
 
-- **Decision**: `SolicitacaoRepositoryJdbc.excluirRascunho` passa a apagar `RC_LEITURA_SENSOR` e `RC_SESSAO_CAPTURA` do pedido antes de `RC_DOCUMENTO`, dentro da mesma transação e bloqueio.
+- **Decision**: `SolicitacaoRepositoryJdbc.excluirRascunho` passa a apagar `RC_LEITURA_SENSOR` e `RC_SESSAO_CAPTURA` do pedido antes de `RC_DOCUMENTO`, dentro da mesma transação e bloqueio. A gravação de leitura usa o mesmo `FOR UPDATE` do pedido (via junção com a sessão), então nenhuma leitura chega entre o apagar das leituras e o das sessões.
 - **Rationale**: hoje a FK `RC_SESSAO_CAPTURA_FK_SOLIC` faria a exclusão cair em `ORA-02292` → "pedido com dependências", ou seja, abrir a sessão bloquearia a exclusão do rascunho — contraria FR-020 ("sensores não alteram o percurso"). A telemetria é dado de apoio, sem valor depois que o rascunho é excluído.
 - **Alternatives**: manter a recusa — a paciente não conseguiria excluir rascunho só por ter usado a estação.
 
 ## D8 — Simulador
 
 - **Decision**: um único arquivo `simulador-iot/SimuladorSensores.java`, executado pelo *source launcher* do JDK 21 (`java simulador-iot/SimuladorSensores.java …`), sem Maven, sem dependências (JSON montado à mão; só números, enum e instante ISO). `java.net.http.HttpClient` com timeout de conexão e de requisição de 5 s.
-  - Argumentos: `--sessao <id>` (obrigatório), `--sequencia normal|fora-da-faixa|recuperacao` (padrão `normal`), `--intervalo-ms <n>` (padrão 1000), `--api <url>` (padrão `API_URL` ou `http://localhost:8080`), `--seco` (só imprime os JSON, sem enviar). Chave lida **somente** de `IOT_API_KEY` (nunca por argumento, para não ficar no histórico do shell).
+  - Argumentos: `--sessao <id>` (obrigatório), `--sequencia normal|fora-da-faixa|recuperacao` (padrão `normal`), `--intervalo-ms <n>` (padrão 1000), `--api <url>` (padrão `API_URL` ou `http://localhost:8080`), `--seco` (só imprime `tipo valor unidade` por leitura, sem instante e sem conexão, para a saída ser reproduzível). Chave lida **somente** de `IOT_API_KEY` (nunca por argumento, para não ficar no histórico do shell).
   - Sequências como tabelas fixas de pares (luminosidade, distância) — reprodutíveis sem semente aleatória. Normal: 5 pares dentro da faixa; fora da faixa: 5 pares com luminosidade baixa e distância grande/pequena; recuperação: 3 pares fora seguidos de 3 dentro.
   - Cada envio: uma leitura por requisição, `medidaEm = Instant.now()`; imprime `tipo valor unidade → status`. Qualquer resposta ≠ 201 ou falha de rede: imprime o código, **não repete**, encerra com código de saída 1. Nunca imprime a chave.
 - **Rationale**: CLAUDE.md §12 (script Java, `HttpClient`, sem Spring) e constituição III ("uma aplicação e um módulo Maven" — o simulador não vira segundo módulo). JSON à mão evita classpath.

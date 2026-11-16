@@ -61,6 +61,8 @@ Formato de erro: o padrão do projeto (`codigo`, `mensagem`, `detalhes[]`) em [d
 | 415 | `TIPO_NAO_SUPORTADO` | corpo não é `application/json` |
 | 503 | `DEPENDENCIA_INDISPONIVEL` | banco fora |
 
+Ordem das conferências: 401/403 → 404 (sessão, antes de ler o corpo) → 415/400 de formato → 400 de conteúdo.
+
 Regras do 400: `sessaoId` ≠ `{id}`; tipo fora de `LUMINOSIDADE`/`DISTANCIA`; unidade incompatível (`LUX` só com luminosidade, `CM` só com distância); valor ausente, não numérico, luminosidade fora de 0–200000 ou distância fora de (0, 500]; `medidaEm` ausente, sem fuso ou mais de 30 s no futuro.
 
 ## 3. Consultar telemetria — `GET /solicitacoes/{id}/leituras`
@@ -97,7 +99,7 @@ Regras do 400: `sessaoId` ≠ `{id}`; tipo fora de `LUMINOSIDADE`/`DISTANCIA`; u
 }
 ```
 
-- `sessao` é `null` quando o pedido não tem sessão (os dois sensores ficam `SEM_LEITURA`).
+- `sessao` é **omitido** quando o pedido não tem sessão (os dois sensores ficam `SEM_LEITURA`); `ultimaLeitura` é **omitido** quando o sensor não tem leitura. A API omite campos nulos (mesmo padrão da RC-13); o `null` do exemplo acima é só ilustrativo.
 - `situacao` ∈ `DENTRO_DA_FAIXA`, `ABAIXO_DA_FAIXA`, `ACIMA_DA_FAIXA`, `DESATUALIZADA`, `SEM_LEITURA`.
 - `orientacao.codigo` ∈ `CONDICAO_ADEQUADA`, `MELHORAR_ILUMINACAO`, `REDUZIR_ILUMINACAO_OU_REFLEXO`, `AFASTAR_DOCUMENTO`, `APROXIMAR_DOCUMENTO`, `VERIFICAR_ESTACAO`, `CAPTURA_SEGUE_SEM_SENSOR`. Os textos são fixos e podem ser ajustados na implementação; o **código** é o contrato para a tela do Épico 6.
 - **Erros**: 401; 403 administrador ou chave do simulador; 404 pedido inexistente ou de outra paciente (idênticos); 503 banco fora.
@@ -108,5 +110,6 @@ Regras do 400: `sessaoId` ≠ `{id}`; tipo fora de `LUMINOSIDADE`/`DISTANCIA`; u
 java simulador-iot/SimuladorSensores.java --sessao <id> [--sequencia normal|fora-da-faixa|recuperacao]
      [--intervalo-ms 1000] [--api http://localhost:8080] [--seco]
 Variáveis: IOT_API_KEY (obrigatória, exceto em --seco), API_URL (opcional)
+--seco: imprime `tipo valor unidade` por leitura, sem instante e sem conexão (saída reproduzível).
 Saída 0: todas as leituras com 201. Saída 1: primeira falha (sem repetir). Saída 2: argumentos inválidos.
 ```

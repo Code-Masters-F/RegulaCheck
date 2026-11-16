@@ -129,7 +129,7 @@ A equipe escolhe, ao executar o simulador, uma de três sequências reproduzíve
 - Leitura exatamente no limite da faixa demonstrativa: conta como dentro da faixa (limites inclusivos).
 - Pedido com mais de uma sessão de captura (só uma pode estar aberta; as demais vêm, por exemplo, da carga sintética já encerradas): a telemetria considera a sessão mais recente do pedido.
 - Pedido já submetido em simulação ou removido: a consulta segue as regras de acesso do pedido; envio para sessão de pedido removido é tratado como sessão inexistente.
-- Envio repetido da mesma leitura (retentativa do simulador): pode gerar registro duplicado; aceitável na demonstração, desde que o simulador não faça retentativas automáticas ilimitadas.
+- Envio repetido da mesma leitura: o simulador não repete envios automaticamente; duplicidade só ocorre se alguém reexecutar a sequência, o que é aceitável na demonstração e não afeta a orientação (vale a leitura de medição mais recente).
 - Valor com muitas casas decimais: arredondado/limitado à precisão gravada (três casas), sem rejeitar.
 - Credencial do simulador não configurada no servidor: a rota recusa todo envio (nunca aceita sem chave).
 - Relógio do simulador adiantado: instante de medição no futuro além da tolerância é recusado.
@@ -165,7 +165,7 @@ A equipe escolhe, ao executar o simulador, uma de três sequências reproduzíve
 - **FR-017**: A consulta MUST responder com sucesso e "sem leitura" quando o pedido não tem sessão ou leituras, em vez de erro.
 - **FR-018**: A consulta MUST aplicar o isolamento por paciente: pedido de outra paciente ou inexistente recebe resposta idêntica de "não encontrado"; o administrador recebe "sem permissão".
 - **FR-019**: Toda resposta de telemetria MUST indicar que as leituras são simuladas, que os limites são demonstrativos e que as leituras não comprovam a legibilidade do arquivo.
-- **FR-020**: A situação dos sensores MUST NOT bloquear nem alterar envio, substituição, remoção de documentos, salvamento do rascunho, leitura, análise ou submissão simulada.
+- **FR-020**: A situação dos sensores, e a existência de sessão de captura, MUST NOT bloquear nem alterar envio, substituição, remoção de documentos, salvamento e exclusão do rascunho, leitura, análise ou submissão simulada.
 
 **Documentação**
 
@@ -199,4 +199,3 @@ A equipe escolhe, ao executar o simulador, uma de três sequências reproduzíve
 - Limites físicos de plausibilidade (para rejeitar valores impossíveis) são diferentes e mais largos que a faixa demonstrativa; serão definidos no plano.
 - Leituras não são apagadas nem reescritas por estas histórias; não há expurgo automático.
 - A tela do app não faz parte desta entrega; a verificação de RC-22 é feita pela API e pela documentação. A exibição fica como dependência do Épico 6.
-- Retentativas do simulador são limitadas; duplicidade eventual de leitura por retentativa é aceita na demonstração e não afeta a orientação.

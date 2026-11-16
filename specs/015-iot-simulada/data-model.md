@@ -37,9 +37,10 @@ Leituras não são alteradas nem apagadas, exceto na exclusão do rascunho (D7),
 | `SessaoCaptura` | entity (record) | `id`, `solicitacaoId`, `iniciadaEm`, `encerradaEm` (nulo = aberta) |
 | `LeituraSensor` | entity (record) | `id`, `sessaoId`, `tipo`, `valor` (`BigDecimal`), `medidaEm`, `recebidaEm` |
 | `AberturaSessao` | repository (record) | resultado de abrir: `naoEncontrado` \| `submetido` \| `existente(sessao)` \| `criada(sessao)` |
-| `CapturaRepository` | repository (interface) | `abrirSessao(solicitacaoId, pacienteId, agora)`, `buscarSessaoAberta(sessaoId)`, `gravarLeitura(nova)`, `telemetriaDaPaciente(solicitacaoId, pacienteId)` |
+| `CapturaRepository` | repository (interface) | `abrirSessao(solicitacaoId, pacienteId, agora)`, `sessaoAbertaExiste(sessaoId)`, `gravarLeitura(nova)` (sob bloqueio do pedido), `telemetriaDaPaciente(solicitacaoId, pacienteId)` |
 | `CapturaRepositoryJdbc` | repository | SQL parametrizado, `FOR UPDATE` no pedido, `ROLLBACK` explícito |
 | `TelemetriaDoPedido` | repository (record) | `sessao` (opcional) + última leitura por tipo (opcional) |
+| `NovaLeitura` | repository (record) | dados validados para gravar: `sessaoId`, `tipo`, `valor`, `medidaEm`, `recebidaEm` |
 | `FaixasDemonstrativas` | service | constantes D5 (faixas, 60 s, 30 s, limites físicos) |
 | `SituacaoSensor` | service (enum) | `DENTRO_DA_FAIXA`, `ABAIXO_DA_FAIXA`, `ACIMA_DA_FAIXA`, `DESATUALIZADA`, `SEM_LEITURA` |
 | `Orientacao` | service (enum) | código + texto fixo (D5) |

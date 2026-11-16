@@ -31,7 +31,7 @@ Abordagem (detalhes em [research.md](research.md)): rotas pelo mecanismo da RC-0
 
 **Constraints**: chave e corpo nunca em log; sucesso só após `COMMIT`; servlets sem estado de requisição; sensores nunca bloqueiam outro fluxo; pool de 3 conexões.
 
-**Scale/Scope**: ~17 tipos de produção novos em `iot` (entity 3, repository 4, service 5, controller 2, dto 4), ~6 alterados (`SolicitacaoController`, `SolicitacaoRepositoryJdbc`, `Dependencias`, `Composicao`, `Servidor`, JavaDoc de `package-info` do `iot`); 1 arquivo de simulador; ~8 classes de teste novas e ~5 construtores de `Dependencias` ajustados; 4 scripts SQL; docs de API, arquitetura, decisões, ambiente, modelo de dados, `simulador-iot/README.md`, README.
+**Scale/Scope**: ~19 tipos de produção novos em `iot` (entity 3, repository 5, service 5, controller 2, dto 4), ~6 alterados (`SolicitacaoController`, `SolicitacaoRepositoryJdbc`, `Dependencias`, `Composicao`, `Servidor`, JavaDoc de `package-info` do `iot`); 1 arquivo de simulador; ~8 classes de teste novas e ~5 construtores de `Dependencias` ajustados; 4 scripts SQL; docs de API, arquitetura, decisões, ambiente, modelo de dados, `simulador-iot/README.md`, README.
 
 ## Constitution Check
 
@@ -79,7 +79,7 @@ database/scripts/
 
 backend/src/main/java/br/com/regulacheck/
 ├── iot/entity/TipoSensor, SessaoCaptura, LeituraSensor
-├── iot/repository/CapturaRepository, CapturaRepositoryJdbc, AberturaSessao, TelemetriaDoPedido
+├── iot/repository/CapturaRepository, CapturaRepositoryJdbc, AberturaSessao, TelemetriaDoPedido, NovaLeitura
 ├── iot/service/CapturaService, ClassificadorDeLeitura, FaixasDemonstrativas, SituacaoSensor, Orientacao
 ├── iot/controller/CapturaController, LeituraSensorController
 ├── iot/dto/SessaoCapturaResponse, LeituraSensorRequest, LeituraRegistradaResponse, TelemetriaResponse
