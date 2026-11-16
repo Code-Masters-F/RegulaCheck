@@ -2,6 +2,10 @@
 
 Decisões do plano. Formato: decisão, motivo, alternativas.
 
+## Atualização de execução — 13/11/2026
+
+A identidade inspirada no minimalismo simpático do Headspace foi aprovada pelo responsável. A fonte nativa escolhida por ele é `design/RegulaCheck.pen`, na branch `codex/007-design-system-exploracao`; esse recorte prevalece sobre D1/D8 históricos abaixo. MCP conectado: variáveis, fontes, componentes reutilizáveis, quadros nomeados, screenshots, exportação PNG e salvamento foram efetivamente usados. Três exemplos atuais foram transpostos como camadas editáveis: `H0BJi`, `CvQRm`, `XCNVm`; demais estados do épico seguem pendentes. Continuidade em `design/README.md`, evidências em `design/verificacao-2026-11-13.md`, tarefas T040–T043. As antigas falhas de conexão são histórico, não bloqueio atual.
+
 ## D1 — Cinco arquivos `.pen`, um por grupo de histórias
 - **Decisão**: `00-fundamentos`, `01-entrada`, `02-envio`, `03-resultado`, `04-sensores-admin-acessibilidade` em `mobile/design/`.
 - **Motivo**: um arquivo único ficaria pesado de revisar e travaria o trabalho em paralelo; um arquivo por história permite entregar, revisar e aprovar uma história de cada vez (SC-007).

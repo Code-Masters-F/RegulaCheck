@@ -4,6 +4,8 @@
 
 ## Artefatos
 
+**Atualização de 13/11/2026:** para a transposição dos três exemplos aprovados, usar `design/RegulaCheck.pen` e os IDs registrados em `design/README.md`. A organização em cinco arquivos abaixo é histórica; o inventário completo de 73 estados ainda não foi entregue.
+
 | Artefato | Formato | Papel |
 |---|---|---|
 | `mobile/design/NN-*.pen` | pen.dev (o site o descreve como JSON aberto; acessar só por ferramentas do pen.dev) | desenho das telas |

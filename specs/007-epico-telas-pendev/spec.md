@@ -4,13 +4,19 @@
 
 **Created**: 2026-11-12
 
-**Status**: Em andamento — documentos de apoio e textos prontos; quadros no pen.dev ainda não desenhados (ver tasks.md)
+**Status**: Em andamento — identidade visual aprovada em 13/11/2026; transposição dos três exemplos autorizada. Inventário completo de estados ainda pendente (ver tasks.md e `design/README.md`).
 
 **Backlog**: novo épico "Telas do aplicativo (pen.dev)" a ser registrado em Code-Masters-F/ClickBus depois da aprovação deste texto. Cobre a parte de **tela** das histórias RC-07, RC-08, RC-09, RC-11, RC-15, RC-16, RC-17, RC-18, RC-19, RC-20 e RC-22. A parte de **API** dessas histórias continua nas issues originais.
 
 **Input**: User description: "Épico de telas do RegulaCheck, somente design, sem backend, desenvolvido no pen.dev por uma pessoa Dev que vai assumir o épico, com dados sintéticos e sem chamar a API."
 
 ## Contexto e limite deste épico
+
+### Recorte aprovado em 13/11/2026
+
+O responsável aprovou seguir com a identidade dos três exemplos inspirados no minimalismo simpático do Headspace, com paleta azul/laranja e tipografia Bricolage Grotesque + Nunito Sans, e pediu adicioná-los ao pen.dev. Este recorte entrega três quadros editáveis (Meus pedidos, Documentos e detalhe de pendência) no arquivo já salvo pelo responsável, `design/RegulaCheck.pen`, mais um resumo de continuidade em `design/README.md`. Esse caminho e a branch de trabalho `codex/007-design-system-exploracao` prevalecem sobre a divisão em cinco arquivos proposta anteriormente para esta etapa. A entrega dos 73 estados e as histórias completas não estão aprovadas como concluídas.
+
+Aceite deste recorte: os três quadros existem como camadas editáveis com fontes e cores explícitas, respeitam os limites clínicos e os avisos acadêmicos, e têm revisão visual e identificação registradas. O resumo deve permitir a outro agente localizar direção, decisões, arquivos, ferramentas, conexões e pendências, sem conter chaves ou segredos. Não recolocar painéis de referências no canvas.
 
 O aplicativo do RegulaCheck será Android nativo, mas ainda não existe: a pasta `mobile/` só descreve o comportamento esperado. A API e seus contratos já estão definidos (`CONTRATO_API.md`, `docs/api/`). Este épico entrega o **desenho das telas** em arquivos do pen.dev, com **dados fictícios**, para que (a) o grupo veja e valide o percurso da paciente e do administrador antes de programar e (b) a pessoa que implementar o app tenha uma referência visual e de comportamento.
 
@@ -111,7 +117,7 @@ A pessoa desenha os alertas de iluminação e distância da estação de captura
 
 **Entrega e organização**
 
-- **FR-001**: O épico MUST entregar os desenhos em arquivos do pen.dev guardados no repositório (pasta `mobile/design/`), com nomes e organização que permitam achar cada tela e cada estado.
+- **FR-001**: O épico MUST entregar os desenhos em arquivos do pen.dev guardados no repositório, com nomes e organização que permitam achar cada tela e estado. No recorte aprovado em 13/11/2026, a fonte nativa é `design/RegulaCheck.pen`; o inventário histórico e os textos permanecem em `mobile/design/`.
 - **FR-002**: Cada tela MUST cobrir os estados aplicáveis entre: carregando, vazio, sucesso, erro, sem conexão, sessão expirada (401), sem permissão (403) e item não encontrado (404). Quais estados valem para cada tela, e se são cobertos por quadro próprio ou por quadro/componente compartilhado, é definido pela **matriz tela × estado** em `contracts/telas.md`; essa matriz é o critério de revisão.
 - **FR-003**: O conjunto MUST incluir um catálogo de componentes e estilos (cores, tipografia, espaçamento, botões, campos, avisos, cartões de estado) reutilizados pelas telas.
 - **FR-004**: Cada tela MUST indicar, em nota do design, a rota da API e o contrato de que depende (referência a `CONTRATO_API.md` e `docs/api/`), sem chamar a API.
@@ -176,7 +182,7 @@ A pessoa desenha os alertas de iluminação e distância da estação de captura
 ## Assumptions
 
 - O trabalho de design usa o pen.dev e seu servidor de ferramentas (pencil MCP), operado por uma pessoa Dev que assume o épico; a revisão e a aprovação do grupo não são substituídas por apoio automatizado.
-- Os arquivos de design ficam em `mobile/design/` no repositório; arquivos `.pen` são tratados como binários do projeto e não são lidos como texto.
+- O arquivo nativo corrente fica em `design/RegulaCheck.pen`, escolhido pelo responsável; `mobile/design/` conserva inventário e textos. Arquivos `.pen` são tratados como binários do projeto e só são acessados pelo MCP do pen.dev.
 - O app é Android nativo (Kotlin), decisão já adotada; o design segue as convenções de telas do Android para aparelho celular, em retrato, e não define código.
 - A fonte de verdade de conteúdo e comportamento é o repositório: `mobile/README.md`, `CONTRATO_API.md`, `docs/api/` (estados, erros, contratos), `docs/protocolo-academico.md` e as issues RC-07, RC-08, RC-09, RC-11, RC-15, RC-16, RC-17, RC-18, RC-19, RC-20 e RC-22. Quando uma tela mostrar algo que o contrato ainda não prevê, a diferença fica anotada, não inventada.
 - Os dados fictícios usam o recorte já adotado: Município Exemplo (fictício), consulta ambulatorial em cardiologia como contexto documental e `PROTOCOLO-ACADEMICO-FICTICIO v0.1`.

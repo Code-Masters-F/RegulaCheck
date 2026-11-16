@@ -1,6 +1,8 @@
 # Quickstart: Épico de telas no pen.dev
 
 ## Pré-requisitos
+
+**Recorte corrente (13/11/2026):** começar por `design/README.md`, na branch `codex/007-design-system-exploracao`, e abrir `design/RegulaCheck.pen`. Os três exemplos estão editáveis; as instruções de cinco arquivos/73 estados abaixo são o plano histórico ainda incompleto. Para scripts Spec Kit, usar `SPECIFY_FEATURE_DIRECTORY=specs/007-epico-telas-pendev` no processo, pois o ponteiro global ainda é da feature 008. Não trocar o ponteiro global automaticamente.
 - Aplicativo pen.dev aberto e conectado ao servidor de ferramentas (pencil MCP). Se o assistente responder "transport not connected", abra o aplicativo e a pasta do projeto e tente de novo.
 - Branch `007-epico-telas-pendev` e, na pasta `mobile/design/`, os arquivos `.pen` da história em andamento. Arquivos `.pen` só se leem e editam **pelas ferramentas do pen.dev**.
 
@@ -20,7 +22,7 @@
 6. Atualizar `mapa-de-percursos.md` se a tela mudar uma ligação.
 
 ## Revisão e entrega
-1. Aplicar `mobile/design/checklist-revisao.md` à história e registrar o resultado (o que foi e o que **não** foi revisado).
+1. Revisar a história pelas regras de `mobile/design/design-system.md` e `mobile/design/acessibilidade.md`, e registrar o resultado (o que foi e o que **não** foi revisado). O antigo `checklist-revisao.md` foi excluído em 14/11/2026 (feature 015, T066); as auditorias de conteúdo da feature 015 (T057/T058) fazem esse papel.
 2. Pedir a uma pessoa que não desenhou para percorrer o percurso principal pelo mapa (SC-005).
 3. O responsável aprova a história (SC-007); correções pedidas ficam registradas.
 4. Só depois de aprovado, abrir PR da história. Nenhum commit sem pedido.
