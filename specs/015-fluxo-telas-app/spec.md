@@ -282,7 +282,7 @@ O administrador entra e vê o protocolo ativo com suas regras e totais agregados
 - **FR-041**: Leitura desatualizada ou pedido concluído: conferência só consulta, com a mensagem correspondente.
 
 **E3.3 Resultado da verificação**
-- **FR-042**: Mostrar resultado geral (ícone + texto), revisão e versão do protocolo avaliadas (e a data da verificação somente se o backend passar a fornecê-la; o contrato atual não tem esse campo); o resumo SIMULADO (ou o texto padrão de indisponibilidade com "Tentar de novo"); a lista de pendências (critério, tipo pendente ou não verificável, responsável); e os demais critérios com resultado atende ou não se aplica.
+- **FR-042**: Mostrar resultado geral (ícone + texto), revisão e versão do protocolo avaliadas, com a data e a hora da verificação (`executadaEm`, publicado pela RC-13; incluído em 15/11/2026); o resumo SIMULADO (ou o texto padrão de indisponibilidade com "Tentar de novo"); a lista de pendências (critério, tipo pendente ou não verificável, responsável); e os demais critérios com resultado atende ou não se aplica.
 - **FR-043**: Em "Sem pendências identificadas", mostrar que não é aprovação do SUS e que os critérios são demonstrativos; ação principal "Concluir simulação". Em falha, "Tentar de novo". A verificação em andamento é mostrada no pedido (E1.3), não no resultado.
 
 **E3.4 Detalhe da pendência**

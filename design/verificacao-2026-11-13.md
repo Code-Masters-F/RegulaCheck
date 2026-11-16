@@ -177,3 +177,9 @@ Escopo: ajustes do design system e dos exemplos antes de desenhar as histórias 
 - Feature renumerada de 014 para 015 (a RC-13 publicou `specs/014-persistir-analises-historico`); referências conferidas: 0 links relativos quebrados nos Markdown alterados pelo PR.
 - Contrato das telas conferido com o contrato publicado da RC-13 (detalhes em `specs/015-fluxo-telas-app/tasks.md`, T069). O `.pen` não foi aberto: o rótulo "FEATURE 014" no canvas e a marca † dos quadros da RC-13 ficam para a T073.
 - Prévias PNG otimizadas sem perdas (17,1 MB → 10,4 MB), com comparação de pixels arquivo a arquivo.
+
+## Feature 015 — T073 no pen.dev, 15/11/2026
+
+- Rótulo "FEATURE 015" no cartão de leitura; 24 textos alterados (o rótulo, 17 notas e 6 linhas de cartão), com o † da RC-13 retirado, mantido para RC-14, RC-16, RC-17, RC-20 e RC-21/22. Caminho do E3.8 atualizado para a análise síncrona. Detalhes em `specs/015-fluxo-telas-app/tasks.md` (T073).
+- 0 sobreposições entre os 222 nós de topo; 0 problemas de limite nos cartões alterados; quadros de tela inalterados. Prévia `io4cw.png` reexportada e comprimida sem perdas, com pixels conferidos. Documento salvo pelo MCP.
+- T074: data da verificação (`executadaEm`) no apoio do título de 7 quadros de resultado (E3.3, E3.5 e fonte ampliada); E3.3 Falha sem data. 0 problemas de limite, 0 sobreposições, espaço de 140 entre linhas mantido; 7 prévias reexportadas e comprimidas sem perdas.

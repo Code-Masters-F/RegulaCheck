@@ -30,6 +30,8 @@ Nunca desenhar senha, token, chave nem hash. Campos de senha mostram apenas pont
 | 7 | só no design | `REQUER_CONFERENCIA` (R02 e R03 não verificáveis) | 2 | 13/11/2026 às 10:25 | `encaminhamento-cardiologia.pdf`, `documento-identidade-foto.jpg` | confira a leitura, substituir arquivo |
 | 8 | só no design | `FALHA_ANALISE` | 2 | 13/11/2026 às 10:30 | — | falha na verificação |
 
+Data da verificação (`executadaEm`) mostrada no resultado (E3.3 e E3.5): Pedido 2, revisão 1 — 12/11/2026 às 10:06; Pedido 7, revisão 2 — 13/11/2026 às 10:25; Pedido 1, revisão 2 — 12/11/2026 às 11:30 (antes da conclusão às 11:45). O Pedido 8 não tem data, porque a verificação falhou e nada foi gravado.
+
 O Pedido 3 (carga) é de Bruno: para Ana, ele aparece como "Pedido não encontrado", com a mesma resposta de um pedido inexistente.
 
 Lista de Meus pedidos (do mais recente ao mais antigo): Pedido 4 em destaque, Pedido 2 e Pedido 1.

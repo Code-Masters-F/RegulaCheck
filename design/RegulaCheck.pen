@@ -360,7 +360,7 @@
       "type": "frame",
       "id": "XCNVm",
       "x": 5760,
-      "y": 20635,
+      "y": 20655,
       "name": "E3.4 Pendência — Unidade emissora · v1.0",
       "context": "Aplicação parcial E3.4, PED-0004, RC-R04, PROTOCOLO-ACADEMICO-FICTICIO v0.1, encaminhamento-sintetico.pdf página 2. GET /solicitacoes/{id}/analises é referência planejada; resultado SIMULADO. Não encontrar campo não comprova ausência. Não permite editar documento clínico.",
       "clip": true,
@@ -14828,11 +14828,11 @@
       "type": "note",
       "id": "VW2Fy",
       "x": 5760,
-      "y": 21499,
+      "y": 21519,
       "name": "Nota · E3.4 Pendência — Unidade emissora · v1.0",
       "width": 390,
       "height": 150,
-      "content": "E3.4 Detalhe da pendência — Unidade emissora\nOperações: GET …/analises † · GET …/documentos/{docId} ✅ · PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-13/RC-15)\nDados: Pedido 2 da carga (R04 pendente); textos exemplares"
+      "content": "E3.4 Detalhe da pendência — Unidade emissora\nOperações: GET …/analises ✅ · GET …/documentos/{docId} ✅ · PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-15)\nDados: Pedido 2 da carga (R04 pendente); textos exemplares"
     },
     {
       "type": "frame",
@@ -16890,7 +16890,7 @@
       "name": "Nota · E1.3 Pedido — Em verificação",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Em verificação\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 6 — só no design"
+      "content": "E1.3 Pedido — Em verificação\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅ (execucao)\nFR-012, FR-025, FR-026 · aparece quando outra verificação do pedido está em curso (409 ANALISE_EM_ANDAMENTO) ou o tempo esgota; INTERROMPIDA → Verificar critérios de novo\nDados: Pedido 6 — só no design"
     },
     {
       "type": "frame",
@@ -17063,7 +17063,7 @@
       "name": "Nota · E1.3 Pedido — Confira a leitura",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Confira a leitura\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 7 — só no design"
+      "content": "E1.3 Pedido — Confira a leitura\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅\nFR-012, FR-025, FR-026\nDados: Pedido 7 — só no design"
     },
     {
       "type": "frame",
@@ -17236,7 +17236,7 @@
       "name": "Nota · E1.3 Pedido — Com pendências",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Com pendências\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 2 — carga"
+      "content": "E1.3 Pedido — Com pendências\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅\nFR-012, FR-025, FR-026\nDados: Pedido 2 — carga"
     },
     {
       "type": "frame",
@@ -17409,7 +17409,7 @@
       "name": "Nota · E1.3 Pedido — Sem pendências identificadas",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Sem pendências identificadas\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13/RC-17)\nDados: Pedido 1 — carga (revisão 2, antes da conclusão)"
+      "content": "E1.3 Pedido — Sem pendências identificadas\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅\nFR-012, FR-025, FR-026 · contrato provisório (RC-17)\nDados: Pedido 1 — carga (revisão 2, antes da conclusão)"
     },
     {
       "type": "frame",
@@ -17585,7 +17585,7 @@
       "name": "Nota · E1.3 Pedido — Falha na verificação",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Falha na verificação\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13)\nDados: Pedido 8 — só no design"
+      "content": "E1.3 Pedido — Falha na verificação\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅\nFR-012, FR-025, FR-026 · vem de 503 ANALISE_INDISPONIVEL; nada foi gravado\nDados: Pedido 8 — só no design"
     },
     {
       "type": "frame",
@@ -17758,7 +17758,7 @@
       "name": "Nota · E1.3 Pedido — Resultado não vigente",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Resultado não vigente\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-13/RC-16)\nDados: Pedido 2 — carga, depois de substituir o encaminhamento"
+      "content": "E1.3 Pedido — Resultado não vigente\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅\nFR-012, FR-025, FR-026 · contrato provisório (RC-16)\nDados: Pedido 2 — carga, depois de substituir o encaminhamento"
     },
     {
       "type": "frame",
@@ -17931,7 +17931,7 @@
       "name": "Nota · E1.3 Pedido — Simulação concluída",
       "width": 390,
       "height": 150,
-      "content": "E1.3 Pedido — Simulação concluída\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises †\nFR-012, FR-025, FR-026 · contrato provisório (RC-17)\nDados: Pedido 1 — carga · referência SIM-2026-0001"
+      "content": "E1.3 Pedido — Simulação concluída\nOperações: GET /solicitacoes/{id}, GET …/documentos, GET …/extracoes ✅ · GET …/analises ✅\nFR-012, FR-025, FR-026 · contrato provisório (RC-17)\nDados: Pedido 1 — carga · referência SIM-2026-0001"
     },
     {
       "type": "frame",
@@ -18032,7 +18032,7 @@
       "type": "frame",
       "id": "s25M7",
       "x": 5760,
-      "y": 29511,
+      "y": 29551,
       "name": "E1.4 Sessão expirada",
       "clip": true,
       "width": 390,
@@ -18117,7 +18117,7 @@
       "type": "note",
       "id": "ZIirJ",
       "x": 5760,
-      "y": 30375,
+      "y": 30415,
       "name": "Nota · E1.4 Sessão expirada",
       "width": 390,
       "height": 150,
@@ -18127,7 +18127,7 @@
       "type": "frame",
       "id": "pijJA",
       "x": 6230,
-      "y": 29511,
+      "y": 29551,
       "name": "E1.5 Sem permissão",
       "clip": true,
       "width": 390,
@@ -18212,7 +18212,7 @@
       "type": "note",
       "id": "FcRat",
       "x": 6230,
-      "y": 30375,
+      "y": 30415,
       "name": "Nota · E1.5 Sem permissão",
       "width": 390,
       "height": 150,
@@ -26318,7 +26318,7 @@
                   "content": "Resultado da verificação"
                 },
                 "yQSkI": {
-                  "content": "Revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+                  "content": "Verificado em 12/11/2026 às 10:06 · revisão 1\nProtocolo acadêmico fictício, versão 0.1",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -26611,7 +26611,7 @@
                   "content": "Resultado da verificação"
                 },
                 "yQSkI": {
-                  "content": "Revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+                  "content": "Verificado em 13/11/2026 às 10:25 · revisão 2\nProtocolo acadêmico fictício, versão 0.1",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -26937,7 +26937,7 @@
                   "content": "Resultado da verificação"
                 },
                 "yQSkI": {
-                  "content": "Revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+                  "content": "Verificado em 12/11/2026 às 11:30 · revisão 2\nProtocolo acadêmico fictício, versão 0.1",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -27352,7 +27352,7 @@
                   "content": "Resultado da verificação"
                 },
                 "yQSkI": {
-                  "content": "Revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+                  "content": "Verificado em 12/11/2026 às 10:06 · revisão 1\nProtocolo acadêmico fictício, versão 0.1",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -27615,7 +27615,7 @@
       "type": "frame",
       "id": "QQLpq",
       "x": 6230,
-      "y": 20635,
+      "y": 20655,
       "name": "E3.4 Detalhe da pendência — Substituir arquivo",
       "clip": true,
       "width": 390,
@@ -27815,7 +27815,7 @@
       "type": "frame",
       "id": "HK8ZN",
       "x": 6700,
-      "y": 20635,
+      "y": 20655,
       "name": "E3.4 Detalhe da pendência — Conferir leitura",
       "clip": true,
       "width": 390,
@@ -28003,7 +28003,7 @@
       "type": "frame",
       "id": "u8AYS3",
       "x": 7170,
-      "y": 20635,
+      "y": 20655,
       "name": "E3.4 Detalhe da pendência — Documento ausente",
       "clip": true,
       "width": 390,
@@ -28203,31 +28203,31 @@
       "type": "note",
       "id": "UvHpE",
       "x": 5760,
-      "y": 20167,
+      "y": 20187,
       "name": "Nota · E3.3 Resultado — Com pendências",
       "width": 390,
       "height": 150,
-      "content": "E3.3 Resultado — Com pendências\nOperações: GET …/analises † (RC-13) · resumo simulado † (RC-14)\nFR-042, FR-043 · sem data da verificação (campo ausente no contrato)\nDados: Pedido 2 da carga (R04 e R05 pendentes, unidade emissora)"
+      "content": "E3.3 Resultado — Com pendências\nOperações: GET …/analises ✅ (RC-13) · resumo simulado † (RC-14)\nFR-042, FR-043 · data da verificação (executadaEm) ainda não aparece no quadro\nDados: Pedido 2 da carga (R04 e R05 pendentes, unidade emissora)"
     },
     {
       "type": "note",
       "id": "N7FTJ",
       "x": 6230,
-      "y": 20276,
+      "y": 20296,
       "name": "Nota · E3.3 Resultado — Confira a leitura",
       "width": 390,
       "height": 150,
-      "content": "E3.3 Resultado — Confira a leitura\nOperação: GET …/analises † (RC-13)\nFR-042 · não verificável não prova ausência\nDados: Pedido 7 (só no design), como a revisão 2 do Pedido 3"
+      "content": "E3.3 Resultado — Confira a leitura\nOperação: GET …/analises ✅ (RC-13)\nFR-042 · não verificável não prova ausência\nDados: Pedido 7 (só no design), como a revisão 2 do Pedido 3"
     },
     {
       "type": "note",
       "id": "nyLgU",
       "x": 6700,
-      "y": 20160,
+      "y": 20180,
       "name": "Nota · E3.3 Resultado — Sem pendências identificadas",
       "width": 390,
       "height": 150,
-      "content": "E3.3 Resultado — Sem pendências identificadas\nOperação: GET …/analises † (RC-13)\nFR-043 · \"não é aprovação do SUS\" · principal: \"Concluir simulação\" → E3.7\nDados: Pedido 1 da carga, revisão 2 (caso 1)"
+      "content": "E3.3 Resultado — Sem pendências identificadas\nOperação: GET …/analises ✅ (RC-13)\nFR-043 · \"não é aprovação do SUS\" · principal: \"Concluir simulação\" → E3.7\nDados: Pedido 1 da carga, revisão 2 (caso 1)"
     },
     {
       "type": "note",
@@ -28237,13 +28237,13 @@
       "name": "Nota · E3.3 Resultado — Falha",
       "width": 390,
       "height": 150,
-      "content": "E3.3 Resultado — Falha\nOperação: POST …/analises † (RC-13) → FALHA_ANALISE\nFR-043 · nenhuma conclusão é mostrada\nDados: Pedido 8 (só no design)"
+      "content": "E3.3 Resultado — Falha\nOperação: POST …/analises ✅ (RC-13) → 503 ANALISE_INDISPONIVEL, pedido em FALHA_ANALISE\nFR-043 · nenhuma conclusão é mostrada\nDados: Pedido 8 (só no design)"
     },
     {
       "type": "note",
       "id": "AsfvR",
       "x": 7640,
-      "y": 20167,
+      "y": 20187,
       "name": "Nota · E3.3 Resultado — Resumo indisponível",
       "width": 390,
       "height": 150,
@@ -28253,31 +28253,31 @@
       "type": "note",
       "id": "ueMPx",
       "x": 6230,
-      "y": 21499,
+      "y": 21519,
       "name": "Nota · E3.4 Detalhe da pendência — Substituir arquivo",
       "width": 390,
       "height": 150,
-      "content": "E3.4 Detalhe da pendência — Substituir arquivo\nOperações: GET …/analises † · GET/PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-13/RC-15)\nDados: Pedido 7 (só no design)"
+      "content": "E3.4 Detalhe da pendência — Substituir arquivo\nOperações: GET …/analises ✅ · GET/PUT …/documentos/{docId} ✅\nFR-044, FR-045 · contrato provisório (RC-15)\nDados: Pedido 7 (só no design)"
     },
     {
       "type": "note",
       "id": "oogqp",
       "x": 6700,
-      "y": 21499,
+      "y": 21519,
       "name": "Nota · E3.4 Detalhe da pendência — Conferir leitura",
       "width": 390,
       "height": 150,
-      "content": "E3.4 Detalhe da pendência — Conferir leitura\nOperações: GET …/analises † · leva a E3.2\nFR-044, FR-045\nDados: Pedido 7 (só no design)"
+      "content": "E3.4 Detalhe da pendência — Conferir leitura\nOperações: GET …/analises ✅ · leva a E3.2\nFR-044, FR-045\nDados: Pedido 7 (só no design)"
     },
     {
       "type": "note",
       "id": "kdIIO",
       "x": 7170,
-      "y": 21499,
+      "y": 21519,
       "name": "Nota · E3.4 Detalhe da pendência — Documento ausente",
       "width": 390,
       "height": 150,
-      "content": "E3.4 Detalhe da pendência — Documento ausente\nOperações: GET …/analises † · PUT …/documentos/{docId} ✅ (POST fora de rascunho é recusado)\nFR-045 · limitação registrada para a RC-16\nDados: Pedido 1 da carga, revisão 1"
+      "content": "E3.4 Detalhe da pendência — Documento ausente\nOperações: GET …/analises ✅ · PUT …/documentos/{docId} ✅ (POST fora de rascunho é recusado)\nFR-045 · limitação registrada para a RC-16\nDados: Pedido 1 da carga, revisão 1"
     },
     {
       "type": "note",
@@ -28287,13 +28287,13 @@
       "name": "Nota · E3.8 Verificar critérios — Confirmação",
       "width": 390,
       "height": 150,
-      "content": "E3.8 Verificar critérios — Confirmação\nOperação: POST …/analises † (RC-13)\nFR-040, research D6 · não bloqueia; avisa campos sem decisão e o fim do anexo\nDados: Pedido 5 (só no design)"
+      "content": "E3.8 Verificar critérios — Confirmação\nOperação: POST …/analises ✅ (RC-13), síncrona: 201/200 → E3.3 · 409 ANALISE_EM_ANDAMENTO → E1.3 Em verificação · 503 → E1.3 Falha na verificação\nFR-040, research D6 · não bloqueia; avisa campos sem decisão e o fim do anexo · botão bloqueado durante a chamada\nDados: Pedido 5 (só no design)"
     },
     {
       "type": "frame",
       "id": "LGYSw",
       "x": 5760,
-      "y": 21863,
+      "y": 21883,
       "name": "E3.5 Correção — Resultado não vigente",
       "clip": true,
       "width": 390,
@@ -28341,7 +28341,7 @@
                   "content": "Resultado da verificação"
                 },
                 "yQSkI": {
-                  "content": "Revisão 1 · os documentos mudaram na revisão 2",
+                  "content": "Verificado em 12/11/2026 às 10:06 · revisão 1\nOs documentos mudaram na revisão 2",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -28509,7 +28509,7 @@
       "type": "frame",
       "id": "vwCYD",
       "x": 6230,
-      "y": 21863,
+      "y": 21883,
       "name": "E3.5 Correção — Comparação",
       "clip": true,
       "width": 390,
@@ -28557,7 +28557,7 @@
                   "content": "Resultado da verificação"
                 },
                 "yQSkI": {
-                  "content": "Revisão 2 · Protocolo acadêmico fictício, versão 0.1",
+                  "content": "Verificado em 12/11/2026 às 11:30 · revisão 2\nProtocolo acadêmico fictício, versão 0.1",
                   "fontSize": "$rc-size-meta",
                   "lineHeight": 1.4
                 }
@@ -28862,7 +28862,7 @@
       "type": "frame",
       "id": "ed21u",
       "x": 5760,
-      "y": 24122,
+      "y": 24162,
       "name": "E3.7 Concluir simulação — Confirmação",
       "clip": true,
       "width": 390,
@@ -29076,7 +29076,7 @@
       "type": "frame",
       "id": "qRdi3",
       "x": 5760,
-      "y": 25345,
+      "y": 25385,
       "name": "E3.6 Comprovante simulado",
       "clip": true,
       "width": 390,
@@ -29293,7 +29293,7 @@
       "type": "note",
       "id": "V3Kobg",
       "x": 5760,
-      "y": 22833,
+      "y": 22873,
       "name": "Nota · E3.5 Correção — Resultado não vigente",
       "width": 390,
       "height": 150,
@@ -29303,17 +29303,17 @@
       "type": "note",
       "id": "n2iWd4",
       "x": 6230,
-      "y": 23334,
+      "y": 23374,
       "name": "Nota · E3.5 Correção — Comparação",
       "width": 390,
       "height": 150,
-      "content": "E3.5 Correção — Comparação\nOperação: GET …/analises † (histórico por revisão, RC-13/RC-16)\nFR-047 · Resolvida/Continua/Nova só depois do novo resultado\nDados: Pedido 1 da carga, revisão 1 → 2 (R02 e R03 resolvidas)"
+      "content": "E3.5 Correção — Comparação\nOperação: GET …/analises ✅ (histórico por revisão, RC-13) · comparação † (RC-16)\nFR-047 · Resolvida/Continua/Nova só depois do novo resultado\nDados: Pedido 1 da carga, revisão 1 → 2 (R02 e R03 resolvidas)"
     },
     {
       "type": "note",
       "id": "UfuRA",
       "x": 5760,
-      "y": 24986,
+      "y": 25026,
       "name": "Nota · E3.7 Concluir simulação — Confirmação",
       "width": 390,
       "height": 150,
@@ -29323,7 +29323,7 @@
       "type": "note",
       "id": "TEWnM",
       "x": 5760,
-      "y": 26301,
+      "y": 26341,
       "name": "Nota · E3.6 Comprovante simulado",
       "width": 390,
       "height": 150,
@@ -30508,7 +30508,7 @@
       "type": "frame",
       "id": "T8XMZ",
       "x": 5760,
-      "y": 27089,
+      "y": 27129,
       "name": "E4.2 Protocolo e indicadores — Padrão",
       "clip": true,
       "width": 390,
@@ -30923,7 +30923,7 @@
       "type": "frame",
       "id": "Ifg71",
       "x": 6230,
-      "y": 27089,
+      "y": 27129,
       "name": "E4.2 Protocolo e indicadores — Carregando",
       "clip": true,
       "width": 390,
@@ -31017,7 +31017,7 @@
       "type": "note",
       "id": "LuVKI",
       "x": 6230,
-      "y": 27953,
+      "y": 27993,
       "name": "Nota · E4.2 Protocolo e indicadores — Carregando",
       "width": 390,
       "height": 150,
@@ -31027,7 +31027,7 @@
       "type": "frame",
       "id": "mcN6S",
       "x": 6700,
-      "y": 27089,
+      "y": 27129,
       "name": "E4.2 Protocolo e indicadores — Erro",
       "clip": true,
       "width": 390,
@@ -31112,7 +31112,7 @@
       "type": "note",
       "id": "IMGGi",
       "x": 6700,
-      "y": 27953,
+      "y": 27993,
       "name": "Nota · E4.2 Protocolo e indicadores — Erro",
       "width": 390,
       "height": 150,
@@ -31122,7 +31122,7 @@
       "type": "frame",
       "id": "ZPo7y",
       "x": 5760,
-      "y": 30734,
+      "y": 30774,
       "name": "E4.3 Conexão ruim — Tempo esgotado",
       "clip": true,
       "width": 390,
@@ -31240,7 +31240,7 @@
       "type": "note",
       "id": "VMj9N",
       "x": 5760,
-      "y": 31598,
+      "y": 31638,
       "name": "Nota · E4.3 Conexão ruim — Tempo esgotado",
       "width": 390,
       "height": 150,
@@ -31250,7 +31250,7 @@
       "type": "frame",
       "id": "j9cJY",
       "x": 6230,
-      "y": 30734,
+      "y": 30774,
       "name": "E4.3 Conexão ruim — Sem conexão",
       "clip": true,
       "width": 390,
@@ -31389,7 +31389,7 @@
       "type": "note",
       "id": "A5w51X",
       "x": 6230,
-      "y": 31598,
+      "y": 31638,
       "name": "Nota · E4.3 Conexão ruim — Sem conexão",
       "width": 390,
       "height": 150,
@@ -31399,7 +31399,7 @@
       "type": "note",
       "id": "D2KdTi",
       "x": 5760,
-      "y": 28723,
+      "y": 28763,
       "name": "Nota · E4.2 Protocolo e indicadores — Padrão",
       "width": 390,
       "height": 150,
@@ -31409,7 +31409,7 @@
       "type": "frame",
       "id": "YapQA",
       "x": 5760,
-      "y": 31957,
+      "y": 31997,
       "name": "E4.4 Acessibilidade — Anotações",
       "clip": true,
       "width": 390,
@@ -31914,7 +31914,7 @@
       "type": "frame",
       "id": "z7WVDk",
       "x": 6230,
-      "y": 31957,
+      "y": 31997,
       "name": "E4.4 Acessibilidade — Fonte ampliada E1.2",
       "context": "Identidade aprovada em 13/11/2026. Parcial de E1.2: somente sucesso. GET /solicitacoes é referência do app futuro; nenhum acesso à API neste desenho.",
       "clip": true,
@@ -32127,7 +32127,7 @@
       "type": "frame",
       "id": "OzUVO",
       "x": 6700,
-      "y": 31957,
+      "y": 31997,
       "name": "E4.4 Acessibilidade — Fonte ampliada E2.2",
       "context": "Aplicação parcial de E2.2. PED-0001. POST/GET /solicitacoes/{id}/documentos é referência planejada; não implementada neste desenho. Ver contrato e dados sintéticos em mobile/design.",
       "clip": true,
@@ -32405,7 +32405,7 @@
       "type": "frame",
       "id": "VJC8f",
       "x": 7170,
-      "y": 31957,
+      "y": 31997,
       "name": "E4.4 Acessibilidade — Fonte ampliada E3.3",
       "clip": true,
       "width": 390,
@@ -32458,7 +32458,7 @@
                   "fontSize": 40
                 },
                 "yQSkI": {
-                  "content": "Revisão 1 · Protocolo acadêmico fictício, versão 0.1",
+                  "content": "Verificado em 12/11/2026 às 10:06 · revisão 1\nProtocolo acadêmico fictício, versão 0.1",
                   "fontSize": 26,
                   "lineHeight": 1.4
                 }
@@ -32776,7 +32776,7 @@
       "type": "note",
       "id": "h4XJgx",
       "x": 5760,
-      "y": 34301,
+      "y": 34341,
       "name": "Nota · E4.4 Acessibilidade — Anotações",
       "width": 390,
       "height": 170,
@@ -32786,7 +32786,7 @@
       "type": "note",
       "id": "F8O9k",
       "x": 6230,
-      "y": 33425,
+      "y": 33465,
       "name": "Nota · E4.4 Acessibilidade — Fonte ampliada E1.2",
       "width": 390,
       "height": 170,
@@ -32796,7 +32796,7 @@
       "type": "note",
       "id": "W8VyG",
       "x": 6700,
-      "y": 33444,
+      "y": 33484,
       "name": "Nota · E4.4 Acessibilidade — Fonte ampliada E2.2",
       "width": 390,
       "height": 170,
@@ -32806,7 +32806,7 @@
       "type": "note",
       "id": "gY7Q3",
       "x": 7170,
-      "y": 34644,
+      "y": 34756,
       "name": "Nota · E4.4 Acessibilidade — Fonte ampliada E3.3",
       "width": 390,
       "height": 170,
@@ -32841,7 +32841,7 @@
           "fill": "$rc-action",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "FLUXO DE TELAS · FEATURE 014 · 94 QUADROS · 21 TELAS · 8 ETAPAS",
+          "content": "FLUXO DE TELAS · FEATURE 015 · 94 QUADROS · 21 TELAS · 8 ETAPAS",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 18,
@@ -34108,7 +34108,7 @@
           "fill": "$rc-text-muted",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "Operação: GET /solicitacoes/{id} e listas do pedido; análises †",
+          "content": "Operação: GET /solicitacoes/{id} e listas do pedido, com análises",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 15,
@@ -35229,7 +35229,7 @@
           "fill": "$rc-text",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "Vai para: E1.3 (Em verificação) → E3.3 Resultado",
+          "content": "Vai para: E3.3 Resultado (ou E1.3, se a verificação não terminar)",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 16,
@@ -35242,7 +35242,7 @@
           "fill": "$rc-text-muted",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "Operação: POST …/analises †",
+          "content": "Operação: POST …/analises (síncrona)",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 15,
@@ -35348,7 +35348,7 @@
           "fill": "$rc-text-muted",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "Operação: GET …/analises †; resumo †",
+          "content": "Operação: GET …/analises; resumo †",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 15,
@@ -35373,7 +35373,7 @@
       "type": "frame",
       "id": "HBt4N",
       "x": 5200,
-      "y": 20635,
+      "y": 20655,
       "name": "Linha 14 · E3.4 Detalhe da pendência",
       "width": 440,
       "fill": "$rc-surface",
@@ -35454,7 +35454,7 @@
           "fill": "$rc-text-muted",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "Operação: GET …/analises †; GET e PUT …/documentos/{docId}",
+          "content": "Operação: GET …/analises; GET e PUT …/documentos/{docId}",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 15,
@@ -35479,7 +35479,7 @@
       "type": "frame",
       "id": "s6WxX",
       "x": 5200,
-      "y": 21863,
+      "y": 21883,
       "name": "Linha 15 · E3.5 Correção",
       "width": 440,
       "fill": "$rc-surface",
@@ -35560,7 +35560,7 @@
           "fill": "$rc-text-muted",
           "textGrowth": "fixed-width",
           "width": "fill_container",
-          "content": "Operação: PUT …/documentos, POST …/extracoes; análises †",
+          "content": "Operação: PUT …/documentos, POST …/extracoes; comparação †",
           "lineHeight": 1.45,
           "fontFamily": "$rc-font-body",
           "fontSize": 15,
@@ -35585,7 +35585,7 @@
       "type": "frame",
       "id": "fwfMa",
       "x": 5200,
-      "y": 23893,
+      "y": 23933,
       "name": "Etapa 6 · Concluir a simulação",
       "width": 2340,
       "layout": "vertical",
@@ -35645,7 +35645,7 @@
       "type": "frame",
       "id": "f8ceB8",
       "x": 5200,
-      "y": 24122,
+      "y": 24162,
       "name": "Linha 16 · E3.7 Concluir simulação",
       "width": 440,
       "fill": "$rc-surface",
@@ -35751,7 +35751,7 @@
       "type": "frame",
       "id": "DhLIB",
       "x": 5200,
-      "y": 25345,
+      "y": 25385,
       "name": "Linha 17 · E3.6 Comprovante simulado",
       "width": 440,
       "fill": "$rc-surface",
@@ -35857,7 +35857,7 @@
       "type": "frame",
       "id": "UkSeU",
       "x": 5200,
-      "y": 26860,
+      "y": 26900,
       "name": "Etapa 7 · Coordenação",
       "width": 2340,
       "layout": "vertical",
@@ -35917,7 +35917,7 @@
       "type": "frame",
       "id": "M3qUy",
       "x": 5200,
-      "y": 27089,
+      "y": 27129,
       "name": "Linha 18 · E4.2 Protocolo e indicadores",
       "width": 440,
       "fill": "$rc-surface",
@@ -36023,7 +36023,7 @@
       "type": "frame",
       "id": "WOua0",
       "x": 5200,
-      "y": 29282,
+      "y": 29322,
       "name": "Etapa 8 · Situações em qualquer tela",
       "width": 2340,
       "layout": "vertical",
@@ -36083,7 +36083,7 @@
       "type": "frame",
       "id": "E7GMXk",
       "x": 5200,
-      "y": 29511,
+      "y": 29551,
       "name": "Linha 19 · E1.4 e E1.5 Sessão e permissão",
       "width": 440,
       "fill": "$rc-surface",
@@ -36189,7 +36189,7 @@
       "type": "frame",
       "id": "YqNm2",
       "x": 5200,
-      "y": 30734,
+      "y": 30774,
       "name": "Linha 20 · E4.3 Conexão ruim",
       "width": 440,
       "fill": "$rc-surface",
@@ -36295,7 +36295,7 @@
       "type": "frame",
       "id": "HMNUD",
       "x": 5200,
-      "y": 31957,
+      "y": 31997,
       "name": "Linha 21 · E4.4 Acessibilidade",
       "width": 440,
       "fill": "$rc-surface",

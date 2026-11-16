@@ -190,7 +190,7 @@ Regras do design system: [design-system.md](design-system.md). Acessibilidade: [
 | Estado (esquerda → direita) | ID | Operação | Situação |
 |---|---|---|---|
 | E3.5 Correção — Resultado não vigente | [`LGYSw`](../../design/previas/LGYSw.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises | revisado |
-| E3.5 Correção — Comparação | [`vwCYD`](../../design/previas/vwCYD.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises | revisado |
+| E3.5 Correção — Comparação | [`vwCYD`](../../design/previas/vwCYD.png) | `PUT …/documentos/{docId}`, `POST …/extracoes`; análises; comparação † (RC-16) | revisado |
 
 ## Etapa 6 · Concluir a simulação (RC-38)
 

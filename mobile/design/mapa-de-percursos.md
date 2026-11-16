@@ -30,7 +30,7 @@
 1. **E1.2** → "Novo pedido" → **E2.1** → "Criar rascunho" → **E2.2** do Pedido 5.
 2. **E2.2** → "Anexar documento" → **E2.7** tipo → origem ("Fotografar" passa por **E4.1**) → linha "Enviando…" → "Enviado"; recusa → **E2.3**.
 3. **E2.2** → "Ler documentos" → **E3.1** (SIMULADO) → **E3.2** Conferência, um documento por vez → "Concluir conferência" → **E1.3**.
-4. **E1.3** → "Verificar critérios" → **E3.8** → **E1.3** Em verificação → **E3.3** Resultado.
+4. **E1.3** → "Verificar critérios" → **E3.8** → **E3.3** Resultado. A verificação responde só no fim, já com o resultado; enquanto isso o botão fica bloqueado. **E1.3** Em verificação aparece quando outra verificação do pedido está em curso ou o tempo esgota; a falha leva a **E1.3** Falha na verificação.
 5. **E3.3** Com pendências → **E3.4** Detalhe da pendência → "Já tenho uma nova versão" / "Substituir arquivo" (**E2.7** + **E2.4**) → **E3.5** resultado não vigente → "Ler documentos de novo" → **E3.1** → **E3.2** → **E3.8** → **E3.3** com comparação.
 6. **E3.3** Sem pendências identificadas → **E3.7** → **E3.6** Comprovante (`SIM-2026-0001`).
 

@@ -236,7 +236,8 @@ description: "Tarefas de design da feature 015-fluxo-telas-app"
 - [x] T070 Tirar `.specify/feature.json` do versionamento (já listado em `.specify/.gitignore` pelo Spec Kit 1.4.1) e registrar em `docs/decisoes.md` e `docs/ambiente.md`
 - [x] T071 [P] Otimizar sem perdas as prévias PNG de `design/previas/` (17,1 MB → 10,4 MB), conferindo pixel a pixel que nenhuma imagem mudou
 - [x] T072 [P] Atualizar `AGENTS.md` (fase atual) e a linha "Telas do app" de `docs/decisoes.md` (arquivo único `design/RegulaCheck.pen`, 94 quadros, specs 007 e 015)
-- [ ] T073 No pen.dev (só via MCP): trocar o rótulo "FEATURE 014" do cartão "Como avaliar o fluxo" por "FEATURE 015", rever a marca † dos quadros que dependem só da RC-13 e reexportar as prévias afetadas
+- [x] T073 No pen.dev (só via MCP): trocar o rótulo "FEATURE 014" do cartão "Como avaliar o fluxo" por "FEATURE 015", rever a marca † dos quadros que dependem só da RC-13 e reexportar as prévias afetadas
+- [x] T074 Mostrar a data e a hora da verificação (`executadaEm`, RC-13) no apoio do título dos quadros que exibem um resultado gravado (E3.3 com resultado, E3.5 e a versão com fonte ampliada), conforme decisão do responsável; atualizar FR-042, `textos.md`, `dados-ficticios.md`, reexportar as prévias e manter o espaçamento das linhas do canvas
 
 ---
 
@@ -304,7 +305,7 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 
 ## Notes
 
-- Total: 73 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas; T066–T067 para a limpeza de arquivos; T068–T073 em 15/11/2026 para a reconciliação com a `main`) · 94 quadros (3 existentes ajustados).
+- Total: 74 tarefas (T062–T065 acrescentadas em 14/11/2026 para organizar o canvas; T066–T067 para a limpeza de arquivos; T068–T073 em 15/11/2026 para a reconciliação com a `main`; T074 para a data da verificação) · 94 quadros (3 existentes ajustados).
 - Nenhum commit, push ou issue sem pedido explícito (constituição, Fluxo de Desenvolvimento).
 - Marcar tarefa como concluída só com evidência (screenshot revisada, consulta de limites, PNG exportado, arquivo salvo).
 - `/speckit-analyze` executado em 13/11/2026; achados F1–F14 corrigidos nesta revisão.
@@ -427,3 +428,25 @@ Só os documentos Markdown paralelizam. Se mais de uma pessoa desenhar, dividir 
 - **T071:** 99 PNGs regravados com compressão máxima sem perdas (Pillow, `optimize=True`, perfil de cor preservado). Para cada arquivo foram comparados modo, tamanho e bytes de pixel antes de gravar; 0 diferenças, 0 arquivos ignorados.
 - **T072:** `AGENTS.md` dizia "não criar outra feature" e citava componentes `Atual/*`; passou a descrever o design system v1.0, os 94 quadros e a feature 015.
 - **Não verificado / pendente:** T073 depende do pen.dev com o MCP do pencil, que não estava disponível nesta sessão; T060 continua sem execução.
+
+### 15/11/2026 — T073 no pen.dev
+
+- Pull `f6b8c09` (avanço direto) e `.specify/feature.json` recriado à mão com `specs/015-fluxo-telas-app`; `check-prerequisites.ps1` encontra a feature.
+- Rótulo do cartão "Como avaliar o fluxo" (`kRtQf`): "FEATURE 014" → "FEATURE 015".
+- 24 textos alterados no canvas (o rótulo, 17 notas e 6 linhas de cartão); nenhum quadro de tela tinha †, então nenhum quadro mudou por dentro:
+  - Notas que perderam o † da RC-13 (`GET`/`POST …/analises` ✅): E1.3 Em verificação, Confira a leitura, Com pendências, Sem pendências, Falha, Resultado não vigente e Simulação concluída; E3.3 (4; Resumo indisponível é só RC-14 e segue com †); E3.4 (4); E3.8; E3.5 Comparação. A menção "contrato provisório" ficou só com as histórias que faltam (RC-15, RC-16, RC-17).
+  - † mantido onde a rota ainda não existe: resumo (RC-14), comparação (RC-16), submissão (RC-17), indicadores (RC-20) e sensores (RC-21/22).
+  - Cartões de linha 03, 12, 13, 14 e 15: linha "Operação" sem o † da RC-13; a linha 15 passou a marcar "comparação †".
+- Caminho do E3.8 corrigido para a análise síncrona: nota (201/200 → E3.3; 409 `ANALISE_EM_ANDAMENTO` → E1.3 Em verificação; 503 → E1.3 Falha; botão bloqueado durante a chamada) e cartão da linha 12 ("Vai para: E3.3 Resultado (ou E1.3, se a verificação não terminar)"). Notas de E1.3 Em verificação e Falha dizem de onde vêm. `mapa-de-percursos.md` (passo 4) acompanhou.
+- Nota de E3.3 Com pendências: "sem data da verificação (campo ausente no contrato)" deixou de valer, porque o contrato da RC-13 agora traz o campo; o responsável decidiu mostrar a data (T074).
+- `INDEX.md`: linha E3.5 Comparação com "comparação † (RC-16)", como no contrato.
+- Verificação: 222 nós de topo, 0 sobreposições; 0 problemas de limite nos cartões alterados e no cartão de leitura; screenshot do cartão da linha 12; documento salvo pelo MCP. Única prévia afetada: `design/previas/io4cw.png`, reexportada e comprimida sem perdas (598 KB → 413 KB, pixels iguais).
+- Não verificado: T060.
+
+### 15/11/2026 — T074 data da verificação
+
+- Decisão do responsável: mostrar quando a verificação foi feita, já que a RC-13 publica `executadaEm`. FR-042 atualizado.
+- No apoio do título ("Resultado da verificação"), em duas linhas: "Verificado em {data e hora} · revisão {n}" / "Protocolo acadêmico fictício, versão 0.1". Sem componente novo.
+- Quadros: E3.3 Com pendências (`L5Keg`), Confira a leitura (`zMx9T`), Sem pendências identificadas (`cAl1Z`), Resumo indisponível (`udibQ`); E3.5 Resultado não vigente (`LGYSw`, com a data do resultado antigo e "Os documentos mudaram na revisão 2") e Comparação (`vwCYD`); fonte ampliada de E3.3 (`VJC8f`). E3.3 Falha (`EAe9t`) fica sem data: a falha não grava análise.
+- Datas coerentes com a carga e os outros quadros: Pedido 2 — 12/11/2026 às 10:06; Pedido 7 — 13/11/2026 às 10:25; Pedido 1, revisão 2 — 12/11/2026 às 11:30 (registradas em `dados-ficticios.md`).
+- Verificação: 0 problemas de limite nos 7 quadros; screenshots do apoio no tamanho normal e na fonte ampliada (quebra só entre palavras); notas recolocadas 20 abaixo de cada quadro; linhas 14 a 21 descidas 20 (e 40 depois da linha 15) para manter o espaço de 140 entre linhas; 0 sobreposições entre os 222 nós de topo. 7 prévias reexportadas e comprimidas sem perdas, com pixels conferidos. Documento salvo pelo MCP.

@@ -163,7 +163,7 @@ Título: "Verificar critérios?" Textos (conforme o caso): "{n} informações li
 ### E3.3 Resultado da verificação
 | Estado | Textos |
 |---|---|
-| Com pendências | Estado "Com pendências". "Revisão {n}" · "Protocolo acadêmico fictício · versão {versão}". Resumo (SIMULADO): texto de `dados-ficticios.md`. "O que falta": "{critério}" · "Pendente" ou "Não verificável" · "Quem resolve: você" ou "Quem resolve: unidade emissora". "Outros critérios": "{critério}" · "Atende" ou "Não se aplica". |
+| Com pendências | Estado "Com pendências". Apoio do título em duas linhas: "Verificado em {data e hora} · revisão {n}" / "Protocolo acadêmico fictício, versão {versão}" (data de `executadaEm`; vale para todos os estados com resultado, não para Falha). Resumo (SIMULADO): texto de `dados-ficticios.md`. "O que falta": "{critério}" · "Pendente" ou "Não verificável" · "Quem resolve: você" ou "Quem resolve: unidade emissora". "Outros critérios": "{critério}" · "Atende" ou "Não se aplica". |
 | Confira a leitura | "Alguma informação não pôde ser verificada. Isso não significa que ela esteja faltando." Lista "O que falta" com os critérios não verificáveis. |
 | Sem pendências identificadas | "Isso não é aprovação do SUS. Os critérios são demonstrativos." Botão: "Concluir simulação". |
 | Falha | "A verificação não pôde ser feita." / "Nenhuma conclusão foi tirada." Botão: "Tentar de novo". |
@@ -181,8 +181,8 @@ Título: "Verificar critérios?" Textos (conforme o caso): "{n} informações li
 ### E3.5 Correção e comparação
 | Estado | Textos |
 |---|---|
-| Resultado não vigente | `Aviso/Resultado não vigente` no topo; pendências marcadas "Resultado anterior". Botão: "Ler documentos de novo". |
-| Comparação | Seção: "Em relação à verificação anterior". Valores: "Resolvida", "Continua", "Nova" (texto + ícone). Antes do novo resultado, nada aparece como resolvido. |
+| Resultado não vigente | Apoio do título: "Verificado em {data e hora} · revisão {n}" / "Os documentos mudaram na revisão {n atual}". `Aviso/Resultado não vigente` no topo; pendências marcadas "Resultado anterior". Botão: "Ler documentos de novo". |
+| Comparação | Apoio do título como em E3.3, com a data do novo resultado. Seção: "Em relação à verificação anterior". Valores: "Resolvida", "Continua", "Nova" (texto + ícone). Antes do novo resultado, nada aparece como resolvido. |
 
 ### E3.7 Concluir simulação (diálogo)
 Título: "Concluir a simulação?" / "Nada será enviado ao SUS. Depois disso, o pedido só poderá ser consultado." Botões: "Concluir simulação" (principal), "Voltar".

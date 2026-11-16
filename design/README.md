@@ -80,8 +80,7 @@ A pesquisa de referências (Refcat), as capturas de outros aplicativos e as imag
 - Percurso com uma pessoa que não desenhou (T060, SC-003 e SC-004).
 - Aprovação do grupo e protótipo navegável.
 - Fonte ampliada, TalkBack, teclado e insets em aparelho Android.
-- Integração com a API, inclusive as rotas † ainda não implementadas (RC-14, 17, 20, 21 e 22). As da RC-13 já estão na `main` e o contrato das telas foi conferido com elas em 15/11/2026.
-- No `.pen`: trocar o rótulo "FEATURE 014" do cartão "Como avaliar o fluxo" por "FEATURE 015" e rever a marca † ("contrato provisório") dos quadros que dependem da RC-13 (estados de resultado de E1.3, E3.3 e E3.4), mantendo-a só onde ainda há resumo (RC-14) ou comparação (RC-16); depois reexportar as prévias. Só pelo pen.dev (T073).
+- Integração com a API, inclusive as rotas † ainda não implementadas (RC-14 a RC-17, RC-20, RC-21 e RC-22). As da RC-13 já estão na `main`; em 15/11/2026 o contrato das telas e as notas do canvas foram conferidos com elas e perderam o † (T069, T073).
 - Confirmação do grupo sobre a saída do quadro de arquivo `Wo9WQ`.
 
 Detalhes: [verificação](verificacao-2026-11-13.md).
