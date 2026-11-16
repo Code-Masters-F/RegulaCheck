@@ -112,7 +112,7 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
                              FETCH FIRST ? ROWS ONLY)""";
     private static final String SQL_ANALISES = """
             SELECT a.ID, a.REVISAO, a.VIGENTE, a.CRIADA_EM, a.CONFERENCIA_EM, a.DATA_REFERENCIA, a.RESULTADO_GERAL,
-                   p.IDENTIFICADOR, p.VERSAO
+                   p.IDENTIFICADOR, p.VERSAO, a.RESUMO_TEXTO, a.RESUMO_ORIGEM
               FROM RC_ANALISE a
               JOIN RC_PROTOCOLO p ON p.ID = a.PROTOCOLO_ID""" + " WHERE a.ID IN (" + ANALISES_SELECIONADAS
             + ") ORDER BY a.CRIADA_EM DESC, a.ID DESC";
@@ -143,6 +143,12 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
               FROM RC_DOCUMENTO
              WHERE SOLICITACAO_ID = ?
              ORDER BY ENVIADO_EM, ID""";
+    private static final String SQL_RESUMO_ATUAL = """
+            SELECT RESUMO_ORIGEM FROM RC_ANALISE
+             WHERE ID = ? AND SOLICITACAO_ID = ? AND VIGENTE = 1""";
+    private static final String SQL_GUARDAR_RESUMO = """
+            UPDATE RC_ANALISE SET RESUMO_TEXTO = ?, RESUMO_ORIGEM = ?
+             WHERE ID = ? AND SOLICITACAO_ID = ? AND VIGENTE = 1""";
 
     private final BancoDados banco;
 
@@ -196,6 +202,38 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
         } catch (SQLException falha) {
             throw traduzir(falha);
         }
+    }
+
+    @Override
+    public Optional<Analise> guardarResumo(long pacienteId, long solicitacaoId, long analiseId, String texto,
+            String origem) {
+        return emTransacao(conexao -> {
+            Pedido pedido = bloquear(conexao, pacienteId, solicitacaoId);
+            if (pedido == null) {
+                return Optional.empty();
+            }
+            String origemAtual;
+            try (PreparedStatement consulta = conexao.prepareStatement(SQL_RESUMO_ATUAL)) {
+                consulta.setLong(1, analiseId);
+                consulta.setLong(2, solicitacaoId);
+                try (ResultSet linha = consulta.executeQuery()) {
+                    if (!linha.next()) {
+                        return Optional.empty();
+                    }
+                    origemAtual = linha.getString(1);
+                }
+            }
+            if (!"ADAPTADOR_MOCKADO".equals(origemAtual)) {
+                try (PreparedStatement atualizacao = conexao.prepareStatement(SQL_GUARDAR_RESUMO)) {
+                    atualizacao.setString(1, texto);
+                    atualizacao.setString(2, origem);
+                    atualizacao.setLong(3, analiseId);
+                    atualizacao.setLong(4, solicitacaoId);
+                    atualizacao.executeUpdate();
+                }
+            }
+            return Optional.of(carregar(conexao, solicitacaoId, analiseId, 1).get(0));
+        });
     }
 
     private static Optional<HistoricoDeAnalises> historicoNoRetrato(Connection conexao, long pacienteId,
@@ -484,7 +522,8 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
 
     /** Cabecalho de uma analise antes de juntar resultados, pendencias e documentos. */
     private record Cabecalho(long id, int revisao, boolean vigente, Instant executadaEm, Instant conferenciaEm,
-            LocalDate dataReferencia, ResultadoGeral resultadoGeral, String identificador, String versao) {
+            LocalDate dataReferencia, ResultadoGeral resultadoGeral, String identificador, String versao,
+            String resumoTexto, String resumoOrigem) {
     }
 
     /** Documento do pedido com o intervalo de revisoes em que esteve disponivel. */
@@ -540,7 +579,8 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
             }
             analises.add(new Analise(c.id(), c.revisao(), c.vigente(), c.executadaEm(), c.identificador(),
                     c.versao(), c.conferenciaEm(), c.dataReferencia(), c.resultadoGeral(), avaliados,
-                    resultados.getOrDefault(c.id(), List.of()), pendencias.getOrDefault(c.id(), List.of())));
+                    resultados.getOrDefault(c.id(), List.of()), pendencias.getOrDefault(c.id(), List.of()),
+                    c.resumoTexto(), c.resumoOrigem()));
         }
         return analises;
     }
@@ -557,7 +597,8 @@ public final class AnaliseRepositoryJdbc implements AnaliseRepository {
                             conferencia == null ? null : conferencia.toInstant(ZoneOffset.UTC),
                             linha.getObject("DATA_REFERENCIA", LocalDate.class),
                             ResultadoGeral.valueOf(linha.getString("RESULTADO_GERAL")),
-                            linha.getString("IDENTIFICADOR"), linha.getString("VERSAO")));
+                            linha.getString("IDENTIFICADOR"), linha.getString("VERSAO"),
+                            linha.getString("RESUMO_TEXTO"), linha.getString("RESUMO_ORIGEM")));
                 }
             }
         }

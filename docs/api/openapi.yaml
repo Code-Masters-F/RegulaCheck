@@ -689,7 +689,7 @@ paths:
         atual (RC-12) e grava a análise inteira (resultados, pendências com motivo e evidências), que vira a vigente;
         o pedido vai ao resultado geral. Enquanto roda, o pedido fica em PROCESSANDO (limite de 1 minuto). Só grava se
         a revisão e o instante da conferência ainda forem os avaliados. Repetir sem mudança devolve a vigente (200).
-        Sem resumo por IA (RC-14). Ordem: 401, 403, 404, 409 (submetido), 409 ANALISE_EM_ANDAMENTO, 200 (vigente),
+        O resumo da RC-14 e solicitado separadamente. Ordem: 401, 403, 404, 409 (submetido), 409 ANALISE_EM_ANDAMENTO, 200 (vigente),
         409 (sem leitura atual), avaliação, 409 (entrada mudou ou análise assumida depois do limite) ou 503, 201.
       security:
         - bearerAuth: []
@@ -846,6 +846,39 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/resumo:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: Gera resumo simulado da analise vigente (RC-14)
+      description: >
+        Sem corpo. Usa somente pendencias e resultados verificados. Saida invalida ou falha do adaptador
+        produz resumo PADRAO e permite tentar novamente. Repetir resumo gerado retorna 200.
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Resumo gerado ou fallback padrao
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AnaliseGravada" }
+        "200":
+          description: Resumo gerado ja existente
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AnaliseGravada" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: Sem analise vigente ou analise alterada durante a geracao
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -885,7 +918,7 @@ components:
       type: object
       description: >
         Análise gravada (RC-13). Sempre simulada (leitura simulada, protocolo acadêmico fictício). Sem valores lidos
-        dos documentos; sem resumo (RC-14). Campos nulos ficam fora do JSON.
+        dos documentos; resumo opcional da RC-14. Campos nulos ficam fora do JSON.
       required: [id, revisao, vigente, executadaEm, protocolo, resultadoGeral, simulada, aviso, documentos, resultados, pendencias]
       properties:
         id: { type: string, example: "31" }
@@ -926,6 +959,24 @@ components:
         pendencias:
           type: array
           items: { $ref: "#/components/schemas/PendenciaGravada" }
+        resumo:
+          $ref: "#/components/schemas/ResumoSimulado"
+    ResumoSimulado:
+      type: object
+      required: [texto, origem, simulado, itens]
+      properties:
+        texto: { type: string, maxLength: 2000 }
+        origem: { type: string, enum: [ADAPTADOR_MOCKADO, PADRAO] }
+        simulado: { type: boolean, enum: [true] }
+        itens:
+          type: array
+          items:
+            type: object
+            required: [codigoRegra, acao, responsavel]
+            properties:
+              codigoRegra: { type: string }
+              acao: { type: string }
+              responsavel: { type: string, enum: [PACIENTE, UNIDADE_EMISSORA] }
     MotivoNaoVerificavel:
       type: string
       enum: [CAMPO_ILEGIVEL, DOCUMENTO_NAO_LIDO, TRANSCRICAO_NAO_CONFERIDA, DIVERGENCIA_APONTADA, VALOR_NAO_INTERPRETAVEL, CONDICAO_INDETERMINADA, DOCUMENTOS_INSUFICIENTES, DEPENDE_DE_DOCUMENTO_AUSENTE]

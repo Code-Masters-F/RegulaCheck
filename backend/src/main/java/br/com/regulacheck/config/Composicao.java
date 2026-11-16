@@ -28,6 +28,9 @@ import br.com.regulacheck.iot.controller.CapturaController;
 import br.com.regulacheck.iot.controller.LeituraSensorController;
 import br.com.regulacheck.iot.service.CapturaService;
 import br.com.regulacheck.protocolo.controller.ProtocoloController;
+import br.com.regulacheck.resumo.controller.ResumoController;
+import br.com.regulacheck.resumo.service.GeradorResumoMockado;
+import br.com.regulacheck.resumo.service.ResumoService;
 import br.com.regulacheck.protocolo.service.ProtocoloService;
 import br.com.regulacheck.saude.SaudeController;
 import br.com.regulacheck.solicitacao.controller.SolicitacaoController;
@@ -149,7 +152,9 @@ public final class Composicao {
         rotas.registrar("/solicitacoes/*",
                 new SolicitacaoController(solicitacoes, new DocumentoController(documentos),
                         new ExtracaoController(extracao), new ConferenciaController(conferenciaDaLeitura),
-                        new AnaliseController(analises), new CapturaController(capturas)), multipart,
+                        new AnaliseController(analises), new CapturaController(capturas),
+                        new ResumoController(new ResumoService(dependencias.analises(),
+                                new GeradorResumoMockado()))), multipart,
                 Perfil.PACIENTE);
         // Telemetria do simulador (RC-21): so a chave X-Chave-Simulador, so esta rota.
         rotas.registrarTelemetria("/sessoes-captura/*", new LeituraSensorController(capturas));

@@ -210,6 +210,14 @@ class AnaliseOracleTest {
             assertTrue(contar("SELECT COUNT(*) FROM RC_PENDENCIA_EVIDENCIA WHERE ANALISE_ID IN "
                     + "(SELECT ID FROM RC_ANALISE WHERE SOLICITACAO_ID = ?)", numero) > 0);
 
+            Resposta resumo = api.enviar("POST", "/solicitacoes/" + pedido + "/resumo", null, auth);
+            assertEquals(201, resumo.status(), resumo.corpo());
+            assertEquals("ADAPTADOR_MOCKADO", resumo.json().get("resumo").get("origem").asText());
+            assertEquals(6, resumo.json().get("resumo").get("itens").size());
+            assertEquals(1, contar("SELECT COUNT(*) FROM RC_ANALISE WHERE SOLICITACAO_ID = ? "
+                    + "AND RESUMO_ORIGEM = 'ADAPTADOR_MOCKADO'", numero));
+            assertEquals(200, api.enviar("POST", "/solicitacoes/" + pedido + "/resumo", null, auth).status());
+
             Resposta repetida = api.enviar("POST", "/solicitacoes/" + pedido + "/analises", null, auth);
             assertEquals(200, repetida.status(), repetida.corpo());
             assertEquals(primeira.json().get("id").asText(), repetida.json().get("id").asText());

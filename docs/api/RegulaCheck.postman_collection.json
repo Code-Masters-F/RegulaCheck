@@ -715,6 +715,20 @@
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/leituras",
         "description": "Leituras simuladas, limites demonstrativos e sem calibracao; nao comprovam a legibilidade do arquivo e nao impedem o envio de documentos. 404 identico para pedido de outra paciente ou inexistente; 403 para administrador."
       }
+    },
+    {
+      "name": "RC-14 Gerar resumo simulado da analise vigente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/resumo",
+        "description": "Sem corpo. 201 ao gerar, 200 se ja existe. Origem PADRAO indica fallback e permite tentar novamente; as pendencias deterministicas permanecem visiveis."
+      }
     }
   ]
 }

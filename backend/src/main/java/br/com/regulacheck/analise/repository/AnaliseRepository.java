@@ -1,6 +1,7 @@
 package br.com.regulacheck.analise.repository;
 
 import br.com.regulacheck.analise.entity.HistoricoDeAnalises;
+import br.com.regulacheck.analise.entity.Analise;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
@@ -80,4 +81,7 @@ public interface AnaliseRepository {
      *     script {@code 10_}
      */
     Optional<HistoricoDeAnalises> historico(long pacienteId, long solicitacaoId, int limite);
+
+    /** Grava resumo somente se a analise ainda e vigente e pertence ao pedido da paciente. */
+    Optional<Analise> guardarResumo(long pacienteId, long solicitacaoId, long analiseId, String texto, String origem);
 }
