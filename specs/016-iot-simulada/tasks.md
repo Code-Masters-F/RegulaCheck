@@ -5,7 +5,7 @@ description: "Tarefas da RC-21 + RC-22 — IoT simulada (Épico 7)"
 
 # Tasks: IoT simulada — leituras de dois sensores e alertas da estação de captura (RC-21 + RC-22)
 
-**Input**: Design documents from `specs/015-iot-simulada/`
+**Input**: Design documents from `specs/016-iot-simulada/`
 
 **Prerequisites**: plan.md, spec.md, research.md (D1–D10), data-model.md, contracts/api-iot.md, quickstart.md
 

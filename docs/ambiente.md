@@ -40,6 +40,10 @@ Não precisa de banco nem de variável alguma para subir e responder `/health`. 
 - `InjecaoSqlOracleTest` (RC-06) também é opt-in e **somente leitura**: confere que entradas com aspas e comandos de banco não alteram a consulta de usuário; mesmas variáveis e `RC_TESTE_ORACLE=SIM`.
 - Os logs da API nunca contêm senha, hash, token nem e-mail.
 
+## Spec Kit
+- Os comandos `/speckit-*` (Claude) e as skills `speckit-*` (Codex) usam os scripts PowerShell de `.specify/scripts/powershell/`.
+- A feature ativa fica em `.specify/feature.json`, que **não é versionado**: cada pessoa mantém o seu. O `/speckit-specify` o cria; para retomar uma feature existente, crie-o à mão, por exemplo `{ "feature_directory": "specs/015-fluxo-telas-app" }`. Ordem usada pelos scripts: variável `SPECIFY_FEATURE_DIRECTORY`, se exportada; depois `.specify/feature.json`; por fim, o prefixo numérico do nome da branch.
+
 ## Variáveis
 Ver `.env.example`. A aplicação não lê `.env` sozinha: exporte no shell (`$env:SERVER_PORT="8081"` no PowerShell; `export SERVER_PORT=8081` no Unix) ou configure a IDE. Variáveis de IA (`AI_*`) não são necessárias: a IA e a extração são mockadas.
 

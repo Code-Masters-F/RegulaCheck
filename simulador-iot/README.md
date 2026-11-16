@@ -81,9 +81,9 @@ Depois de cada sequência, a paciente consulta `GET /solicitacoes/{id}/leituras`
 
 ## Contrato e testes
 
-- Contrato das rotas: [specs/015-iot-simulada/contracts/api-iot.md](../specs/015-iot-simulada/contracts/api-iot.md); formatos em [docs/api/contratos-dados.md](../docs/api/contratos-dados.md).
+- Contrato das rotas: [specs/016-iot-simulada/contracts/api-iot.md](../specs/016-iot-simulada/contracts/api-iot.md); formatos em [docs/api/contratos-dados.md](../docs/api/contratos-dados.md).
 - O backend executa este arquivo como processo nos testes (`SimuladorSensoresProcessoTest`): `--seco` reproduzível, envio real contra a API de teste e parada na primeira recusa.
-- Decisões: MQTT foi descartado (12/11/2026); o simulador fica fora do módulo Maven do backend (uma aplicação, um módulo). Detalhes em [specs/015-iot-simulada/research.md](../specs/015-iot-simulada/research.md).
+- Decisões: MQTT foi descartado (12/11/2026); o simulador fica fora do módulo Maven do backend (uma aplicação, um módulo). Detalhes em [specs/016-iot-simulada/research.md](../specs/016-iot-simulada/research.md).
 
 ## O que ainda não existe
 

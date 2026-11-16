@@ -16,7 +16,7 @@ import java.util.Set;
 
 /**
  * Validacao do corpo de {@code POST /sessoes-captura/{id}/leituras} (RC-21, contrato em
- * {@code specs/015-iot-simulada/contracts/api-iot.md}). O corpo vem do simulador e e tratado como dado nao
+ * {@code specs/016-iot-simulada/contracts/api-iot.md}). O corpo vem do simulador e e tratado como dado nao
  * confiavel: so os cinco campos do contrato sao aceitos, e nenhum valor recebido volta nas mensagens de erro.
  *
  * <p>Regras (research D4): {@code sessaoId} igual ao do caminho; {@code tipo} {@code LUMINOSIDADE} ou

@@ -179,7 +179,7 @@ Contrato completo: [specs/014-persistir-analises-historico/contracts/api-analise
 Campos nulos ficam fora do JSON (convenção da API).
 
 ## Estação de captura simulada (RC-21 + RC-22)
-Contrato completo: [specs/015-iot-simulada/contracts/api-iot.md](../../specs/015-iot-simulada/contracts/api-iot.md). Simulador: [simulador-iot/README.md](../../simulador-iot/README.md). **Os sensores são simulados e os limites são demonstrativos, sem calibração**: toda telemetria traz `simulada: true` e o `aviso`; as leituras **não comprovam a legibilidade** do arquivo e nunca bloqueiam envio, salvamento ou exclusão do rascunho.
+Contrato completo: [specs/016-iot-simulada/contracts/api-iot.md](../../specs/016-iot-simulada/contracts/api-iot.md). Simulador: [simulador-iot/README.md](../../simulador-iot/README.md). **Os sensores são simulados e os limites são demonstrativos, sem calibração**: toda telemetria traz `simulada: true` e o `aviso`; as leituras **não comprovam a legibilidade** do arquivo e nunca bloqueiam envio, salvamento ou exclusão do rascunho.
 
 - **Abrir sessão (paciente):** `POST /solicitacoes/{id}/sessoes-captura` (sem corpo) → 201 `{ id, solicitacaoId, iniciadaEm, aberta: true, criada: true, simulada: true }` ou 200 com a sessão já aberta (`criada: false`). No máximo uma sessão aberta por pedido; não há rota para encerrar nesta entrega.
 - **Enviar leitura (simulador, `X-Chave-Simulador`):** `POST /sessoes-captura/{id}/leituras` com `{ "sessaoId": 42, "tipo": "LUMINOSIDADE"|"DISTANCIA", "valor": 350, "unidade": "LUX"|"CM", "medidaEm": "2026-11-16T14:00:05Z" }` → 201 com a leitura gravada (`recebidaEm` do servidor). Limites físicos: 0–200000 lux; >0–500 cm; `medidaEm` até 30 s no futuro.

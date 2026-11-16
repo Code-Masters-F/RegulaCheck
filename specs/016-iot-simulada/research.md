@@ -1,6 +1,6 @@
 # Research: IoT simulada (RC-21 + RC-22)
 
-Decisões técnicas da feature `specs/015-iot-simulada`. As decisões de produto (quem abre a sessão, faixas, prazo, uma sessão aberta por pedido) estão em [spec.md](spec.md#clarifications); aqui ficam as de implementação.
+Decisões técnicas da feature `specs/016-iot-simulada`. As decisões de produto (quem abre a sessão, faixas, prazo, uma sessão aberta por pedido) estão em [spec.md](spec.md#clarifications); aqui ficam as de implementação.
 
 ## D1 — Onde ficam as três rotas
 

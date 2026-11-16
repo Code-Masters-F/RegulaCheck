@@ -2,7 +2,7 @@
 
 **Branch**: `feat/epico-7-iot-simulada` | **Date**: 2026-11-16 | **Spec**: [spec.md](spec.md)
 
-**Input**: Feature specification from `specs/015-iot-simulada/spec.md`
+**Input**: Feature specification from `specs/016-iot-simulada/spec.md`
 
 ## Summary
 
@@ -53,7 +53,7 @@ Abordagem (detalhes em [research.md](research.md)): rotas pelo mecanismo da RC-0
 ### Documentation (this feature)
 
 ```text
-specs/015-iot-simulada/
+specs/016-iot-simulada/
 ├── spec.md
 ├── plan.md
 ├── research.md

@@ -1,6 +1,6 @@
 # Feature Specification: IoT simulada — leituras de dois sensores e alertas da estação de captura (RC-21 + RC-22)
 
-**Feature Branch**: `feat/epico-7-iot-simulada` (branch já existente; nenhuma outra foi criada; diretório da feature: `specs/015-iot-simulada`)
+**Feature Branch**: `feat/epico-7-iot-simulada` (branch já existente; nenhuma outra foi criada; diretório da feature: `specs/016-iot-simulada`)
 
 **Created**: 2026-11-15
 
