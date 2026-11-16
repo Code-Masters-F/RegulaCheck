@@ -48,7 +48,7 @@ A equipe executa o simulador apontando para uma sessão de captura de um pedido 
 2. **Given** um pedido que já tem sessão aberta, **When** a paciente abre a sessão de novo (inclusive por toque duplicado), **Then** recebe a mesma sessão, indicada como já existente, e nenhuma sessão nova é criada.
 3. **Given** uma sessão de captura aberta vinculada a um pedido de teste e a credencial correta do simulador, **When** o simulador envia uma leitura de luminosidade de 350 lux com instante de medição, **Then** a leitura é gravada para essa sessão com tipo luminosidade, unidade lux, o valor e o instante informados, e a API confirma a criação.
 4. **Given** a mesma sessão, **When** o simulador envia uma leitura de distância de 30 cm, **Then** a leitura é gravada com tipo distância e unidade cm.
-5. **Given** o simulador executado duas vezes com a mesma sequência e a mesma semente, **When** se comparam os valores enviados, **Then** a ordem dos tipos e os valores são idênticos (só os instantes de medição mudam).
+5. **Given** o simulador executado duas vezes com a mesma sequência, **When** se comparam os valores enviados, **Then** a ordem dos tipos e os valores são idênticos (só os instantes de medição mudam).
 6. **Given** uma leitura gravada, **When** se consulta o registro, **Then** o instante de recebimento é o do servidor (UTC) e não o informado pelo simulador.
 
 ---
