@@ -13,6 +13,7 @@ import br.com.regulacheck.documento.controller.DocumentoController;
 import br.com.regulacheck.extracao.controller.ConferenciaController;
 import br.com.regulacheck.extracao.controller.ExtracaoController;
 import br.com.regulacheck.iot.controller.CapturaController;
+import br.com.regulacheck.resumo.controller.ResumoController;
 import br.com.regulacheck.solicitacao.dto.ListaSolicitacoesResponse;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoRequest;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoResponse;
@@ -53,6 +54,7 @@ public class SolicitacaoController extends ServletJson {
     private final transient ConferenciaController conferencia;
     private final transient AnaliseController analises;
     private final transient CapturaController capturas;
+    private final transient ResumoController resumo;
 
     /**
      * @param servico casos de uso da solicitacao
@@ -65,10 +67,11 @@ public class SolicitacaoController extends ServletJson {
      * @param analises controller das analises (RC-13), ao qual este entrega o subcaminho {@code /{id}/analises}
      * @param capturas controller da estacao de captura simulada (RC-21/RC-22), ao qual este entrega os subcaminhos
      *     {@code /{id}/sessoes-captura} e {@code /{id}/leituras}
+     * @param resumo controller do resumo simulado (RC-14), ao qual este entrega {@code /{id}/resumo}
      */
     public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos,
             ExtracaoController extracao, ConferenciaController conferencia, AnaliseController analises,
-            CapturaController capturas) {
+            CapturaController capturas, ResumoController resumo) {
         super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
         this.documentos = documentos;
@@ -76,12 +79,14 @@ public class SolicitacaoController extends ServletJson {
         this.conferencia = conferencia;
         this.analises = analises;
         this.capturas = capturas;
+        this.resumo = resumo;
     }
 
     /**
      * Entrega ao {@link DocumentoController} os subcaminhos de documentos, ao {@link ConferenciaController} o da
      * conferencia, ao {@link ExtracaoController} o de extracao, ao {@link AnaliseController} o de analises e ao
-     * {@link CapturaController} os da estacao de captura (RC-21/RC-22); o resto segue o fluxo normal. A RC-05
+     * {@link CapturaController} os da estacao de captura (RC-21/RC-22) e ao {@link ResumoController} o resumo
+     * (RC-14); o resto segue o fluxo normal. A RC-05
      * so aceita um registro por caminho, e {@code /solicitacoes/*} e este.
      */
     @Override
@@ -107,6 +112,10 @@ public class SolicitacaoController extends ServletJson {
         }
         if (CapturaController.reconhece(requisicao.getPathInfo())) {
             capturas.atender(requisicao, resposta);
+            return;
+        }
+        if (ResumoController.reconhece(requisicao.getPathInfo())) {
+            resumo.atender(requisicao, resposta);
             return;
         }
         super.service(requisicao, resposta);

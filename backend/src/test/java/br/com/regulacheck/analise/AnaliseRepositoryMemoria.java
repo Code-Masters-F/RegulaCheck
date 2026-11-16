@@ -63,6 +63,8 @@ public final class AnaliseRepositoryMemoria implements AnaliseRepository {
         final List<Long> documentos;
         final List<ResultadoGravado> resultados;
         final List<PendenciaGravada> pendencias;
+        String resumoTexto;
+        String resumoOrigem;
 
         Gravada(long id, long solicitacaoId, int revisao, Instant executadaEm, String protocoloIdentificador,
                 String protocoloVersao, Instant conferenciaEm, LocalDate dataReferencia,
@@ -251,6 +253,26 @@ public final class AnaliseRepositoryMemoria implements AnaliseRepository {
         }
     }
 
+    @Override
+    public Optional<Analise> guardarResumo(long pacienteId, long solicitacaoId, long analiseId, String texto,
+            String origem) {
+        synchronized (pedidos) {
+            if (pedidos.buscarDaPaciente(solicitacaoId, pacienteId).isEmpty()) {
+                return Optional.empty();
+            }
+            for (Gravada gravada : porPedido.getOrDefault(solicitacaoId, List.of())) {
+                if (gravada.id == analiseId && gravada.vigente) {
+                    if (!"ADAPTADOR_MOCKADO".equals(gravada.resumoOrigem)) {
+                        gravada.resumoTexto = texto;
+                        gravada.resumoOrigem = origem;
+                    }
+                    return Optional.of(montar(gravada));
+                }
+            }
+            return Optional.empty();
+        }
+    }
+
     /** @param falha excecao que a proxima {@link #publicar} lanca antes de qualquer alteracao */
     public void falharNaProximaPublicacao(RuntimeException falha) {
         synchronized (pedidos) {
@@ -352,7 +374,8 @@ public final class AnaliseRepositoryMemoria implements AnaliseRepository {
         }
         return new Analise(gravada.id, gravada.revisao, gravada.vigente, gravada.executadaEm,
                 gravada.protocoloIdentificador, gravada.protocoloVersao, gravada.conferenciaEm,
-                gravada.dataReferencia, gravada.resultadoGeral, avaliados, gravada.resultados, gravada.pendencias);
+                gravada.dataReferencia, gravada.resultadoGeral, avaliados, gravada.resultados, gravada.pendencias,
+                gravada.resumoTexto, gravada.resumoOrigem);
     }
 
     private static List<ResultadoGravado> resultados(List<ResultadoDeRegra> resultados) {

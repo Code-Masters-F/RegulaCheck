@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Analise gravada como a API a publica ({@code POST} e {@code GET /solicitacoes/{id}/analises}). Sempre identificada
  * como simulada: a leitura dos documentos e simulada e o protocolo e academico e ficticio. Nao traz valor lido dos
- * documentos (so documento, campo, situacao e origem) nem resumo (a RC-14 acrescenta). Campos nulos ficam fora do
+ * documentos (so documento, campo, situacao e origem). O resumo da RC-14 e opcional. Campos nulos ficam fora do
  * JSON.
  *
  * @param id identificador da analise: numero decimal opaco, escrito como texto
@@ -31,10 +31,12 @@ import java.util.List;
  * @param documentos documentos da revisao avaliada
  * @param resultados um por regra, na ordem da versao
  * @param pendencias uma por regra pendente ou nao verificavel
+ * @param resumo orientacao simulada opcional desta analise
  */
 public record AnaliseResponse(String id, int revisao, boolean vigente, String executadaEm, Protocolo protocolo,
         String conferenciaConsiderada, String dataReferencia, String resultadoGeral, boolean simulada, String aviso,
-        List<Documento> documentos, List<ResultadoRegra> resultados, List<Pendencia> pendencias) {
+        List<Documento> documentos, List<ResultadoRegra> resultados, List<Pendencia> pendencias,
+        Resumo resumo) {
 
     /** Aviso fixo de toda analise. */
     public static final String AVISO = "Análise simulada: leitura simulada dos documentos e protocolo acadêmico "
@@ -87,6 +89,14 @@ public record AnaliseResponse(String id, int revisao, boolean vigente, String ex
     public record Evidencia(String documentoId, String campo, String situacao, OrigemResponse origem) {
     }
 
+    /** Resumo simulado, ligado a esta analise. Os itens usam somente pendencias verificadas. */
+    public record Resumo(String texto, String origem, boolean simulado, List<ItemResumo> itens) {
+    }
+
+    /** Acao concreta e codigo da regra que originou a pendencia. */
+    public record ItemResumo(String codigoRegra, String acao, String responsavel) {
+    }
+
     /**
      * @param analise analise gravada
      * @return resposta publica correspondente
@@ -99,7 +109,10 @@ public record AnaliseResponse(String id, int revisao, boolean vigente, String ex
                 analise.resultadoGeral().name(), true, AVISO,
                 analise.documentos().stream().map(AnaliseResponse::documento).toList(),
                 analise.resultados().stream().map(AnaliseResponse::resultado).toList(),
-                analise.pendencias().stream().map(AnaliseResponse::pendencia).toList());
+                analise.pendencias().stream().map(AnaliseResponse::pendencia).toList(),
+                analise.resumoTexto() == null ? null : new Resumo(analise.resumoTexto(), analise.resumoOrigem(), true,
+                        analise.pendencias().stream().map(p -> new ItemResumo(p.codigoRegra(), p.explicacao(),
+                                p.responsavel().name())).toList()));
     }
 
     private static Documento documento(DocumentoDaAnalise documento) {

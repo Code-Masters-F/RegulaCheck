@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  * Analise gravada de um pedido: uma execucao concluida da avaliacao da RC-12, como ficou registrada. Nunca e
- * reescrita; a unica mudanca possivel e deixar de ser vigente. Modelo interno: nunca e serializado como resposta
+ * reescrita; apenas a vigencia e o resumo opcional mudam. Modelo interno: nunca e serializado como resposta
  * publica (usar {@code AnaliseResponse}).
  *
  * <p>A leitura e sempre simulada no MVP ({@code RC_ANALISE.SIMULADO} e sempre 1).
@@ -25,10 +25,13 @@ import java.util.Objects;
  * @param documentos documentos da revisao avaliada, na ordem de envio
  * @param resultados um por regra da versao, na ordem da versao
  * @param pendencias uma por regra pendente ou nao verificavel, na ordem da versao
+ * @param resumoTexto orientacao simulada opcional
+ * @param resumoOrigem ADAPTADOR_MOCKADO ou PADRAO quando ha resumo
  */
 public record Analise(long id, int revisao, boolean vigente, Instant executadaEm, String protocoloIdentificador,
         String protocoloVersao, Instant conferenciaEm, LocalDate dataReferencia, ResultadoGeral resultadoGeral,
-        List<DocumentoDaAnalise> documentos, List<ResultadoGravado> resultados, List<PendenciaGravada> pendencias) {
+        List<DocumentoDaAnalise> documentos, List<ResultadoGravado> resultados, List<PendenciaGravada> pendencias,
+        String resumoTexto, String resumoOrigem) {
 
     /** Exige os campos obrigatorios e copia as listas. */
     public Analise {

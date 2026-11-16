@@ -3,6 +3,7 @@
 ## Adotadas
 | Item | Decisão |
 |---|---|
+| Resumo simulado (RC-14) | `POST /solicitacoes/{id}/resumo` usa análise vigente e pendências verificadas; adaptador mockado entrega texto e ações por código, validados contra conjunto fechado antes de gravar `RC_ANALISE.RESUMO_TEXTO/RESUMO_ORIGEM`. Falha ou saída inválida grava `PADRAO` recuperável, sem alterar regras, pendências ou estado. Consulta do histórico mostra o resumo ligado à análise. Ver [specs/018-resumo-pendencias-simulado/](../specs/018-resumo-pendencias-simulado/). Verificação em memória em 16/11/2026; Oracle real pendente. |
 | Linguagem/framework | Java **sem Spring e sem JPA** em produção (exigência da disciplina, 12/11/2026); Spring Boot permitido **somente em testes automatizados** (escopo `test`); web com Jakarta Servlet + Jetty/Tomcat embutido. **Base migrada na RC-02** (antes: Spring Boot 4.1.2) |
 | Java | `maven.compiler.release=21` (proposta do documento); compila, testa e roda no JDK 25.0.2 (Temurin) instalado |
 | Build | Maven Wrapper 3.3.4 -> Maven 3.9.14 |
