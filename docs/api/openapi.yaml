@@ -919,7 +919,7 @@ components:
       description: >
         Análise gravada (RC-13). Sempre simulada (leitura simulada, protocolo acadêmico fictício). Sem valores lidos
         dos documentos; resumo opcional da RC-14. Campos nulos ficam fora do JSON.
-      required: [id, revisao, vigente, executadaEm, protocolo, resultadoGeral, simulada, aviso, documentos, resultados, pendencias]
+      required: [id, revisao, vigente, executadaEm, protocolo, resultadoGeral, rotuloResultado, simulada, aviso, documentos, resultados, pendencias]
       properties:
         id: { type: string, example: "31" }
         revisao: { type: integer, minimum: 1, description: Versão do conjunto documental avaliada }
@@ -934,6 +934,7 @@ components:
         conferenciaConsiderada: { type: string, format: date-time, description: Omitido só nas análises da carga sintética }
         dataReferencia: { type: string, format: date, description: Omitida só nas análises da carga sintética }
         resultadoGeral: { type: string, enum: [COM_PENDENCIAS, REQUER_CONFERENCIA, SEM_PENDENCIAS_IDENTIFICADAS] }
+        rotuloResultado: { type: string, enum: [Com pendências, Confira a leitura, Sem pendências identificadas], description: Texto da RC-15 correspondente ao resultado geral }
         simulada: { type: boolean, enum: [true] }
         aviso: { type: string }
         documentos:
@@ -982,7 +983,7 @@ components:
       enum: [CAMPO_ILEGIVEL, DOCUMENTO_NAO_LIDO, TRANSCRICAO_NAO_CONFERIDA, DIVERGENCIA_APONTADA, VALOR_NAO_INTERPRETAVEL, CONDICAO_INDETERMINADA, DOCUMENTOS_INSUFICIENTES, DEPENDE_DE_DOCUMENTO_AUSENTE]
     PendenciaGravada:
       type: object
-      required: [codigoRegra, descricaoRegra, tipo, explicacao, responsavel, evidencias]
+      required: [codigoRegra, descricaoRegra, tipo, explicacao, responsavel, orientacao, evidencias]
       properties:
         codigoRegra: { type: string }
         descricaoRegra: { type: string }
@@ -990,6 +991,7 @@ components:
         explicacao: { type: string }
         motivo: { $ref: "#/components/schemas/MotivoNaoVerificavel" }
         responsavel: { type: string, enum: [PACIENTE, UNIDADE_EMISSORA] }
+        orientacao: { type: string, description: Providencia textual da RC-15; nao altera o responsavel nem garante acao de reenvio disponivel }
         evidencias:
           type: array
           items:

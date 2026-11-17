@@ -87,6 +87,8 @@ Histórico do pedido, da análise mais recente para a mais antiga (até as 50 ma
 | `documentos[]` | documentos da revisão avaliada; `disponivel: false` se depois foram substituídos ou removidos |
 | resumo | não existe nesta história: a RC-14 acrescenta o campo |
 
+**Extensão aditiva RC-15 (backend, 17/11/2026):** `Analise` passa a incluir `rotuloResultado`, texto correspondente a `resultadoGeral`, e cada item de `pendencias[]` inclui `orientacao`, providência textual derivada da regra gravada. O responsável, o resultado e as evidências permanecem iguais. A orientação da RC-R02 condiciona a procura da unidade emissora ao erro estar no documento original; não infere qual documento está errado. A API não garante disponibilidade de botão ou operação de reenvio.
+
 Mensagens fixas, sem diagnóstico, urgência ou promessa de vaga. `SEM_PENDENCIAS_IDENTIFICADAS` não é aprovação do SUS.
 
 ## Efeitos em outras rotas
