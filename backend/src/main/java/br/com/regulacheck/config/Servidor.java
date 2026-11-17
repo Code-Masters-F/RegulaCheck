@@ -9,6 +9,7 @@ import br.com.regulacheck.integracao.extracao.LeitorSimulado;
 import br.com.regulacheck.iot.repository.CapturaRepositoryJdbc;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepositoryJdbc;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepositoryJdbc;
+import br.com.regulacheck.submissao.repository.SubmissaoRepositoryJdbc;
 import br.com.regulacheck.usuario.repository.UsuarioRepositoryJdbc;
 import java.io.IOException;
 import br.com.regulacheck.auth.autorizacao.RotasPrivadas;
@@ -54,8 +55,8 @@ public final class Servidor {
         Dependencias reais = new Dependencias(new UsuarioRepositoryJdbc(banco), new SessaoRepositoryJdbc(banco),
                 new ProtocoloRepositoryJdbc(banco), new SolicitacaoRepositoryJdbc(banco),
                 new DocumentoRepositoryJdbc(banco), extracoes, new ConferenciaRepositoryJdbc(banco, extracoes),
-                new AnaliseRepositoryJdbc(banco), new CapturaRepositoryJdbc(banco), new LeitorSimulado(),
-                Clock.systemUTC());
+                new AnaliseRepositoryJdbc(banco), new CapturaRepositoryJdbc(banco), new SubmissaoRepositoryJdbc(banco),
+                new LeitorSimulado(), Clock.systemUTC());
         return montar(configuracao, reais, banco, rotas -> { });
     }
 

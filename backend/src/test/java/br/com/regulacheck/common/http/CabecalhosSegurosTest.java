@@ -85,7 +85,7 @@ class CabecalhosSegurosTest {
         };
         try (ServidorDeTeste api = ServidorDeTeste.iniciar(
                 new Dependencias(quebrado, cenario.sessoes, cenario.protocolos, cenario.solicitacoes, cenario.documentos,
-                        cenario.extracoes, cenario.conferencias, cenario.analises, cenario.capturas,
+                        cenario.extracoes, cenario.conferencias, cenario.analises, cenario.capturas, cenario.submissoes,
                         new br.com.regulacheck.integracao.extracao.LeitorSimulado(),
                         cenario.relogio))) {
             Resposta r = api.postJson("/auth/login", "{\"email\":\"a@exemplo.invalid\",\"senha\":\"x\"}", Map.of());
