@@ -60,3 +60,18 @@ Abrir um pedido mais de 30 s depois de carregar a lista mostrava "Sem conexão" 
 ## 6. Pendente
 
 - **Percurso com backend real e Oracle: bloqueado.** O Oracle respondia na porta 1521, mas não havia `.env` com `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` nesta máquina (credenciais do grupo). Roteiro para executar: [2026-11-17_rc18-roteiro-manual.md](2026-11-17_rc18-roteiro-manual.md).
+
+## 7. Aviso acadêmico discreto (mesma data, depois do commit 84ae058)
+
+Decisão do responsável: a caixa grande com o aviso acadêmico pesava no visual. Desenho: spec 015, T075–T078; app: spec 017, T024–T028. As capturas 01–05 acima mostram a versão anterior do login.
+
+`./gradlew assembleDebug testDebugUnitTest` → `BUILD SUCCESSFUL`, 34 testes, 0 falhas. No emulador:
+
+| Verificação | Prévia | Resultado | Captura |
+|---|---|---|---|
+| Login com `Aviso/Proposta` | KulXG (reexportada) | Confere: "Prepare seus documentos" / "Veja o que está completo e o que falta antes de enviar." (a quebra de linha muda com a largura da tela) | [14](2026-11-17_rc18-14-login-aviso-proposta.png) |
+| Tocar no rodapé | F3 `EVIof` | Balão escuro centralizado acima do rodapé, "Sobre este aplicativo" + aviso completo, sem sombra | [15](2026-11-17_rc18-15-rodape-aviso-completo.png) |
+| Toque longo no rodapé | — | Abre o mesmo balão (comparação por pixels com a captura 15: idênticas) | — |
+| Tocar fora | — | Fecha; a tela fica idêntica à de antes de abrir (comparação por pixels) | — |
+
+Não verificado: leitura do rodapé pelo TalkBack (rótulo "Protótipo acadêmico · dados fictícios. Toque para ler o aviso completo." declarado no código).

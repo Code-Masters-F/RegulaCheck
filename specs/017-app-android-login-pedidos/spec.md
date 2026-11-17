@@ -93,7 +93,7 @@ Ao tocar num pedido, a paciente vê os dados persistidos (serviço, localidade, 
 - **FR-008**: O login MUST bloquear o botão durante o envio, manter o e-mail e limpar a senha em credenciais inválidas, nunca exibir a senha sem pedido explícito ("Mostrar senha") e recusar conta que não seja de paciente.
 - **FR-009**: A lista MUST mostrar só o que `GET /solicitacoes` devolve, com estados carregando, vazio, sucesso, erro e sem conexão, estado do pedido em ícone + texto e "Estado não reconhecido" para valor desconhecido.
 - **FR-010**: O detalhe MUST mostrar os dados de `GET /solicitacoes/{id}` e uma ação principal por estado (US3); 404 MUST levar ao estado Não encontrado com volta à lista.
-- **FR-011**: Toda tela MUST mostrar o aviso de protocolo acadêmico e dados fictícios (rodapé; login também com o aviso de entrada).
+- **FR-011**: Toda tela MUST mostrar o aviso de protocolo acadêmico e dados fictícios no rodapé; tocar no rodapé (ou toque longo) MUST mostrar o aviso completo num balão, sem sair da tela. O login MUST mostrar o aviso curto sobre a proposta do app em vez da caixa grande (decisão de 17/11/2026; spec 015, FR-003 e FR-020).
 - **FR-012**: Textos MUST seguir `mobile/design/textos.md`; texto vindo da API MUST ser exibido como texto puro.
 - **FR-013**: `mobile/README.md` e `docs/ambiente.md` MUST dizer como executar, a URL da API no emulador e no aparelho, o que está implementado e o que é só desenho.
 

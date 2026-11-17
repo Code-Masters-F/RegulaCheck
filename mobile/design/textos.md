@@ -7,8 +7,10 @@
 
 | Componente | Texto |
 |---|---|
-| `Aviso/Rodapé` (toda tela) | "Protótipo acadêmico · dados fictícios" |
-| `Aviso/Entrada` (login e novo pedido) | "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é exigência oficial. Não substitui atendimento nem orientação de saúde." |
+| `Aviso/Rodapé` (toda tela, com ícone de informação; tocável) | "Protótipo acadêmico · dados fictícios". Leitor de tela: "Protótipo acadêmico · dados fictícios. Toque para ler o aviso completo." |
+| `Aviso/Completo` (balão aberto pelo rodapé) | Título: "Sobre este aplicativo". Texto: "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é exigência oficial. Não substitui atendimento nem orientação de saúde." |
+| `Aviso/Proposta` (login; novo pedido com o texto de E2.1) | Título: "Prepare seus documentos". Texto: "Veja o que está completo e o que falta antes de enviar." |
+| `Aviso/Entrada` (avisos de contexto) | Texto de cada uso (ex.: trocar documento invalida o resultado). Desde 17/11/2026 não aparece no login nem no novo pedido. |
 | `Selo/Simulado` | "SIMULADO" |
 | Aviso de leitura simulada (do backend) | "Leitura simulada com dados sintéticos; não é leitura real dos documentos." |
 | Aviso do protocolo (do backend) | "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS." |
@@ -36,7 +38,7 @@
 ### E1.1 Login
 | Estado | Textos |
 |---|---|
-| Padrão | Título: "Entrar". Campos: "E-mail", "Senha" (ícone "Mostrar senha"). Botão: "Entrar". `Aviso/Entrada`. |
+| Padrão | Título: "Entrar". Apoio: "Use o e-mail e a senha da sua conta." `Aviso/Proposta`. Campos: "E-mail", "Senha" (ícone "Mostrar senha"). Botão: "Entrar". |
 | Enviando | Botão: "Entrando…" com indicador; campos desabilitados e preservados. |
 | Credenciais inválidas | "E-mail ou senha incorretos." E-mail mantido; senha limpa. |
 | Serviço indisponível | "O serviço está indisponível agora. Tente de novo em alguns instantes." Botão: "Tentar de novo". E-mail preservado. |
@@ -87,7 +89,7 @@ Dados (todos os estados): "Pedido {número}" no cabeçalho; título "{serviço}"
 ### E2.1 Novo pedido / trocar serviço
 | Estado | Textos |
 |---|---|
-| Padrão | Título: "Novo pedido". Apoio: "Escolha o serviço para preparar seus documentos." Opção: "{serviço}" / "{localidade} · Protocolo acadêmico fictício · versão {versão}". `Aviso/Entrada` com o aviso do protocolo. Botão: "Criar rascunho". |
+| Padrão | Título: "Novo pedido". Apoio: "Escolha o serviço para preparar seus documentos." Opção: "{serviço}" / "{localidade} · Protocolo acadêmico fictício · versão {versão}". `Aviso/Proposta`: "Em seguida, seus documentos" / "Você vai anexar o encaminhamento e um documento de identificação." (também em Criando e Erro; não em Trocar serviço). Botão: "Criar rascunho". |
 | Criando | Botão: "Criando…" desabilitado; escolha preservada. |
 | Erro | "Escolha um dos serviços da lista." (serviço inexistente ou inativo) ou "Não foi possível criar o rascunho. Tente de novo." |
 | Sem serviços | "Nenhum serviço disponível agora." / "Tente de novo mais tarde." Sem ação de criar. |

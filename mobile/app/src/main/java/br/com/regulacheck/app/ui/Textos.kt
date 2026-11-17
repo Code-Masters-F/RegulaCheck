@@ -2,14 +2,21 @@ package br.com.regulacheck.app.ui
 
 /**
  * Textos exibidos pelas telas da RC-18, copiados de `mobile/design/textos.md` (E1.1–E1.5, F3, F4).
- * Alterou aqui, altere lá. Os três textos marcados "RC-18" foram criados nesta história e
+ * Alterou aqui, altere lá. Os textos marcados "RC-18" foram criados nesta história e
  * registrados em `textos.md`.
  */
 object Textos {
     const val MARCA = "RegulaCheck"
+
+    // F3: aviso acadêmico em duas intensidades (decisão de 17/11/2026): rodapé discreto em toda
+    // tela, que abre o aviso completo num balão; no login, um aviso curto sobre a proposta.
     const val AVISO_RODAPE = "Protótipo acadêmico · dados fictícios"
-    const val AVISO_ENTRADA = "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é " +
+    const val AVISO_RODAPE_LEITOR = "Protótipo acadêmico · dados fictícios. Toque para ler o aviso completo."
+    const val AVISO_COMPLETO_TITULO = "Sobre este aplicativo"
+    const val AVISO_COMPLETO = "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é " +
         "exigência oficial. Não substitui atendimento nem orientação de saúde."
+    const val PROPOSTA_TITULO = "Prepare seus documentos"
+    const val PROPOSTA_TEXTO = "Veja o que está completo e o que falta antes de enviar."
     const val TENTAR_DE_NOVO = "Tentar de novo"
     const val SAIR = "Sair"
     const val VOLTAR = "Voltar"

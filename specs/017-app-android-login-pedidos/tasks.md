@@ -57,6 +57,16 @@
 - [X] T022 [P] Roteiro manual com backend real em `docs/evidencias/rc18-roteiro-manual.md` (ou bloqueio registrado)
 - [X] T023 [P] Atualizar `mobile/README.md` e `docs/ambiente.md` (como executar, JDK 21, URL da API, implementado × só desenho)
 
+## Phase 7: Aviso acadêmico discreto (17/11/2026)
+
+**Purpose**: acompanhar a decisão do responsável registrada na spec 015 (clarification de 17/11, FR-003, FR-020; tarefas T075–T078 no desenho). FR-011 atualizado.
+
+- [X] T024 [US1] Trocar `AvisoEntrada` por `AvisoProposta` (aviso curto sobre a proposta do app) em `SRC/ui/componentes/Estrutura.kt` e `SRC/ui/login/LoginTela.kt`
+- [X] T025 Tornar `AvisoRodape` tocável (ícone de informação, alvo de 48 dp, rótulo para leitor de tela) e mostrar o aviso completo em balão (`TooltipBox` + `RichTooltip` do Material 3) em `SRC/ui/componentes/Estrutura.kt`
+- [X] T026 Atualizar `SRC/ui/Textos.kt` com os textos de `mobile/design/textos.md` (F3)
+- [X] T027 Build, testes e conferência no emulador (login com o aviso curto; balão aberto pelo rodapé) contra as prévias reexportadas; registrar em `docs/evidencias/`
+- [X] T028 [P] Atualizar `mobile/README.md` (regras de conteúdo)
+
 ## Dependencies
 
 Setup (T001–T004) → Foundational (T005–T014) → US1 (T015–T017) → US2 (T018–T019) → US3 (T020) → Polish. US2 e US3 dependem da sessão de US1 para serem exercitadas no app, mas o código de cada uma é independente.

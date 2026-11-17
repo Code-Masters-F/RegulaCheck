@@ -44,6 +44,7 @@ PowerShell: `$env:JAVA_HOME="C:\Program Files\Android\Android Studio\jbr"; .\gra
 
 ## Regras do app (RC-04 a RC-06, valem para as próximas histórias)
 
+- **Aviso acadêmico (decisão de 17/11/2026):** toda tela usa `EstruturaTela`, cujo rodapé "Protótipo acadêmico · dados fictícios" (com ícone de informação) abre o aviso completo num balão ao toque ou toque longo. Nenhuma tela repete a caixa grande; o login mostra só o aviso curto `AvisoProposta`. Telas novas não podem tirar o rodapé.
 - **Login:** botão bloqueado durante o envio; 401 mantém o e-mail e limpa a senha; 503/rede mostram "serviço indisponível"/"sem conexão" com "Tentar de novo"; conta que não é de paciente é recusada e a sessão dela é encerrada.
 - **Respostas:** 401 apaga o token e volta ao login com o aviso de E1.4; 403 mostra "Você não tem permissão para ver esta tela." sem sair; 404 de pedido mostra "Pedido não encontrado." com volta à lista (mesma resposta para pedido de outra paciente).
 - **Sem retentativa automática** e cada chamada em conexão nova (uma conexão ociosa fechada pelo servidor não pode virar "sem conexão").

@@ -26,6 +26,7 @@
 - Q: Como identificar o pedido, se o sistema não tem código como "PED-0004"? → A: "Pedido {número}" usando o identificador fornecido pelo sistema. Os exemplos atuais do pen.dev com "PED-000X" devem ser ajustados.
 - Q: Os quadros podem mostrar os valores literais da carga e dos catálogos de teste ("Paciente A (fictícia)", "Maria Exemplo da Silva", "texto sintetico" sem acento, "[SIMULADO]…")? → A: Não (decisão do responsável, 13/11/2026). A **estrutura** segue o backend — campos, estados, situações, regras, quantidades e referências —, mas os **valores exibidos** são exemplares realistas e fictícios, em português correto, para dar imersão na avaliação. O aviso acadêmico, o selo SIMULADO e a identificação do protocolo como fictício continuam obrigatórios.
 - Q: Há barra de navegação inferior? → A: Não. A paciente tem uma raiz (Meus pedidos) e percursos lineares com Voltar; o administrador tem uma única tela.
+- Q (17/11/2026, responsável): o aviso acadêmico completo no login pesa demais no visual. Como identificar o protótipo sem a caixa grande? → A: o rodapé de toda tela continua dizendo "Protótipo acadêmico · dados fictícios", agora com ícone de informação; tocar nele (ou toque longo) mostra o aviso completo num balão (`Aviso/Completo`). No login, a caixa grande dá lugar a um aviso menor sobre a proposta do app (`Aviso/Proposta`). Depois, a pedido do responsável, o Novo pedido (E2.1) também perdeu a caixa com o aviso fictício do protocolo: ao criar, mostra `Aviso/Proposta` com o próximo passo; ao trocar serviço, nenhum aviso (o protocolo já aparece como "Protocolo acadêmico fictício" na opção). Os demais usos de `Aviso/Entrada` (avisos de contexto) não mudam.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -212,7 +213,7 @@ O administrador entra e vê o protocolo ativo com suas regras e totais agregados
 
 - **FR-001**: Toda ação desenhada MUST corresponder a uma operação existente ou contratada no backend; a tela MUST NOT oferecer ação que o backend recusa no estado em questão.
 - **FR-002**: Toda informação exibida MUST vir de um dado fornecido pelo sistema ou de um texto fixo de `mobile/design/textos.md`; nenhum valor é inventado ou inferido pela tela (por exemplo, percentual de envio, código de pedido, prazo). Nos quadros, os valores desses campos são exemplares fictícios e realistas, coerentes com o tipo e o estado devolvidos pelo backend (`data-model.md` §5).
-- **FR-003**: Toda tela MUST trazer o aviso acadêmico no rodapé; leitura, conferência, resumo, comprovante e sensores MUST trazer o selo SIMULADO.
+- **FR-003**: Toda tela MUST trazer o aviso acadêmico no rodapé (`Aviso/Rodapé`, com ícone de informação e alvo de toque de 48); tocar nele MUST mostrar o aviso acadêmico completo (`Aviso/Completo`) sem sair da tela; leitura, conferência, resumo, comprovante e sensores MUST trazer o selo SIMULADO.
 - **FR-004**: Estados MUST aparecer como ícone + texto, no padrão de F4 do design system v1.0; nunca só por cor.
 - **FR-005**: Cada tela MUST ter no máximo uma ação principal; ações de apoio usam contorno ou texto.
 - **FR-006**: As telas MUST ser montadas só com componentes do design system v1.0 (`design/RegulaCheck.pen`, F2–F4).
@@ -240,7 +241,7 @@ O administrador entra e vê o protocolo ativo com suas regras e totais agregados
 ### Functional Requirements — telas e informação
 
 **E1.1 Login**
-- **FR-020**: Mostrar campos E-mail e Senha, ação "Entrar" e o aviso acadêmico completo de entrada. Estados: padrão, enviando (ação bloqueada), credenciais inválidas (e-mail mantido, senha limpa), serviço indisponível, sem conexão. Sem cadastro nem recuperação de senha.
+- **FR-020**: Mostrar campos E-mail e Senha, ação "Entrar" e um aviso curto sobre a proposta do app (`Aviso/Proposta`); o aviso acadêmico completo fica no rodapé (FR-003; decisão de 17/11/2026). Estados: padrão, enviando (ação bloqueada), credenciais inválidas (e-mail mantido, senha limpa), serviço indisponível, sem conexão. Sem cadastro nem recuperação de senha.
 - **FR-021**: Depois de entrar, perfil paciente vai a E1.2 e perfil administrador a E4.2.
 
 **E1.2 Meus pedidos**
@@ -255,7 +256,7 @@ O administrador entra e vê o protocolo ativo com suas regras e totais agregados
 - **FR-028**: Estados: carregando, não encontrado, erro, sem conexão.
 
 **E2.1 Novo pedido / trocar serviço**
-- **FR-029**: Mostrar os serviços ativos como opções de escolha única: especialidade, localidade, versão do protocolo e o aviso fictício fornecido pelo sistema. Ação principal "Criar rascunho" (ou "Salvar serviço" ao trocar). Estados: carregando, criando, erro, sem serviços. Trocar para o mesmo serviço não muda nada; trocar para outro informa que a revisão do pedido avança.
+- **FR-029**: Mostrar os serviços ativos como opções de escolha única: especialidade, localidade e versão do protocolo, identificado como "Protocolo acadêmico fictício"; o aviso fictício completo fica no balão do rodapé (FR-003). Ao criar, `Aviso/Proposta` diz o próximo passo (anexar os documentos); ao trocar serviço, não há aviso (decisão de 17/11/2026). Ação principal "Criar rascunho" (ou "Salvar serviço" ao trocar). Estados: carregando, criando, erro, sem serviços. Trocar para o mesmo serviço não muda nada; trocar para outro informa que a revisão do pedido avança.
 
 **E2.2 Documentos do pedido**
 - **FR-030**: Mostrar os documentos disponíveis na ordem de envio. Cada linha: tipo documental (título), nome do arquivo, formato · tamanho · páginas (páginas só em PDF), estado do envio e ações "Abrir" e "Mais opções" (Substituir, Remover). Mostrar "{n} de 3" e os limites: PDF até 5 páginas, JPEG ou PNG, 5 MB cada.

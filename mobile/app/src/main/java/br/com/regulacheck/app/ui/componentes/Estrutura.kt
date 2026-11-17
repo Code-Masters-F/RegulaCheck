@@ -1,6 +1,7 @@
 package br.com.regulacheck.app.ui.componentes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,23 +17,45 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupPositionProvider
+import kotlinx.coroutines.launch
 import br.com.regulacheck.app.ui.Textos
 import br.com.regulacheck.app.ui.tema.CoresRc
 import br.com.regulacheck.app.ui.tema.IconesRc
@@ -76,34 +99,116 @@ fun EstruturaTela(
     }
 }
 
-/** `Aviso/Rodapé`: "Protótipo acadêmico · dados fictícios". */
+/**
+ * `Aviso/Rodapé` + `Aviso/Completo` (F3, decisão de 17/11/2026): o rodapé discreto identifica o
+ * protótipo em toda tela; tocar nele (ou toque longo) abre, logo acima, o balão com o aviso
+ * acadêmico completo, e tocar fora fecha. Alvo de 48 dp e rótulo próprio para leitor de tela.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvisoRodape() {
-    Text(
-        Textos.AVISO_RODAPE,
-        style = TiposRc.Legenda,
-        color = CoresRc.TextoApoio,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
+    val balao = rememberTooltipState(isPersistent = true)
+    val escopo = rememberCoroutineScope()
+    Box(
+        Modifier
             .fillMaxWidth()
             .background(CoresRc.Fundo)
             .navigationBarsPadding()
-            .padding(vertical = 16.dp),
-    )
+            .padding(vertical = 4.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        val espacoBalao = with(LocalDensity.current) { 8.dp.roundToPx() }
+        TooltipBox(
+            positionProvider = remember(espacoBalao) { AcimaCentralizado(espacoBalao) },
+            state = balao,
+            tooltip = {
+                RichTooltip(
+                    title = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(IconesRc.Info, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text(Textos.AVISO_COMPLETO_TITULO, style = TiposRc.MetaForte.copy(fontWeight = FontWeight.ExtraBold))
+                        }
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    // Sem elevação (design system): o contraste do balão escuro basta.
+                    tonalElevation = 0.dp,
+                    shadowElevation = 0.dp,
+                    colors = TooltipDefaults.richTooltipColors(
+                        containerColor = CoresRc.Texto,
+                        contentColor = CoresRc.NaAcao,
+                        titleContentColor = CoresRc.NaAcao,
+                        actionContentColor = CoresRc.NaAcao,
+                    ),
+                ) {
+                    Text(Textos.AVISO_COMPLETO, style = TiposRc.Meta.copy(lineHeight = 21.sp))
+                }
+            },
+        ) {
+            Row(
+                Modifier
+                    .heightIn(min = 48.dp)
+                    .clickable(role = Role.Button) { escopo.launch { balao.show() } }
+                    .padding(horizontal = 12.dp)
+                    .clearAndSetSemantics {
+                        contentDescription = Textos.AVISO_RODAPE_LEITOR
+                        role = Role.Button
+                        onClick { escopo.launch { balao.show() }; true }
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(IconesRc.Info, contentDescription = null, tint = CoresRc.TextoApoio, modifier = Modifier.size(14.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(Textos.AVISO_RODAPE, style = TiposRc.Legenda, color = CoresRc.TextoApoio)
+            }
+        }
+    }
 }
 
-/** `Aviso/Entrada` (login): aviso acadêmico completo em superfície informativa. */
+/** Posiciona o balão centralizado acima do rodapé, sem sair da janela. */
+private class AcimaCentralizado(private val espaco: Int) : PopupPositionProvider {
+    override fun calculatePosition(
+        anchorBounds: IntRect,
+        windowSize: IntSize,
+        layoutDirection: LayoutDirection,
+        popupContentSize: IntSize,
+    ): IntOffset {
+        val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+        val y = anchorBounds.top - popupContentSize.height - espaco
+        return IntOffset(
+            x.coerceIn(0, maxOf(0, windowSize.width - popupContentSize.width)),
+            y.coerceAtLeast(0),
+        )
+    }
+}
+
+/**
+ * `Aviso/Proposta` (login): o que o app faz, em duas linhas. Não substitui o aviso acadêmico, que
+ * fica no rodapé.
+ */
 @Composable
-fun AvisoEntrada(modifier: Modifier = Modifier) {
+fun AvisoProposta(modifier: Modifier = Modifier) {
     Row(
         modifier
             .fillMaxWidth()
-            .background(CoresRc.FundoInfo, FORMA_SUPERFICIE)
-            .padding(20.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+            .background(CoresRc.FundoInfo, RoundedCornerShape(16.dp))
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(IconesRc.Info, contentDescription = null, tint = CoresRc.Texto, modifier = Modifier.size(24.dp))
-        Text(Textos.AVISO_ENTRADA, style = TiposRc.Corpo, color = CoresRc.Texto)
+        Box(
+            Modifier
+                .size(40.dp)
+                .background(CoresRc.Fundo, CircleShape),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(IconesRc.DocumentoConcluido, contentDescription = null, tint = CoresRc.Acao, modifier = Modifier.size(20.dp))
+        }
+        Column(Modifier.weight(1f)) {
+            Text(Textos.PROPOSTA_TITULO, style = TiposRc.Acao, color = CoresRc.Texto)
+            Spacer(Modifier.height(2.dp))
+            Text(Textos.PROPOSTA_TEXTO, style = TiposRc.Meta, color = CoresRc.TextoApoio)
+        }
     }
 }
 

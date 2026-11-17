@@ -2327,7 +2327,7 @@
                       "fill": "$rc-text-muted",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "Aviso de entrada, sem conexão",
+                      "content": "Aviso de proposta, avisos de contexto, sem conexão",
                       "lineHeight": 1.4,
                       "fontFamily": "$rc-font-body",
                       "fontSize": 14,
@@ -12045,7 +12045,7 @@
                   "fill": "$rc-text-muted",
                   "textGrowth": "fixed-width",
                   "width": 760,
-                  "content": "Duas intensidades: rodapé discreto em toda tela e aviso completo onde o produto é apresentado.",
+                  "content": "Duas intensidades: rodapé discreto em toda tela, que abre o aviso completo num balão ao ser tocado; na entrada, um aviso curto sobre a proposta do app.",
                   "lineHeight": 1.5,
                   "fontFamily": "$rc-font-body",
                   "fontSize": 16,
@@ -12058,13 +12058,13 @@
               "id": "h07qAB",
               "name": "Mostruário",
               "width": "fill_container",
-              "gap": 48,
+              "gap": 32,
               "children": [
                 {
                   "type": "frame",
                   "id": "CQbom",
                   "name": "Exemplar · Aviso/Rodapé",
-                  "width": 342,
+                  "width": 336,
                   "layout": "vertical",
                   "gap": 12,
                   "children": [
@@ -12074,29 +12074,96 @@
                       "name": "Área do componente",
                       "width": "fill_container",
                       "layout": "vertical",
+                      "gap": 8,
                       "children": [
+                        {
+                          "type": "frame",
+                          "id": "rP89j",
+                          "name": "Aviso/Completo",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "fill": "$rc-text",
+                          "cornerRadius": "$rc-radius-16",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 16,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "uWCmL",
+                              "name": "Cabeçalho",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "unZxi",
+                                  "name": "Informação",
+                                  "width": 16,
+                                  "height": 16,
+                                  "icon": "info",
+                                  "library": "lucide",
+                                  "fill": "#FFFFFF"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "TXu10",
+                                  "name": "Título",
+                                  "fill": "#FFFFFF",
+                                  "content": "Sobre este aplicativo",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "800"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "f3fhlB",
+                              "name": "Texto do aviso",
+                              "fill": "#FFFFFF",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é exigência oficial. Não substitui atendimento nem orientação de saúde.",
+                              "lineHeight": 1.5,
+                              "fontFamily": "$rc-font-body",
+                              "fontSize": "$rc-size-meta",
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
                         {
                           "type": "frame",
                           "id": "zX8C6",
                           "name": "Aviso/Rodapé",
                           "reusable": true,
                           "width": "fill_container",
-                          "layout": "vertical",
+                          "gap": 6,
                           "padding": [
                             8,
                             0
                           ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
                           "children": [
+                            {
+                              "type": "icon",
+                              "id": "svZu6",
+                              "name": "Informação",
+                              "width": 14,
+                              "height": 14,
+                              "icon": "info",
+                              "library": "lucide",
+                              "fill": "$rc-text-muted"
+                            },
                             {
                               "type": "text",
                               "id": "I24Ny",
                               "name": "Aviso acadêmico",
                               "fill": "$rc-text-muted",
-                              "textGrowth": "fixed-width",
-                              "width": "fill_container",
                               "content": "Protótipo acadêmico · dados fictícios",
                               "lineHeight": 1.4,
-                              "textAlign": "center",
                               "fontFamily": "$rc-font-body",
                               "fontSize": "$rc-size-caption",
                               "fontWeight": "normal"
@@ -12120,7 +12187,7 @@
                           "fill": "$rc-text",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Aviso/Rodapé",
+                          "content": "Aviso/Rodapé + Aviso/Completo",
                           "lineHeight": 1.4,
                           "fontFamily": "$rc-font-body",
                           "fontSize": 14,
@@ -12133,7 +12200,138 @@
                           "fill": "$rc-text-muted",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Rodapé de toda tela. Texto fixo, centralizado.",
+                          "content": "Rodapé de toda tela, com ícone de informação e alvo de 48. Tocar (ou toque longo) abre o balão com o aviso completo, logo acima; tocar fora fecha.",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CH5To",
+                  "name": "Exemplar · Aviso/Proposta",
+                  "width": 336,
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "v1kzR",
+                      "name": "Área do componente",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "N4BVtR",
+                          "name": "Aviso/Proposta",
+                          "reusable": true,
+                          "width": "fill_container",
+                          "fill": "$rc-info-bg",
+                          "cornerRadius": "$rc-radius-16",
+                          "gap": 14,
+                          "padding": [
+                            14,
+                            16
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "s3STT2",
+                              "name": "Ícone",
+                              "width": 40,
+                              "height": 40,
+                              "fill": "#FFFFFF",
+                              "cornerRadius": "$rc-radius-999",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon",
+                                  "id": "M4qdC",
+                                  "name": "Documento conferido",
+                                  "width": 20,
+                                  "height": 20,
+                                  "icon": "file-check",
+                                  "library": "lucide",
+                                  "fill": "$rc-action"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "P5nkxF",
+                              "name": "Textos",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 2,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "A6pKz",
+                                  "name": "Título",
+                                  "fill": "$rc-text",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Prepare seus documentos",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-body",
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "x10wk",
+                                  "name": "Texto",
+                                  "fill": "$rc-text-muted",
+                                  "textGrowth": "fixed-width",
+                                  "width": "fill_container",
+                                  "content": "Veja o que está completo e o que falta antes de enviar.",
+                                  "lineHeight": 1.4,
+                                  "fontFamily": "$rc-font-body",
+                                  "fontSize": "$rc-size-meta",
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "PTRyr",
+                      "name": "Legenda",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 2,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "b1D6j",
+                          "name": "Componente",
+                          "fill": "$rc-text",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Aviso/Proposta",
+                          "lineHeight": 1.4,
+                          "fontFamily": "$rc-font-body",
+                          "fontSize": 14,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "o28N0T",
+                          "name": "Uso",
+                          "fill": "$rc-text-muted",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Login (o que o app faz) e novo pedido (o próximo passo), em duas linhas. Não substitui o aviso acadêmico, que fica no rodapé.",
                           "lineHeight": 1.4,
                           "fontFamily": "$rc-font-body",
                           "fontSize": 14,
@@ -12147,7 +12345,7 @@
                   "type": "frame",
                   "id": "SQTRt",
                   "name": "Exemplar · Aviso/Entrada",
-                  "width": 342,
+                  "width": 336,
                   "layout": "vertical",
                   "gap": 12,
                   "children": [
@@ -12224,7 +12422,7 @@
                           "fill": "$rc-text-muted",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Login, primeiro acesso e antes de escolher o serviço.",
+                          "content": "Avisos de contexto (ex.: trocar documento invalida o resultado). Desde 17/11 não aparece no login.",
                           "lineHeight": 1.4,
                           "fontFamily": "$rc-font-body",
                           "fontSize": 14,
@@ -14890,11 +15088,11 @@
               }
             },
             {
-              "id": "sLRoP",
+              "id": "A7VDB",
               "type": "ref",
-              "ref": "hciy3",
-              "width": "fill_container",
-              "name": "Aviso de entrada"
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
+              "width": "fill_container"
             },
             {
               "type": "frame",
@@ -15027,11 +15225,11 @@
               }
             },
             {
-              "id": "asu5F",
+              "id": "SNe8W",
               "type": "ref",
-              "ref": "hciy3",
-              "width": "fill_container",
-              "name": "Aviso de entrada"
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
+              "width": "fill_container"
             },
             {
               "type": "frame",
@@ -15175,11 +15373,11 @@
               }
             },
             {
-              "id": "a2S0H",
+              "id": "b1AZe",
               "type": "ref",
-              "ref": "hciy3",
-              "width": "fill_container",
-              "name": "Aviso de entrada"
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
+              "width": "fill_container"
             },
             {
               "type": "frame",
@@ -15323,11 +15521,11 @@
               }
             },
             {
-              "id": "O7aFK8",
+              "id": "XgsQD",
               "type": "ref",
-              "ref": "hciy3",
-              "width": "fill_container",
-              "name": "Aviso de entrada"
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
+              "width": "fill_container"
             },
             {
               "type": "frame",
@@ -15478,11 +15676,11 @@
               }
             },
             {
-              "id": "xXo04",
+              "id": "IwpcY",
               "type": "ref",
-              "ref": "hciy3",
-              "width": "fill_container",
-              "name": "Aviso de entrada"
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
+              "width": "fill_container"
             },
             {
               "type": "frame",
@@ -18298,14 +18496,17 @@
               ]
             },
             {
-              "id": "lDIUR",
+              "id": "AauWZ",
               "type": "ref",
-              "ref": "hciy3",
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
               "width": "fill_container",
-              "name": "Aviso",
               "descendants": {
-                "W2imMz": {
-                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                "A6pKz": {
+                  "content": "Em seguida, seus documentos"
+                },
+                "x10wk": {
+                  "content": "Você vai anexar o encaminhamento e um documento de identificação."
                 }
               }
             },
@@ -18429,14 +18630,17 @@
               ]
             },
             {
-              "id": "v9V63",
+              "id": "hVbpA",
               "type": "ref",
-              "ref": "hciy3",
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
               "width": "fill_container",
-              "name": "Aviso",
               "descendants": {
-                "W2imMz": {
-                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                "A6pKz": {
+                  "content": "Em seguida, seus documentos"
+                },
+                "x10wk": {
+                  "content": "Você vai anexar o encaminhamento e um documento de identificação."
                 }
               }
             },
@@ -18560,14 +18764,17 @@
               ]
             },
             {
-              "id": "vsNXG",
+              "id": "PRtYw",
               "type": "ref",
-              "ref": "hciy3",
+              "ref": "N4BVtR",
+              "name": "Aviso/Proposta",
               "width": "fill_container",
-              "name": "Aviso",
               "descendants": {
-                "W2imMz": {
-                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+                "A6pKz": {
+                  "content": "Em seguida, seus documentos"
+                },
+                "x10wk": {
+                  "content": "Você vai anexar o encaminhamento e um documento de identificação."
                 }
               }
             },
@@ -18838,18 +19045,6 @@
                   }
                 }
               ]
-            },
-            {
-              "id": "d3WBQ",
-              "type": "ref",
-              "ref": "hciy3",
-              "width": "fill_container",
-              "name": "Aviso",
-              "descendants": {
-                "W2imMz": {
-                  "content": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
-                }
-              }
             },
             {
               "id": "ufcMt",

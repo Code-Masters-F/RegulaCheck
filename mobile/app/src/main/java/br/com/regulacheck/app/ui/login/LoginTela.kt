@@ -23,7 +23,7 @@ import br.com.regulacheck.app.api.ErroApi
 import br.com.regulacheck.app.sessao.ResultadoEntrada
 import br.com.regulacheck.app.sessao.ServicoSessao
 import br.com.regulacheck.app.ui.Textos
-import br.com.regulacheck.app.ui.componentes.AvisoEntrada
+import br.com.regulacheck.app.ui.componentes.AvisoProposta
 import br.com.regulacheck.app.ui.componentes.BlocoRetorno
 import br.com.regulacheck.app.ui.componentes.BotaoPrimario
 import br.com.regulacheck.app.ui.componentes.CabecalhoMarca
@@ -115,7 +115,7 @@ fun LoginTela(viewModel: LoginViewModel, sessaoExpirada: Boolean) {
         }
         TituloTela(Textos.LOGIN_TITULO, abaixo = Textos.LOGIN_APOIO)
         Spacer(Modifier.height(24.dp))
-        AvisoEntrada()
+        AvisoProposta()
         Spacer(Modifier.height(24.dp))
         CampoTexto(
             valor = estado.email,

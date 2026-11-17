@@ -21,7 +21,7 @@ Legenda de situação: *desenhado* → *revisado* (por quem desenhou) → *aprov
 |---|---|---|
 | F1 · Fundamentos · v1.0 | `IkCIw` | cor, tipografia, espaço, forma e toque ([prévia](../../design/previas/fundamentos/IkCIw.png)) |
 | F2 · Componentes · v1.0 | `t9lvSH` | catálogo de 71 componentes ([prévia](../../design/previas/fundamentos/t9lvSH.png)) |
-| F3 · Confiança e simulação · v1.0 | `EVIof` | aviso acadêmico, selo SIMULADO, resumo e comprovante ([prévia](../../design/previas/fundamentos/EVIof.png)) |
+| F3 · Confiança e simulação · v1.0 | `EVIof` | aviso acadêmico (rodapé e balão completo), aviso de proposta, selo SIMULADO, resumo e comprovante ([prévia](../../design/previas/fundamentos/EVIof.png)) |
 | F4 · Estados do pedido · v1.0 | `HBByt` | 7 estados do pedido, 4 do arquivo e 4 resultados por critério ([prévia](../../design/previas/fundamentos/HBByt.png)) |
 
 Regras do design system: [design-system.md](design-system.md). Acessibilidade: [acessibilidade.md](acessibilidade.md) e linha 21 (E4.4).
