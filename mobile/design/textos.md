@@ -25,6 +25,7 @@
 | `SEM_PENDENCIAS_IDENTIFICADAS` | "Sem pendências identificadas" | "Você pode concluir a simulação. Isso não é aprovação do SUS." |
 | `FALHA_ANALISE` | "Falha na verificação" | "Nenhuma conclusão foi tirada. Tente de novo." |
 | `SUBMETIDA_SIMULACAO` | "Simulação concluída" | "Nada foi enviado ao SUS. Consulte o comprovante." |
+| valor desconhecido (RC-18, sem quadro) | "Estado não reconhecido" | "Esta versão do app não reconhece a situação deste pedido." |
 
 "Conferência" nomeia só a etapa em que a paciente confere a leitura; a análise dos critérios é a "verificação".
 
@@ -40,6 +41,10 @@
 | Credenciais inválidas | "E-mail ou senha incorretos." E-mail mantido; senha limpa. |
 | Serviço indisponível | "O serviço está indisponível agora. Tente de novo em alguns instantes." Botão: "Tentar de novo". E-mail preservado. |
 | Sem conexão | "Sem conexão com a internet. Verifique sua rede e tente de novo." Botão: "Tentar de novo". E-mail preservado. |
+| Conta não é de paciente (RC-18, sem quadro) | "Esta conta não é de paciente. Entre com uma conta de paciente." Abaixo do campo de senha, como o erro de credenciais. |
+| Dados recusados (400, RC-18, sem quadro) | "Confira o e-mail e a senha e tente de novo." |
+
+**App (RC-18):** ações cuja tela ainda não existe no app mostram, em aviso temporário, "Esta etapa ainda não está disponível nesta versão do app." O aviso de E1.4 aparece no topo do próprio login.
 
 ### E1.2 Meus pedidos
 | Estado | Textos |

@@ -23,7 +23,13 @@ Não precisa de banco nem de variável alguma para subir e responder `/health`. 
 - **Emulador Android:** `http://10.0.2.2:8080` (alias do computador). `localhost` aponta para o próprio emulador e **não** funciona.
 - **Aparelho físico:** `http://<IP-do-computador>:8080` na mesma rede (descubra o IP com `ipconfig`); libere a porta 8080 no firewall do Windows para redes privadas.
 - A API escuta em `0.0.0.0` por padrão justamente para aceitar essas conexões; em rede pública prefira `SERVER_HOST=127.0.0.1`.
-- Android 9+ bloqueia HTTP sem TLS por padrão: ao criar o app, habilitar tráfego em texto claro **somente em desenvolvimento** (configuração de segurança de rede restrita aos endereços acima). Execução remota autenticada exige HTTPS.
+- Android 9+ bloqueia HTTP sem TLS por padrão: o app (RC-18) só permite texto claro na variante **debug**, para `10.0.2.2`, `localhost` e `127.0.0.1` (`mobile/app/src/debug/res/xml/network_security_config.xml`). Execução remota autenticada exige HTTPS.
+- A URL vem de `BuildConfig.API_BASE_URL`: padrão `http://10.0.2.2:8080`; aparelho físico com `-PapiBaseUrl=...` (ou `adb reverse tcp:8080 tcp:8080` + `-PapiBaseUrl=http://localhost:8080`). Detalhes: [mobile/README.md](../mobile/README.md).
+
+## App Android (RC-18, verificado em 17/11/2026)
+- Projeto Gradle em `mobile/app/` com Wrapper (Gradle 8.7, AGP 8.5.2, Kotlin 2.0.21, compile/targetSdk 34, minSdk 26). Requer Android SDK 34 (`ANDROID_HOME` ou `local.properties`, não versionado) e **JDK 21**: o JDK 25 padrão não serve ao Android Gradle Plugin; use o do Android Studio só na sessão.
+- A partir de `mobile/app/`: `export JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"` (PowerShell: `$env:JAVA_HOME="C:\Program Files\Android\Android Studio\jbr"`) e `./gradlew assembleDebug testDebugUnitTest` (`.\gradlew.bat` no PowerShell). APK: `build/outputs/apk/debug/regulacheck-app-debug.apk`; instalar com `adb install -r`.
+- Os testes do app (JUnit 4 + MockWebServer) não precisam de emulador, backend nem rede externa. Evidências: [evidencias/2026-11-17_rc18-app-android.md](evidencias/2026-11-17_rc18-app-android.md).
 
 ## Banco
 **Oracle fornecido pela faculdade**, acesso por JDBC. Host `oracle.fiap.com.br`, porta `1521`, SID `orcl` (URL `jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl`). Verificado em 12/11/2026: conexão JDBC funcionando a partir da máquina de desenvolvimento com o driver `ojdbc11` 23.26.4.0.0; servidor Oracle Database 19c Enterprise Edition, charset AL32UTF8, usuário com CREATE TABLE e CREATE SEQUENCE e quota ilimitada. Tabelas do RegulaCheck usam o prefixo `RC_`. O grupo usa **uma única conta** do Oracle: usuário e senha são os mesmos para todos e ficam só no `.env` local de cada pessoa (peça ao grupo, não copie para o repositório). Nunca versione credenciais: exporte `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` no shell/IDE. O PostgreSQL/Docker da fundação antiga foi removido.
@@ -62,3 +68,4 @@ Ver `.env.example`. A aplicação não lê `.env` sozinha: exporte no shell (`$e
 - Download do Maven falha: verifique rede/proxy.
 - Oracle inacessível: confirme VPN/rede da faculdade e os dados de conexão.
 - Mobile: emulador Android padrão -> `http://10.0.2.2:8080`; dispositivo físico -> IP do computador na rede. Não use `localhost` no app.
+- Gradle, Jetty ou qualquer Java falha com "Unable to establish loopback connection" ou "Invalid argument: connect" (visto em 17/11/2026 na máquina de desenvolvimento; a causa de fundo não foi confirmada): o JDK não consegue criar o pipe interno (socket AF_UNIX) na pasta temporária padrão. Aponte-o para uma pasta sem espaços, só na sessão: `mkdir -p /c/Users/Public/rcgt` e `export JAVA_TOOL_OPTIONS="-Djdk.net.unixdomain.tmpdir=C:/Users/Public/rcgt"` (vale para o Gradle e o daemon; para o backend, passe a mesma `-D...` no `java -jar`). Não altere variáveis permanentes da máquina.
