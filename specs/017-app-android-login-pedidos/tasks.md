@@ -80,6 +80,6 @@ MVP = Phases 1–3 (entrar). Depois lista (US2) e detalhe (US3). As ações das 
 ## Notas de execução (17/11/2026)
 
 - **Verificado:** `./gradlew assembleDebug testDebugUnitTest` verde (34 testes); telas no emulador contra as prévias; login 503 e backend parado com o backend real sem banco; logcat sem segredo do app. Detalhes: `docs/evidencias/2026-11-17_rc18-app-android.md`.
-- **Backend + Oracle (17/11, depois do `.env` preenchido):** roteiro `docs/evidencias/2026-11-17_rc18-roteiro-manual.md` executado no emulador — 11 de 12 passos ✅ (login certo e errado, lista e detalhe iguais à API, sem conexão por corte de rede, conta não paciente, sair, logcat). SC-005 verificado. **Pendente:** sessão expirada com o backend real (passo 9, exige `SESSION_TTL_MINUTES=1`).
+- **Backend + Oracle (17/11, depois do `.env` preenchido):** roteiro `docs/evidencias/2026-11-17_rc18-roteiro-manual.md` executado no emulador — 12 de 12 passos ✅ (login certo e errado, lista e detalhe iguais à API, sem conexão por corte de rede, sessão expirada com `SESSION_TTL_MINUTES=1`, conta não paciente, sair, logcat). SC-005 e o critério "verificação manual com backend real" da #41 verificados.
 - **Análise (A1/U1):** estados de E1.3 que dependem de rotas da RC-19 não foram conferidos; o selo SIMULADO não é usado por nenhuma tela da RC-18 e fica para a RC-19.
 - **Ajustes durante a verificação:** Bricolage com `opsz` 96 (research D8) e conexão nova por chamada (research D10, teste em `ApiClientTest`).
