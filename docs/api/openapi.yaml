@@ -339,11 +339,12 @@ paths:
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     post:
-      summary: Envia um arquivo ao rascunho do pedido (RC-08)
+      summary: Envia um arquivo ao pedido (RC-08; inclusão após a análise desde a RC-16)
       description: >
-        Um arquivo por requisição, só em RASCUNHO. O formato é decidido pelo conteúdo (PDF, JPEG ou PNG), nunca
-        pela extensão ou pelo tipo declarado. Cada envio novo cria a revisão seguinte (motivo DOCUMENTO_ENVIADO) e
-        não inicia análise. Com `X-Chave-Envio`, repetir o mesmo envio (mesmo conteúdo e tipo documental) devolve o
+        Um arquivo por requisição, em qualquer estado exceto SUBMETIDA_SIMULACAO (RC-16: o documento que faltava pode
+        ser incluído depois da análise). O formato é decidido pelo conteúdo (PDF, JPEG ou PNG), nunca pela extensão ou
+        pelo tipo declarado. Cada envio novo cria a revisão seguinte (motivo DOCUMENTO_ENVIADO), torna não vigente a
+        análise vigente (histórico preservado), não muda o estado e não inicia leitura nem análise. Com `X-Chave-Envio`, repetir o mesmo envio (mesmo conteúdo e tipo documental) devolve o
         documento existente com 200, sem gravar nada. Recusa não persiste nada. A dona é conferida antes do corpo.
       security:
         - bearerAuth: []
@@ -388,7 +389,7 @@ paths:
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "409":
-          description: CONFLITO_ESTADO (pedido fora de RASCUNHO) ou CHAVE_ENVIO_REUTILIZADA (mesma chave com outro conteúdo ou tipo)
+          description: CONFLITO_ESTADO (pedido em SUBMETIDA_SIMULACAO, só consulta) ou CHAVE_ENVIO_REUTILIZADA (mesma chave com outro conteúdo ou tipo)
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
@@ -689,7 +690,7 @@ paths:
         atual (RC-12) e grava a análise inteira (resultados, pendências com motivo e evidências), que vira a vigente;
         o pedido vai ao resultado geral. Enquanto roda, o pedido fica em PROCESSANDO (limite de 1 minuto). Só grava se
         a revisão e o instante da conferência ainda forem os avaliados. Repetir sem mudança devolve a vigente (200).
-        O resumo da RC-14 e solicitado separadamente. Ordem: 401, 403, 404, 409 (submetido), 409 ANALISE_EM_ANDAMENTO, 200 (vigente),
+        O resumo da RC-14 e solicitado separadamente. A resposta traz `comparacao` com a análise anterior (RC-16). Ordem: 401, 403, 404, 409 (submetido), 409 ANALISE_EM_ANDAMENTO, 200 (vigente),
         409 (sem leitura atual), avaliação, 409 (entrada mudou ou análise assumida depois do limite) ou 503, 201.
       security:
         - bearerAuth: []
@@ -727,7 +728,8 @@ paths:
     get:
       summary: Histórico de análises do pedido próprio, com a vigente marcada (RC-13)
       description: >
-        Todas as análises gravadas, da mais recente para a mais antiga (até 50); no máximo uma vigente. Inclui a
+        Todas as análises gravadas, da mais recente para a mais antiga (até 50); no máximo uma vigente; cada uma com a
+        `comparacao` com a imediatamente anterior (RC-16). Inclui a
         análise em andamento (EM_ANDAMENTO) ou interrompida pelo limite (INTERROMPIDA). Pedido nunca analisado: lista
         vazia. Pedido alheio ou inexistente: o mesmo 404.
       security:
@@ -856,7 +858,8 @@ paths:
       summary: Gera resumo simulado da analise vigente (RC-14)
       description: >
         Sem corpo. Usa somente pendencias e resultados verificados. Saida invalida ou falha do adaptador
-        produz resumo PADRAO e permite tentar novamente. Repetir resumo gerado retorna 200.
+        produz resumo PADRAO e permite tentar novamente. Repetir resumo gerado retorna 200. A analise devolvida traz
+        a `comparacao` com a anterior (RC-16).
       security:
         - bearerAuth: []
       responses:
@@ -879,6 +882,60 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/reenvio:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: Verifica a versão corrigida do pedido próprio (RC-16; leitura e resumo SIMULADOS)
+      description: >
+        Sem corpo (ignorado). Para a revisão atual: leitura (reaproveita a existente) -> conferência -> análise (RC-13)
+        -> resumo (RC-14). Se a leitura tem campo identificado sem decisão da paciente, para em `etapa: CONFERENCIA`
+        sem registrar análise. Repetir sem mudança devolve a análise vigente (200), sem análise nem resumo novo.
+        Falhas mantêm status e código da etapa, com `detalhes[0] = { campo: etapa, mensagem: LEITURA | CONFERENCIA |
+        ANALISE }`; a última análise concluída fica intacta. Nenhuma pendência é marcada como resolvida sem novo resultado.
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Nova análise registrada (etapa CONCLUIDA, ou RESUMO se o resumo não pôde ser gravado agora)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Reenvio" }
+        "200":
+          description: Parou na conferência (etapa CONFERENCIA) ou devolveu a análise vigente que já valia
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Reenvio" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: >
+            CONFLITO_ESTADO (pedido submetido, sem detalhes; documentos mudaram durante a leitura, etapa LEITURA;
+            documentos ou conferência mudaram ou o limite passou durante a análise, etapa ANALISE) ou
+            ANALISE_EM_ANDAMENTO (etapa ANALISE; cabeçalho Retry-After)
+          headers:
+            Retry-After:
+              description: Só em ANALISE_EM_ANDAMENTO; segundos até o limite da análise em andamento
+              schema: { type: integer, minimum: 1 }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "422":
+          description: SEM_DOCUMENTOS (etapa LEITURA); envie o documento corrigido
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503":
+          description: >
+            LEITURA_INDISPONIVEL (etapa LEITURA; repetir sem reenviar arquivo), ANALISE_INDISPONIVEL (etapa ANALISE;
+            pedido em FALHA_ANALISE) ou DEPENDENCIA_INDISPONIVEL (etapa da falha)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
 components:
   securitySchemes:
     bearerAuth:
@@ -962,6 +1019,47 @@ components:
           items: { $ref: "#/components/schemas/PendenciaGravada" }
         resumo:
           $ref: "#/components/schemas/ResumoSimulado"
+        comparacao:
+          $ref: "#/components/schemas/ComparacaoAnalises"
+    ComparacaoAnalises:
+      type: object
+      description: >
+        RC-16. Comparação calculada (não gravada) com a análise registrada imediatamente antes no mesmo pedido.
+        Omitida na primeira análise e entre versões de protocolo diferentes. RESOLVIDA só existe entre análises
+        concluídas; não é aprovação do SUS.
+      required: [analiseAnteriorId, revisaoAnterior, executadaEmAnterior, itens]
+      properties:
+        analiseAnteriorId: { type: string, example: "12" }
+        revisaoAnterior: { type: integer, minimum: 1 }
+        executadaEmAnterior: { type: string, format: date-time }
+        itens:
+          type: array
+          description: Só regras com pendência em pelo menos uma das duas análises, na ordem da atual
+          items:
+            type: object
+            required: [codigoRegra, descricaoRegra, situacao, resultadoAnterior, resultadoAtual]
+            properties:
+              codigoRegra: { type: string, example: RC-R04 }
+              descricaoRegra: { type: string }
+              situacao: { type: string, enum: [RESOLVIDA, CONTINUA, NOVA] }
+              resultadoAnterior: { type: string, enum: [ATENDE, PENDENTE, NAO_VERIFICAVEL, NAO_APLICAVEL] }
+              resultadoAtual: { type: string, enum: [ATENDE, PENDENTE, NAO_VERIFICAVEL, NAO_APLICAVEL] }
+    Reenvio:
+      type: object
+      description: RC-16. Até onde a verificação da versão corrigida chegou; sempre simulada. Campos nulos ficam fora do JSON.
+      required: [solicitacaoId, etapa, revisao, extracaoId, leituraCriada, camposSemDecisao, analiseCriada, simulada, orientacao]
+      properties:
+        solicitacaoId: { type: string }
+        etapa: { type: string, enum: [CONFERENCIA, RESUMO, CONCLUIDA] }
+        revisao: { type: integer, minimum: 1, description: Revisão dos documentos lida }
+        extracaoId: { type: string, description: Leitura da revisão atual (para a conferência da RC-11) }
+        leituraCriada: { type: boolean }
+        camposSemDecisao: { type: integer, minimum: 0 }
+        analiseCriada: { type: boolean }
+        simulada: { type: boolean, enum: [true] }
+        orientacao: { type: string }
+        analise:
+          $ref: "#/components/schemas/AnaliseGravada"
     ResumoSimulado:
       type: object
       required: [texto, origem, simulado, itens]

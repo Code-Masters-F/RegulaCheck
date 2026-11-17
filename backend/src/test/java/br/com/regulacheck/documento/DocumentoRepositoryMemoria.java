@@ -62,8 +62,8 @@ public final class DocumentoRepositoryMemoria implements DocumentoRepository {
             if (pedido.isEmpty()) {
                 return ResultadoRegistro.naoEncontrado();
             }
-            if (pedido.get().estado() != EstadoSolicitacao.RASCUNHO) {
-                return ResultadoRegistro.foraDeRascunho();
+            if (pedido.get().estado() == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+                return ResultadoRegistro.submetido();
             }
             int disponiveis = disponiveis(solicitacaoId);
             if (novo.chaveEnvio() != null) {
@@ -85,6 +85,9 @@ public final class DocumentoRepositoryMemoria implements DocumentoRepository {
                     novo.formato(), novo.tamanhoBytes(), novo.paginas(), atualizado.revisaoAtual(), agora,
                     novo.caminhoInterno(), novo.hashConteudo(), novo.chaveEnvio());
             porId.put(id, documento);
+            // RC-16: como no JDBC, incluir documento depois da analise tira a vigencia dela na mesma operacao.
+            pedidosComAnaliseVigente.remove(solicitacaoId);
+            pedidos.invalidarAnaliseVigente(solicitacaoId);
             return ResultadoRegistro.registrado(documento, atualizado.revisaoAtual(), disponiveis + 1);
         }
     }
