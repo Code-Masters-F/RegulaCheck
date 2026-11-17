@@ -28207,7 +28207,7 @@
       "name": "Nota · E3.3 Resultado — Com pendências",
       "width": 390,
       "height": 150,
-      "content": "E3.3 Resultado — Com pendências\nOperações: GET …/analises ✅ (RC-13) · resumo simulado † (RC-14)\nFR-042, FR-043 · data da verificação (executadaEm) ainda não aparece no quadro\nDados: Pedido 2 da carga (R04 e R05 pendentes, unidade emissora)"
+      "content": "E3.3 Resultado — Com pendências\nOperações: GET …/analises ✅ (RC-13) · resumo simulado † (RC-14)\nFR-042, FR-043 · data da verificação vem de executadaEm (também em E3.5)\nDados: Pedido 2 da carga (R04 e R05 pendentes, unidade emissora)"
     },
     {
       "type": "note",
