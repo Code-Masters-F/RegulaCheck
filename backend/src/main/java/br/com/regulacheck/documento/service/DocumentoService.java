@@ -127,10 +127,13 @@ public class DocumentoService {
     }
 
     /**
-     * Envia um arquivo ao rascunho da paciente da sessao.
+     * Envia um arquivo ao pedido da paciente da sessao, em rascunho ou ja analisado (RC-16: o documento que faltava
+     * pode ser incluido depois da analise); so o pedido submetido em simulacao recusa.
      *
      * <p>O arquivo so vira documento depois de passar na conferencia e de a transacao do banco confirmar o
-     * registro (documento, revisao nova e pedido atualizado juntos). Com a mesma identificacao de tentativa, o
+     * registro (documento, revisao nova e pedido atualizado juntos). Depois de uma analise, a inclusao torna a
+     * analise vigente nao vigente (preservada no historico) sem mudar o estado do pedido nem iniciar leitura ou
+     * analise; nenhuma pendencia e marcada como resolvida por isso. Com a mesma identificacao de tentativa, o
      * mesmo conteudo e o mesmo tipo documental, repetir o envio devolve o documento existente sem gravar nada.
      *
      * @param sessao paciente autenticada (dona do pedido)
@@ -138,7 +141,7 @@ public class DocumentoService {
      * @param envio entrada ja validada
      * @return o desfecho do envio
      * @throws ExcecaoNegocio 404 se o pedido nao e da paciente; 400/413/415 se o arquivo for recusado pela
-     *     conferencia; 409 {@code CONFLITO_ESTADO} se o pedido saiu de rascunho; 409
+     *     conferencia; 409 {@code CONFLITO_ESTADO} se o pedido foi submetido em simulacao; 409
      *     {@code CHAVE_ENVIO_REUTILIZADA} se a chave foi usada com outro conteudo ou tipo; 422
      *     {@code REGRA_DE_NEGOCIO} se o pedido ja tem o maximo de documentos; 503 se o banco ou a area de arquivos
      *     estiverem indisponiveis
@@ -149,8 +152,8 @@ public class DocumentoService {
         try {
             // Recusas baratas, com o pedido ja carregado, antes de gravar qualquer arquivo. A decisao final
             // continua sendo a da transacao (outro envio pode ter mudado o pedido nesse meio tempo).
-            if (pedido.estado() != EstadoSolicitacao.RASCUNHO) {
-                throw conflitoDeEstado();
+            if (pedido.estado() == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+                throw pedidoSubmetido();
             }
             String hash = sha256(arquivo);
             if (envio.chaveEnvio() != null) {
@@ -344,7 +347,7 @@ public class DocumentoService {
                             resultado.documentosDisponiveis(), true);
                 }
                 case NAO_ENCONTRADO -> throw Propriedade.naoEncontrada(sessao);
-                case FORA_DE_RASCUNHO, SUBMETIDO -> throw conflitoDeEstado();
+                case SUBMETIDO -> throw pedidoSubmetido();
                 case LIMITE -> throw limiteAtingido();
                 case CONFLITO_CHAVE -> throw chaveReutilizada();
                 default -> throw new IllegalStateException("Situacao de registro desconhecida.");
@@ -429,10 +432,6 @@ public class DocumentoService {
             throw new ExcecaoNegocio(503, "DEPENDENCIA_INDISPONIVEL",
                     "Servico temporariamente indisponivel. Tente novamente em instantes.");
         }
-    }
-
-    private static ExcecaoNegocio conflitoDeEstado() {
-        return new ExcecaoNegocio(409, "CONFLITO_ESTADO", "Este pedido não pode mais receber documentos.");
     }
 
     private static ExcecaoNegocio limiteAtingido() {

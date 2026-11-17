@@ -2,13 +2,15 @@ package br.com.regulacheck.analise.dto;
 
 import br.com.regulacheck.analise.entity.Analise;
 import br.com.regulacheck.analise.entity.HistoricoDeAnalises;
+import br.com.regulacheck.analise.service.AnaliseService.HistoricoComparado;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
 /**
  * Historico das analises de um pedido ({@code GET /solicitacoes/{id}/analises}): todas as analises gravadas, da mais
- * recente para a mais antiga, com a vigente marcada, e a analise em andamento, se houver. Campos nulos ficam fora do
+ * recente para a mais antiga, com a vigente marcada, cada uma com a comparacao com a anterior (RC-16), e a analise em
+ * andamento, se houver. Campos nulos ficam fora do
  * JSON.
  *
  * @param solicitacaoId pedido
@@ -34,14 +36,15 @@ public record HistoricoAnalisesResponse(String solicitacaoId, String estado, int
 
     /**
      * @param solicitacaoId pedido
-     * @param historico historico lido
+     * @param consulta historico lido e a comparacao de cada analise com a anterior (RC-16)
      * @param limiteEmAndamento tempo maximo de uma analise em andamento
      * @param interrompida {@code true} se a analise em andamento ja passou do limite
      * @param limite maximo de analises devolvidas
      * @return resposta publica correspondente
      */
-    public static HistoricoAnalisesResponse de(long solicitacaoId, HistoricoDeAnalises historico,
+    public static HistoricoAnalisesResponse de(long solicitacaoId, HistoricoComparado consulta,
             Duration limiteEmAndamento, boolean interrompida, int limite) {
+        HistoricoDeAnalises historico = consulta.historico();
         Instant iniciadaEm = historico.analiseIniciadaEm();
         Execucao execucao = iniciadaEm == null ? null : new Execucao(interrompida ? "INTERROMPIDA" : "EM_ANDAMENTO",
                 AnaliseResponse.iso(iniciadaEm), AnaliseResponse.iso(iniciadaEm.plus(limiteEmAndamento)));
@@ -49,6 +52,6 @@ public record HistoricoAnalisesResponse(String solicitacaoId, String estado, int
                 .map(a -> Long.toString(a.id())).orElse(null);
         return new HistoricoAnalisesResponse(Long.toString(solicitacaoId), historico.estado().name(),
                 historico.revisaoAtual(), execucao, vigenteId, limite,
-                historico.analises().stream().map(AnaliseResponse::de).toList());
+                historico.analises().stream().map(a -> AnaliseResponse.de(a, consulta.comparacaoDe(a))).toList());
     }
 }

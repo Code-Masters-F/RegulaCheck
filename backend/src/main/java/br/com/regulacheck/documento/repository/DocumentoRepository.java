@@ -15,10 +15,12 @@ import java.util.Optional;
 public interface DocumentoRepository {
 
     /**
-     * Registra um documento no rascunho da paciente, de forma atomica e sob o bloqueio da linha do pedido. Na
-     * mesma transacao: confere a dona e o estado, procura a chave de envio, confere o limite de documentos
-     * disponiveis, incrementa a revisao do pedido, registra a revisao com o motivo de documento enviado e grava o
-     * documento na revisao nova. Ou existem os tres registros (documento, revisao nova, pedido atualizado) ou
+     * Registra um documento no pedido da paciente, de forma atomica e sob o bloqueio da linha do pedido. Na mesma
+     * transacao: confere a dona e o estado (so {@code SUBMETIDA_SIMULACAO} recusa; desde a RC-16 a inclusao vale
+     * tambem depois da analise), procura a chave de envio, confere o limite de documentos disponiveis, incrementa a
+     * revisao do pedido, registra a revisao com o motivo de documento enviado, grava o documento na revisao nova e
+     * torna nao vigente a analise vigente, se houver. O estado do pedido nao muda e nenhuma leitura ou analise e
+     * iniciada. Ou existem todos os registros (documento, revisao nova, pedido atualizado, vigencia retirada) ou
      * nenhum. O bloqueio serializa envios simultaneos ao mesmo pedido, entao o limite e a numeracao de revisoes
      * valem sob concorrencia.
      *

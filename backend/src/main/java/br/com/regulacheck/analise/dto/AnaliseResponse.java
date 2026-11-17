@@ -5,16 +5,17 @@ import br.com.regulacheck.analise.entity.DocumentoDaAnalise;
 import br.com.regulacheck.analise.entity.EvidenciaGravada;
 import br.com.regulacheck.analise.entity.PendenciaGravada;
 import br.com.regulacheck.analise.entity.ResultadoGravado;
+import br.com.regulacheck.analise.service.ComparacaoDeAnalises;
 import br.com.regulacheck.extracao.dto.OrigemResponse;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
- * Analise gravada como a API a publica ({@code POST} e {@code GET /solicitacoes/{id}/analises}). Sempre identificada
- * como simulada: a leitura dos documentos e simulada e o protocolo e academico e ficticio. Nao traz valor lido dos
- * documentos (so documento, campo, situacao e origem). O resumo da RC-14 e opcional. Campos nulos ficam fora do
- * JSON.
+ * Analise gravada como a API a publica ({@code POST} e {@code GET /solicitacoes/{id}/analises}, {@code POST .../resumo}
+ * e {@code POST .../reenvio}). Sempre identificada como simulada: a leitura dos documentos e simulada e o protocolo e
+ * academico e ficticio. Nao traz valor lido dos documentos (so documento, campo, situacao e origem). O resumo da RC-14
+ * e a comparacao da RC-16 sao opcionais. Campos nulos ficam fora do JSON.
  *
  * @param id identificador da analise: numero decimal opaco, escrito como texto
  * @param revisao versao do conjunto documental avaliada
@@ -33,12 +34,14 @@ import java.util.List;
  * @param resultados um por regra, na ordem da versao
  * @param pendencias uma por regra pendente ou nao verificavel
  * @param resumo orientacao simulada opcional desta analise
+ * @param comparacao comparacao com a analise registrada imediatamente antes (RC-16); omitida na primeira analise do
+ *     pedido e entre versoes de protocolo diferentes
  */
 public record AnaliseResponse(String id, int revisao, boolean vigente, String executadaEm, Protocolo protocolo,
         String conferenciaConsiderada, String dataReferencia, String resultadoGeral, String rotuloResultado,
         boolean simulada, String aviso,
         List<Documento> documentos, List<ResultadoRegra> resultados, List<Pendencia> pendencias,
-        Resumo resumo) {
+        Resumo resumo, Comparacao comparacao) {
 
     /** Aviso fixo de toda analise. */
     public static final String AVISO = "Análise simulada: leitura simulada dos documentos e protocolo acadêmico "
@@ -101,10 +104,43 @@ public record AnaliseResponse(String id, int revisao, boolean vigente, String ex
     }
 
     /**
+     * Comparacao com a analise anterior (RC-16). "Resolvida" so existe entre analises concluidas e registradas; nao e
+     * aprovacao do SUS.
+     *
+     * @param analiseAnteriorId analise com que esta foi comparada, como texto
+     * @param revisaoAnterior revisao avaliada pela anterior
+     * @param executadaEmAnterior conclusao da anterior em ISO-8601 UTC
+     * @param itens regras com pendencia em pelo menos uma das duas, na ordem desta analise; pode ser vazia
+     */
+    public record Comparacao(String analiseAnteriorId, int revisaoAnterior, String executadaEmAnterior,
+            List<ItemComparacao> itens) {
+    }
+
+    /**
+     * @param codigoRegra codigo da regra
+     * @param descricaoRegra descricao da regra nesta analise
+     * @param situacao {@code RESOLVIDA}, {@code CONTINUA} ou {@code NOVA}
+     * @param resultadoAnterior resultado da regra na analise anterior
+     * @param resultadoAtual resultado da regra nesta analise
+     */
+    public record ItemComparacao(String codigoRegra, String descricaoRegra, String situacao,
+            String resultadoAnterior, String resultadoAtual) {
+    }
+
+    /**
      * @param analise analise gravada
-     * @return resposta publica correspondente
+     * @return resposta publica correspondente, sem comparacao
      */
     public static AnaliseResponse de(Analise analise) {
+        return de(analise, null);
+    }
+
+    /**
+     * @param analise analise gravada
+     * @param comparacao comparacao com a anterior, calculada pelo servico; {@code null} se nao ha
+     * @return resposta publica correspondente
+     */
+    public static AnaliseResponse de(Analise analise, ComparacaoDeAnalises comparacao) {
         return new AnaliseResponse(Long.toString(analise.id()), analise.revisao(), analise.vigente(),
                 iso(analise.executadaEm()), new Protocolo(analise.protocoloIdentificador(), analise.protocoloVersao()),
                 analise.conferenciaEm() == null ? null : iso(analise.conferenciaEm()),
@@ -115,7 +151,16 @@ public record AnaliseResponse(String id, int revisao, boolean vigente, String ex
                 analise.pendencias().stream().map(AnaliseResponse::pendencia).toList(),
                 analise.resumoTexto() == null ? null : new Resumo(analise.resumoTexto(), analise.resumoOrigem(), true,
                         analise.pendencias().stream().map(p -> new ItemResumo(p.codigoRegra(), p.explicacao(),
-                                p.responsavel().name())).toList()));
+                                p.responsavel().name())).toList()),
+                comparacao == null ? null : comparacao(comparacao));
+    }
+
+    private static Comparacao comparacao(ComparacaoDeAnalises comparacao) {
+        return new Comparacao(Long.toString(comparacao.analiseAnteriorId()), comparacao.revisaoAnterior(),
+                iso(comparacao.executadaEmAnterior()),
+                comparacao.itens().stream().map(item -> new ItemComparacao(item.codigoRegra(), item.descricaoRegra(),
+                        item.situacao().name(), item.resultadoAnterior().name(), item.resultadoAtual().name()))
+                        .toList());
     }
 
     private static Documento documento(DocumentoDaAnalise documento) {
