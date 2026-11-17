@@ -220,5 +220,18 @@ Sem sessão ou sem leitura a resposta é 200 com os sensores em `SEM_LEITURA` (`
 ## Pendência
 Uma por regra `PENDENTE` ou `NAO_VERIFICAVEL` da análise: `codigoRegra` e `descricaoRegra` (da versão do protocolo da análise), `tipo`, `explicacao` (mensagem da regra, se pendente; mensagem padrão de não verificável do protocolo, se não verificável), `motivo` (lista fechada, só não verificável: `CAMPO_ILEGIVEL`, `DOCUMENTO_NAO_LIDO`, `TRANSCRICAO_NAO_CONFERIDA`, `DIVERGENCIA_APONTADA`, `VALOR_NAO_INTERPRETAVEL`, `CONDICAO_INDETERMINADA`, `DOCUMENTOS_INSUFICIENTES`, `DEPENDE_DE_DOCUMENTO_AUSENTE`), `responsavel` ∈ {`PACIENTE`, `UNIDADE_EMISSORA`} e `evidencias[]` (`documentoId`, `campo`, `situacao` no momento da análise e `origem` `{pagina, trecho}` lida da leitura daquela revisão, quando houver). **Nenhum valor lido aparece na pendência.** Mensagens não diagnosticam, não definem urgência, não autorizam atendimento nem prometem vaga.
 
-## Submissão simulada
-`POST /solicitacoes/{id}/submissoes-simuladas` (201): só a partir de `SEM_PENDENCIAS_IDENTIFICADAS` vigente; repetir devolve a mesma submissão (idempotente). Resposta traz referência interna, data e o aviso `"SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS"`.
+## Submissão simulada (RC-17)
+Contrato completo: [specs/021-submeter-simulacao/contracts/api-submissao.md](../../specs/021-submeter-simulacao/contracts/api-submissao.md). Rotas só de `PACIENTE`. **A submissão é simulada**: nada é enviado ao SUS, não há fila real nem número oficial de protocolo.
+
+- **Concluir:** `POST /solicitacoes/{id}/submissoes-simuladas` (sem corpo) → 201 com o comprovante e o pedido em `SUBMETIDA_SIMULACAO` (só consulta), ou 200 com o **mesmo** comprovante se o pedido já tinha submissão (uma por pedido, também sob pedidos simultâneos). Exige, conferidos sob o bloqueio do pedido: análise **vigente** da revisão atual com `SEM_PENDENCIAS_IDENTIFICADAS`, nenhum critério `PENDENTE` ou `NAO_VERIFICAVEL` e o pedido em `SEM_PENDENCIAS_IDENTIFICADAS`. `NAO_APLICAVEL` e resumo ausente não impedem.
+- **Consultar:** `GET /solicitacoes/{id}/submissoes-simuladas` → 200 com o mesmo comprovante; pedido ainda não submetido tem o mesmo 404 de pedido inexistente ou alheio.
+- **Recusas:** 409 `CONFLITO_ESTADO`, nada registrado e estado igual: análise com pendência ou não verificável; sem análise vigente da versão atual (rascunho, nunca analisado, falha, ou documentos/conferência mudaram); análise em andamento; pedido já só para consulta sem registro. As recusas de completude dizem que **a restrição é do simulador acadêmico e não impede atendimento em serviço de saúde**.
+
+```json
+{ "solicitacaoId": "12", "referencia": "SIM-2026-000012", "submetidaEm": "2026-11-17T14:45:03.120Z", "simulada": true,
+  "destaque": "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS",
+  "servico": { "localidade": "Município Exemplo", "especialidade": "Consulta ambulatorial em cardiologia", "avisoFicticio": "…" },
+  "versaoAnalisada": { "analiseId": "31", "revisao": 6, "protocolo": { "identificador": "PROTOCOLO-ACADEMICO-FICTICIO", "versao": "v0.1" } },
+  "nota": "Este comprovante é de demonstração. Não é documento clínico, não é protocolo oficial e não coloca você em fila real." }
+```
+`referencia` = `SIM-{ano em Salvador}-{id do pedido com no mínimo 6 dígitos}`: única porque cada pedido tem no máximo uma submissão (`RC_SUBMISSAO_UK_SOLIC`, `RC_SUBMISSAO_UK_REF`) e diferente do formato da carga sintética (`SIM-2026-0001`). `destaque` e `nota` são textos fixos do servidor.

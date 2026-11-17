@@ -882,6 +882,59 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
+  /solicitacoes/{id}/submissoes-simuladas:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
+    post:
+      summary: Conclui a simulação do pedido próprio (RC-17; SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS)
+      description: >
+        Sem corpo (ignorado). Exige, sob o bloqueio do pedido, análise vigente da revisão atual com
+        SEM_PENDENCIAS_IDENTIFICADAS, sem critério PENDENTE nem NAO_VERIFICAVEL, e o pedido nesse estado; grava a
+        submissão simulada e leva o pedido a SUBMETIDA_SIMULACAO (só consulta) na mesma transação. Repetir devolve a
+        mesma submissão (200). Nada é enviado ao SUS; não há fila real nem número oficial de protocolo.
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Submissão registrada agora
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComprovanteSimulado" }
+        "200":
+          description: O pedido já tinha submissão; o mesmo comprovante, nada novo registrado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComprovanteSimulado" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "409":
+          description: >
+            CONFLITO_ESTADO, nada registrado: análise vigente com pendência ou não verificável; sem análise vigente da
+            versão atual; análise em andamento; pedido já só para consulta. As recusas de completude dizem que a
+            restrição é do simulador acadêmico e não impede atendimento.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
+    get:
+      summary: Consulta o comprovante da submissão simulada do pedido próprio (RC-17)
+      description: Mesmo comprovante da conclusão. Pedido não submetido, inexistente ou alheio → o mesmo 404.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Comprovante
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComprovanteSimulado" }
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "404": { $ref: "#/components/responses/NaoEncontrado" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
   /solicitacoes/{id}/reenvio:
     parameters:
       - name: id
@@ -1044,6 +1097,38 @@ components:
               situacao: { type: string, enum: [RESOLVIDA, CONTINUA, NOVA] }
               resultadoAnterior: { type: string, enum: [ATENDE, PENDENTE, NAO_VERIFICAVEL, NAO_APLICAVEL] }
               resultadoAtual: { type: string, enum: [ATENDE, PENDENTE, NAO_VERIFICAVEL, NAO_APLICAVEL] }
+    ComprovanteSimulado:
+      type: object
+      description: >
+        RC-17 (SubmissaoResponse). Comprovante de demonstração: não é documento clínico, não é protocolo oficial, não
+        indica fila, vaga, prazo nem aprovação. destaque e nota são textos fixos do servidor.
+      required: [solicitacaoId, referencia, submetidaEm, simulada, destaque, servico, versaoAnalisada, nota]
+      properties:
+        solicitacaoId: { type: string }
+        referencia: { type: string, pattern: "^SIM-[0-9]{4}-[0-9]{6,}$", example: SIM-2026-000012 }
+        submetidaEm: { type: string, format: date-time }
+        simulada: { type: boolean, enum: [true] }
+        destaque: { type: string, enum: ["SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS"] }
+        servico:
+          type: object
+          required: [localidade, especialidade, avisoFicticio]
+          properties:
+            localidade: { type: string }
+            especialidade: { type: string }
+            avisoFicticio: { type: string }
+        versaoAnalisada:
+          type: object
+          required: [analiseId, revisao, protocolo]
+          properties:
+            analiseId: { type: string }
+            revisao: { type: integer, minimum: 1 }
+            protocolo:
+              type: object
+              required: [identificador, versao]
+              properties:
+                identificador: { type: string, example: PROTOCOLO-ACADEMICO-FICTICIO }
+                versao: { type: string, example: v0.1 }
+        nota: { type: string }
     Reenvio:
       type: object
       description: RC-16. Até onde a verificação da versão corrigida chegou; sempre simulada. Campos nulos ficam fora do JSON.
