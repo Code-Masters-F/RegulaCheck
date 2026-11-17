@@ -783,6 +783,34 @@
           }
         }
       ]
+    },
+    {
+      "name": "RC-17 Concluir a simulacao (201 comprovante SIM-...; 200 o mesmo ao repetir; 409 se nao estiver pronto)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/submissoes-simuladas",
+        "description": "Sem corpo. Exige analise vigente da revisao atual sem pendencias nem nao verificaveis. Grava a submissao SIMULADA e leva o pedido a SUBMETIDA_SIMULACAO (so consulta). Destaque fixo: SIMULACAO ACADEMICA - NAO ENVIADO AO SUS. Nada e enviado ao SUS; nao ha fila real nem protocolo oficial. 409 explica que a restricao e do simulador."
+      }
+    },
+    {
+      "name": "RC-17 Consultar o comprovante da submissao simulada (200; 404 se nao submetido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/submissoes-simuladas",
+        "description": "Mesmo comprovante da conclusao. Pedido nao submetido, inexistente ou de outra paciente: o mesmo 404."
+      }
     }
   ]
 }

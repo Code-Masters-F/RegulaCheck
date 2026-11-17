@@ -9,6 +9,7 @@ import br.com.regulacheck.integracao.extracao.LeitorDeDocumento;
 import br.com.regulacheck.iot.repository.CapturaRepository;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepository;
 import br.com.regulacheck.solicitacao.repository.SolicitacaoRepository;
+import br.com.regulacheck.submissao.repository.SubmissaoRepository;
 import br.com.regulacheck.usuario.repository.UsuarioRepository;
 import java.time.Clock;
 
@@ -26,11 +27,12 @@ import java.time.Clock;
  * @param conferencias persistencia das decisoes de conferencia da transcricao (RC-11)
  * @param analises persistencia das analises, do historico e da analise em andamento (RC-13)
  * @param capturas persistencia das sessoes de captura e das leituras dos sensores simulados (RC-21/RC-22)
+ * @param submissoes persistencia da submissao simulada (RC-17)
  * @param leitor leitor de documentos (simulado hoje; RC-10)
  * @param relogio relogio da aplicacao
  */
 public record Dependencias(UsuarioRepository usuarios, SessaoRepository sessoes, ProtocoloRepository protocolos,
         SolicitacaoRepository solicitacoes, DocumentoRepository documentos, ExtracaoRepository extracoes,
         ConferenciaRepository conferencias, AnaliseRepository analises, CapturaRepository capturas,
-        LeitorDeDocumento leitor, Clock relogio) {
+        SubmissaoRepository submissoes, LeitorDeDocumento leitor, Clock relogio) {
 }

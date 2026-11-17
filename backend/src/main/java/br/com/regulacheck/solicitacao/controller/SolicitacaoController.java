@@ -20,6 +20,7 @@ import br.com.regulacheck.solicitacao.dto.SolicitacaoRequest;
 import br.com.regulacheck.solicitacao.dto.SolicitacaoResponse;
 import br.com.regulacheck.solicitacao.entity.Solicitacao;
 import br.com.regulacheck.solicitacao.service.SolicitacaoService;
+import br.com.regulacheck.submissao.controller.SubmissaoController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,6 +58,7 @@ public class SolicitacaoController extends ServletJson {
     private final transient CapturaController capturas;
     private final transient ResumoController resumo;
     private final transient ReenvioController reenvio;
+    private final transient SubmissaoController submissao;
 
     /**
      * @param servico casos de uso da solicitacao
@@ -71,10 +73,13 @@ public class SolicitacaoController extends ServletJson {
      *     {@code /{id}/sessoes-captura} e {@code /{id}/leituras}
      * @param resumo controller do resumo simulado (RC-14), ao qual este entrega {@code /{id}/resumo}
      * @param reenvio controller da verificacao da versao corrigida (RC-16), ao qual este entrega {@code /{id}/reenvio}
+     * @param submissao controller da submissao simulada (RC-17), ao qual este entrega
+     *     {@code /{id}/submissoes-simuladas}
      */
     public SolicitacaoController(SolicitacaoService servico, DocumentoController documentos,
             ExtracaoController extracao, ConferenciaController conferencia, AnaliseController analises,
-            CapturaController capturas, ResumoController resumo, ReenvioController reenvio) {
+            CapturaController capturas, ResumoController resumo, ReenvioController reenvio,
+            SubmissaoController submissao) {
         super("GET", "POST", "PUT", "DELETE");
         this.servico = servico;
         this.documentos = documentos;
@@ -84,13 +89,15 @@ public class SolicitacaoController extends ServletJson {
         this.capturas = capturas;
         this.resumo = resumo;
         this.reenvio = reenvio;
+        this.submissao = submissao;
     }
 
     /**
      * Entrega ao {@link DocumentoController} os subcaminhos de documentos, ao {@link ConferenciaController} o da
      * conferencia, ao {@link ExtracaoController} o de extracao, ao {@link AnaliseController} o de analises e ao
      * {@link CapturaController} os da estacao de captura (RC-21/RC-22), ao {@link ResumoController} o resumo
-     * (RC-14) e ao {@link ReenvioController} a verificacao da versao corrigida (RC-16); o resto segue o fluxo normal. A RC-05
+     * (RC-14), ao {@link ReenvioController} a verificacao da versao corrigida (RC-16) e ao {@link SubmissaoController}
+     * a submissao simulada (RC-17); o resto segue o fluxo normal. A RC-05
      * so aceita um registro por caminho, e {@code /solicitacoes/*} e este.
      */
     @Override
@@ -124,6 +131,10 @@ public class SolicitacaoController extends ServletJson {
         }
         if (ReenvioController.reconhece(requisicao.getPathInfo())) {
             reenvio.atender(requisicao, resposta);
+            return;
+        }
+        if (SubmissaoController.reconhece(requisicao.getPathInfo())) {
+            submissao.atender(requisicao, resposta);
             return;
         }
         super.service(requisicao, resposta);
