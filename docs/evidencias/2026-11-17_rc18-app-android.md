@@ -57,9 +57,11 @@ Abrir um pedido mais de 30 s depois de carregar a lista mostrava "Sem conexão" 
 
 `adb logcat -d` após todo o percurso (3.425 linhas). Busca por token de teste, `Authorization`, `Bearer`, corpos (`"itens"`, `avisoFicticio`), senhas e e-mail digitados: **0 ocorrências no processo do app**. As únicas 5 ocorrências (senha e e-mail) são do `adbd`, que registra o comando `adb shell input text` usado para digitar no teste; na digitação manual, ele não participa.
 
-## 6. Pendente
+## 6. Percurso com backend real e Oracle
 
-- **Percurso com backend real e Oracle: bloqueado.** O Oracle respondia na porta 1521, mas não havia `.env` com `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` nesta máquina (credenciais do grupo). Roteiro para executar: [2026-11-17_rc18-roteiro-manual.md](2026-11-17_rc18-roteiro-manual.md).
+- Primeira tentativa: bloqueada, sem `.env` com `DB_*` na máquina.
+- Executado no mesmo dia, depois que o responsável preencheu o `.env` e subiu o backend: 11 de 12 passos ✅ e capturas `2026-11-17_rc18-manual-*.png` — ver [2026-11-17_rc18-roteiro-manual.md](2026-11-17_rc18-roteiro-manual.md). O passo "backend parado" foi feito cortando a rede do emulador.
+- **Pendente:** sessão expirada (passo 9) com o backend real, que exige reiniciar o backend com `SESSION_TTL_MINUTES=1`.
 
 ## 7. Aviso acadêmico discreto (mesma data, depois do commit 84ae058)
 
