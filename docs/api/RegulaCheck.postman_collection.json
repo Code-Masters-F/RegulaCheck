@@ -729,6 +729,60 @@
         "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/resumo",
         "description": "Sem corpo. 201 ao gerar, 200 se ja existe. Origem PADRAO indica fallback e permite tentar novamente; as pendencias deterministicas permanecem visiveis."
       }
+    },
+    {
+      "name": "RC-16 Incluir o documento que faltava depois da analise (201; revisao +1; a analise vigente deixa de valer; 409 so se submetido)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "tipoDocumental",
+              "value": "IDENTIFICACAO",
+              "type": "text"
+            },
+            {
+              "key": "arquivo",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/documentos",
+        "description": "Mesmo contrato do RC-08. Desde a RC-16 vale em qualquer estado exceto SUBMETIDA_SIMULACAO: o estado do pedido nao muda, nada e lido nem analisado e nenhuma pendencia e marcada como resolvida. Dados sinteticos."
+      }
+    },
+    {
+      "name": "RC-16 Verificar a versao corrigida (200 etapa CONFERENCIA; 201 nova analise com comparacao; 200 vigente; erros com detalhes.etapa)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/reenvio",
+        "description": "Sem corpo. Le a revisao atual (SIMULADA), confere, analisa e resume. etapa CONFERENCIA: confirme os campos da leitura extracaoId (RC-11) e chame de novo. etapa CONCLUIDA: analise com resumo SIMULADO e comparacao (RESOLVIDA/CONTINUA/NOVA) com a anterior. etapa RESUMO: analise registrada sem resumo; gere o resumo de novo. Falhas: mesmo codigo da etapa e detalhes[0].campo = etapa. Resolvida nao e aprovacao do SUS."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200 || pm.response.code === 201) { var corpo = pm.response.json(); pm.collectionVariables.set('extracaoId', corpo.extracaoId); if (corpo.analise) { pm.collectionVariables.set('analiseId', corpo.analise.id); } }"
+            ]
+          }
+        }
+      ]
     }
   ]
 }
