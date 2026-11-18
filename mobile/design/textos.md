@@ -207,9 +207,9 @@ Destaque: "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS". "Referência" / "{re
 | Normal | Título: "Condições da captura". "Luminosidade" / "{lux} lux" — "Adequada". "Distância" / "{cm} cm" — "Adequada". "Leitura há {tempo} · sensor simulado". Nota: "Valores de demonstração. Eles não comprovam que o documento ficará legível." Botão: "Fotografar". |
 | Luminosidade fora | "Baixa" / "Melhore a iluminação e tente de novo." |
 | Distância fora | "Fora do ideal" / "Aproxime ou afaste o celular do documento." |
-| Recuperada | "Condições adequadas de novo." |
-| Desatualizada | "Última leitura há {tempo} · desatualizada". Botão: "Fotografar mesmo assim". |
-| Indisponível | "Sensores indisponíveis agora." / "Você pode anexar e salvar seus documentos normalmente." Botão: "Fotografar mesmo assim". |
+| Recuperada | "Adequada de novo" / "Condições adequadas de novo." · "Leitura há {tempo} · antes: {valor} {unidade} · sensor simulado" (quadro `DGf2T`). |
+| Desatualizada | "Desatualizada" / "Última leitura há {tempo} · sensor simulado" (quadro `Cna25`). Botão: "Fotografar mesmo assim". |
+| Indisponível | "Sensores indisponíveis agora." / "Você pode anexar e salvar seus documentos normalmente." Valor "—" e "Sem leitura disponível · sensor simulado" (quadro `kaHJz`). Botão: "Fotografar mesmo assim". |
 
 ### E4.2 Protocolo e indicadores (administrador)
 | Estado | Textos |
@@ -252,6 +252,22 @@ Usados por `mobile/app/.../ui/Textos.kt` (spec 022). "Ajustado" = o texto do qua
 | E3.3, Sem pendências | sem o botão "Concluir simulação" (RC-17) | ajustado |
 | E3.4 | "Responsável registrado pela regra" (rótulo) · "Trecho lido: “{trecho}”" · evidência "Documento: {nome} · {campo} {situação} · página {n}" | criado (spec 019) |
 | E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · "Conferir a leitura está disponível só no desenho nesta versão." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |
+
+## App Android — textos criados ou ajustados na RC-22 (18/11/2026)
+
+Usados por `mobile/app/.../ui/Textos.kt` (spec 023). O app não abre a câmera: "Fotografar" leva à E4.1 e, dela, ao seletor do sistema da RC-19 ([research D2](../../specs/023-app-android-condicoes-captura/research.md)). Nos três estados da E4.1 acima, as linhas de leitura seguem os quadros revisados (research D7).
+
+| Onde | Texto | Motivo |
+|---|---|---|
+| E2.7 Origem, apoio de "Fotografar" | "Veja as condições da captura e depois escolha a foto" | ajustado (era "Mostramos as condições da captura antes da foto"; o app não tira a foto) |
+| E4.1, apoio do título | "Posicione o documento sob a estação de captura e fotografe com a câmera do aparelho. As leituras se atualizam enquanto esta tela está aberta." | ajustado (diz como a foto é tirada) |
+| E4.1, ação principal | "Escolher a foto" · "Escolher a foto mesmo assim" | ajustado (era "Fotografar" · "Fotografar mesmo assim"; abre o seletor com JPEG/PNG) |
+| E4.1, orientação | a `orientacao.mensagem` da API, como texto puro; só se vier vazia: "Melhore a iluminação e tente de novo." · "Reduza a luz direta ou o reflexo sobre o documento." · "Afaste o celular do documento." · "Aproxime o celular do documento." · "Verifique se a estação de captura está ligada." · "Você pode anexar e salvar seus documentos normalmente." | ajustado (a API é a fonte; textos locais por código) |
+| E4.1, luminosidade acima da faixa | "Alta" | criado (sem quadro) |
+| E4.1, um só sensor sem leitura | "Sem leitura" | criado (sem quadro) |
+| E4.1, carregando | "Consultando os sensores…" | criado (sem quadro) |
+| E4.1, instante ilegível | "Leitura do sensor simulado" | criado (resposta fora do contrato) |
+| E4.1, 409 ao abrir a sessão | "Este pedido já foi submetido e só pode ser consultado." / "Este pedido não pode mais receber documentos." Botão: "Voltar". | reaproveitado (E2.2) |
 
 ## App Android — textos criados ou ajustados na RC-20 (18/11/2026)
 

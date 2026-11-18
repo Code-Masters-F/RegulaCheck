@@ -1,8 +1,8 @@
 package br.com.regulacheck.app.api
 
 /**
- * Rotas da API usadas pelo app: RC-18 (`specs/017-…/contracts/api-consumida.md`) e RC-19
- * (`specs/022-…/contracts/api-consumida.md`). O app nunca envia identificador da paciente: a dona é
+ * Rotas da API usadas pelo app: RC-18 (`specs/017-…/contracts/api-consumida.md`), RC-19
+ * (`specs/022-…/contracts/api-consumida.md`) e RC-22 (`specs/023-…/contracts/api-consumida.md`). O app nunca envia identificador da paciente: a dona é
  * a da sessão (token).
  */
 class RegulaCheckApi(private val cliente: ApiClient) {
@@ -127,6 +127,28 @@ class RegulaCheckApi(private val cliente: ApiClient) {
     suspend fun gerarResumo(id: String): Resultado<AnaliseGravada> =
         cliente.executar(RequisicaoApi("POST", listOf("solicitacoes", id, "resumo"))) {
             JsonApi.decodeFromString(AnaliseGravada.serializer(), it)
+        }
+
+    // RC-22 (contracts/api-consumida.md da spec 023; rotas da spec 016).
+
+    /**
+     * `POST /solicitacoes/{id}/sessoes-captura`: abre a sessão de captura SIMULADA do pedido ou
+     * devolve a que já está aberta (201 ou 200; idempotente).
+     *
+     * @return 409 (pedido submetido) vira [ErroApi.Conflito]; 404 também para pedido de outra paciente.
+     */
+    suspend fun abrirSessaoCaptura(id: String): Resultado<SessaoCaptura> =
+        cliente.executar(RequisicaoApi("POST", listOf("solicitacoes", id, "sessoes-captura"))) {
+            JsonApi.decodeFromString(SessaoCaptura.serializer(), it)
+        }
+
+    /**
+     * `GET /solicitacoes/{id}/leituras`: telemetria dos dois sensores simulados. Sem sessão ou sem
+     * leitura, responde 200 com `SEM_LEITURA`.
+     */
+    suspend fun consultarTelemetria(id: String): Resultado<Telemetria> =
+        cliente.executar(RequisicaoApi("GET", listOf("solicitacoes", id, "leituras"))) {
+            JsonApi.decodeFromString(Telemetria.serializer(), it)
         }
 
     /**

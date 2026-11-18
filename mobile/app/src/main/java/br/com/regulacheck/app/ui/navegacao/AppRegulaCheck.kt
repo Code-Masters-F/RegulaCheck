@@ -19,6 +19,7 @@ import br.com.regulacheck.app.ui.pedido.PedidoViewModel
 import br.com.regulacheck.app.ui.pedidos.MeusPedidosTela
 import br.com.regulacheck.app.ui.pedidos.MeusPedidosViewModel
 import br.com.regulacheck.app.ui.AcaoPedido
+import br.com.regulacheck.app.ui.captura.CondicoesCapturaViewModel
 import br.com.regulacheck.app.ui.documentos.DocumentosTela
 import br.com.regulacheck.app.ui.documentos.DocumentosViewModel
 import br.com.regulacheck.app.ui.indicadores.IndicadoresTela
@@ -30,6 +31,9 @@ import br.com.regulacheck.app.ui.novopedido.NovoPedidoViewModel
 import br.com.regulacheck.app.ui.pendencia.PendenciaTela
 import br.com.regulacheck.app.ui.resultado.ResultadoTela
 import br.com.regulacheck.app.ui.resultado.ResultadoViewModel
+
+/** Chave do ViewModel da E4.1 na entrada de documentos (RC-22). */
+private const val CHAVE_CONDICOES_CAPTURA = "condicoes-captura"
 
 /** Tela inicial a partir da sessão guardada (pelo perfil, RC-20). */
 private fun telaInicial(estado: EstadoSessao): Tela = when (estado) {
@@ -89,6 +93,10 @@ fun AppRegulaCheck(dependencias: Dependencias) {
                 )
                 is Tela.Documentos -> DocumentosTela(
                     viewModel = viewModel { DocumentosViewModel(dependencias.api, tela.id) },
+                    // E4.1 (RC-22): vive na mesma entrada da pilha que os documentos (research D1).
+                    condicoesCaptura = viewModel(key = CHAVE_CONDICOES_CAPTURA) {
+                        CondicoesCapturaViewModel(dependencias.api, tela.id)
+                    },
                     pedidoId = tela.id,
                     aoVoltar = { navegador.voltar() },
                     aoLer = { navegador.abrir(Tela.Leitura(tela.id)) },
