@@ -1,6 +1,6 @@
 # Mobile
 
-**Android nativo com Kotlin.** O projeto está em [`app/`](app/) desde a RC-18 (spec [`specs/017-app-android-login-pedidos/`](../specs/017-app-android-login-pedidos/), issue #41); a RC-19 acrescentou envio de documentos, leitura, análise e resultado (spec [`specs/020-app-android-documentos-resultado/`](../specs/020-app-android-documentos-resultado/), issue #42). O app consome somente a API do backend ([contratos](../docs/api/contratos-dados.md), [erros](../docs/api/erros.md), [estados](../docs/api/estados-e-revisoes.md), [rotas](../CONTRATO_API.md)). Nenhuma credencial de banco, de IA ou do simulador no app.
+**Android nativo com Kotlin.** O projeto está em [`app/`](app/) desde a RC-18 (spec [`specs/017-app-android-login-pedidos/`](../specs/017-app-android-login-pedidos/), issue #41); a RC-19 acrescentou envio de documentos, leitura, análise e resultado (spec [`specs/022-app-android-documentos-resultado/`](../specs/022-app-android-documentos-resultado/), issue #42). O app consome somente a API do backend ([contratos](../docs/api/contratos-dados.md), [erros](../docs/api/erros.md), [estados](../docs/api/estados-e-revisoes.md), [rotas](../CONTRATO_API.md)). Nenhuma credencial de banco, de IA ou do simulador no app.
 
 ## O que está implementado, verificado e só desenhado (17/11/2026)
 
@@ -12,7 +12,7 @@
 | E1.1 Login, E1.2 Meus pedidos, E1.3 Pedido (dados e ação principal por estado; desde a RC-19 as ações abrem as telas abaixo) | Implementado; conferido no emulador e com backend real ([RC-18](../docs/evidencias/2026-11-17_rc18-app-android.md), [roteiro](../docs/evidencias/2026-11-17_rc18-roteiro-manual.md)) |
 | RC-19: E2.1 Novo pedido, E2.2 Seus documentos (com a folha E2.7 de tipo e as recusas E2.3), E3.1 Ler documentos, E3.8 Verificar critérios, E3.3 Resultado da verificação, E3.4 O que falta resolver | Implementado; 82 testes verdes; percurso com backend real e Oracle verificado em 17/11/2026 (≈ 4 min, 3 pedidos iguais a `GET …/analises`, arquivo inválido, rede cortada no envio e na análise, toques repetidos, logcat) — [evidências](../docs/evidencias/2026-11-17_rc19-app-documentos-resultado.md) |
 | Resumo simulado (RC-14) com SIMULADO, "Tentar de novo" e resumo padrão | Implementado; resumo exibido com o backend real; "Tentar de novo", `PADRAO` e 409 só nos testes (as análises reais já vinham com resumo) |
-| `rotuloResultado` e `orientacao` da RC-15 ("Quem pode resolver") | Implementado; **não verificado com o backend real** (o backend em execução era anterior ao commit `65cbadf`); coberto nos testes. Sem esses campos, o app usa o rótulo local e omite a orientação |
+| `rotuloResultado` e `orientacao` da RC-15 ("Quem pode resolver") | Implementado; verificado com o backend real atualizado (segunda execução, 17/11/2026). Sem esses campos (backend antigo), o app usa o rótulo local e omite a orientação |
 | 409 `ANALISE_EM_ANDAMENTO`, 503 da leitura/análise, E2.1 erro e "sem serviços" | Implementado; **só nos testes** (não reproduzidos com o backend real) |
 | Avaliação com ≥ 3 pessoas (SC-005 da spec 019) | **Não realizada** |
 | Conferência da leitura (E3.2), substituir/remover/excluir (E2.4–E2.6), "Abrir documento", "Fotografar" e condições da captura (E2.7 Origem, E4.1), correção e comparação (E3.5, RC-16), conclusão e comprovante (E3.6/E3.7, RC-17), administrador (E4.2) | **Só desenho** (`design/RegulaCheck.pen`); o app não mostra botões para elas e explica o limite em texto quando preciso |
@@ -43,7 +43,7 @@ PowerShell: `$env:JAVA_HOME="C:\Program Files\Android\Android Studio\jbr"; .\gra
 
 ## Estrutura
 
-`app/src/main/java/br/com/regulacheck/app/`: `api/` (cliente, modelos, erros), `sessao/` (Keystore e estado da sessão), `ui/` (tema, componentes, navegação por `sealed interface Tela` e `EstadoTela<T>`, telas `login/`, `pedidos/`, `pedido/` e, na RC-19, `novopedido/`, `documentos/`, `leitura/`, `resultado/`, `pendencia/`; rótulos dos valores da API em `ui/RotulosApi.kt`). Textos em `ui/Textos.kt`, copiados de [`design/textos.md`](design/textos.md). Fontes Bricolage Grotesque e Nunito Sans (licença OFL em `app/licencas/`); ícones Lucide (ISC) recriados em `ui/tema/Icones.kt`. Decisões: [research da RC-18](../specs/017-app-android-login-pedidos/research.md) e [da RC-19](../specs/020-app-android-documentos-resultado/research.md).
+`app/src/main/java/br/com/regulacheck/app/`: `api/` (cliente, modelos, erros), `sessao/` (Keystore e estado da sessão), `ui/` (tema, componentes, navegação por `sealed interface Tela` e `EstadoTela<T>`, telas `login/`, `pedidos/`, `pedido/` e, na RC-19, `novopedido/`, `documentos/`, `leitura/`, `resultado/`, `pendencia/`; rótulos dos valores da API em `ui/RotulosApi.kt`). Textos em `ui/Textos.kt`, copiados de [`design/textos.md`](design/textos.md). Fontes Bricolage Grotesque e Nunito Sans (licença OFL em `app/licencas/`); ícones Lucide (ISC) recriados em `ui/tema/Icones.kt`. Decisões: [research da RC-18](../specs/017-app-android-login-pedidos/research.md) e [da RC-19](../specs/022-app-android-documentos-resultado/research.md).
 
 ## Regras do app (RC-04 a RC-06, valem para as próximas histórias)
 

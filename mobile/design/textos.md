@@ -229,7 +229,7 @@ Anotações do quadro: metas de `acessibilidade.md`; nos quadros de fonte amplia
 
 ## App Android — textos criados ou ajustados na RC-19 (17/11/2026)
 
-Usados por `mobile/app/.../ui/Textos.kt` (spec 020). "Ajustado" = o texto do quadro pressupõe uma ação que esta versão do app não tem (conferência, substituir, remover, reenviar, concluir); o app não mostra o botão e diz o limite em texto.
+Usados por `mobile/app/.../ui/Textos.kt` (spec 022). "Ajustado" = o texto do quadro pressupõe uma ação que esta versão do app não tem (conferência, substituir, remover, reenviar, concluir); o app não mostra o botão e diz o limite em texto.
 
 | Onde | Texto | Motivo |
 |---|---|---|
@@ -238,17 +238,17 @@ Usados por `mobile/app/.../ui/Textos.kt` (spec 020). "Ajustado" = o texto do qua
 | E2.2, carga | "Carregando os documentos…" | criado |
 | E2.2, limite | "3 de 3 documentos. Este é o limite do pedido." | ajustado (sem "Remova um para anexar outro.") |
 | E2.2, Ler documentos | "Leitura simulada com dados sintéticos." | ajustado (sem "Depois você confere o que foi lido.") |
-| E2.2, pedido verificado | "Depois da verificação, este pedido não recebe novos documentos." + "Ver resultado" | ajustado (substituir/remover fora desta versão) |
+| E2.2, pedido verificado | "Enviar uma versão corrigida ainda não está disponível neste app." + "Ver resultado" | ajustado: a API aceita a versão corrigida desde a RC-16, mas o app ainda não oferece o reenvio |
 | E2.2, Não enviado sem conexão | "Sem conexão com a internet. O arquivo ainda não foi enviado. Toque em “Tentar de novo”." | ajustado (E4.3 fala em "o que você digitou") |
 | E2.3, todas as recusas | título "“{nome do arquivo}” não foi enviado.", mensagem da API, "Nada foi salvo."; arquivo inacessível ou chave reutilizada: "Escolha o arquivo outra vez." | criado conforme a #42 (mensagem da API) |
 | E3.1, carga e botão | "Lendo os documentos…" · botão "Lendo…" | criado |
 | E3.1, leitura concluída | "O que foi lido" · "Lido" / "Não lido" / "Não lido: PDF protegido" · "{n} de {total} informações identificadas" · "A conferência da leitura está disponível só no desenho nesta versão. Informações não conferidas contam como não verificadas." | criado (E3.2 fica só no desenho, #40) |
-| E3.8 | "As informações lidas que não foram conferidas contarão como não verificadas." · "Depois de verificar, você não poderá anexar novos documentos." · botão "Analisando…" | ajustado (sem a contagem e sem "só substituir ou remover os enviados") |
+| E3.8 | "As informações lidas que não foram conferidas contarão como não verificadas." · botão "Analisando…" | ajustado: sem a contagem e sem a frase sobre não poder anexar depois (deixou de valer com a RC-16) |
 | E3.8, 409 em andamento | "Já há uma verificação em andamento. Aguarde cerca de {n} segundos e consulte o resultado." · "Consultar resultado" | criado (#42) |
-| E3.8, queda na análise | título de E4.3 + "Consultar de novo" (consulta só o histórico) | criado (research D6 da spec 020) |
+| E3.8, queda na análise | título de E4.3 + "Consultar de novo" (consulta só o histórico) | criado (research D6 da spec 022) |
 | E3.3, Confira a leitura | "Confira a leitura: essa etapa está disponível só no desenho nesta versão." | ajustado (sem o botão "Conferir leitura") |
 | E3.3, aviso permanente | "Um resultado sem pendências não garante aceitação pela regulação. Os critérios deste protocolo são demonstrativos." | criado (RC-15) |
 | E3.3, estados sem quadro | "Carregando o resultado…" · "Não foi possível consultar o resultado agora." · "Este pedido ainda não tem verificação concluída." · "Ainda não há resultado para a versão atual dos documentos." · "Ver resultado anterior" · "Resultado anterior" / "Revisão {n}. Este resultado não vale para a revisão atual dos documentos." | criado (contrato de apresentação da spec 019) |
 | E3.3, Sem pendências | sem o botão "Concluir simulação" (RC-17) | ajustado |
 | E3.4 | "Responsável registrado pela regra" (rótulo) · "Trecho lido: “{trecho}”" · evidência "Documento: {nome} · {campo} {situação} · página {n}" | criado (spec 019) |
-| E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · "Depois da primeira verificação, não é possível acrescentar outro arquivo a este pedido." · "Conferir a leitura está disponível só no desenho nesta versão." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |
+| E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · "Conferir a leitura está disponível só no desenho nesta versão." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |
