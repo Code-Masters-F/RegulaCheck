@@ -2,7 +2,7 @@ package br.com.regulacheck.app.api
 
 /**
  * Rotas da API usadas pelo app: RC-18 (`specs/017-…/contracts/api-consumida.md`) e RC-19
- * (`specs/020-…/contracts/api-consumida.md`). O app nunca envia identificador da paciente: a dona é
+ * (`specs/022-…/contracts/api-consumida.md`). O app nunca envia identificador da paciente: a dona é
  * a da sessão (token).
  */
 class RegulaCheckApi(private val cliente: ApiClient) {
@@ -40,7 +40,7 @@ class RegulaCheckApi(private val cliente: ApiClient) {
             JsonApi.decodeFromString(Solicitacao.serializer(), it)
         }
 
-    // RC-19 (contracts/api-consumida.md da spec 020).
+    // RC-19 (contracts/api-consumida.md da spec 022).
 
     /** `GET /protocolos`: serviços ativos; a RC-19 usa só o primeiro. */
     suspend fun listarProtocolos(): Resultado<ListaProtocolos> =

@@ -143,8 +143,11 @@ object Textos {
     /** RC-19: o desenho diz "Depois você confere o que foi lido."; a conferência fica só no desenho. */
     const val LER_APOIO = "Leitura simulada com dados sintéticos."
 
-    /** RC-19: pedido já verificado (substituir e remover são da RC-16/RC-09, fora desta versão). */
-    const val PEDIDO_VERIFICADO_AVISO = "Depois da verificação, este pedido não recebe novos documentos."
+    /**
+     * RC-19: pedido já verificado. Desde a RC-16 a API aceita a versão corrigida depois da análise,
+     * mas o app ainda não oferece o reenvio; o texto não afirma que é impossível.
+     */
+    const val PEDIDO_VERIFICADO_AVISO = "Enviar uma versão corrigida ainda não está disponível neste app."
     const val VER_RESULTADO = "Ver resultado"
     const val PEDIDO_SUBMETIDO = "Este pedido já foi submetido e só pode ser consultado."
 
@@ -189,8 +192,6 @@ object Textos {
     /** RC-19: o app não consulta a conferência, então não conta as informações sem decisão. */
     const val DIALOGO_NAO_CONFERIDAS = "As informações lidas que não foram conferidas contarão como não verificadas."
 
-    /** RC-19: sem "só substituir ou remover os enviados" (fora desta versão). */
-    const val DIALOGO_SEM_NOVOS = "Depois de verificar, você não poderá anexar novos documentos."
     const val ANALISANDO = "Analisando…"
 
     /** RC-19: 409 `ANALISE_EM_ANDAMENTO`; o app não repete sozinho. */
@@ -256,7 +257,5 @@ object Textos {
     /** RC-19: sem botão de reenvio (RC-16) nem de substituição. */
     const val REENVIO_INDISPONIVEL = "O reenvio de arquivos ainda não está disponível nesta versão do app."
 
-    /** RC-19: adaptado de "Depois da primeira verificação, o app só permite trocar documentos já enviados." */
-    const val DOCUMENTO_AUSENTE = "Depois da primeira verificação, não é possível acrescentar outro arquivo a este pedido."
     const val CONFERENCIA_SO_DESENHO_CURTO = "Conferir a leitura está disponível só no desenho nesta versão."
 }
