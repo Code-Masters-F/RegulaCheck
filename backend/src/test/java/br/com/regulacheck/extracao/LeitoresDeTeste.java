@@ -24,7 +24,7 @@ public final class LeitoresDeTeste {
     private LeitoresDeTeste() {
     }
 
-    /** @return leitor simulado que conhece as duas amostras oficiais e as cinco extras de teste */
+    /** @return leitor simulado que conhece as amostras oficiais, os conjuntos de demonstracao (RC-23, no catalogo de producao) e as cinco extras de teste */
     public static LeitorSimulado simuladoComTodasAsAmostras() {
         try {
             ObjectNode raiz = MAPPER.createObjectNode();

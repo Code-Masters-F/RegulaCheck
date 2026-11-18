@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
  * usuaria) e nao escreve conteudo em log. Toda saida respeita {@link ValidadorDeLeitura}; um catalogo fora do
  * contrato impede a criacao do leitor (a aplicacao nao sobe), em vez de falhar durante uma leitura.
  *
- * <p>O catalogo de producao ({@value #RECURSO_PADRAO}) so conhece as duas amostras sinteticas oficiais
- * ({@code samples/}); os testes passam um catalogo proprio ao construtor. Formato:
+ * <p>O catalogo de producao ({@value #RECURSO_PADRAO}) conhece as duas amostras sinteticas oficiais e os arquivos
+ * dos conjuntos de demonstracao da RC-23 ({@code samples/}); os testes passam um catalogo proprio ao construtor. Formato:
  * {@code {"leituras":[{"hash":"<sha256>","situacao":"LIDO","campos":[{"codigo":"NOME","situacao":"IDENTIFICADO",
  * "valor":"...","pagina":1,"trecho":"..."}]}]}}.
  */

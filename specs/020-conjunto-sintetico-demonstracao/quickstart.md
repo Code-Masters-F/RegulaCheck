@@ -1,6 +1,6 @@
 # Quickstart: Conjunto sintético de demonstração (RC-23)
 
-Planejado; nada aqui foi executado ainda. Atualizar com comandos e resultados reais na verificação.
+Verificado em 18/11/2026 só na regressão automática em memória (ver "Evidência de execução" em `tasks.md`). A execução manual pelo aplicativo ou pela API com Oracle **não foi feita**.
 
 ## Ler um conjunto (sem executar nada)
 
