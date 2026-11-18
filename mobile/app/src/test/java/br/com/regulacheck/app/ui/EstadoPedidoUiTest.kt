@@ -42,9 +42,17 @@ class EstadoPedidoUiTest {
         }
     }
 
+    // A RC-18 testava aqui que só "Atualizar" funcionava (research D7 da spec 017); desde a RC-19
+    // todas as ações abrem a tela correspondente, e os rótulos continuam os do desenho (E1.3).
     @Test
-    fun `so Atualizar funciona nesta historia`() {
-        assertEquals(listOf(AcaoPedido.ATUALIZAR), AcaoPedido.entries.filter { it.disponivel })
+    fun `acoes mantem os rotulos do desenho`() {
+        assertEquals(
+            listOf(
+                "Anexar documentos", "Ler documentos", "Atualizar", "Ver o que conferir",
+                "Ver pendências", "Ver resultado", "Tentar de novo",
+            ),
+            AcaoPedido.entries.map { it.rotulo },
+        )
     }
 
     @Test

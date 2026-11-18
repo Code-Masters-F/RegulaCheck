@@ -21,5 +21,7 @@ object CoresRc {
     val FundoInfo = Color(0xFFEAF2F8) // rc-info-bg
     val Borda = Color(0xFF82929B) // rc-border
     val Divisor = Color(0xFFDAE2E7) // rc-divider / rc-skeleton
+    val Simulado = Color(0xFF8D3C0C) // rc-simulated-fg (selo SIMULADO, 6,82:1 sobre o fundo)
+    val FundoSimulado = Color(0xFFFFF1E6) // rc-simulated-bg
     val Desabilitado = Color(0xFFE9EEF1)
 }

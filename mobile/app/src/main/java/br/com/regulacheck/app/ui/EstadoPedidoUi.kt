@@ -22,19 +22,17 @@ enum class EstadoPedido {
 }
 
 /**
- * Ação principal de um pedido (E1.3, coluna "Ação principal").
- *
- * @property disponivel `false` quando depende de rotas da RC-19: o botão aparece, mas avisa que a
- * etapa ainda não está disponível (research D7), sem simular que algo foi feito.
+ * Ação principal de um pedido (E1.3, coluna "Ação principal"). Desde a RC-19 todas abrem a tela
+ * correspondente (`ui/navegacao/AppRegulaCheck.kt`); "Atualizar" consulta o pedido de novo.
  */
-enum class AcaoPedido(val rotulo: String, val disponivel: Boolean) {
-    ANEXAR_DOCUMENTOS("Anexar documentos", false),
-    LER_DOCUMENTOS("Ler documentos", false),
-    ATUALIZAR("Atualizar", true),
-    VER_O_QUE_CONFERIR("Ver o que conferir", false),
-    VER_PENDENCIAS("Ver pendências", false),
-    VER_RESULTADO("Ver resultado", false),
-    TENTAR_DE_NOVO("Tentar de novo", false),
+enum class AcaoPedido(val rotulo: String) {
+    ANEXAR_DOCUMENTOS("Anexar documentos"),
+    LER_DOCUMENTOS("Ler documentos"),
+    ATUALIZAR("Atualizar"),
+    VER_O_QUE_CONFERIR("Ver o que conferir"),
+    VER_PENDENCIAS("Ver pendências"),
+    VER_RESULTADO("Ver resultado"),
+    TENTAR_DE_NOVO("Tentar de novo"),
 }
 
 /** Sinal visual do estado: a tela traduz em ícone e cor; o texto sempre acompanha. */
@@ -51,8 +49,8 @@ data class ApresentacaoEstado(
 /**
  * Apresentação de um pedido conforme `mobile/design/textos.md` (F4 e E1.3).
  *
- * No rascunho, a RC-18 só distingue "sem documentos" de "com documentos" ([documentosDisponiveis]):
- * as situações "a conferir" e "pronto para verificar" dependem das rotas de extração da RC-19.
+ * No rascunho, distingue "sem documentos" de "com documentos" ([documentosDisponiveis]); a
+ * conferência da leitura (E3.2) fica só no desenho (#40).
  * `SEM_PENDENCIAS_IDENTIFICADAS` usa "Ver resultado" porque a submissão está fora do épico (#40).
  */
 fun apresentarEstado(estado: EstadoPedido, documentosDisponiveis: Int): ApresentacaoEstado = when (estado) {

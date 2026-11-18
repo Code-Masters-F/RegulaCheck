@@ -81,4 +81,24 @@ object IconesRc {
     val Voltar = icone("arrow-left", "m12 19-7-7 7-7", "M19 12H5")
     val Mais = icone("plus", "M5 12h14", "M12 5v14")
     val Recarregar = icone("rotate-ccw", "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", "M3 3v5h5")
+
+    // RC-19
+    /** Critério não verificável (Lucide circle-dashed). */
+    val NaoVerificavel = icone(
+        "circle-dashed",
+        "M10.1 2.182a10 10 0 0 1 3.8 0",
+        "M13.9 21.818a10 10 0 0 1-3.8 0",
+        "M17.609 3.721a10 10 0 0 1 2.69 2.7",
+        "M2.182 13.9a10 10 0 0 1 0-3.8",
+        "M20.279 17.609a10 10 0 0 1-2.7 2.69",
+        "M21.818 10.1a10 10 0 0 1 0 3.8",
+        "M3.721 6.391a10 10 0 0 1 2.7-2.69",
+        "M6.391 20.279a10 10 0 0 1-2.69-2.7",
+    )
+
+    /** Critério que não se aplica (Lucide circle-minus). */
+    val NaoSeAplica = icone("circle-minus", Circulo, "M8 12h8")
+
+    /** Verificar critérios (Lucide list-checks). */
+    val ListaVerificacao = icone("list-checks", "m3 17 2 2 4-4", "m3 7 2 2 4-4", "M13 6h8", "M13 12h8", "M13 18h8")
 }
