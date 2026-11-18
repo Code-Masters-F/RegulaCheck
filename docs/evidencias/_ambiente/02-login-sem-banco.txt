@@ -1,0 +1,2 @@
+{"codigo":"DEPENDENCIA_INDISPONIVEL","mensagem":"Servico temporariamente indisponivel. Tente novamente em instantes."}
+HTTP 503

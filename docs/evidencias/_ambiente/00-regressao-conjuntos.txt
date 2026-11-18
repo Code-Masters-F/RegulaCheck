@@ -1,0 +1,229 @@
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@6ab4ba9f{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@27ace0b1{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@6ab4ba9f{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@27ace0b1{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@5be254c9{HTTP/1.1, (http/1.1)}{127.0.0.1:49393}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@240f6c41{STARTING}[12.1.15,sto=0] @41ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49393 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=4
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=2
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=8
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@240f6c41{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@5be254c9{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@6ab4ba9f{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@27ace0b1{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@2cc03cd1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4e17913b{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@2cc03cd1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4e17913b{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@5016b0b8{HTTP/1.1, (http/1.1)}{127.0.0.1:49395}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@149c3204{STARTING}[12.1.15,sto=0] @8ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49395 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=2 documentos=1
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=5
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=2 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=2
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=2 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=2 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@149c3204{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@5016b0b8{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@2cc03cd1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4e17913b{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@78525ef9{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2d0ecb24{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@78525ef9{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2d0ecb24{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@4d654825{HTTP/1.1, (http/1.1)}{127.0.0.1:49397}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@3bfc6a5e{STARTING}[12.1.15,sto=0] @6ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49397 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=7
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@3bfc6a5e{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@4d654825{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@78525ef9{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2d0ecb24{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@107f4980{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@75a118e6{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@107f4980{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@75a118e6{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@3616218a{HTTP/1.1, (http/1.1)}{127.0.0.1:49399}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@1d540566{STARTING}[12.1.15,sto=0] @6ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49399 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=2 documentos=1
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=4
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=2 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=3 naoVerificaveis=2
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=2 resultadoGeral=COM_PENDENCIAS pendentes=3 naoVerificaveis=2 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@1d540566{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@3616218a{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@107f4980{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@75a118e6{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@6c302a1d{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@33a3c44a{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@6c302a1d{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@33a3c44a{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@366884e0{HTTP/1.1, (http/1.1)}{127.0.0.1:49401}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@93f432e{STARTING}[12.1.15,sto=0] @6ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49401 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=7
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=REQUER_CONFERENCIA pendentes=0 naoVerificaveis=3
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=REQUER_CONFERENCIA pendentes=0 naoVerificaveis=3 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@93f432e{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@366884e0{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@6c302a1d{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@33a3c44a{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@7479b626{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@e8ea697{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@7479b626{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@e8ea697{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@74335f39{HTTP/1.1, (http/1.1)}{127.0.0.1:49403}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@74dbb1ee{STARTING}[12.1.15,sto=0] @5ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49403 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=7
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=2
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=2 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@74dbb1ee{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@74335f39{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@7479b626{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@e8ea697{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@2e060819{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@42c28305{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@2e060819{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@42c28305{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@eb71cc0{HTTP/1.1, (http/1.1)}{127.0.0.1:49405}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@7d199c68{STARTING}[12.1.15,sto=0] @6ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49405 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=8
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@7d199c68{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@eb71cc0{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@2e060819{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@42c28305{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@3e17a0a1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@790a251b{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@3e17a0a1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@790a251b{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@5b1f428f{HTTP/1.1, (http/1.1)}{127.0.0.1:49407}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@4d8286c4{STARTING}[12.1.15,sto=0] @5ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49407 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=4 documentos=3
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=10
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=4 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=4 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@4d8286c4{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@5b1f428f{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@3e17a0a1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@790a251b{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@57402ba1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@56913163{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@57402ba1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@56913163{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@e97b048{HTTP/1.1, (http/1.1)}{127.0.0.1:49409}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@702b06fb{STARTING}[12.1.15,sto=0] @5ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49409 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:40 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:40 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=8
+2026-11-18 16:16:40 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0
+2026-11-18 16:16:40 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:40 INFO Server - Stopped oejs.Server@702b06fb{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:40 INFO AbstractConnector - Stopped oejs.ServerConnector@e97b048{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:40 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@57402ba1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@56913163{STOPPED}}
+2026-11-18 16:16:40 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:40 INFO ContextHandler - Started oeje10s.ServletContextHandler@3cbf1ba4{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@10bea4{STARTED}}
+2026-11-18 16:16:40 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@3cbf1ba4{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@10bea4{STARTED}}
+2026-11-18 16:16:40 INFO AbstractConnector - Started oejs.ServerConnector@7e2c64{HTTP/1.1, (http/1.1)}{127.0.0.1:49411}
+2026-11-18 16:16:40 INFO Server - Started oejs.Server@7c1e32c9{STARTING}[12.1.15,sto=0] @5ms
+2026-11-18 16:16:40 INFO Servidor - API iniciada em 127.0.0.1:49411 (GET /health)
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:40 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:41 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=8
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:41 INFO Server - Stopped oejs.Server@7c1e32c9{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:41 INFO AbstractConnector - Stopped oejs.ServerConnector@7e2c64{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:41 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@3cbf1ba4{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@10bea4{STOPPED}}
+2026-11-18 16:16:41 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:41 INFO ContextHandler - Started oeje10s.ServletContextHandler@2b8bd798{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4c18621b{STARTED}}
+2026-11-18 16:16:41 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@2b8bd798{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4c18621b{STARTED}}
+2026-11-18 16:16:41 INFO AbstractConnector - Started oejs.ServerConnector@12210c56{HTTP/1.1, (http/1.1)}{127.0.0.1:49413}
+2026-11-18 16:16:41 INFO Server - Started oejs.Server@39c385d6{STARTING}[12.1.15,sto=0] @5ms
+2026-11-18 16:16:41 INFO Servidor - API iniciada em 127.0.0.1:49413 (GET /health)
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:41 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=8
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:41 INFO Server - Stopped oejs.Server@39c385d6{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:41 INFO AbstractConnector - Stopped oejs.ServerConnector@12210c56{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:41 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@2b8bd798{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4c18621b{STOPPED}}
+2026-11-18 16:16:41 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:41 INFO ContextHandler - Started oeje10s.ServletContextHandler@ebd06a9{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@16c587de{STARTED}}
+2026-11-18 16:16:41 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@ebd06a9{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@16c587de{STARTED}}
+2026-11-18 16:16:41 INFO AbstractConnector - Started oejs.ServerConnector@7b9e66c1{HTTP/1.1, (http/1.1)}{127.0.0.1:49415}
+2026-11-18 16:16:41 INFO Server - Started oejs.Server@4cdb8504{STARTING}[12.1.15,sto=0] @6ms
+2026-11-18 16:16:41 INFO Servidor - API iniciada em 127.0.0.1:49415 (GET /health)
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:41 INFO Server - Stopped oejs.Server@4cdb8504{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:41 INFO AbstractConnector - Stopped oejs.ServerConnector@7b9e66c1{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:41 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@ebd06a9{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@16c587de{STOPPED}}
+2026-11-18 16:16:41 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:41 INFO ContextHandler - Started oeje10s.ServletContextHandler@11f406f8{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@987455b{STARTED}}
+2026-11-18 16:16:41 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@11f406f8{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@987455b{STARTED}}
+2026-11-18 16:16:41 INFO AbstractConnector - Started oejs.ServerConnector@4cd11ffe{HTTP/1.1, (http/1.1)}{127.0.0.1:49417}
+2026-11-18 16:16:41 INFO Server - Started oejs.Server@622fdb81{STARTING}[12.1.15,sto=0] @5ms
+2026-11-18 16:16:41 INFO Servidor - API iniciada em 127.0.0.1:49417 (GET /health)
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=2 documentos=1
+2026-11-18 16:16:41 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=4
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=2 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=3 naoVerificaveis=2
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=2 resultadoGeral=COM_PENDENCIAS pendentes=3 naoVerificaveis=2 duracaoMs=0
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=1
+2026-11-18 16:16:41 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=2 decisoes=5
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=2
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=2 revisao=3 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=2 duracaoMs=0
+2026-11-18 16:16:41 INFO Server - Stopped oejs.Server@622fdb81{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:41 INFO AbstractConnector - Stopped oejs.ServerConnector@4cd11ffe{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:41 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@11f406f8{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@987455b{STOPPED}}
+2026-11-18 16:16:41 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:41 INFO ContextHandler - Started oeje10s.ServletContextHandler@3f702946{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@42b6d0cc{STARTED}}
+2026-11-18 16:16:41 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@3f702946{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@42b6d0cc{STARTED}}
+2026-11-18 16:16:41 INFO AbstractConnector - Started oejs.ServerConnector@1000d54d{HTTP/1.1, (http/1.1)}{127.0.0.1:49419}
+2026-11-18 16:16:41 INFO Server - Started oejs.Server@3f4f5330{STARTING}[12.1.15,sto=0] @4ms
+2026-11-18 16:16:41 INFO Servidor - API iniciada em 127.0.0.1:49419 (GET /health)
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:41 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=1 decisoes=8
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=COM_PENDENCIAS pendentes=1 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=4 documentos=2
+2026-11-18 16:16:41 INFO ConferenciaService - Conferencia atualizada. solicitacaoId=1 extracaoId=2 decisoes=9
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=4 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=2 revisao=4 resultadoGeral=SEM_PENDENCIAS_IDENTIFICADAS pendentes=0 naoVerificaveis=0 duracaoMs=0
+2026-11-18 16:16:41 INFO Server - Stopped oejs.Server@3f4f5330{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:41 INFO AbstractConnector - Stopped oejs.ServerConnector@1000d54d{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:41 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@3f702946{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@42b6d0cc{STOPPED}}
+2026-11-18 16:16:41 INFO Server - jetty-12.1.15; built: 2026-11-05T01:04:58.520Z; git: 770f5e4d1c39673d6356163118a1e6bf1117ced3; jvm 25.0.2+10-LTS
+2026-11-18 16:16:41 INFO ContextHandler - Started oeje10s.ServletContextHandler@3a22bad6{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@56afdf9a{STARTED}}
+2026-11-18 16:16:41 INFO ServletContextHandler - Started oeje10s.ServletContextHandler@3a22bad6{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@56afdf9a{STARTED}}
+2026-11-18 16:16:41 INFO AbstractConnector - Started oejs.ServerConnector@57594008{HTTP/1.1, (http/1.1)}{127.0.0.1:49421}
+2026-11-18 16:16:41 INFO Server - Started oejs.Server@64fe9da7{STARTING}[12.1.15,sto=0] @8ms
+2026-11-18 16:16:41 INFO Servidor - API iniciada em 127.0.0.1:49421 (GET /health)
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=1 duracaoMs=1
+2026-11-18 16:16:41 INFO AutenticacaoService - Login resultado=SUCESSO usuarioId=2 duracaoMs=1
+2026-11-18 16:16:41 INFO ExtracaoService - Leitura simulada gravada. solicitacaoId=1 revisao=3 documentos=2
+2026-11-18 16:16:41 INFO AvaliacaoService - Criterios avaliados. solicitacaoId=1 revisao=3 protocoloId=PROTOCOLO-ACADEMICO-FICTICIO-v0.1 resultadoGeral=REQUER_CONFERENCIA pendentes=0 naoVerificaveis=6
+2026-11-18 16:16:41 INFO AnaliseService - Analise gravada. solicitacaoId=1 analiseId=1 revisao=3 resultadoGeral=REQUER_CONFERENCIA pendentes=0 naoVerificaveis=6 duracaoMs=0
+2026-11-18 16:16:41 INFO Server - Stopped oejs.Server@64fe9da7{STOPPING}[12.1.15,sto=0]
+2026-11-18 16:16:41 INFO AbstractConnector - Stopped oejs.ServerConnector@57594008{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-11-18 16:16:41 INFO ServletContextHandler - Stopped oeje10s.ServletContextHandler@3a22bad6{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@56afdf9a{STOPPED}}
+exit=0
