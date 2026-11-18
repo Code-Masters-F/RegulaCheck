@@ -73,7 +73,7 @@ class HigieneDeLogGeralTest {
             }
             Dependencias comFalha = new Dependencias(new UsuariosQueFalham(), cenario.sessoes, cenario.protocolos,
                     cenario.solicitacoes, cenario.documentos, cenario.extracoes, cenario.conferencias,
-                    cenario.analises, cenario.capturas, cenario.submissoes,
+                    cenario.analises, cenario.capturas, cenario.submissoes, cenario.indicadores,
                     new br.com.regulacheck.integracao.extracao.LeitorSimulado(), cenario.relogio);
             try (ServidorDeTeste api = ServidorDeTeste.iniciar(comFalha)) {
                 Resposta erro = api.postJson("/auth/login",

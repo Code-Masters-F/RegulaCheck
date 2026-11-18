@@ -24,6 +24,8 @@ import br.com.regulacheck.extracao.controller.ConferenciaController;
 import br.com.regulacheck.extracao.controller.ExtracaoController;
 import br.com.regulacheck.extracao.service.ConferenciaService;
 import br.com.regulacheck.extracao.service.ExtracaoService;
+import br.com.regulacheck.indicador.controller.IndicadorController;
+import br.com.regulacheck.indicador.service.IndicadorService;
 import br.com.regulacheck.iot.controller.CapturaController;
 import br.com.regulacheck.iot.controller.LeituraSensorController;
 import br.com.regulacheck.iot.service.CapturaService;
@@ -166,6 +168,9 @@ public final class Composicao {
                         new SubmissaoController(new SubmissaoService(dependencias.submissoes(),
                                 dependencias.relogio()))), multipart,
                 Perfil.PACIENTE);
+        // RC-20: protocolo e indicadores agregados, somente ADMINISTRADOR (paciente 403 antes do controller).
+        rotas.registrar("/admin/indicadores", new IndicadorController(new IndicadorService(dependencias.indicadores(),
+                dependencias.protocolos(), dependencias.relogio())), Perfil.ADMINISTRADOR);
         // Telemetria do simulador (RC-21): so a chave X-Chave-Simulador, so esta rota.
         rotas.registrarTelemetria("/sessoes-captura/*", new LeituraSensorController(capturas));
         extensao.accept(rotas);

@@ -7,9 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import br.com.regulacheck.app.api.ErroApi
+import br.com.regulacheck.app.sessao.PERFIL_ADMINISTRADOR
 import br.com.regulacheck.app.ui.resultado.DetalhePendencia
 
-/** Telas do app (navegação sem biblioteca, #40): RC-18 e RC-19. */
+/** Telas do app (navegação sem biblioteca, #40): RC-18, RC-19 e RC-20. */
 sealed interface Tela {
     /** E1.1; com [sessaoExpirada], mostra o aviso de E1.4 acima do formulário. */
     data class Login(val sessaoExpirada: Boolean = false) : Tela
@@ -38,7 +39,18 @@ sealed interface Tela {
 
     /** E3.4 Detalhe da pendência, com os dados da mesma análise já carregada (RC-19). */
     data class Pendencia(val detalhe: DetalhePendencia) : Tela
+
+    /** E4.2 Protocolo e indicadores: única tela do administrador (RC-20). */
+    data object Indicadores : Tela
 }
+
+/**
+ * Primeira tela de uma sessão aberta, pelo perfil (RC-20): administrador vai só a E4.2; qualquer
+ * outro perfil guardado (o login só guarda paciente ou administrador) vai a "Meus pedidos". A API
+ * continua sendo a proteção: cada rota recusa o perfil errado com 403.
+ */
+fun telaDaSessao(perfil: String): Tela =
+    if (perfil == PERFIL_ADMINISTRADOR) Tela.Indicadores else Tela.MeusPedidos
 
 /** Estado de uma tela que carrega dados da API (#40): usado por todas as telas com consulta. */
 sealed interface EstadoTela<out T> {

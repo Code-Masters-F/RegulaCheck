@@ -305,3 +305,54 @@ data class Origem(val pagina: Int? = null, val trecho: String? = null)
  */
 @Serializable
 data class ResumoSimulado(val texto: String, val origem: String, val simulado: Boolean = true)
+
+// RC-20 (specs/024-app-admin-indicadores/contracts/admin-indicadores.md): só agregados, sem dado de pessoa.
+
+/**
+ * Resposta de `GET /admin/indicadores` (só administrador).
+ *
+ * @property pedidosEmFalhaAnalise pedidos cujo estado atual é falha na análise (contados à parte:
+ * a análise que falha não é gravada).
+ */
+@Serializable
+data class Indicadores(
+    val dadosSinteticos: Boolean = true,
+    val consultadoEm: String? = null,
+    val protocolosAtivos: List<ProtocoloIndicadores> = emptyList(),
+    val totalPedidos: Long,
+    val analisesPorResultado: AnalisesPorResultado,
+    val pedidosEmFalhaAnalise: Long = 0,
+    val regrasComMaisPendencias: List<RegraComPendencias> = emptyList(),
+)
+
+/** Protocolo ativo com as regras na ordem do protocolo. */
+@Serializable
+data class ProtocoloIndicadores(
+    val protocoloId: String,
+    val identificador: String,
+    val versao: String,
+    val quantidadeRegras: Int,
+    val regras: List<RegraProtocolo> = emptyList(),
+)
+
+/** Regra do protocolo: código e nome curto ([descricao]). */
+@Serializable
+data class RegraProtocolo(val codigo: String, val descricao: String)
+
+/** Análises vigentes por resultado geral. */
+@Serializable
+data class AnalisesPorResultado(
+    val semPendenciasIdentificadas: Long = 0,
+    val comPendencias: Long = 0,
+    val requerConferencia: Long = 0,
+)
+
+/** Regra com pendências nas análises vigentes; [total] = pendentes + não verificáveis. */
+@Serializable
+data class RegraComPendencias(
+    val codigo: String,
+    val descricao: String,
+    val total: Long,
+    val pendentes: Long = 0,
+    val naoVerificaveis: Long = 0,
+)

@@ -38,8 +38,8 @@ object Textos {
     const val SEM_CONEXAO_TEXTO = "Verifique sua rede e tente de novo."
     const val LOGIN_DADOS_RECUSADOS = "Confira o e-mail e a senha e tente de novo."
 
-    /** RC-18: recusa de conta que não é de paciente (#41). */
-    const val CONTA_NAO_PACIENTE = "Esta conta não é de paciente. Entre com uma conta de paciente."
+    /** RC-18/RC-20: recusa de conta com perfil que o app não atende (nem paciente nem administrador). */
+    const val PERFIL_NAO_SUPORTADO = "Esta conta não pode ser usada neste aplicativo. Entre com uma conta de paciente ou de administrador."
 
     // E1.4 Sessão expirada (mostrada no próprio login)
     const val SESSAO_EXPIRADA_TITULO = "Sua sessão terminou. Entre novamente."
@@ -258,4 +258,30 @@ object Textos {
     const val REENVIO_INDISPONIVEL = "O reenvio de arquivos ainda não está disponível nesta versão do app."
 
     const val CONFERENCIA_SO_DESENHO_CURTO = "Conferir a leitura está disponível só no desenho nesta versão."
+
+    // E4.2 Protocolo e indicadores (administrador, RC-20). Textos de mobile/design/textos.md; os
+    // marcados "criado" não têm quadro e estão registrados lá.
+    const val INDICADORES_TITULO = "Protocolo e indicadores"
+    const val PROTOCOLO_ATIVO = "Protocolo ativo"
+    fun protocoloAtivoResumo(versao: String, regras: Int) =
+        "Protocolo acadêmico fictício · versão $versao · $regras ${if (regras == 1) "regra" else "regras"}"
+    fun regraLinha(codigo: String, descricao: String) = "$codigo · $descricao"
+    const val TOTAL_PEDIDOS = "Total de pedidos"
+    const val ANALISES_POR_RESULTADO = "Análises por resultado"
+    const val RESULTADO_SEM_PENDENCIAS = "Sem pendências identificadas"
+    const val RESULTADO_COM_PENDENCIAS = "Com pendências"
+    const val RESULTADO_CONFIRA = "Confira a leitura"
+    const val RESULTADO_FALHA = "Falha"
+    const val REGRAS_MAIS_PENDENCIAS = "Regras com mais pendências"
+    const val INDICADORES_NOTA = "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos."
+    const val INDICADORES_CARREGANDO = "Carregando indicadores…"
+    const val INDICADORES_ERRO = "Não foi possível carregar os indicadores."
+
+    /** Criado (RC-20): diz o que cada número conta, já que a análise que falha não é gravada. */
+    const val INDICADORES_BASE =
+        "Contam a verificação atual de cada pedido. \"Falha\" conta pedidos cuja última verificação não foi concluída."
+    /** Criado (RC-20): estados sem quadro. */
+    const val SEM_PROTOCOLO_ATIVO = "Nenhum protocolo ativo."
+    const val SEM_PENDENCIAS_REGISTRADAS = "Nenhuma pendência registrada."
+    fun quantidadePendencias(total: Long) = "$total ${if (total == 1L) "pendência" else "pendências"}"
 }

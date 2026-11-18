@@ -5,6 +5,7 @@ import br.com.regulacheck.auth.repository.SessaoRepository;
 import br.com.regulacheck.documento.repository.DocumentoRepository;
 import br.com.regulacheck.extracao.repository.ConferenciaRepository;
 import br.com.regulacheck.extracao.repository.ExtracaoRepository;
+import br.com.regulacheck.indicador.repository.IndicadorRepository;
 import br.com.regulacheck.integracao.extracao.LeitorDeDocumento;
 import br.com.regulacheck.iot.repository.CapturaRepository;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepository;
@@ -28,11 +29,12 @@ import java.time.Clock;
  * @param analises persistencia das analises, do historico e da analise em andamento (RC-13)
  * @param capturas persistencia das sessoes de captura e das leituras dos sensores simulados (RC-21/RC-22)
  * @param submissoes persistencia da submissao simulada (RC-17)
+ * @param indicadores contagens agregadas para o administrador, somente leitura (RC-20)
  * @param leitor leitor de documentos (simulado hoje; RC-10)
  * @param relogio relogio da aplicacao
  */
 public record Dependencias(UsuarioRepository usuarios, SessaoRepository sessoes, ProtocoloRepository protocolos,
         SolicitacaoRepository solicitacoes, DocumentoRepository documentos, ExtracaoRepository extracoes,
         ConferenciaRepository conferencias, AnaliseRepository analises, CapturaRepository capturas,
-        SubmissaoRepository submissoes, LeitorDeDocumento leitor, Clock relogio) {
+        SubmissaoRepository submissoes, IndicadorRepository indicadores, LeitorDeDocumento leitor, Clock relogio) {
 }
