@@ -168,20 +168,48 @@ class EnviarDocumentoEndpointTest {
         }
     }
 
+    /**
+     * RC-16 mudou a regra da RC-08: so o pedido submetido em simulacao recusa a inclusao (como em remover e
+     * substituir, RC-09); nada e gravado.
+     */
     @Test
-    void pedidoForaDeRascunhoEh409SemGravarNada() throws Exception {
+    void pedidoSubmetidoEh409SemGravarNada() throws Exception {
         try (CenarioDocumento c = CenarioDocumento.iniciar()) {
             String pedido = c.criarRascunho(c.authA);
-            c.cenario.solicitacoes.forcarEstado(Long.parseLong(pedido), EstadoSolicitacao.PROCESSANDO);
+            c.cenario.solicitacoes.forcarEstado(Long.parseLong(pedido), EstadoSolicitacao.SUBMETIDA_SIMULACAO);
 
             Resposta r = c.enviar(c.authA, pedido, "ENCAMINHAMENTO", "a.pdf", ArquivosDeTeste.pdf(1), null);
 
             assertEquals(409, r.status());
             assertEquals("CONFLITO_ESTADO", r.json().get("codigo").asText());
+            assertEquals("Este pedido já foi submetido e só pode ser consultado.", r.json().get("mensagem").asText());
             assertEquals(0, c.arquivosGuardados());
             assertEquals(0, c.arquivosNaQuarentena());
             assertEquals(1, c.cenario.solicitacoes.buscarDaPaciente(Long.parseLong(pedido), 1).orElseThrow()
                     .revisaoAtual());
+        }
+    }
+
+    /**
+     * RC-16: fora de rascunho e nao submetido (inclusive {@code PROCESSANDO}), a inclusao e aceita, cria a revisao
+     * seguinte e nao muda o estado; uma analise em andamento e descartada pela verificacao de revisao da RC-13.
+     */
+    @Test
+    void pedidoForaDeRascunhoNaoSubmetidoAceitaInclusaoSemMudarEstado() throws Exception {
+        try (CenarioDocumento c = CenarioDocumento.iniciar()) {
+            for (EstadoSolicitacao estado : List.of(EstadoSolicitacao.PROCESSANDO, EstadoSolicitacao.COM_PENDENCIAS,
+                    EstadoSolicitacao.REQUER_CONFERENCIA, EstadoSolicitacao.SEM_PENDENCIAS_IDENTIFICADAS,
+                    EstadoSolicitacao.FALHA_ANALISE)) {
+                String pedido = c.criarRascunho(c.authA);
+                c.cenario.solicitacoes.forcarEstado(Long.parseLong(pedido), estado);
+
+                Resposta r = c.enviar(c.authA, pedido, "ENCAMINHAMENTO", "a.pdf", ArquivosDeTeste.pdf(1), null);
+
+                assertEquals(201, r.status(), estado + ": " + r.corpo());
+                var depois = c.cenario.solicitacoes.buscarDaPaciente(Long.parseLong(pedido), 1).orElseThrow();
+                assertEquals(2, depois.revisaoAtual(), estado.name());
+                assertEquals(estado, depois.estado(), "o envio nao muda o estado");
+            }
         }
     }
 

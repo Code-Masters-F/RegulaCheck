@@ -27,7 +27,8 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | POST   | /solicitacoes/{id}/analises                           | Executa e grava as regras (RC-13, implementada; resumo de IA na RC-14) |
 | GET    | /solicitacoes/{id}/analises                           | Consulta resultados e histórico (RC-13, implementada) |
 | POST   | /solicitacoes/{id}/analises/{analiseId}/resumo        | Repete resumo em caso de falha             |
-| POST   | /solicitacoes/{id}/submissoes-simuladas               | Conclui apenas no simulador                |
+| POST   | /solicitacoes/{id}/submissoes-simuladas               | Conclui **só no simulador** o pedido com análise vigente sem pendências nem não verificáveis: 201 com o comprovante (referência `SIM-…`, data, serviço, versão analisada, destaque "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS") e pedido em `SUBMETIDA_SIMULACAO`; 200 com o mesmo comprovante ao repetir; 409 se não estiver pronto (restrição do simulador, não impede atendimento) (**implementada**, RC-17) |
+| GET    | /solicitacoes/{id}/submissoes-simuladas               | Consulta o comprovante da submissão simulada; 404 idêntico se o pedido não foi submetido, não existe ou é de outra paciente (**implementada**, RC-17) |
 | POST   | /solicitacoes/{id}/sessoes-captura                    | A paciente abre a sessão de captura (estação **simulada**) do próprio pedido: 201 nova; 200 se já havia uma aberta (no máximo uma por pedido); 409 se submetido. Não muda estado nem revisão (**implementada**, RC-21) |
 | POST   | /sessoes-captura/{id}/leituras                        | O **simulador** (`X-Chave-Simulador`) envia uma leitura de luminosidade (lux) ou distância (cm) de uma sessão aberta: 201; 404 sessão inexistente ou encerrada (antes de ler o corpo); 400 leitura inválida (**implementada**, RC-21) |
 | GET    | /solicitacoes/{id}/leituras                           | Paciente consulta a telemetria própria: dois sensores com situação (faixa demonstrativa, desatualizada após 60 s, sem leitura) e orientação; leituras simuladas, sem calibração, não comprovam legibilidade nem bloqueiam envio (**implementada**, RC-22) |
@@ -41,7 +42,7 @@ As rotas são uma proposta para manter um domínio só e orientar a implementaç
 | `POST/GET /solicitacoes/{id}/documentos[/{docId}]` (RC-08) e `PUT/DELETE …/documentos/{docId}` (RC-09), implementadas | PACIENTE | sim (documento **e** solicitação) |
 | `POST/GET /solicitacoes/{id}/extracoes` (RC-10) e `GET/PUT …/extracoes/{extracaoId}/conferencia` (RC-11), implementadas | PACIENTE | sim (pedido **e** leitura) |
 | `POST/GET /solicitacoes/{id}/analises`, `POST …/analises/{analiseId}/resumo` | PACIENTE | sim |
-| `POST /solicitacoes/{id}/submissoes-simuladas` | PACIENTE | sim |
+| `POST/GET /solicitacoes/{id}/submissoes-simuladas` (RC-17, implementadas) | PACIENTE | sim (administrador e chave do simulador recebem 403) |
 | `POST /solicitacoes/{id}/sessoes-captura` e `GET /solicitacoes/{id}/leituras` (RC-21/RC-22, implementadas) | PACIENTE | sim (administrador e chave do simulador recebem 403) |
 | `GET /protocolos` | PACIENTE | não se aplica (protocolo acadêmico, sem dado de paciente). Decisão da RC-07: o catálogo serve ao formulário da paciente; o administrador não o usa nesta fase e recebe 403 |
 | `GET /admin/indicadores` | ADMINISTRADOR | não se aplica (somente agregados, sem dado identificável) |

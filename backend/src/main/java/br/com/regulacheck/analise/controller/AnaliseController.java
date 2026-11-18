@@ -2,9 +2,9 @@ package br.com.regulacheck.analise.controller;
 
 import br.com.regulacheck.analise.dto.AnaliseResponse;
 import br.com.regulacheck.analise.dto.HistoricoAnalisesResponse;
-import br.com.regulacheck.analise.entity.HistoricoDeAnalises;
 import br.com.regulacheck.analise.service.AnaliseEmAndamentoException;
 import br.com.regulacheck.analise.service.AnaliseService;
+import br.com.regulacheck.analise.service.AnaliseService.HistoricoComparado;
 import br.com.regulacheck.analise.service.AnaliseService.ResultadoAnalise;
 import br.com.regulacheck.auth.autorizacao.Erros;
 import br.com.regulacheck.auth.controller.AutenticacaoFiltro;
@@ -15,6 +15,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.regex.Pattern;
 
 /**
@@ -85,18 +86,21 @@ public class AnaliseController extends ServletJson {
             return;
         }
         int status = resultado.criada() ? HttpServletResponse.SC_CREATED : HttpServletResponse.SC_OK;
-        responderJson(resposta, status, AnaliseResponse.de(resultado.analise()));
+        responderJson(resposta, status, AnaliseResponse.de(resultado.analise(), resultado.comparacao()));
     }
 
-    /** Consulta o historico: todas as analises, a vigente marcada e a analise em andamento, se houver. */
+    /**
+     * Consulta o historico: todas as analises, a vigente marcada, a comparacao de cada uma com a anterior (RC-16) e a
+     * analise em andamento, se houver.
+     */
     @Override
     protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta) throws IOException {
         long id = idDe(requisicao);
         SessaoAutenticada sessao = AutenticacaoFiltro.sessaoDe(requisicao);
-        HistoricoDeAnalises historico = servico.consultar(sessao, id);
-        boolean interrompida = historico.analiseIniciadaEm() != null
-                && servico.interrompida(historico.analiseIniciadaEm());
-        responderJson(resposta, HttpServletResponse.SC_OK, HistoricoAnalisesResponse.de(id, historico,
+        HistoricoComparado consulta = servico.consultar(sessao, id);
+        Instant iniciadaEm = consulta.historico().analiseIniciadaEm();
+        boolean interrompida = iniciadaEm != null && servico.interrompida(iniciadaEm);
+        responderJson(resposta, HttpServletResponse.SC_OK, HistoricoAnalisesResponse.de(id, consulta,
                 AnaliseService.LIMITE_EM_ANDAMENTO, interrompida, AnaliseService.LIMITE_HISTORICO));
     }
 

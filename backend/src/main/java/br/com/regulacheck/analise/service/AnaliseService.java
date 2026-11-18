@@ -16,6 +16,9 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +41,9 @@ import org.slf4j.LoggerFactory;
  * Assim, um resultado calculado sobre documentos ou conferencia antigos nunca vira vigente, um segundo pedido
  * simultaneo nao inicia outra analise e uma analise que trava libera o pedido no maximo ao fim do limite.
  *
+ * <p>Toda analise devolvida vem com a {@linkplain ComparacaoDeAnalises comparacao} com a analise registrada
+ * imediatamente antes (RC-16), calculada a partir do historico gravado, sem alterar nenhuma analise.
+ *
  * <p>Nada aqui chama IA nem gera resumo (RC-14). O conteudo dos documentos e dado nao confiavel: so identificadores,
  * codigos e contagens vao para o log. Este servico nao guarda dados de requisicao em campos.
  */
@@ -48,6 +54,12 @@ public class AnaliseService {
 
     /** Quantas analises, das mais recentes, a consulta do historico devolve. */
     public static final int LIMITE_HISTORICO = 50;
+
+    /**
+     * Quantas analises ler para comparar a analise vigente: ela e sempre a mais recente do pedido (uma analise nova
+     * tira a vigencia da anterior, e nenhuma volta a ser vigente), entao basta ela e a anterior.
+     */
+    private static final int JANELA_COMPARACAO = 2;
 
     private static final Logger LOG = LoggerFactory.getLogger(AnaliseService.class);
 
@@ -60,8 +72,32 @@ public class AnaliseService {
      *
      * @param analise analise gravada agora ou a vigente ja existente
      * @param criada {@code true} se esta chamada gravou a analise; {@code false} se devolveu a vigente
+     * @param comparacao comparacao com a analise registrada antes (RC-16); {@code null} na primeira analise do pedido
+     *     ou entre versoes de protocolo diferentes
      */
-    public record ResultadoAnalise(Analise analise, boolean criada) {
+    public record ResultadoAnalise(Analise analise, boolean criada, ComparacaoDeAnalises comparacao) {
+    }
+
+    /**
+     * Resultado de {@link #consultar}: o historico e a comparacao de cada analise com a imediatamente anterior.
+     *
+     * @param historico historico (ate {@link #LIMITE_HISTORICO} analises, da mais recente para a mais antiga)
+     * @param comparacoes comparacao por id de analise; analise sem anterior comparavel nao tem entrada
+     */
+    public record HistoricoComparado(HistoricoDeAnalises historico, Map<Long, ComparacaoDeAnalises> comparacoes) {
+
+        /** Copia o mapa. */
+        public HistoricoComparado {
+            comparacoes = Map.copyOf(comparacoes);
+        }
+
+        /**
+         * @param analise analise do historico
+         * @return a comparacao dela com a anterior, ou {@code null} se nao ha
+         */
+        public ComparacaoDeAnalises comparacaoDe(Analise analise) {
+            return comparacoes.get(analise.id());
+        }
     }
 
     /**
@@ -81,7 +117,7 @@ public class AnaliseService {
      *
      * @param sessao paciente autenticada
      * @param solicitacaoId pedido
-     * @return a analise gravada agora ({@code criada}) ou a vigente ja existente
+     * @return a analise gravada agora ({@code criada}) ou a vigente ja existente, com a comparacao com a anterior
      * @throws ExcecaoNegocio 404 {@code NAO_ENCONTRADO} se o pedido nao existe ou e de outra paciente (resposta
      *     identica); 409 {@code CONFLITO_ESTADO} se o pedido foi submetido, se nao ha leitura da versao atual, se
      *     documentos ou conferencia mudaram durante a analise ou se ela passou do limite e foi assumida por outra;
@@ -103,7 +139,7 @@ public class AnaliseService {
             case EM_ANDAMENTO -> throw new AnaliseEmAndamentoException(
                     Duration.between(agora, inicio.instante().plus(LIMITE_EM_ANDAMENTO)).toSeconds());
             case VIGENTE -> {
-                return new ResultadoAnalise(inicio.analise(), false);
+                return comComparacao(pacienteId, solicitacaoId, inicio.analise(), false);
             }
             case SEM_LEITURA_ATUAL -> throw new ExcecaoNegocio(409, "CONFLITO_ESTADO",
                     "Leia os documentos antes de pedir a análise.");
@@ -130,7 +166,7 @@ public class AnaliseService {
                         gravada.resultadoGeral(), contar(gravada, Resultado.PENDENTE),
                         contar(gravada, Resultado.NAO_VERIFICAVEL),
                         Duration.between(iniciadaEm, gravada.executadaEm()).toMillis());
-                yield new ResultadoAnalise(gravada, true);
+                yield comComparacao(pacienteId, solicitacaoId, gravada, true);
             }
             case ENTRADA_MUDOU -> {
                 LOG.info("Analise descartada: documentos ou conferencia mudaram durante a analise. solicitacaoId={} "
@@ -149,17 +185,30 @@ public class AnaliseService {
 
     /**
      * Devolve o historico de analises do pedido da paciente, da mais recente para a mais antiga (ate
-     * {@link #LIMITE_HISTORICO}), com o retrato do pedido para dizer se ha analise em andamento.
+     * {@link #LIMITE_HISTORICO}), com o retrato do pedido para dizer se ha analise em andamento e a comparacao de cada
+     * analise com a imediatamente anterior (RC-16). Le uma analise a mais que o limite para que a mais antiga
+     * devolvida tambem tenha com quem ser comparada; essa analise extra nao e devolvida.
      *
      * @param sessao paciente autenticada
      * @param solicitacaoId pedido
-     * @return o historico (lista vazia se o pedido nunca foi analisado)
+     * @return o historico (lista vazia se o pedido nunca foi analisado) e as comparacoes
      * @throws ExcecaoNegocio 404 se o pedido nao existe ou e de outra paciente (resposta identica); 503 se o banco
      *     estiver indisponivel
      */
-    public HistoricoDeAnalises consultar(SessaoAutenticada sessao, long solicitacaoId) {
-        return analises.historico(sessao.usuarioId(), solicitacaoId, LIMITE_HISTORICO)
+    public HistoricoComparado consultar(SessaoAutenticada sessao, long solicitacaoId) {
+        HistoricoDeAnalises lido = analises.historico(sessao.usuarioId(), solicitacaoId, LIMITE_HISTORICO + 1)
                 .orElseThrow(() -> Propriedade.naoEncontrada(sessao));
+        List<Analise> todas = lido.analises();
+        List<Analise> devolvidas = todas.size() > LIMITE_HISTORICO ? todas.subList(0, LIMITE_HISTORICO) : todas;
+        Map<Long, ComparacaoDeAnalises> comparacoes = new HashMap<>();
+        for (Analise analise : devolvidas) {
+            ComparacaoDeAnalises comparacao = ComparacaoDeAnalises.comAnterior(analise, todas);
+            if (comparacao != null) {
+                comparacoes.put(analise.id(), comparacao);
+            }
+        }
+        return new HistoricoComparado(new HistoricoDeAnalises(lido.estado(), lido.revisaoAtual(),
+                lido.analiseIniciadaEm(), devolvidas), comparacoes);
     }
 
     /**
@@ -213,6 +262,20 @@ public class AnaliseService {
             LOG.warn("Nao foi possivel encerrar a analise; o limite de tempo liberara o pedido. solicitacaoId={} "
                     + "tipo={}", solicitacaoId, falhaAoEncerrar.getClass().getSimpleName());
         }
+    }
+
+    /**
+     * Junta a comparacao com a analise registrada antes. A vigente e sempre a mais recente do pedido, entao basta ler
+     * as duas mais recentes; se outra analise tiver sido publicada nesse meio-tempo, a comparacao e feita pelo id e,
+     * se a analise ja nao estiver na janela, fica sem comparacao em vez de comparar com a errada. Se o banco cair
+     * nesta leitura, a analise ja esta gravada: a indisponibilidade e devolvida (sem fingir que nao ha anterior) e
+     * repetir o pedido devolve a vigente com a comparacao.
+     */
+    private ResultadoAnalise comComparacao(long pacienteId, long solicitacaoId, Analise analise, boolean criada) {
+        ComparacaoDeAnalises comparacao = analises.historico(pacienteId, solicitacaoId, JANELA_COMPARACAO)
+                .map(historico -> ComparacaoDeAnalises.comAnterior(analise, historico.analises()))
+                .orElse(null);
+        return new ResultadoAnalise(analise, criada, comparacao);
     }
 
     private static AnaliseParaGravar paraGravar(AvaliacaoDoPedido avaliacao) {

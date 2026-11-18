@@ -12,8 +12,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
- * US4 (FR-016, SC-006): pedido em submissao simulada e so para consulta; remover, substituir e excluir respondem o
- * conflito documentado e nada muda. <strong>Limitacao:</strong> nenhuma rota produz a submissao ainda, entao o
+ * US4 (FR-016, SC-006): pedido em submissao simulada e so para consulta; remover, substituir, excluir e (RC-16)
+ * incluir documento respondem o conflito documentado e nada muda. <strong>Limitacao:</strong> nenhuma rota produz a submissao ainda, entao o
  * estado e montado direto no dobro em memoria; isto nao e verificavel de ponta a ponta no Oracle.
  */
 class PedidoSubmetidoSomenteConsultaTest {
@@ -34,8 +34,9 @@ class PedidoSubmetidoSomenteConsultaTest {
             Resposta remover = c.remover(c.authA, pedido, doc);
             Resposta substituir = c.substituir(c.authA, pedido, doc, "OUTRO", "x.pdf", ArquivosDeTeste.pdf(3), null);
             Resposta excluir = c.excluir(c.authA, pedido, "EXCLUIR");
+            Resposta incluir = c.enviar(c.authA, pedido, "OUTRO", "y.pdf", ArquivosDeTeste.pdf(4), null);
 
-            for (Resposta r : List.of(remover, substituir, excluir)) {
+            for (Resposta r : List.of(remover, substituir, excluir, incluir)) {
                 assertEquals(409, r.status(), r.corpo());
                 assertEquals("CONFLITO_ESTADO", r.json().get("codigo").asText());
                 assertEquals(MENSAGEM_SUBMETIDO, r.json().get("mensagem").asText());
