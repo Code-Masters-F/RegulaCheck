@@ -54,3 +54,22 @@ O ritmo das consultas (cerca de 4 s, sequenciais) se confirma pelo monitor da te
 - TalkBack lendo as regiões anunciadas (situação e orientação) e fonte ampliada na E4.1: fora do épico (#40).
 - 403, 404 e 409 da E4.1 com o backend real: só nos testes automatizados, porque exigiriam outra conta ou um pedido submetido.
 - Rotação da tela com a E4.1 aberta.
+
+## 5. Reconferência do logcat com o corpo da telemetria (T022, 18/11/2026, ~21:37 UTC)
+
+Feita depois que o SC-005 passou a incluir o corpo da telemetria (T021). Na conferência do passo 11, esses termos não tinham sido procurados.
+
+- **Ambiente**: emulador `emulator-5554` (1080 × 2400). APK da branch `023-app-android-condicoes-captura` no commit `3c4ee9a`, instalado com `adb install -r`. Backend com Oracle iniciado pelo responsável (`GET /health` → `{"status":"UP"}`). Simulador não usado. Conta `paciente.a@exemplo.invalid`, digitada por `adb shell input`. Logcat limpo (`logcat -c`) antes de abrir o app.
+- **Percurso**: login → pedido 119 → "Documentos" → "Anexar documento" → "Outro documento" → "Fotografar". A E4.1 ficou aberta cerca de 22 s, o que dá várias consultas no intervalo de 4 s. Ela mostrou a telemetria recebida da API: os dois sensores "Desatualizada" (110 lux, 58 cm), a orientação da API "Leitura antiga. Verifique se a estação de captura está ligada…", "Última leitura há 1 h · sensor simulado" e "Escolher a foto mesmo assim". Isso confirma que corpos de telemetria chegaram ao app durante a busca.
+- **Busca** em `logcat -d`, sem diferenciar maiúsculas: 1.891 linhas no total, 106 do processo do app (pid 32608).
+
+| Termos procurados | Processo do app | Logcat inteiro |
+|---|---|---|
+| Corpo da telemetria: `consultadaEm`, `ultimaLeitura`, `medidaEm`, `prazoAtualidadeSegundos`, `DENTRO_DA_FAIXA`, `ABAIXO_DA_FAIXA`, `ACIMA_DA_FAIXA`, `DESATUALIZADA`, `SEM_LEITURA`, `VERIFICAR_ESTACAO`, `LUMINOSIDADE`, `DISTANCIA`, `"sensores"`, "Leitura antiga" | 0 | 0 |
+| Rotas: `/leituras`, `sessoes-captura` | 0 | 0 |
+| `Bearer`, `Authorization`, `X-Chave`, `IOT_API_KEY`, `%PDF`, `IHDR` | 0 | 0 |
+| `token` | 0 | 15, todas do `WindowManager` do sistema (tokens internos de janela) |
+| E-mail `paciente.a` e a senha de demonstração | 0 | 1 cada, na mesma linha do `adbd`, que registra o comando `adb shell input text` usado para digitar no login. Vem do método de teste, não do app |
+
+- **Código**: em `mobile/app/src/main`, não há chamada de log (`Log.*`, `println`, `printStackTrace`, `System.out`/`err`), biblioteca de log no build nem interceptor no OkHttp.
+- **Resultado**: o SC-005 é atendido também para o corpo da telemetria. Nenhuma linha do processo do app contém token, senha, chave do simulador, corpo da telemetria ou corpo de documento.
