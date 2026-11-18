@@ -26,15 +26,15 @@ O responsável aprovou **seguir com a identidade dos três exemplos inspirados n
 
 Linha superior (y=0), da esquerda para a direita:
 
-| Quadro | ID | Prévia |
-|---|---|---|
-| F1 · Fundamentos · v1.0 | `IkCIw` | [PNG](previas/fundamentos/IkCIw.png) |
-| F2 · Componentes · v1.0 | `t9lvSH` | [PNG](previas/fundamentos/t9lvSH.png) |
-| F3 · Confiança e simulação · v1.0 | `EVIof` | [PNG](previas/fundamentos/EVIof.png) |
-| F4 · Estados do pedido · v1.0 | `HBByt` | [PNG](previas/fundamentos/HBByt.png) |
-| E1.2 Meus pedidos — Sucesso · v1.0 | `H0BJi` | [PNG](previas/H0BJi.png) |
-| E2.2 Documentos — Com arquivos · v1.0 | `CvQRm` | [PNG](previas/CvQRm.png) |
-| E3.4 Pendência — Unidade emissora · v1.0 | `XCNVm` | [PNG](previas/XCNVm.png) |
+| Quadro | ID |
+|---|---|
+| F1 · Fundamentos · v1.0 | `IkCIw` |
+| F2 · Componentes · v1.0 | `t9lvSH` |
+| F3 · Confiança e simulação · v1.0 | `EVIof` |
+| F4 · Estados do pedido · v1.0 | `HBByt` |
+| E1.2 Meus pedidos — Sucesso · v1.0 | `H0BJi` |
+| E2.2 Documentos — Com arquivos · v1.0 | `CvQRm` |
+| E3.4 Pendência — Unidade emissora · v1.0 | `XCNVm` |
 
 As três telas agora são montadas só com instâncias dos componentes v1.0 (71 componentes desde a Fase 0 da feature 015, mais `Aviso/Proposta` e `Aviso/Completo` no F3 em 17/11/2026; ver F2–F4). Componentes mais usados: `Botão/Primário` `YNfQA`, `Botão/Contorno` `DpTaD`, `Botão/Texto` `j97Pe`, `Cabeçalho/Voltar` `PbS1q`, `Tela/Título` `YtzRv`, `Pedido/Destaque` `bwbsT`, `Pedido/Linha` `D4QLJd`, `Documento/Linha` `N6LHC`, `Pendência/Orientação` `tAmsl`, `Aviso/Rodapé` `zX8C6`, `Selo/Simulado` `ONwnK`, `Estado/*` em F4.
 

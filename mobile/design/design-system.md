@@ -14,7 +14,7 @@ Fundamentos refeitos a partir das três telas de exemplo aprovadas (Meus pedidos
 | F4 · Estados | `HBByt` | 7 estados do pedido, 4 do arquivo, 4 resultados por critério |
 | Arquivo · biblioteca anterior | `Wo9WQ` | F1–F4 e prévia antigos; componentes com prefixo `Legado/`. Não usar. Em 14/11/2026 não estava mais no documento aberto; provavelmente saiu no commit `0e4cdb6` (recuperável de `efc76d1`); a remoção fica para o grupo confirmar |
 
-Prévias PNG: `design/previas/fundamentos/` (quadros) e `design/previas/` (telas).
+Prévias: as prévias PNG foram retiradas do repositório em 18/11/2026; cada quadro é aberto pelo ID no `design/RegulaCheck.pen` (pen.dev).
 
 ## Princípios
 
