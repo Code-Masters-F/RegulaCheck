@@ -105,3 +105,57 @@ fun extracao(status: String = "ATUAL") = """
                     "campos":[{"codigo":"NOME","situacao":"IDENTIFICADO","valor":"Ana"},
                               {"codigo":"MOTIVO_ENCAMINHAMENTO","situacao":"NAO_LOCALIZADO"}]}]}
 """.trimIndent()
+
+// RC-22 (spec 023): corpos sintéticos de specs/016-iot-simulada/contracts/api-iot.md.
+
+/** Resposta 201/200 de `POST …/sessoes-captura`. */
+fun sessaoCaptura(criada: Boolean = true) =
+    """{"id":"42","solicitacaoId":"12","iniciadaEm":"2026-11-18T14:00:00Z","aberta":true,"criada":$criada,"simulada":true}"""
+
+/** Um sensor da telemetria; sem [valor], o JSON omite `ultimaLeitura` (como a API). */
+fun sensor(
+    tipo: String,
+    situacao: String,
+    valor: Double? = null,
+    medidaEm: String = "2026-11-18T14:00:25Z",
+    codigo: String = "CONDICAO_ADEQUADA",
+    mensagem: String = "Condição adequada para a captura.",
+): String {
+    val luminosidade = tipo == "LUMINOSIDADE"
+    val unidade = if (luminosidade) "LUX" else "CM"
+    val faixa = if (luminosidade) """{"minimo":300,"maximo":1000}""" else """{"minimo":20,"maximo":40}"""
+    val leitura = if (valor != null) ""","ultimaLeitura":{"valor":$valor,"medidaEm":"$medidaEm"}""" else ""
+    return """{"tipo":"$tipo","unidade":"$unidade","faixa":$faixa$leitura,"situacao":"$situacao",""" +
+        """"orientacao":{"codigo":"$codigo","mensagem":"$mensagem"}}"""
+}
+
+/** Telemetria com os dois sensores; sem sessão, o JSON omite `sessao` (como a API). */
+fun telemetria(
+    luminosidade: String,
+    distancia: String,
+    comSessao: Boolean = true,
+    consultadaEm: String = "2026-11-18T14:00:30Z",
+): String {
+    val sessao = if (comSessao) """"sessao":{"id":"42","iniciadaEm":"2026-11-18T14:00:00Z","aberta":true},""" else ""
+    return """{"solicitacaoId":"12",$sessao"consultadaEm":"$consultadaEm","prazoAtualidadeSegundos":60,""" +
+        """"simulada":true,"aviso":"Leituras simuladas, com limites demonstrativos.","sensores":[$luminosidade,$distancia]}"""
+}
+
+val LUMINOSIDADE_DENTRO = sensor("LUMINOSIDADE", "DENTRO_DA_FAIXA", 410.0)
+val DISTANCIA_DENTRO = sensor("DISTANCIA", "DENTRO_DA_FAIXA", 31.5)
+val LUMINOSIDADE_BAIXA = sensor(
+    "LUMINOSIDADE", "ABAIXO_DA_FAIXA", 60.0,
+    codigo = "MELHORAR_ILUMINACAO", mensagem = "Ilumine melhor o documento antes de capturar.",
+)
+val DISTANCIA_PERTO = sensor(
+    "DISTANCIA", "ABAIXO_DA_FAIXA", 8.0,
+    codigo = "AFASTAR_DOCUMENTO", mensagem = "Afaste o celular do documento.",
+)
+val LUMINOSIDADE_SEM_LEITURA = sensor(
+    "LUMINOSIDADE", "SEM_LEITURA",
+    codigo = "CAPTURA_SEGUE_SEM_SENSOR", mensagem = "Sem leitura do sensor. Você pode capturar e enviar o documento normalmente.",
+)
+val DISTANCIA_SEM_LEITURA = sensor(
+    "DISTANCIA", "SEM_LEITURA",
+    codigo = "CAPTURA_SEGUE_SEM_SENSOR", mensagem = "Sem leitura do sensor. Você pode capturar e enviar o documento normalmente.",
+)
