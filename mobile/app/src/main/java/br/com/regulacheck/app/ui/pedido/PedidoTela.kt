@@ -1,6 +1,14 @@
 package br.com.regulacheck.app.ui.pedido
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.Role
+import br.com.regulacheck.app.ui.tema.IconesRc
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -39,7 +46,6 @@ import br.com.regulacheck.app.ui.componentes.TipoRetorno
 import br.com.regulacheck.app.ui.componentes.TituloTela
 import br.com.regulacheck.app.ui.formatarDataHora
 import br.com.regulacheck.app.ui.navegacao.EstadoTela
-import br.com.regulacheck.app.ui.pedidos.avisarEtapaIndisponivel
 import br.com.regulacheck.app.ui.rotuloResultadoGeral
 import br.com.regulacheck.app.ui.tema.CoresRc
 import br.com.regulacheck.app.ui.tema.TiposRc
@@ -60,10 +66,13 @@ class PedidoViewModel(private val api: RegulaCheckApi, private val id: String) :
         carregar()
     }
 
-    /** Consulta (ou "Atualizar" em verificação) o pedido; ignorada se já houver consulta em andamento. */
+    /**
+     * Consulta (ou "Atualizar" em verificação) o pedido; ignorada se já houver consulta em andamento.
+     * Com dados já exibidos (volta de uma etapa da RC-19), atualiza sem voltar ao esqueleto.
+     */
     fun carregar() {
         if (carga?.isActive == true) return
-        estadoMutavel.value = EstadoTela.Carregando
+        if (estadoMutavel.value !is EstadoTela.Sucesso) estadoMutavel.value = EstadoTela.Carregando
         carga = viewModelScope.launch {
             estadoMutavel.value = when (val resultado = api.obterSolicitacao(id)) {
                 is Resultado.Sucesso -> EstadoTela.Sucesso(resultado.valor)
@@ -74,14 +83,18 @@ class PedidoViewModel(private val api: RegulaCheckApi, private val id: String) :
 }
 
 /**
- * E1.3 Pedido: dados persistidos e a ação principal por estado (`data-model.md`). As ações que
- * dependem da RC-19 avisam que a etapa ainda não está disponível.
+ * E1.3 Pedido: dados persistidos e a ação principal por estado (`data-model.md`). Desde a RC-19 as
+ * ações e as linhas "Documentos" e "Resultado" abrem as telas de envio, leitura e resultado.
+ *
+ * @param aoAgir executa uma ação do pedido (exceto "Atualizar", tratada aqui).
  */
 @Composable
-fun PedidoTela(viewModel: PedidoViewModel, aoVoltar: () -> Unit) {
+fun PedidoTela(viewModel: PedidoViewModel, aoVoltar: () -> Unit, aoAgir: (AcaoPedido) -> Unit) {
     val estado by viewModel.estado.collectAsStateWithLifecycle()
     val avisos = remember { SnackbarHostState() }
-    val escopo = rememberCoroutineScope()
+
+    // A cada volta de uma etapa (documentos, leitura, resultado), o pedido reflete o estado atual.
+    LaunchedEffect(Unit) { viewModel.carregar() }
 
     EstruturaTela(avisos = avisos, cabecalho = { CabecalhoVoltar(aoVoltar) }) {
         when (val atual = estado) {
@@ -91,7 +104,7 @@ fun PedidoTela(viewModel: PedidoViewModel, aoVoltar: () -> Unit) {
             }
             is EstadoTela.Falha -> FalhaPedido(atual.erro, aoVoltar, viewModel::carregar)
             is EstadoTela.Sucesso -> DetalhePedido(atual.dados) { acao ->
-                if (acao == AcaoPedido.ATUALIZAR) viewModel.carregar() else avisarEtapaIndisponivel(escopo, avisos)
+                if (acao == AcaoPedido.ATUALIZAR) viewModel.carregar() else aoAgir(acao)
             }
         }
     }
@@ -160,9 +173,11 @@ private fun DetalhePedido(pedido: Solicitacao, aoAgir: (AcaoPedido) -> Unit) {
     }
     Spacer(Modifier.height(16.dp))
 
-    LinhaDado(Textos.DOCUMENTOS, Textos.documentosAnexados(pedido.documentosDisponiveis))
+    LinhaDado(Textos.DOCUMENTOS, Textos.documentosAnexados(pedido.documentosDisponiveis)) {
+        aoAgir(AcaoPedido.ANEXAR_DOCUMENTOS)
+    }
     rotuloResultadoGeral(pedido.analise?.resultadoGeral)?.let { resultado ->
-        LinhaDado(Textos.RESULTADO, resultado)
+        LinhaDado(Textos.RESULTADO, resultado) { aoAgir(AcaoPedido.VER_RESULTADO) }
     }
 
     Spacer(Modifier.height(24.dp))
@@ -178,18 +193,21 @@ private fun DetalhePedido(pedido: Solicitacao, aoAgir: (AcaoPedido) -> Unit) {
     }
 }
 
-/** `Dado/Linha`: rótulo e valor, sem navegação nesta história (as telas de destino são da RC-19). */
+/** `Dado/Linha` com navegação (RC-19): rótulo, valor e seta; a linha toda abre a etapa. */
 @Composable
-private fun LinhaDado(rotulo: String, valor: String) {
+private fun LinhaDado(rotulo: String, valor: String, aoAbrir: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .semantics(mergeDescendants = true) {},
+            .clickable(onClickLabel = rotulo, role = Role.Button, onClick = aoAbrir),
     ) {
-        Column(Modifier.padding(vertical = 16.dp)) {
-            Text(rotulo, style = TiposRc.Acao, color = CoresRc.Texto)
-            Spacer(Modifier.height(4.dp))
-            Text(valor, style = TiposRc.Corpo, color = CoresRc.TextoApoio)
+        Row(Modifier.padding(vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(rotulo, style = TiposRc.Acao, color = CoresRc.Texto)
+                Spacer(Modifier.height(4.dp))
+                Text(valor, style = TiposRc.Corpo, color = CoresRc.TextoApoio)
+            }
+            Icon(IconesRc.SetaDireita, contentDescription = null, tint = CoresRc.TextoApoio, modifier = Modifier.size(20.dp))
         }
         HorizontalDivider(color = CoresRc.Divisor)
     }

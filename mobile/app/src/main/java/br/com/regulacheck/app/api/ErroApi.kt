@@ -49,8 +49,19 @@ sealed interface ErroApi {
         val detalhes: List<DetalheErro>,
     ) : ErroApi
 
-    /** 5xx: serviço ou dependência indisponível. */
-    data class Indisponivel(val status: Int) : ErroApi
+    /**
+     * 5xx: serviço ou dependência indisponível.
+     *
+     * @property codigo código do corpo de erro quando houver (ex.: `LEITURA_INDISPONIVEL`,
+     * `ANALISE_INDISPONIVEL`, `DEPENDENCIA_INDISPONIVEL`); a tela não depende dele.
+     */
+    data class Indisponivel(val status: Int, val codigo: String? = null) : ErroApi
+
+    /**
+     * O arquivo escolhido pela paciente não pôde ser aberto (permissão do seletor perdida, arquivo
+     * apagado). Nada foi enviado; é preciso escolher o arquivo de novo (RC-19, research D1).
+     */
+    data object ArquivoInacessivel : ErroApi
 
     /** Status não previsto no contrato ou corpo de sucesso fora do formato esperado. */
     data class RespostaInesperada(val status: Int) : ErroApi

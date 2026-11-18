@@ -46,6 +46,8 @@ sealed interface Autenticacao {
  * @property segmentos caminho em segmentos já separados (cada um é codificado na URL).
  * @property corpoJson corpo em JSON; `null` envia corpo vazio em POST/PUT.
  * @property leituraLonga usa o tempo de leitura de 70 s (ler documentos e analisar, RC-19).
+ * @property corpo corpo já montado (multipart do envio de documento, RC-19); exclui [corpoJson].
+ * @property cabecalhos cabeçalhos extras não sensíveis (ex.: `X-Chave-Envio`).
  */
 data class RequisicaoApi(
     val metodo: String,
@@ -53,6 +55,8 @@ data class RequisicaoApi(
     val corpoJson: String? = null,
     val autenticacao: Autenticacao = Autenticacao.Sessao,
     val leituraLonga: Boolean = false,
+    val corpo: RequestBody? = null,
+    val cabecalhos: Map<String, String> = emptyMap(),
 ) {
     override fun toString(): String = "RequisicaoApi($metodo /${segmentos.joinToString("/")})"
 }
@@ -138,6 +142,7 @@ class ApiClient(
     private fun montar(requisicao: RequisicaoApi): Request {
         val url = base.newBuilder().apply { requisicao.segmentos.forEach { addPathSegment(it) } }.build()
         val corpo: RequestBody? = when {
+            requisicao.corpo != null -> requisicao.corpo
             requisicao.corpoJson != null ->
                 // Bytes, e não String, para o OkHttp não acrescentar "; charset=utf-8" ao tipo.
                 requisicao.corpoJson.toByteArray(Charsets.UTF_8).toRequestBody(TIPO_JSON)
@@ -153,6 +158,7 @@ class ApiClient(
             .url(url)
             .method(requisicao.metodo, corpo)
             .header("Accept", "application/json")
+            .apply { requisicao.cabecalhos.forEach { (nome, valor) -> header(nome, valor) } }
             .apply { if (token != null) header("Authorization", "Bearer $token") }
             .build()
     }
@@ -209,18 +215,20 @@ internal fun mapearErroHttp(
             retryAfterSegundos = retryAfter?.trim()?.toLongOrNull()?.takeIf { it >= 0 },
         )
         413, 415 -> ErroApi.ArquivoRecusado(erro?.codigo, erro?.mensagem)
-        in 500..599 -> ErroApi.Indisponivel(status)
+        in 500..599 -> ErroApi.Indisponivel(status, erro?.codigo)
         else -> ErroApi.RespostaInesperada(status)
     }
 }
 
-/** Tempo esgotado (conexão, leitura ou chamada) ou qualquer outra falha de rede. */
-internal fun mapearFalhaDeRede(e: IOException): ErroApi =
-    if (e is SocketTimeoutException || (e is InterruptedIOException && e.message == "timeout")) {
-        ErroApi.TempoEsgotado
-    } else {
-        ErroApi.SemConexao
-    }
+/**
+ * Tempo esgotado (conexão, leitura ou chamada), arquivo escolhido que não pôde ser aberto (envio de
+ * documento) ou qualquer outra falha de rede.
+ */
+internal fun mapearFalhaDeRede(e: IOException): ErroApi = when {
+    e is ArquivoInacessivelException || e.cause is ArquivoInacessivelException -> ErroApi.ArquivoInacessivel
+    e is SocketTimeoutException || (e is InterruptedIOException && e.message == "timeout") -> ErroApi.TempoEsgotado
+    else -> ErroApi.SemConexao
+}
 
 /**
  * Executa a chamada de forma assíncrona; cancelar a corrotina cancela a requisição. O `resume` com

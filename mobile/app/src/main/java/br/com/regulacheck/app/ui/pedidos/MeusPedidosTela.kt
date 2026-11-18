@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
@@ -51,7 +50,6 @@ import br.com.regulacheck.app.ui.navegacao.EstadoTela
 import br.com.regulacheck.app.ui.tema.CoresRc
 import br.com.regulacheck.app.ui.tema.IconesRc
 import br.com.regulacheck.app.ui.tema.TiposRc
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -82,31 +80,25 @@ class MeusPedidosViewModel(private val api: RegulaCheckApi) : ViewModel() {
     }
 }
 
-/** Mostra o aviso de etapa da RC-19 ainda não disponível (research D7). */
-internal fun avisarEtapaIndisponivel(escopo: CoroutineScope, avisos: SnackbarHostState) {
-    escopo.launch {
-        avisos.currentSnackbarData?.dismiss()
-        avisos.showSnackbar(Textos.ETAPA_INDISPONIVEL)
-    }
-}
-
 /**
  * E1.2 Meus pedidos (quadros H0BJi, HX74z, v6aVEO, FzpeX, MKpMg). O pedido mais recente aparece
  * em destaque com o próximo passo; os demais em linhas que abrem o pedido.
  *
  * @param primeiroNome da sessão, para "Olá, {primeiro nome}".
+ * @param aoNovoPedido abre E2.1 (RC-19).
+ * @param aoAgir executa a ação principal do pedido em destaque (exceto "Atualizar", tratada aqui).
  */
 @Composable
 fun MeusPedidosTela(
     viewModel: MeusPedidosViewModel,
     primeiroNome: String,
     aoAbrirPedido: (String) -> Unit,
+    aoNovoPedido: () -> Unit,
+    aoAgir: (String, AcaoPedido) -> Unit,
     aoSair: () -> Unit,
 ) {
     val estado by viewModel.estado.collectAsStateWithLifecycle()
     val avisos = remember { SnackbarHostState() }
-    val escopo = rememberCoroutineScope()
-    val avisar = { avisarEtapaIndisponivel(escopo, avisos) }
 
     // A cada entrada na tela (inclusive ao voltar do detalhe): a lista reflete o estado atual.
     LaunchedEffect(Unit) { viewModel.carregar() }
@@ -130,26 +122,26 @@ fun MeusPedidosTela(
                 Spacer(Modifier.height(12.dp))
                 Text(Textos.PEDIDOS_VAZIO_TEXTO, style = TiposRc.Corpo, color = CoresRc.TextoApoio)
                 Spacer(Modifier.height(24.dp))
-                BotaoPrimario(Textos.NOVO_PEDIDO, avisar)
+                BotaoPrimario(Textos.NOVO_PEDIDO, aoNovoPedido)
             }
             is EstadoTela.Falha -> {
                 FalhaLista(atual.erro, viewModel::carregar)
                 if (atual.erro != ErroApi.SemConexao && atual.erro != ErroApi.TempoEsgotado) {
                     Spacer(Modifier.height(24.dp))
-                    BotaoAdicionar(Textos.NOVO_PEDIDO, avisar)
+                    BotaoAdicionar(Textos.NOVO_PEDIDO, aoNovoPedido)
                 }
             }
             is EstadoTela.Sucesso -> {
                 val (destaque, demais) = atual.dados.first() to atual.dados.drop(1)
                 PedidoDestaque(destaque, aoAbrir = { aoAbrirPedido(destaque.id) }, aoAgir = { acao ->
-                    if (acao == AcaoPedido.ATUALIZAR) viewModel.carregar() else avisar()
+                    if (acao == AcaoPedido.ATUALIZAR) viewModel.carregar() else aoAgir(destaque.id, acao)
                 })
                 Spacer(Modifier.height(24.dp))
                 demais.forEach { pedido ->
                     LinhaPedido(pedido) { aoAbrirPedido(pedido.id) }
                 }
                 Spacer(Modifier.height(16.dp))
-                BotaoAdicionar(Textos.NOVO_PEDIDO, avisar)
+                BotaoAdicionar(Textos.NOVO_PEDIDO, aoNovoPedido)
             }
         }
     }

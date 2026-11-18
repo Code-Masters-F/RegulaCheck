@@ -73,12 +73,14 @@ fun BotaoContorno(
     aoTocar: () -> Unit,
     modifier: Modifier = Modifier,
     icone: ImageVector? = null,
+    habilitado: Boolean = true,
 ) {
     OutlinedButton(
         onClick = aoTocar,
+        enabled = habilitado,
         shape = CircleShape,
         contentPadding = ESPACO_INTERNO,
-        border = BorderStroke(1.5.dp, CoresRc.Acao),
+        border = BorderStroke(1.5.dp, if (habilitado) CoresRc.Acao else CoresRc.Borda),
         colors = ButtonDefaults.outlinedButtonColors(containerColor = CoresRc.Fundo, contentColor = CoresRc.Acao),
         modifier = modifier
             .fillMaxWidth()

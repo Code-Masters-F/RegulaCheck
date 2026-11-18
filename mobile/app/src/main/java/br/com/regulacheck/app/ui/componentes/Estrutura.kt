@@ -183,11 +183,15 @@ private class AcimaCentralizado(private val espaco: Int) : PopupPositionProvider
 }
 
 /**
- * `Aviso/Proposta` (login): o que o app faz, em duas linhas. Não substitui o aviso acadêmico, que
+ * `Aviso/Proposta` (login; novo pedido com o texto de E2.1): o que vem a seguir, em duas linhas. Não substitui o aviso acadêmico, que
  * fica no rodapé.
  */
 @Composable
-fun AvisoProposta(modifier: Modifier = Modifier) {
+fun AvisoProposta(
+    modifier: Modifier = Modifier,
+    titulo: String = Textos.PROPOSTA_TITULO,
+    texto: String = Textos.PROPOSTA_TEXTO,
+) {
     Row(
         modifier
             .fillMaxWidth()
@@ -205,9 +209,9 @@ fun AvisoProposta(modifier: Modifier = Modifier) {
             Icon(IconesRc.DocumentoConcluido, contentDescription = null, tint = CoresRc.Acao, modifier = Modifier.size(20.dp))
         }
         Column(Modifier.weight(1f)) {
-            Text(Textos.PROPOSTA_TITULO, style = TiposRc.Acao, color = CoresRc.Texto)
+            Text(titulo, style = TiposRc.Acao, color = CoresRc.Texto)
             Spacer(Modifier.height(2.dp))
-            Text(Textos.PROPOSTA_TEXTO, style = TiposRc.Meta, color = CoresRc.TextoApoio)
+            Text(texto, style = TiposRc.Meta, color = CoresRc.TextoApoio)
         }
     }
 }
@@ -230,13 +234,29 @@ fun CabecalhoMarca(aoSair: (() -> Unit)? = null) {
     }
 }
 
-/** `Cabeçalho/Voltar`: seta de 24 com alvo de 48 × 48 e rótulo para leitor de tela. */
+/**
+ * `Cabeçalho/Voltar`: seta de 24 com alvo de 48 × 48 e rótulo para leitor de tela.
+ *
+ * @param titulo contexto à direita da seta (ex.: "Pedido 5", quadros E2.2 e E3.x).
+ * @param simulado mostra o selo SIMULADO à direita (leitura, resultado e pendência, F3).
+ */
 @Composable
-fun CabecalhoVoltar(aoVoltar: () -> Unit) {
-    Box(Modifier.heightIn(min = 48.dp)) {
+fun CabecalhoVoltar(aoVoltar: () -> Unit, titulo: String? = null, simulado: Boolean = false) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         IconButton(onClick = aoVoltar, modifier = Modifier.size(48.dp)) {
             Icon(IconesRc.Voltar, contentDescription = Textos.VOLTAR, tint = CoresRc.Texto)
         }
+        if (titulo != null) {
+            Spacer(Modifier.width(8.dp))
+            Text(titulo, style = TiposRc.Corpo, color = CoresRc.Texto)
+        }
+        Spacer(Modifier.weight(1f))
+        if (simulado) SeloSimulado()
     }
 }
 

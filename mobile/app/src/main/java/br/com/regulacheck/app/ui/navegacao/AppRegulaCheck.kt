@@ -18,6 +18,16 @@ import br.com.regulacheck.app.ui.pedido.PedidoTela
 import br.com.regulacheck.app.ui.pedido.PedidoViewModel
 import br.com.regulacheck.app.ui.pedidos.MeusPedidosTela
 import br.com.regulacheck.app.ui.pedidos.MeusPedidosViewModel
+import br.com.regulacheck.app.ui.AcaoPedido
+import br.com.regulacheck.app.ui.documentos.DocumentosTela
+import br.com.regulacheck.app.ui.documentos.DocumentosViewModel
+import br.com.regulacheck.app.ui.leitura.LeituraTela
+import br.com.regulacheck.app.ui.leitura.LeituraViewModel
+import br.com.regulacheck.app.ui.novopedido.NovoPedidoTela
+import br.com.regulacheck.app.ui.novopedido.NovoPedidoViewModel
+import br.com.regulacheck.app.ui.pendencia.PendenciaTela
+import br.com.regulacheck.app.ui.resultado.ResultadoTela
+import br.com.regulacheck.app.ui.resultado.ResultadoViewModel
 
 /** Tela inicial a partir da sessão guardada. */
 private fun telaInicial(estado: EstadoSessao): Tela = when (estado) {
@@ -60,13 +70,60 @@ fun AppRegulaCheck(dependencias: Dependencias) {
                     viewModel = viewModel { MeusPedidosViewModel(dependencias.api) },
                     primeiroNome = (estadoSessao as? EstadoSessao.Ativa)?.sessao?.primeiroNome.orEmpty(),
                     aoAbrirPedido = { id -> navegador.abrir(Tela.Pedido(id)) },
+                    aoNovoPedido = { navegador.abrir(Tela.NovoPedido) },
+                    aoAgir = { id, acao -> navegador.abrirAcao(id, acao) },
                     aoSair = { dependencias.servicoSessao.sair() },
                 )
                 is Tela.Pedido -> PedidoTela(
                     viewModel = viewModel { PedidoViewModel(dependencias.api, tela.id) },
                     aoVoltar = { navegador.voltar() },
+                    aoAgir = { acao -> navegador.abrirAcao(tela.id, acao) },
                 )
+                Tela.NovoPedido -> NovoPedidoTela(
+                    viewModel = viewModel { NovoPedidoViewModel(dependencias.api) },
+                    aoVoltar = { navegador.voltar() },
+                    // Substitui: "voltar" a partir dos documentos leva a "Meus pedidos", não a um novo rascunho.
+                    aoCriar = { id -> navegador.substituir(Tela.Documentos(id)) },
+                )
+                is Tela.Documentos -> DocumentosTela(
+                    viewModel = viewModel { DocumentosViewModel(dependencias.api, tela.id) },
+                    pedidoId = tela.id,
+                    aoVoltar = { navegador.voltar() },
+                    aoLer = { navegador.abrir(Tela.Leitura(tela.id)) },
+                    aoVerResultado = { navegador.abrir(Tela.Resultado(tela.id)) },
+                )
+                is Tela.Leitura -> LeituraTela(
+                    viewModel = viewModel { LeituraViewModel(dependencias.api, tela.id) },
+                    pedidoId = tela.id,
+                    aoVoltar = { navegador.voltar() },
+                    aoAnexar = { navegador.substituir(Tela.Documentos(tela.id)) },
+                    // Substitui: "voltar" do resultado não repete a leitura nem a análise.
+                    aoVerResultado = { navegador.substituir(Tela.Resultado(tela.id)) },
+                )
+                is Tela.Resultado -> ResultadoTela(
+                    viewModel = viewModel { ResultadoViewModel(dependencias.api, tela.id, tela.analiseId) },
+                    pedidoId = tela.id,
+                    aoVoltar = { navegador.voltar() },
+                    aoVoltarParaPedidos = { navegador.reiniciar(Tela.MeusPedidos) },
+                    aoAbrirPendencia = { detalhe -> navegador.abrir(Tela.Pendencia(detalhe)) },
+                    aoAbrirAnterior = { analiseId -> navegador.abrir(Tela.Resultado(tela.id, analiseId)) },
+                    aoLerDeNovo = { navegador.substituir(Tela.Leitura(tela.id)) },
+                )
+                is Tela.Pendencia -> PendenciaTela(detalhe = tela.detalhe, aoVoltar = { navegador.voltar() })
             }
         }
+    }
+}
+
+/**
+ * Abre a tela da ação principal de um pedido (E1.2/E1.3, RC-19). "Atualizar" é tratada pela própria
+ * tela, que consulta o pedido de novo.
+ */
+private fun Navegador.abrirAcao(id: String, acao: AcaoPedido) {
+    when (acao) {
+        AcaoPedido.ANEXAR_DOCUMENTOS -> abrir(Tela.Documentos(id))
+        AcaoPedido.LER_DOCUMENTOS, AcaoPedido.TENTAR_DE_NOVO -> abrir(Tela.Leitura(id))
+        AcaoPedido.VER_O_QUE_CONFERIR, AcaoPedido.VER_PENDENCIAS, AcaoPedido.VER_RESULTADO -> abrir(Tela.Resultado(id))
+        AcaoPedido.ATUALIZAR -> Unit
     }
 }
