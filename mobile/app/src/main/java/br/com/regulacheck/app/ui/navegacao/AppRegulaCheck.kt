@@ -22,6 +22,8 @@ import br.com.regulacheck.app.ui.AcaoPedido
 import br.com.regulacheck.app.ui.captura.CondicoesCapturaViewModel
 import br.com.regulacheck.app.ui.documentos.DocumentosTela
 import br.com.regulacheck.app.ui.documentos.DocumentosViewModel
+import br.com.regulacheck.app.ui.indicadores.IndicadoresTela
+import br.com.regulacheck.app.ui.indicadores.IndicadoresViewModel
 import br.com.regulacheck.app.ui.leitura.LeituraTela
 import br.com.regulacheck.app.ui.leitura.LeituraViewModel
 import br.com.regulacheck.app.ui.novopedido.NovoPedidoTela
@@ -33,16 +35,16 @@ import br.com.regulacheck.app.ui.resultado.ResultadoViewModel
 /** Chave do ViewModel da E4.1 na entrada de documentos (RC-22). */
 private const val CHAVE_CONDICOES_CAPTURA = "condicoes-captura"
 
-/** Tela inicial a partir da sessão guardada. */
+/** Tela inicial a partir da sessão guardada (pelo perfil, RC-20). */
 private fun telaInicial(estado: EstadoSessao): Tela = when (estado) {
-    is EstadoSessao.Ativa -> Tela.MeusPedidos
+    is EstadoSessao.Ativa -> telaDaSessao(estado.sessao.perfil)
     is EstadoSessao.Encerrada -> Tela.Login(sessaoExpirada = estado.motivo == MotivoEncerramento.EXPIROU)
 }
 
 /**
  * Raiz da interface: escolhe a tela pela pilha do [Navegador] e reage à sessão — sessão aberta
- * leva a "Meus pedidos"; sessão encerrada (sair, 401 ou expiração) leva ao login e descarta as
- * telas anteriores.
+ * leva à tela do perfil ("Meus pedidos" ou E4.2, [telaDaSessao]); sessão encerrada (sair, 401 ou
+ * expiração) leva ao login e descarta as telas anteriores.
  */
 @Composable
 fun AppRegulaCheck(dependencias: Dependencias) {
@@ -52,7 +54,7 @@ fun AppRegulaCheck(dependencias: Dependencias) {
     LaunchedEffect(estadoSessao) {
         val emLogin = navegador.atual.tela is Tela.Login
         when (val sessao = estadoSessao) {
-            is EstadoSessao.Ativa -> if (emLogin) navegador.reiniciar(Tela.MeusPedidos)
+            is EstadoSessao.Ativa -> if (emLogin) navegador.reiniciar(telaDaSessao(sessao.sessao.perfil))
             // No login, não reinicia: preservaria a tela, mas apagaria o e-mail digitado.
             is EstadoSessao.Encerrada -> if (!emLogin) {
                 navegador.reiniciar(Tela.Login(sessaoExpirada = sessao.motivo == MotivoEncerramento.EXPIROU))
@@ -118,6 +120,10 @@ fun AppRegulaCheck(dependencias: Dependencias) {
                     aoLerDeNovo = { navegador.substituir(Tela.Leitura(tela.id)) },
                 )
                 is Tela.Pendencia -> PendenciaTela(detalhe = tela.detalhe, aoVoltar = { navegador.voltar() })
+                Tela.Indicadores -> IndicadoresTela(
+                    viewModel = viewModel { IndicadoresViewModel(dependencias.api) },
+                    aoSair = { dependencias.servicoSessao.sair() },
+                )
             }
         }
     }

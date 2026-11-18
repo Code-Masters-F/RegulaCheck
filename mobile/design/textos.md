@@ -268,3 +268,14 @@ Usados por `mobile/app/.../ui/Textos.kt` (spec 023). O app não abre a câmera: 
 | E4.1, carregando | "Consultando os sensores…" | criado (sem quadro) |
 | E4.1, instante ilegível | "Leitura do sensor simulado" | criado (resposta fora do contrato) |
 | E4.1, 409 ao abrir a sessão | "Este pedido já foi submetido e só pode ser consultado." / "Este pedido não pode mais receber documentos." Botão: "Voltar". | reaproveitado (E2.2) |
+
+## App Android — textos criados ou ajustados na RC-20 (18/11/2026)
+
+Usados por `mobile/app/.../ui/Textos.kt` (spec 024). Os textos de E4.2 acima são usados como estão; "Falha" conta pedidos (a análise que falha não é gravada, clarify da spec 024).
+
+| Onde | Texto | Motivo |
+|---|---|---|
+| E1.1, perfil não atendido | "Esta conta não pode ser usada neste aplicativo. Entre com uma conta de paciente ou de administrador." | ajustado: substitui "Esta conta não é de paciente…" (RC-18), já que o administrador passou a entrar |
+| E4.2, base dos números | "Contam a verificação atual de cada pedido. \"Falha\" conta pedidos cuja última verificação não foi concluída." | criado (sem quadro) |
+| E4.2, estados sem quadro | "Nenhum protocolo ativo." · "Nenhuma pendência registrada." · "{n} pendência(s)" · linha de regra "{código} · {nome}" | criado |
+| E4.2, sem conexão e 403 | "Sem conexão com a internet." / "Verifique sua rede e tente de novo." · "Você não tem permissão para ver esta tela." (E1.5) | reaproveitado da RC-18 |

@@ -5,6 +5,7 @@ import br.com.regulacheck.auth.repository.SessaoRepositoryJdbc;
 import br.com.regulacheck.documento.repository.DocumentoRepositoryJdbc;
 import br.com.regulacheck.extracao.repository.ConferenciaRepositoryJdbc;
 import br.com.regulacheck.extracao.repository.ExtracaoRepositoryJdbc;
+import br.com.regulacheck.indicador.repository.IndicadorRepositoryJdbc;
 import br.com.regulacheck.integracao.extracao.LeitorSimulado;
 import br.com.regulacheck.iot.repository.CapturaRepositoryJdbc;
 import br.com.regulacheck.protocolo.repository.ProtocoloRepositoryJdbc;
@@ -56,7 +57,7 @@ public final class Servidor {
                 new ProtocoloRepositoryJdbc(banco), new SolicitacaoRepositoryJdbc(banco),
                 new DocumentoRepositoryJdbc(banco), extracoes, new ConferenciaRepositoryJdbc(banco, extracoes),
                 new AnaliseRepositoryJdbc(banco), new CapturaRepositoryJdbc(banco), new SubmissaoRepositoryJdbc(banco),
-                new LeitorSimulado(), Clock.systemUTC());
+                new IndicadorRepositoryJdbc(banco), new LeitorSimulado(), Clock.systemUTC());
         return montar(configuracao, reais, banco, rotas -> { });
     }
 

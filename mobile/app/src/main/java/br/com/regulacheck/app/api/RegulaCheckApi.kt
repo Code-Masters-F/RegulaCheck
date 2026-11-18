@@ -151,6 +151,16 @@ class RegulaCheckApi(private val cliente: ApiClient) {
             JsonApi.decodeFromString(Telemetria.serializer(), it)
         }
 
+    /**
+     * `GET /admin/indicadores` (RC-20): só agregados, só para administrador.
+     *
+     * @return 403 (conta de paciente) vira [ErroApi.SemPermissao] sem encerrar a sessão.
+     */
+    suspend fun consultarIndicadores(): Resultado<Indicadores> =
+        cliente.executar(RequisicaoApi("GET", listOf("admin", "indicadores"))) {
+            JsonApi.decodeFromString(Indicadores.serializer(), it)
+        }
+
     companion object {
         /** Cabeçalho de idempotência do envio de documento (RC-08). */
         const val CABECALHO_CHAVE_ENVIO = "X-Chave-Envio"

@@ -3,6 +3,8 @@ package br.com.regulacheck.app.sessao
 import br.com.regulacheck.app.api.ApiClient
 import br.com.regulacheck.app.api.ErroApi
 import br.com.regulacheck.app.api.RegulaCheckApi
+import br.com.regulacheck.app.ui.navegacao.Tela
+import br.com.regulacheck.app.ui.navegacao.telaDaSessao
 import java.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +27,7 @@ private class CofreEmMemoria(var guardada: SessaoLocal? = null) : CofreSessao {
     override fun apagar() { guardada = null }
 }
 
-/** Entrar, recusar conta não paciente, sair e 401 — sessão local x servidor (#41). */
+/** Entrar (paciente ou administrador, RC-20), recusar outro perfil, sair e 401 — sessão local x servidor (#41). */
 class ServicoSessaoTest {
 
     private lateinit var servidor: MockWebServer
@@ -82,20 +84,46 @@ class ServicoSessaoTest {
     }
 
     @Test
-    fun `conta que nao e de paciente e recusada e encerrada no servidor`() = runTest {
+    fun `administrador entra, a sessao guarda o perfil e a tela inicial e E4_2`() = runTest {
         montar()
         servidor.enqueue(loginComPerfil("ADMINISTRADOR"))
-        servidor.enqueue(MockResponse().setResponseCode(204))
 
         val resultado = servico.entrar("admin@exemplo.invalid", "senha")
 
-        assertEquals(ResultadoEntrada.ContaNaoPaciente, resultado)
+        assertTrue(resultado is ResultadoEntrada.Entrou)
+        assertEquals(PERFIL_ADMINISTRADOR, cofre.guardada?.perfil)
+        assertEquals("token-ADMINISTRADOR", gerenciador.tokenAtual())
+        assertEquals(Tela.Indicadores, telaDaSessao(cofre.guardada!!.perfil))
+        assertEquals(1, servidor.requestCount)
+    }
+
+    @Test
+    fun `paciente nunca vai para a tela de indicadores`() = runTest {
+        montar()
+        servidor.enqueue(loginComPerfil("PACIENTE"))
+
+        servico.entrar("paciente.a@exemplo.invalid", "senha")
+
+        assertEquals(Tela.MeusPedidos, telaDaSessao(cofre.guardada!!.perfil))
+        assertEquals(Tela.MeusPedidos, telaDaSessao(PERFIL_PACIENTE))
+        assertEquals(Tela.Indicadores, telaDaSessao(PERFIL_ADMINISTRADOR))
+    }
+
+    @Test
+    fun `perfil desconhecido e recusado e encerrado no servidor`() = runTest {
+        montar()
+        servidor.enqueue(loginComPerfil("SIMULADOR"))
+        servidor.enqueue(MockResponse().setResponseCode(204))
+
+        val resultado = servico.entrar("outra@exemplo.invalid", "senha")
+
+        assertEquals(ResultadoEntrada.PerfilNaoSuportado, resultado)
         assertNull(cofre.guardada)
         assertNull(gerenciador.tokenAtual())
         servidor.takeRequest()
         val logout = servidor.takeRequest()
         assertEquals("/auth/logout", logout.path)
-        assertEquals("Bearer token-ADMINISTRADOR", logout.getHeader("Authorization"))
+        assertEquals("Bearer token-SIMULADOR", logout.getHeader("Authorization"))
     }
 
     @Test
