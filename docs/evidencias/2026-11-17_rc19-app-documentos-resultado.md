@@ -88,7 +88,7 @@ Backend reiniciado pelo responsável a partir da branch `022-app-android-documen
 - **Pedido verificado** (E2.2): "Enviar uma versão corrigida ainda não está disponível neste app." e sem "Anexar documento".
 - **Pedido 2, RC-R04** (unidade emissora): "Quem pode resolver" com "Solicite à unidade emissora a revisão do encaminhamento. O documento médico original deve ser corrigido pela unidade." e o aviso do app de que o original não é alterado no aplicativo, como no quadro `XCNVm`; `rotuloResultado` "Com pendências" conferido na API.
 
-## 7. Comparação com o desenho (prévias em `design/previas/`)
+## 7. Comparação com o desenho (quadros do `design/RegulaCheck.pen`, pelas prévias PNG existentes em 17/11/2026)
 
 | Tela | Prévia | Situação |
 |---|---|---|
