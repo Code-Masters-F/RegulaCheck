@@ -21,7 +21,7 @@ Tudo existe só em memória no app. O modelo persistido (sessão e leituras) é 
 | `DENTRO_DA_FAIXA` | qualquer | `ADEQUADA`; `ADEQUADA_DE_NOVO` se esteve fora nesta visita | "Adequada" / "Adequada de novo" | Atende (verde) | — / "Condições adequadas de novo." |
 | `ABAIXO_DA_FAIXA` | luminosidade | `BAIXA` | "Baixa" | Alerta (laranja) | API |
 | `ACIMA_DA_FAIXA` | luminosidade | `ALTA` | "Alta" | Alerta | API |
-| `ABAIXO`/`ACIMA` | distância | `FORA_DO_IDEAL` | "Fora do ideal" | Alerta | API |
+| `ABAIXO_DA_FAIXA`/`ACIMA_DA_FAIXA` | distância | `FORA_DO_IDEAL` | "Fora do ideal" | Alerta | API |
 | `DESATUALIZADA` | qualquer | `DESATUALIZADA` | "Desatualizada" | Relógio | API |
 | `SEM_LEITURA` / desconhecida | qualquer | `SEM_LEITURA` | "Sem leitura" | Círculo com traço | API |
 | (tela indisponível) | qualquer | `INDISPONIVEL` | "Sensores indisponíveis agora" | Círculo com traço | só no 1º: "Você pode anexar e salvar seus documentos normalmente." |

@@ -83,6 +83,7 @@ class TelemetriaApiTest {
         val lidas = runBlocking { List(5) { (api.consultarTelemetria("12") as Resultado.Sucesso).valor } }
 
         assertEquals(situacoes + "SEM_LEITURA", lidas.map { it.sensores[0].situacao })
+        assertEquals(situacoes + "SEM_LEITURA", lidas.map { it.sensores[1].situacao })
         assertEquals(listOf("LUMINOSIDADE", "DISTANCIA"), lidas[0].sensores.map { it.tipo })
         assertEquals(500.0, lidas[0].sensores[0].ultimaLeitura!!.valor, 0.0)
         assertEquals("LUX", lidas[0].sensores[0].unidade)

@@ -32,4 +32,5 @@
 ## Notes
 
 - A spec cita as duas rotas e os códigos HTTP porque esta é uma feature de app sobre um contrato **já entregue** (spec 016). Eles são o limite do escopo, não uma decisão de implementação. O mesmo padrão foi usado nas specs 017 e 022.
+- Exceções deliberadas aos itens "No implementation details": FR-014 cita o `ApiClient` sem interceptor de log, e SC-005 cita o logcat. As duas citações dizem onde a garantia de não registrar dados sensíveis é conferida, e a garantia já existia antes desta feature.
 - Sem ambiguidades materiais: as faixas, o prazo e as orientações vêm da spec 016. A adaptação de "Fotografar" sem câmera foi definida pelo pedido do usuário e está registrada no contexto e em FR-013. Por isso, `/speckit-clarify` não é necessário.

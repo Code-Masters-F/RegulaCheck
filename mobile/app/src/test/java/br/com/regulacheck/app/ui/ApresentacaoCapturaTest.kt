@@ -141,6 +141,27 @@ class ApresentacaoCapturaTest {
     }
 
     @Test
+    fun `recuperada depois desatualizada depois dentro volta a ser so adequada`() {
+        // research D5: a recuperação já foi mostrada; a interrupção encerra a marca "de novo".
+        val desatualizada = sensor("LUMINOSIDADE", "DESATUALIZADA", 410.0, medidaEm = "2026-11-18T13:57:30Z", codigo = "VERIFICAR_ESTACAO", mensagem = "Verifique se a estação de captura está ligada.")
+        val a = visita(
+            telemetria(LUMINOSIDADE_BAIXA, DISTANCIA_DENTRO),
+            telemetria(LUMINOSIDADE_DENTRO, DISTANCIA_DENTRO),
+            telemetria(desatualizada, DISTANCIA_DENTRO),
+            telemetria(LUMINOSIDADE_DENTRO, DISTANCIA_DENTRO),
+        )
+        val b = visita(
+            telemetria(LUMINOSIDADE_BAIXA, DISTANCIA_DENTRO),
+            telemetria(LUMINOSIDADE_DENTRO, DISTANCIA_DENTRO),
+            telemetria(LUMINOSIDADE_SEM_LEITURA, DISTANCIA_SEM_LEITURA),
+            telemetria(LUMINOSIDADE_DENTRO, DISTANCIA_DENTRO),
+        )
+
+        assertEquals(SituacaoSensorUi.ADEQUADA, a.sensores[0].situacao)
+        assertEquals(SituacaoSensorUi.ADEQUADA, b.sensores[0].situacao)
+    }
+
+    @Test
     fun `desatualizada mostra a idade da ultima leitura e pede mesmo assim`() {
         val antiga = "2026-11-18T13:57:30Z"
         val a = visita(

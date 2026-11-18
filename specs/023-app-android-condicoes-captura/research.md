@@ -28,7 +28,7 @@ Decisões da feature 023. Regras de telemetria (faixas, prazo de 60 s, situaçõ
 
 ## D5 — "Recuperada" como memória da visita
 
-- **Decision**: o ViewModel guarda, por tipo de sensor, o último valor visto fora da faixa (`ABAIXO`/`ACIMA`). Quando o mesmo sensor volta a `DENTRO_DA_FAIXA`, ele passa a "Adequada de novo", com "Condições adequadas de novo." e "antes: {valor}". A marca vale enquanto ele continuar dentro da faixa e some se ele sair de novo. `DESATUALIZADA` e `SEM_LEITURA` não apagam o "esteve fora". A memória zera a cada nova visita (`novaVisita()`) e não muda com falha de rede.
+- **Decision**: o ViewModel guarda, por tipo de sensor, o último valor visto fora da faixa (`ABAIXO_DA_FAIXA`/`ACIMA_DA_FAIXA`). Quando o mesmo sensor volta a `DENTRO_DA_FAIXA`, ele passa a "Adequada de novo", com "Condições adequadas de novo." e "antes: {valor}". A marca vale enquanto ele continuar dentro da faixa, em consultas seguidas. Ela some se o sensor sair de novo da faixa ou se ficar `DESATUALIZADA` ou `SEM_LEITURA`: a recuperação já foi mostrada, e a próxima leitura dentro da faixa aparece só como "Adequada". Antes da recuperação, `DESATUALIZADA` e `SEM_LEITURA` não apagam o "esteve fora": a volta à faixa depois delas ainda aparece como "Adequada de novo". A memória zera a cada nova visita (`novaVisita()`) e não muda com falha de rede.
 - **Rationale**: o quadro `DGf2T` mostra a recuperação por sensor ("Adequada de novo" e "antes: 60 lux"), e `textos.md` traz "Condições adequadas de novo.". A API não guarda a transição, então ela só pode ser percebida comparando consultas da mesma visita.
 - **Alternatives considered**: um aviso único na tela inteira, que esconderia qual sensor se recuperou; ou consultar o histórico de leituras, que não existe na API.
 

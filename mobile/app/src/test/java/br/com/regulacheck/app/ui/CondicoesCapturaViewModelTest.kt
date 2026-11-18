@@ -98,6 +98,9 @@ class CondicoesCapturaViewModelTest {
 
     private fun parar(job: Job) = runBlocking { job.cancelAndJoin() }
 
+    private fun esperarConsultas(estacao: Estacao, minimo: Int) =
+        runBlocking { withTimeout(5_000) { while (estacao.consultas.get() < minimo) delay(20) } }
+
     @Test
     fun `sessao 201 e depois a consulta mostra os sensores`() {
         val estacao = Estacao()
@@ -151,13 +154,14 @@ class CondicoesCapturaViewModelTest {
         val vm = viewModel(estacao, intervaloMs = 10)
         val job = acompanhar(vm)
 
-        runBlocking { delay(1_100) }
+        // Espera pelo número de consultas, não por um tempo fixo: com a máquina lenta, o laço
+        // correto só demora mais para chegar lá.
+        esperarConsultas(estacao, 3)
         parar(job)
         val aoParar = estacao.consultas.get()
         runBlocking { delay(500) }
 
         assertEquals(1, estacao.maximoSimultaneo.get())
-        assertTrue("consultas sequenciais (~200 ms cada): $aoParar", aoParar in 2..6)
         assertEquals("nenhuma consulta depois de sair da tela", aoParar, estacao.consultas.get())
     }
 
@@ -184,7 +188,7 @@ class CondicoesCapturaViewModelTest {
         val job = acompanhar(vm)
 
         val estado = esperar(vm) { it is EstadoCaptura.Exibindo } as EstadoCaptura.Exibindo
-        runBlocking { withTimeout(5_000) { while (estacao.consultas.get() < 3) delay(20) } }
+        esperarConsultas(estacao, 3)
         parar(job)
 
         assertTrue(estado.apresentacao.indisponivel)
@@ -194,15 +198,18 @@ class CondicoesCapturaViewModelTest {
     }
 
     @Test
-    fun `servico 503 na consulta fica indisponivel sem encerrar`() {
+    fun `servico 503 na consulta fica indisponivel sem encerrar e continua consultando`() {
         val estacao = Estacao(leituras = listOf({ erroApi(503, "DEPENDENCIA_INDISPONIVEL") }))
-        val vm = viewModel(estacao, intervaloMs = 60_000)
+        val vm = viewModel(estacao)
         val job = acompanhar(vm)
 
         val estado = esperar(vm) { it is EstadoCaptura.Exibindo } as EstadoCaptura.Exibindo
+        esperarConsultas(estacao, 2)
         parar(job)
 
         assertTrue(estado.apresentacao.indisponivel)
+        assertTrue("não encerra a tela", vm.estado.value is EstadoCaptura.Exibindo)
+        assertTrue("segue indisponível", (vm.estado.value as EstadoCaptura.Exibindo).apresentacao.indisponivel)
     }
 
     @Test

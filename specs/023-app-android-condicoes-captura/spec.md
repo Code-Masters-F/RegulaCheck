@@ -121,7 +121,7 @@ Se a leitura passou do prazo de atualidade, o sensor aparece como "Desatualizada
 ### Measurable Outcomes
 
 - **SC-001**: Nos 6 estados do desenho (normal, luminosidade fora, distância fora, recuperada, desatualizada e indisponível), a E4.1 mostra os textos de `textos.md` e mantém a ação de seguir disponível, em 6 de 6 casos.
-- **SC-002**: Com o simulador mudando as leituras, a tela reflete a mudança em até 5 s, sem toque da paciente.
+- **SC-002**: Com o simulador mudando as leituras e a API respondendo em até 1 s, a tela reflete a mudança em até 5 s, sem toque da paciente. Esse prazo é o intervalo de 4 s mais a resposta. Com a API mais lenta, o prazo cresce no mesmo tanto, porque uma consulta só começa depois que a anterior termina (FR-005).
 - **SC-003**: Em 100% das observações de teste, há no máximo uma consulta de telemetria em andamento por vez, e nenhuma consulta acontece depois que a tela sai de vista.
 - **SC-004**: A paciente anexa um documento depois da E4.1 com sensores dentro e fora da faixa (2 de 2 casos), e o documento só entra na lista após a confirmação da API.
 - **SC-005**: Nenhuma linha do logcat do processo do app contém token, senha, chave do simulador ou corpo de documento.
