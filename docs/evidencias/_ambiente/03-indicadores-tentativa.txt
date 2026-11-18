@@ -1,0 +1,2 @@
+{"codigo":"NAO_ENCONTRADO","mensagem":"Recurso nao encontrado."}
+HTTP 404

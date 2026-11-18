@@ -1,0 +1,3 @@
+mvnw clean verify (exit 0): 149 classes, 775 testes, 0 falhas, 0 erros, 36 ignorados (testes Oracle opt-in)
+ConjuntosDemonstracaoTest: 18 testes, 0 falhas
+jar: backend/target/regulacheck-backend.jar
