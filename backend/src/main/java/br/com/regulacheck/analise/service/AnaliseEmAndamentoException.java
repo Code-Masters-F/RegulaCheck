@@ -1,6 +1,8 @@
 package br.com.regulacheck.analise.service;
 
+import br.com.regulacheck.common.exception.ErroPadrao;
 import br.com.regulacheck.common.exception.ExcecaoNegocio;
+import java.util.List;
 
 /**
  * Recusa de um pedido de analise porque outra analise do mesmo pedido esta em andamento dentro do limite de tempo
@@ -17,6 +19,19 @@ public class AnaliseEmAndamentoException extends ExcecaoNegocio {
     public AnaliseEmAndamentoException(long segundosRestantes) {
         super(409, "ANALISE_EM_ANDAMENTO",
                 "A análise deste pedido já está em andamento. Aguarde alguns instantes e consulte o resultado.");
+        this.segundosRestantes = Math.max(1, segundosRestantes);
+    }
+
+    /**
+     * Mesma recusa com mensagem e detalhes proprios de quem a repassa (RC-16: a verificacao da versao corrigida
+     * informa a etapa e o que repetir), mantendo o codigo e o {@code Retry-After}.
+     *
+     * @param segundosRestantes segundos ate o limite da analise em andamento; no minimo 1
+     * @param mensagem texto para a paciente, sem detalhe tecnico
+     * @param detalhes detalhes da recusa (ex.: a etapa); {@code null} quando nao se aplica
+     */
+    public AnaliseEmAndamentoException(long segundosRestantes, String mensagem, List<ErroPadrao.Detalhe> detalhes) {
+        super(409, "ANALISE_EM_ANDAMENTO", mensagem, detalhes);
         this.segundosRestantes = Math.max(1, segundosRestantes);
     }
 

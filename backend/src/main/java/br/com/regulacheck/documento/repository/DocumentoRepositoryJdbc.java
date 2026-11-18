@@ -114,8 +114,10 @@ public final class DocumentoRepositoryJdbc implements DocumentoRepository {
                 revisaoAtual = linha.getInt("REVISAO_ATUAL");
             }
         }
-        if (estado != EstadoSolicitacao.RASCUNHO) {
-            return ResultadoRegistro.foraDeRascunho();
+        // RC-16: incluir documento vale em qualquer estado nao final (o documento que faltava pode chegar depois da
+        // analise); so o pedido submetido fica para consulta, como em remover e substituir (RC-09).
+        if (estado == EstadoSolicitacao.SUBMETIDA_SIMULACAO) {
+            return ResultadoRegistro.submetido();
         }
         int disponiveis = contar(conexao, solicitacaoId);
         if (novo.chaveEnvio() != null) {
@@ -146,6 +148,8 @@ public final class DocumentoRepositoryJdbc implements DocumentoRepository {
             revisao.executeUpdate();
         }
         long documentoId = inserirDocumento(conexao, solicitacaoId, novaRevisao, novo, agora);
+        // A analise vigente valia para a revisao anterior; o resultado antigo nao pode ser aplicado a revisao nova.
+        invalidarAnalise(conexao, solicitacaoId);
         LOG.info("Documento registrado. solicitacaoId={} documentoId={} revisao={} formato={}", solicitacaoId,
                 documentoId, novaRevisao, novo.formato());
         Documento documento = new Documento(documentoId, solicitacaoId, novo.nomeArquivo(), novo.tipoDocumental(),

@@ -16,7 +16,7 @@ Metas objetivas do épico (decisão D5 do plano, baseadas no Android e no WCAG A
 ## Lista de verificação (aplicar a cada quadro)
 - [ ] Todo texto atende 4,5:1 sobre o fundo real.
 - [ ] Ícones e bordas de campos atendem 3:1.
-- [ ] Todo alvo de toque tem pelo menos 48 dp (inclusive ícones pequenos, com área de toque ampliada).
+- [ ] Todo alvo de toque tem pelo menos 48 dp (inclusive ícones pequenos, com área de toque ampliada). Inclui o rodapé acadêmico, que abre o aviso completo e é lido como botão ("Protótipo acadêmico · dados fictícios. Toque para ler o aviso completo.").
 - [ ] O estado de um pedido, de uma regra ou de um envio aparece por texto + ícone.
 - [ ] O corpo do texto tem 16 sp ou mais; títulos e legendas não ficam menores que 12 sp.
 - [ ] Mensagens de erro dizem o que fazer em seguida.

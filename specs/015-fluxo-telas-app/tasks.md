@@ -241,6 +241,18 @@ description: "Tarefas de design da feature 015-fluxo-telas-app"
 
 ---
 
+## Phase 15: Aviso acadêmico discreto (17/11/2026)
+
+**Purpose**: decisão do responsável — o aviso grande do login pesava no visual. Clarification de 17/11, FR-003 e FR-020. O app acompanha na spec 017 (T024–T028).
+
+- [X] T075 No pen.dev (só via MCP): `Aviso/Rodapé` com ícone de informação (propaga às 94 telas) e novos componentes `Aviso/Completo` (balão com o aviso completo, aberto pelo rodapé) e `Aviso/Proposta` (aviso curto sobre a proposta do app), no F3 (`EVIof`, seção 01) com legendas
+- [X] T076 Trocar o `Aviso/Entrada` acadêmico dos 5 quadros de E1.1 (`KulXG`, `ht04w`, `o1mx3h`, `r5kJX`, `V9Q1Ku`) por `Aviso/Proposta`, conferindo limites e sobreposições; os outros 11 usos de `Aviso/Entrada` (avisos de contexto) não mudam
+- [X] T077 Reexportar as prévias afetadas (as 94 telas e o F3) e salvar o documento pelo MCP
+- [X] T078 [P] Atualizar `mobile/design/textos.md` (F3 e E1.1), `design-system.md` (F3, componentes), `acessibilidade.md` (alvo do rodapé) e `INDEX.md`
+- [X] T079 A pedido do responsável, tirar também a caixa do aviso fictício do E2.1: `Aviso/Proposta` com o próximo passo em Padrão (`c78REx`), Criando (`gj4eA`) e Erro (`Zk97Z`); nenhum aviso em Trocar serviço (`V5J0Uz`); FR-029, `textos.md`, `design-system.md`, legenda do F3 e prévias reexportadas
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies

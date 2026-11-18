@@ -7,8 +7,10 @@
 
 | Componente | Texto |
 |---|---|
-| `Aviso/Rodapé` (toda tela) | "Protótipo acadêmico · dados fictícios" |
-| `Aviso/Entrada` (login e novo pedido) | "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é exigência oficial. Não substitui atendimento nem orientação de saúde." |
+| `Aviso/Rodapé` (toda tela, com ícone de informação; tocável) | "Protótipo acadêmico · dados fictícios". Leitor de tela: "Protótipo acadêmico · dados fictícios. Toque para ler o aviso completo." |
+| `Aviso/Completo` (balão aberto pelo rodapé) | Título: "Sobre este aplicativo". Texto: "Aplicativo acadêmico com dados fictícios. O protocolo é de teste e não é exigência oficial. Não substitui atendimento nem orientação de saúde." |
+| `Aviso/Proposta` (login; novo pedido com o texto de E2.1) | Título: "Prepare seus documentos". Texto: "Veja o que está completo e o que falta antes de enviar." |
+| `Aviso/Entrada` (avisos de contexto) | Texto de cada uso (ex.: trocar documento invalida o resultado). Desde 17/11/2026 não aparece no login nem no novo pedido. |
 | `Selo/Simulado` | "SIMULADO" |
 | Aviso de leitura simulada (do backend) | "Leitura simulada com dados sintéticos; não é leitura real dos documentos." |
 | Aviso do protocolo (do backend) | "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS." |
@@ -25,6 +27,7 @@
 | `SEM_PENDENCIAS_IDENTIFICADAS` | "Sem pendências identificadas" | "Você pode concluir a simulação. Isso não é aprovação do SUS." |
 | `FALHA_ANALISE` | "Falha na verificação" | "Nenhuma conclusão foi tirada. Tente de novo." |
 | `SUBMETIDA_SIMULACAO` | "Simulação concluída" | "Nada foi enviado ao SUS. Consulte o comprovante." |
+| valor desconhecido (RC-18, sem quadro) | "Estado não reconhecido" | "Esta versão do app não reconhece a situação deste pedido." |
 
 "Conferência" nomeia só a etapa em que a paciente confere a leitura; a análise dos critérios é a "verificação".
 
@@ -35,11 +38,15 @@
 ### E1.1 Login
 | Estado | Textos |
 |---|---|
-| Padrão | Título: "Entrar". Campos: "E-mail", "Senha" (ícone "Mostrar senha"). Botão: "Entrar". `Aviso/Entrada`. |
+| Padrão | Título: "Entrar". Apoio: "Use o e-mail e a senha da sua conta." `Aviso/Proposta`. Campos: "E-mail", "Senha" (ícone "Mostrar senha"). Botão: "Entrar". |
 | Enviando | Botão: "Entrando…" com indicador; campos desabilitados e preservados. |
 | Credenciais inválidas | "E-mail ou senha incorretos." E-mail mantido; senha limpa. |
 | Serviço indisponível | "O serviço está indisponível agora. Tente de novo em alguns instantes." Botão: "Tentar de novo". E-mail preservado. |
 | Sem conexão | "Sem conexão com a internet. Verifique sua rede e tente de novo." Botão: "Tentar de novo". E-mail preservado. |
+| Conta não é de paciente (RC-18, sem quadro) | "Esta conta não é de paciente. Entre com uma conta de paciente." Abaixo do campo de senha, como o erro de credenciais. |
+| Dados recusados (400, RC-18, sem quadro) | "Confira o e-mail e a senha e tente de novo." |
+
+**App (RC-18):** ações cuja tela ainda não existia no app mostravam, em aviso temporário, "Esta etapa ainda não está disponível nesta versão do app." Desde a RC-19 todas abrem a tela correspondente e esse aviso deixou de existir. O aviso de E1.4 aparece no topo do próprio login.
 
 ### E1.2 Meus pedidos
 | Estado | Textos |
@@ -82,7 +89,7 @@ Dados (todos os estados): "Pedido {número}" no cabeçalho; título "{serviço}"
 ### E2.1 Novo pedido / trocar serviço
 | Estado | Textos |
 |---|---|
-| Padrão | Título: "Novo pedido". Apoio: "Escolha o serviço para preparar seus documentos." Opção: "{serviço}" / "{localidade} · Protocolo acadêmico fictício · versão {versão}". `Aviso/Entrada` com o aviso do protocolo. Botão: "Criar rascunho". |
+| Padrão | Título: "Novo pedido". Apoio: "Escolha o serviço para preparar seus documentos." Opção: "{serviço}" / "{localidade} · Protocolo acadêmico fictício · versão {versão}". `Aviso/Proposta`: "Em seguida, seus documentos" / "Você vai anexar o encaminhamento e um documento de identificação." (também em Criando e Erro; não em Trocar serviço). Botão: "Criar rascunho". |
 | Criando | Botão: "Criando…" desabilitado; escolha preservada. |
 | Erro | "Escolha um dos serviços da lista." (serviço inexistente ou inativo) ou "Não foi possível criar o rascunho. Tente de novo." |
 | Sem serviços | "Nenhum serviço disponível agora." / "Tente de novo mais tarde." Sem ação de criar. |
@@ -176,7 +183,7 @@ Título: "Verificar critérios?" Textos (conforme o caso): "{n} informações li
 | Unidade emissora | `Pendência/Orientação` "Quem pode resolver" / "Se o motivo estiver ausente, peça à unidade que emitiu o encaminhamento para completar o documento." "Você confere a transcrição aqui. O documento clínico é corrigido pela unidade emissora." Botões: "Abrir documento", "Já tenho uma nova versão". |
 | Substituir arquivo | Motivo: "Uma informação está ilegível". Botão: "Substituir arquivo". |
 | Conferir leitura | Motivo: "A leitura ainda não foi conferida" ou "Você apontou uma diferença". Botão: "Conferir leitura". |
-| Documento ausente | "Depois da primeira verificação, o app só permite trocar documentos já enviados." Botão: "Substituir um documento". |
+| Documento ausente | "Depois da primeira verificação, o app só permite trocar documentos já enviados." Botão: "Substituir um documento". **Desatualizado pela RC-16 (17/11/2026):** o backend passou a aceitar a inclusão do documento que faltava depois da análise (exceto em pedido submetido); o texto e a ação desta tela precisam ser revistos no épico 6 ([decisões](../../docs/decisoes.md)). |
 
 ### E3.5 Correção e comparação
 | Estado | Textos |
@@ -219,3 +226,29 @@ Destaque: "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS". "Referência" / "{re
 
 ### E4.4 Acessibilidade
 Anotações do quadro: metas de `acessibilidade.md`; nos quadros de fonte ampliada: "Fonte ampliada: o conteúdo essencial continua visível."
+
+## App Android — textos criados ou ajustados na RC-19 (17/11/2026)
+
+Usados por `mobile/app/.../ui/Textos.kt` (spec 022). "Ajustado" = o texto do quadro pressupõe uma ação que esta versão do app não tem (conferência, substituir, remover, reenviar, concluir); o app não mostra o botão e diz o limite em texto.
+
+| Onde | Texto | Motivo |
+|---|---|---|
+| E2.1, carga | "Carregando os serviços…" · "Não foi possível carregar os serviços." | criado (sem quadro) |
+| E2.1, tempo esgotado ao criar | "O rascunho pode ter sido criado. Confira em “Meus pedidos” antes de tentar de novo." (com o título de E4.3) | criado: a API não deduplica a criação |
+| E2.2, carga | "Carregando os documentos…" | criado |
+| E2.2, limite | "3 de 3 documentos. Este é o limite do pedido." | ajustado (sem "Remova um para anexar outro.") |
+| E2.2, Ler documentos | "Leitura simulada com dados sintéticos." | ajustado (sem "Depois você confere o que foi lido.") |
+| E2.2, pedido verificado | "Enviar uma versão corrigida ainda não está disponível neste app." + "Ver resultado" | ajustado: a API aceita a versão corrigida desde a RC-16, mas o app ainda não oferece o reenvio |
+| E2.2, Não enviado sem conexão | "Sem conexão com a internet. O arquivo ainda não foi enviado. Toque em “Tentar de novo”." | ajustado (E4.3 fala em "o que você digitou") |
+| E2.3, todas as recusas | título "“{nome do arquivo}” não foi enviado.", mensagem da API, "Nada foi salvo."; arquivo inacessível ou chave reutilizada: "Escolha o arquivo outra vez." | criado conforme a #42 (mensagem da API) |
+| E3.1, carga e botão | "Lendo os documentos…" · botão "Lendo…" | criado |
+| E3.1, leitura concluída | "O que foi lido" · "Lido" / "Não lido" / "Não lido: PDF protegido" · "{n} de {total} informações identificadas" · "A conferência da leitura está disponível só no desenho nesta versão. Informações não conferidas contam como não verificadas." | criado (E3.2 fica só no desenho, #40) |
+| E3.8 | "As informações lidas que não foram conferidas contarão como não verificadas." · botão "Analisando…" | ajustado: sem a contagem e sem a frase sobre não poder anexar depois (deixou de valer com a RC-16) |
+| E3.8, 409 em andamento | "Já há uma verificação em andamento. Aguarde cerca de {n} segundos e consulte o resultado." · "Consultar resultado" | criado (#42) |
+| E3.8, queda na análise | título de E4.3 + "Consultar de novo" (consulta só o histórico) | criado (research D6 da spec 022) |
+| E3.3, Confira a leitura | "Confira a leitura: essa etapa está disponível só no desenho nesta versão." | ajustado (sem o botão "Conferir leitura") |
+| E3.3, aviso permanente | "Um resultado sem pendências não garante aceitação pela regulação. Os critérios deste protocolo são demonstrativos." | criado (RC-15) |
+| E3.3, estados sem quadro | "Carregando o resultado…" · "Não foi possível consultar o resultado agora." · "Este pedido ainda não tem verificação concluída." · "Ainda não há resultado para a versão atual dos documentos." · "Ver resultado anterior" · "Resultado anterior" / "Revisão {n}. Este resultado não vale para a revisão atual dos documentos." | criado (contrato de apresentação da spec 019) |
+| E3.3, Sem pendências | sem o botão "Concluir simulação" (RC-17) | ajustado |
+| E3.4 | "Responsável registrado pela regra" (rótulo) · "Trecho lido: “{trecho}”" · evidência "Documento: {nome} · {campo} {situação} · página {n}" | criado (spec 019) |
+| E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · "Conferir a leitura está disponível só no desenho nesta versão." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |

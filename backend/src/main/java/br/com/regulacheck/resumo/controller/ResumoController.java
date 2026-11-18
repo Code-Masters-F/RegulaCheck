@@ -47,6 +47,6 @@ public final class ResumoController extends ServletJson {
         }
         var resultado = servico.gerar(AutenticacaoFiltro.sessaoDe(requisicao), Long.parseLong(partes[1]));
         responderJson(resposta, resultado.criada() ? HttpServletResponse.SC_CREATED : HttpServletResponse.SC_OK,
-                AnaliseResponse.de(resultado.analise()));
+                AnaliseResponse.de(resultado.analise(), resultado.comparacao()));
     }
 }

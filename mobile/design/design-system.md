@@ -14,7 +14,7 @@ Fundamentos refeitos a partir das três telas de exemplo aprovadas (Meus pedidos
 | F4 · Estados | `HBByt` | 7 estados do pedido, 4 do arquivo, 4 resultados por critério |
 | Arquivo · biblioteca anterior | `Wo9WQ` | F1–F4 e prévia antigos; componentes com prefixo `Legado/`. Não usar. Em 14/11/2026 não estava mais no documento aberto; provavelmente saiu no commit `0e4cdb6` (recuperável de `efc76d1`); a remoção fica para o grupo confirmar |
 
-Prévias PNG: `design/previas/fundamentos/` (quadros) e `design/previas/` (telas).
+Prévias: as prévias PNG foram retiradas do repositório em 18/11/2026; cada quadro é aberto pelo ID no `design/RegulaCheck.pen` (pen.dev).
 
 ## Princípios
 
@@ -86,7 +86,7 @@ Consolidação feita nas telas: títulos 18/20/21/22 → 18 ou 22; corpo 17/18 �
 | Conferência | `Botão/Decisão`; `Conferência/Identificado` (sem decisão · confirmado · com diferença), `Conferência/Não localizado` (· indicado), `Conferência/Ilegível`, `Conferência/Documento não lido`. Pergunta "Confere com o seu documento?" com "Está correto" / "Está diferente"; nunca campo de digitação |
 | Sensores e indicadores | `Sensor/Na faixa`, `/Fora da faixa`, `/Indisponível`, `Indicador/Total` |
 | Retorno | `Retorno/Erro`, `Retorno/Sem conexão`, `Aviso/Resultado não vigente`, `Carregando/Esqueleto`, `Vazio/Pedidos`, `Diálogo/Confirmação` |
-| Confiança (F3) | `Aviso/Rodapé`, `Aviso/Entrada`, `Selo/Simulado`, `Resumo/Simulado`, `Comprovante/Simulado` |
+| Confiança (F3) | `Aviso/Rodapé` (com ícone de informação; abre `Aviso/Completo`), `Aviso/Completo` (balão escuro com o aviso acadêmico inteiro), `Aviso/Proposta` (login e novo pedido), `Aviso/Entrada` (avisos de contexto), `Selo/Simulado`, `Resumo/Simulado`, `Comprovante/Simulado` |
 | Estados (F4) | `Estado/*` (7 do pedido; `PROCESSANDO` = "Em verificação", `FALHA_ANALISE` = "Falha na verificação"), `Arquivo/*` (enviando, enviado, não enviado; "aguardando" não é usado), `Critério/*` (atende, pendente, não verificável, não se aplica), `Comparação/*` (resolvida, continua, nova) |
 
 "Conferência" nomeia só a etapa em que a paciente confere a leitura; a análise dos critérios é a "verificação". Os componentes `Extração/*` da primeira versão foram removidos em 13/11, substituídos por `Conferência/*`.
@@ -102,6 +102,7 @@ Estados: ícone 16 na cor do significado + rótulo 14/700 em `rc-text`. Rótulos
 - Documento clínico não é editável; ausência de informação clínica é resolvida pela unidade emissora. “Não localizado” não prova ausência.
 - Sensores: valores demonstrativos (200–1000 lux; 15–40 cm), idade da leitura visível, indisponibilidade nunca bloqueia envio.
 - Sem barra de navegação inferior no percurso da paciente (linear, volta pelo cabeçalho), decisão registrada na feature 015 (FR-011).
+- Aviso acadêmico em duas intensidades (17/11/2026): o rodapé de toda tela é discreto ("Protótipo acadêmico · dados fictícios" com ícone de informação, alvo de 48); tocar nele (ou toque longo) abre `Aviso/Completo` logo acima, e tocar fora fecha. A entrada não tem mais a caixa grande: o login mostra `Aviso/Proposta`, curto, sobre o que o app faz, e o novo pedido o usa para o próximo passo (ao trocar serviço, nenhum aviso); nunca promete aprovação, vaga ou prazo.
 - Telas de lista mais altas que 844 são desenhadas inteiras, com a linha "dobra · 844" marcando o que aparece sem rolar.
 - Fonte ampliada: o texto acompanha a escala do sistema (até 200%, escala não linear do Android 14). Quando o texto não cabe, `Documento/Linha` e `Critério/Linha` passam as ações e o resultado para baixo do nome, e `Resumo/Simulado` põe o selo abaixo do título. Nunca cortar palavra ou esconder ação. Exemplos: quadros E4.4.
 - Exemplos nos quadros: estrutura do backend, textos realistas em português correto (`mobile/design/dados-ficticios.md`); nunca "Exemplo", "sintético" ou texto sem acento.

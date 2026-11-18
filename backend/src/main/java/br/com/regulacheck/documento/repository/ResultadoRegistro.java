@@ -23,9 +23,7 @@ public record ResultadoRegistro(Situacao situacao, Documento documento, int vers
     public enum Situacao {
         /** Nao existe pedido com esse id para essa paciente (inexistente ou de outra paciente). */
         NAO_ENCONTRADO,
-        /** O pedido ja saiu de rascunho; nada foi gravado. */
-        FORA_DE_RASCUNHO,
-        /** O pedido esta em submissao simulada e so pode ser consultado (substituir); nada foi gravado. */
+        /** O pedido esta em submissao simulada e so pode ser consultado (enviar ou substituir); nada foi gravado. */
         SUBMETIDO,
         /** O pedido ja tem o maximo de documentos disponiveis; nada foi gravado. */
         LIMITE,
@@ -40,11 +38,6 @@ public record ResultadoRegistro(Situacao situacao, Documento documento, int vers
     /** @return resultado sem documento: pedido nao encontrado */
     public static ResultadoRegistro naoEncontrado() {
         return new ResultadoRegistro(Situacao.NAO_ENCONTRADO, null, 0, 0);
-    }
-
-    /** @return resultado sem documento: pedido fora de rascunho */
-    public static ResultadoRegistro foraDeRascunho() {
-        return new ResultadoRegistro(Situacao.FORA_DE_RASCUNHO, null, 0, 0);
     }
 
     /** @return resultado sem documento: pedido submetido em simulacao */
