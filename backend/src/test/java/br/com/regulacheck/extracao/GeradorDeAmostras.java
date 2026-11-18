@@ -3,6 +3,7 @@ package br.com.regulacheck.extracao;
 import br.com.regulacheck.armazenamento.conferencia.TipoArquivo;
 import br.com.regulacheck.extracao.AmostrasSinteticas.Amostra;
 import br.com.regulacheck.integracao.extracao.CampoLido;
+import br.com.regulacheck.integracao.extracao.LeituraDeDocumento;
 import br.com.regulacheck.integracao.extracao.LeitorSimulado;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -15,7 +16,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -47,15 +50,41 @@ class GeradorDeAmostras {
         for (Amostra amostra : AmostrasSinteticas.extras()) {
             gerarArquivo(amostra);
         }
+        gerarArquivosDosConjuntos();
         escreverCatalogo(Path.of("src", "main", "resources", "extracao-simulada", "catalogo.json"),
-                AmostrasSinteticas.oficiais());
+                AmostrasSinteticas.oficiais(), ConjuntosSinteticos.todos());
         escreverCatalogo(Path.of("src", "test", "resources", "extracao-simulada", "catalogo-testes.json"),
-                AmostrasSinteticas.extras());
+                AmostrasSinteticas.extras(), List.of());
         escreverGabarito(Path.of("..", "samples", "gabarito.md"));
+        EscritorDeGabaritos.escrever(Path.of("..", "samples"));
+    }
+
+    /** Cria somente os arquivos dos conjuntos (RC-23) que ainda nao existem; nunca sobrescreve. */
+    private static void gerarArquivosDosConjuntos() throws IOException {
+        for (ConjuntosSinteticos.Conjunto conjunto : ConjuntosSinteticos.todos()) {
+            for (ConjuntosSinteticos.Arquivo arquivo : conjunto.arquivos()) {
+                Path destino = arquivo.caminho();
+                if (!arquivo.gerado() || Files.exists(destino)) {
+                    continue;
+                }
+                Files.createDirectories(destino.getParent());
+                switch (arquivo.formato()) {
+                    case PDF -> gerarPdf(destino, arquivo.linhas(), arquivo.paginas());
+                    case PNG -> gerarPng(destino, arquivo.linhas());
+                    case TXT -> Files.writeString(destino, String.join("\n", arquivo.linhas()) + "\n",
+                            StandardCharsets.UTF_8);
+                    default -> throw new IllegalStateException("Formato desconhecido: " + arquivo.formato());
+                }
+            }
+        }
     }
 
     private static void gerarArquivo(Amostra amostra) throws IOException {
         Path destino = amostra.caminho();
+        if (Files.exists(destino)) {
+            // O hash do arquivo commitado e a chave da leitura simulada: nunca regenerar um arquivo existente.
+            return;
+        }
         Files.createDirectories(destino.getParent());
         if (amostra.tipo() == TipoArquivo.PDF) {
             gerarPdf(destino, amostra.linhas());
@@ -65,19 +94,30 @@ class GeradorDeAmostras {
     }
 
     private static void gerarPdf(Path destino, List<String> linhas) throws IOException {
+        gerarPdf(destino, linhas, 1);
+    }
+
+    /** PDF textual; com mais de uma pagina, cada pagina repete as linhas e indica seu numero. */
+    private static void gerarPdf(Path destino, List<String> linhas, int paginas) throws IOException {
         try (PDDocument documento = new PDDocument()) {
-            PDPage pagina = new PDPage();
-            documento.addPage(pagina);
-            try (PDPageContentStream conteudo = new PDPageContentStream(documento, pagina)) {
-                conteudo.beginText();
-                conteudo.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 14);
-                conteudo.setLeading(22);
-                conteudo.newLineAtOffset(60, 720);
-                for (String linha : linhas) {
-                    conteudo.showText(linha);
-                    conteudo.newLine();
+            for (int numero = 1; numero <= paginas; numero++) {
+                PDPage pagina = new PDPage();
+                documento.addPage(pagina);
+                try (PDPageContentStream conteudo = new PDPageContentStream(documento, pagina)) {
+                    conteudo.beginText();
+                    conteudo.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 14);
+                    conteudo.setLeading(22);
+                    conteudo.newLineAtOffset(60, 720);
+                    for (String linha : linhas) {
+                        conteudo.showText(linha);
+                        conteudo.newLine();
+                    }
+                    if (paginas > 1) {
+                        conteudo.showText("Pagina " + numero + " de " + paginas);
+                        conteudo.newLine();
+                    }
+                    conteudo.endText();
                 }
-                conteudo.endText();
             }
             documento.save(destino.toFile());
         }
@@ -102,33 +142,56 @@ class GeradorDeAmostras {
         ImageIO.write(imagem, "png", destino.toFile());
     }
 
-    private static void escreverCatalogo(Path destino, List<Amostra> amostras) throws IOException {
+    /**
+     * Escreve um catalogo do leitor simulado: as amostras e, depois, as leituras dos arquivos dos conjuntos (RC-23)
+     * que tem leitura e ainda nao estao no catalogo (um arquivo reaproveitado entra uma so vez).
+     */
+    private static void escreverCatalogo(Path destino, List<Amostra> amostras,
+            List<ConjuntosSinteticos.Conjunto> conjuntos) throws IOException {
         Files.createDirectories(destino.getParent());
         ObjectNode raiz = MAPPER.createObjectNode();
         ArrayNode leituras = raiz.putArray("leituras");
+        Set<String> hashes = new HashSet<>();
         for (Amostra amostra : amostras) {
-            ObjectNode item = leituras.addObject();
-            item.put("descricao", amostra.nome());
-            item.put("hash", LeitorSimulado.sha256(amostra.bytes()));
-            item.put("situacao", amostra.leitura().situacao().name());
-            ArrayNode campos = item.putArray("campos");
-            for (CampoLido campo : amostra.leitura().campos()) {
-                ObjectNode no = campos.addObject();
-                no.put("codigo", campo.codigo().name());
-                no.put("situacao", campo.situacao().name());
-                if (campo.valor() != null) {
-                    no.put("valor", campo.valor());
-                }
-                if (campo.pagina() != null) {
-                    no.put("pagina", campo.pagina());
-                }
-                if (campo.trecho() != null) {
-                    no.put("trecho", campo.trecho());
+            adicionarLeitura(leituras, hashes, amostra.nome(), amostra.bytes(), amostra.leitura());
+        }
+        for (ConjuntosSinteticos.Conjunto conjunto : conjuntos) {
+            for (ConjuntosSinteticos.Arquivo arquivo : conjunto.arquivos()) {
+                if (arquivo.leitura() != null) {
+                    adicionarLeitura(leituras, hashes, conjunto.pasta() + "/" + arquivo.nome(), arquivo.bytes(),
+                            arquivo.leitura());
                 }
             }
         }
         Files.writeString(destino, MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(raiz) + "\n",
                 StandardCharsets.UTF_8);
+    }
+
+    private static void adicionarLeitura(ArrayNode leituras, Set<String> hashes, String descricao, byte[] bytes,
+            LeituraDeDocumento leitura) {
+        String hash = LeitorSimulado.sha256(bytes);
+        if (!hashes.add(hash)) {
+            return;
+        }
+        ObjectNode item = leituras.addObject();
+        item.put("descricao", descricao);
+        item.put("hash", hash);
+        item.put("situacao", leitura.situacao().name());
+        ArrayNode campos = item.putArray("campos");
+        for (CampoLido campo : leitura.campos()) {
+            ObjectNode no = campos.addObject();
+            no.put("codigo", campo.codigo().name());
+            no.put("situacao", campo.situacao().name());
+            if (campo.valor() != null) {
+                no.put("valor", campo.valor());
+            }
+            if (campo.pagina() != null) {
+                no.put("pagina", campo.pagina());
+            }
+            if (campo.trecho() != null) {
+                no.put("trecho", campo.trecho());
+            }
+        }
     }
 
     private static void escreverGabarito(Path destino) throws IOException {
