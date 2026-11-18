@@ -100,7 +100,7 @@ Se a leitura passou do prazo de atualidade, o sensor aparece como "Desatualizada
 - **FR-004**: Ao abrir, a E4.1 MUST pedir a sessão de captura do pedido (operação idempotente; 201 ou 200 servem igualmente) e consultar a telemetria do pedido.
 - **FR-005**: Enquanto estiver visível, a E4.1 MUST consultar a telemetria em intervalo fixo de 3 a 5 s. Cada consulta começa só depois que a anterior termina, e a atualização MUST parar quando a tela sai de vista. Isso não é retentativa: a consulta é só leitura, e o pedido de sessão não se repete sozinho dentro da mesma visita.
 - **FR-006**: Para cada sensor (luminosidade e distância, nesta ordem), a E4.1 MUST mostrar o nome, o valor com unidade em formato pt-BR (ou "—" sem leitura), a situação em texto com ícone (nunca só cor) e a idade da leitura ("Leitura há {tempo} · sensor simulado" ou "Última leitura há {tempo} · sensor simulado").
-- **FR-007**: Fora da faixa, desatualizada ou sem leitura, a E4.1 MUST mostrar a `orientacao.mensagem` da API como texto puro. Dentro da faixa, não mostra orientação, como no desenho.
+- **FR-007**: Fora da faixa, desatualizada ou sem leitura, a E4.1 MUST mostrar a `orientacao.mensagem` da API como texto puro. Dentro da faixa, não mostra orientação, como no desenho. Exceção: com os **dois** sensores sem leitura, vale o estado "indisponível" do FR-009, com os textos dele, sem orientação por sensor. Com só um sensor sem leitura, a orientação da API desse sensor continua aparecendo.
 - **FR-008**: A E4.1 MUST mostrar "Adequada de novo", "Condições adequadas de novo." e "antes: {valor} {unidade}" quando um sensor que esteve fora da faixa nesta visita volta para dentro dela. A marca some se ele sair da faixa de novo.
 - **FR-009**: Quando os dois sensores estão sem leitura (sem sessão ou sem leituras), ou quando a consulta falha por rede, por tempo esgotado ou por 5xx, a E4.1 MUST mostrar o estado "indisponível" ("Sensores indisponíveis agora." e "Você pode anexar e salvar seus documentos normalmente.").
 - **FR-010**: A E4.1 MUST manter disponíveis, em todos os estados de telemetria, a ação principal (seguir para a foto) e "Escolher arquivo". O rótulo da ação principal traz "mesmo assim" quando algum sensor está desatualizado ou sem leitura, ou quando a tela está indisponível.
@@ -124,7 +124,7 @@ Se a leitura passou do prazo de atualidade, o sensor aparece como "Desatualizada
 - **SC-002**: Com o simulador mudando as leituras e a API respondendo em até 1 s, a tela reflete a mudança em até 5 s, sem toque da paciente. Esse prazo é o intervalo de 4 s mais a resposta. Com a API mais lenta, o prazo cresce no mesmo tanto, porque uma consulta só começa depois que a anterior termina (FR-005).
 - **SC-003**: Em 100% das observações de teste, há no máximo uma consulta de telemetria em andamento por vez, e nenhuma consulta acontece depois que a tela sai de vista.
 - **SC-004**: A paciente anexa um documento depois da E4.1 com sensores dentro e fora da faixa (2 de 2 casos), e o documento só entra na lista após a confirmação da API.
-- **SC-005**: Nenhuma linha do logcat do processo do app contém token, senha, chave do simulador ou corpo de documento.
+- **SC-005**: Nenhuma linha do logcat do processo do app contém token, senha, chave do simulador, corpo da telemetria ou corpo de documento.
 
 ## Assumptions
 

@@ -57,6 +57,8 @@ Caminhos relativos a `mobile/app/src/` (código) ou à raiz do repositório (doc
 - [X] T018 [P] Atualizar `mobile/README.md` (implementado × só desenho × não verificado; o que cada sensor mede e que não comprova a legibilidade) e `docs/ambiente.md`, se algo mudar
 - [X] T019 Marcar o progresso real neste arquivo e registrar o resultado da verificação
 - [X] T020 Ajustes da revisão automática do PR #80 (18/11/2026): teste do 503 confere que a consulta continua; teste de sobreposição espera pelo número de consultas, não pelo relógio; `TelemetriaApiTest` confere as situações dos dois sensores; teste novo para "recuperada → desatualizada/sem leitura → dentro" e research D5 restrito a esse comportamento; SC-002 com o limite da resposta da API; nomes das situações em data-model; quickstart com `JAVA_HOME` do Git Bash, senha de demonstração, uma sequência por comando e `adb shell svc` com religar a rede; exceções registradas na checklist
+- [X] T021 Ajustes da segunda revisão automática do PR #80 (18/11/2026): FR-007 com a exceção dos dois sensores sem leitura (vale o FR-009); SC-005 e quickstart passam a incluir o corpo da telemetria no logcat; quickstart com `adb push` da amostra e `IOT_API_KEY` no terminal do simulador; research D3 (a volta do segundo plano só pede a sessão se ela não foi confirmada); diagrama do data-model com 5xx no POST
+- [ ] T022 Reconferir o logcat do processo do app no emulador procurando o corpo da telemetria (`consultadaEm`, `ultimaLeitura`, `DENTRO_DA_FAIXA`), exigido pelo SC-005 desde T021. A conferência de T016 não procurou esses termos. Depende do usuário (backend com Oracle e simulador)
 
 ## Dependencies & Execution Order
 
@@ -81,7 +83,7 @@ O MVP é a US1 (folha com Origem e E4.1 com os sensores, até o seletor). A US2 
 - **Automática**: `./gradlew assembleDebug testDebugUnitTest` em `mobile/app/` → BUILD SUCCESSFUL, 112 testes, 0 falhas (30 novos: `TelemetriaApiTest` 6, `ApresentacaoCapturaTest` 13, `CondicoesCapturaViewModelTest` 11).
 - **Depois do merge da RC-20 e dos ajustes de T020** (18/11/2026): mesmo comando → BUILD SUCCESSFUL, 121 testes, 0 falhas (`ApresentacaoCapturaTest` passa a 14). T020 não mudou código de produção, e o percurso no emulador não foi refeito.
 - **Emulador** (AVD `RC22_Phone`, backend da 023 com Oracle, simulador rodado pelo responsável, sessão 41 do pedido 119): conferidos o passo Origem e os estados indisponível (sem leitura e sem rede), desatualizada, normal, luminosidade e distância fora da faixa e recuperada. Também o anexo depois da E4.1, dentro e fora da faixa, e o logcat do app sem dados sensíveis. Detalhes em [docs/evidencias/2026-11-18_rc22-condicoes-captura-app.md](../../docs/evidencias/2026-11-18_rc22-condicoes-captura-app.md).
-- **Só nos testes**: 403, 404 e 409 da E4.1. **Não verificados**: TalkBack, fonte ampliada e rotação.
+- **Só nos testes**: 403, 404 e 409 da E4.1. **Não verificados**: TalkBack, fonte ampliada e rotação. **Pendente** (T022): procurar o corpo da telemetria no logcat. O `ApiClient` não tem interceptor de log, mas essa busca não foi feita no emulador.
 - **Rastreabilidade**:
   - Critério 1 da #47 (consultar a telemetria e exibir os dois sensores) → FR-004 e FR-006 → T003, T006–T009.
   - Critério 2 (orientação fora da faixa; a recuperação muda o aviso) → FR-007 e FR-008 → T006, T010, T011.

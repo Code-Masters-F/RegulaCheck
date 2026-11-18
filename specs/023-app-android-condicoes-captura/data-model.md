@@ -48,7 +48,7 @@ Uma falha de consulta não altera a memória.
 ## Estado da tela (`CondicoesCapturaViewModel`)
 
 ```text
-Carregando ──POST ok / falha de rede──▶ Exibindo(apresentação) ◀──GET a cada 4 s──┐
+Carregando ──POST ok / rede ou 5xx────▶ Exibindo(apresentação) ◀──GET a cada 4 s──┐
     │                                        │                                 │
     │ 401/403/404/409 (POST)                 │ 401/403/404 (GET)               │
     ▼                                        ▼                                 │
