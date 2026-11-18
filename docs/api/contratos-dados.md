@@ -62,10 +62,10 @@ Saída:
 ## Documentos do pedido (RC-08)
 Contrato completo: [specs/009-enviar-consultar-documentos/contracts/api-documentos.md](../../specs/009-enviar-consultar-documentos/contracts/api-documentos.md). Rotas só de `PACIENTE`; o sistema guarda e devolve o arquivo, **sem lê-lo, interpretá-lo ou avaliá-lo**.
 
-**Enviar:** `POST /solicitacoes/{id}/documentos`, `multipart/form-data` com **um** arquivo por requisição: parte `arquivo` (PDF, JPEG ou PNG, tipo real verificado pelo conteúdo, não pela extensão) e parte `tipoDocumental` (`ENCAMINHAMENTO`, `IDENTIFICACAO`, `AUTORIZACAO_RESPONSAVEL` ou `OUTRO`). Cabeçalho opcional `X-Chave-Envio` (8 a 64 caracteres `[A-Za-z0-9_-]`): a **identificação de tentativa**, que permite repetir um envio interrompido sem duplicar. Só em `RASCUNHO`. Limites: 3 documentos disponíveis por pedido, 5 MB cada, PDF até 5 páginas, imagem até 25 milhões de pixels.
+**Enviar:** `POST /solicitacoes/{id}/documentos`, `multipart/form-data` com **um** arquivo por requisição: parte `arquivo` (PDF, JPEG ou PNG, tipo real verificado pelo conteúdo, não pela extensão) e parte `tipoDocumental` (`ENCAMINHAMENTO`, `IDENTIFICACAO`, `AUTORIZACAO_RESPONSAVEL` ou `OUTRO`). Cabeçalho opcional `X-Chave-Envio` (8 a 64 caracteres `[A-Za-z0-9_-]`): a **identificação de tentativa**, que permite repetir um envio interrompido sem duplicar. Aceito em qualquer estado exceto `SUBMETIDA_SIMULACAO` (até a RC-15 era só em `RASCUNHO`; a RC-16 liberou a inclusão do documento que faltava depois da análise, ver abaixo). Limites: 3 documentos disponíveis por pedido, 5 MB cada, PDF até 5 páginas, imagem até 25 milhões de pixels.
 
 - **201** documento novo (com `Location`); **200** repetição da mesma tentativa (mesma chave, mesmo conteúdo, mesmo tipo documental): devolve o documento existente, sem gravar nada e sem nova revisão.
-- Erros: 400 (`tipoDocumental`, `arquivo`, `arquivos` ou `chaveEnvio` ausente/inválido, PDF com mais de 5 páginas ou protegido, arquivo ilegível), 404, 409 `CONFLITO_ESTADO` (pedido fora de rascunho) ou `CHAVE_ENVIO_REUTILIZADA` (mesma chave com outro conteúdo ou tipo), 413, 415, 422 `REGRA_DE_NEGOCIO` (já há 3 documentos), 503. Arquivo recusado **não** é persistido, não cria revisão e não deixa arquivo guardado.
+- Erros: 400 (`tipoDocumental`, `arquivo`, `arquivos` ou `chaveEnvio` ausente/inválido, PDF com mais de 5 páginas ou protegido, arquivo ilegível), 404, 409 `CONFLITO_ESTADO` (pedido submetido: "Este pedido já foi submetido e só pode ser consultado.") ou `CHAVE_ENVIO_REUTILIZADA` (mesma chave com outro conteúdo ou tipo), 413, 415, 422 `REGRA_DE_NEGOCIO` (já há 3 documentos), 503. Arquivo recusado **não** é persistido, não cria revisão e não deixa arquivo guardado.
 - Sem `X-Chave-Envio`, cada envio é novo: o limite de 3 é a única proteção contra duplicata.
 
 Saída do envio (os campos de `versaoConjuntoDocumental` e `documentosDisponiveis` descrevem o pedido no instante do envio):
@@ -74,7 +74,7 @@ Saída do envio (os campos de `versaoConjuntoDocumental` e `documentosDisponivei
   "formato": "PDF", "tamanhoBytes": 120400, "paginas": 1, "estadoEnvio": "ENVIADO", "revisaoEntrada": 2,
   "enviadoEm": "2026-11-13T15:30:12.345Z", "simulacao": true, "versaoConjuntoDocumental": 2, "documentosDisponiveis": 1 }
 ```
-`estadoEnvio` é o estado do **envio**, nunca da análise; hoje só existe `ENVIADO`. Cada envio novo cria a revisão seguinte do pedido (motivo `DOCUMENTO_ENVIADO`) e **não** inicia análise: o pedido continua `RASCUNHO`.
+`estadoEnvio` é o estado do **envio**, nunca da análise; hoje só existe `ENVIADO`. Cada envio novo cria a revisão seguinte do pedido (motivo `DOCUMENTO_ENVIADO`) e **não** inicia leitura nem análise: o estado do pedido não muda. Depois de uma análise (RC-16), o envio também torna a análise vigente não vigente na mesma transação (histórico preservado), como remover e substituir.
 
 **Listar:** `GET /solicitacoes/{id}/documentos` → `{ "documentos": [ … ], "total": 2, "maximo": 3, "versaoConjuntoDocumental": 3 }` (cada item igual ao do envio, sem os dois últimos campos); lista vazia é 200.
 
@@ -178,6 +178,30 @@ Contrato completo: [specs/014-persistir-analises-historico/contracts/api-analise
 
 Campos nulos ficam fora do JSON (convenção da API).
 
+## Reenvio e verificação da versão corrigida (RC-16)
+Contrato completo: [specs/020-reenviar-versao-corrigida/contracts/api-reenvio.md](../../specs/020-reenviar-versao-corrigida/contracts/api-reenvio.md). Rotas só de `PACIENTE`. Leitura e resumo são **simulados**; o protocolo é acadêmico e fictício.
+
+- **Corrigir:** substituir ou remover (RC-09) e, desde a RC-16, **incluir** documento (`POST …/documentos`) também depois da análise, exceto em pedido submetido. Cada mudança cria a revisão seguinte e tira a vigência da análise, sem mudar o estado e **sem marcar nada como resolvido**.
+- **Verificar:** `POST /solicitacoes/{id}/reenvio` (sem corpo) refaz, para a revisão atual, leitura (reaproveita a existente) → conferência → análise (RC-13) → resumo (RC-14). Resposta `{ solicitacaoId, etapa, revisao, extracaoId, leituraCriada, camposSemDecisao, analiseCriada, simulada: true, orientacao, analise? }`:
+  - `etapa: "CONFERENCIA"` (200): há campo lido sem decisão da paciente; nenhuma análise registrada. Conferir (`PUT …/extracoes/{extracaoId}/conferencia`) e verificar de novo.
+  - `etapa: "CONCLUIDA"`: 201 com a análise nova (vigente, com `resumo` e `comparacao`) ou 200 com a vigente que já valia (nada mudou; nenhuma análise nem resumo novo).
+  - `etapa: "RESUMO"`: a análise foi registrada (201) ou já existia (200), mas o resumo não pôde ser gravado agora; `analise` vem sem `resumo` e não é desfeita.
+- **Erros da verificação:** mesmo `status`/`codigo` da etapa que falhou (`SEM_DOCUMENTOS`, `LEITURA_INDISPONIVEL`, `CONFLITO_ESTADO`, `ANALISE_EM_ANDAMENTO` com `Retry-After`, `ANALISE_INDISPONIVEL`, `DEPENDENCIA_INDISPONIVEL`), `mensagem` com o que repetir e `detalhes: [{ "campo": "etapa", "mensagem": "LEITURA" | "CONFERENCIA" | "ANALISE" }]`. A última análise concluída fica intacta e nada parcial é gravado. 404 idêntico, sem detalhe; pedido submetido → 409 sem etapa.
+- **Comparação** (`comparacao`, campo aditivo da análise em `POST`/`GET …/analises`, `POST …/resumo` e `POST …/reenvio`): compara a análise com a registrada **imediatamente antes** dela no mesmo pedido; omitida na primeira análise e entre versões de protocolo diferentes. Calculada a partir das análises gravadas, que não mudam.
+
+```json
+"comparacao": { "analiseAnteriorId": "12", "revisaoAnterior": 4, "executadaEmAnterior": "2026-11-17T13:05:10.123Z",
+  "itens": [ { "codigoRegra": "RC-R04", "descricaoRegra": "…", "situacao": "RESOLVIDA",
+               "resultadoAnterior": "PENDENTE", "resultadoAtual": "ATENDE" } ] }
+```
+| `situacao` | Anterior → atual |
+|---|---|
+| `RESOLVIDA` | `PENDENTE`/`NAO_VERIFICAVEL` → `ATENDE`/`NAO_APLICAVEL` |
+| `CONTINUA` | `PENDENTE`/`NAO_VERIFICAVEL` → `PENDENTE`/`NAO_VERIFICAVEL` |
+| `NOVA` | `ATENDE`/`NAO_APLICAVEL` → `PENDENTE`/`NAO_VERIFICAVEL` |
+
+Regras sem pendência nas duas análises não aparecem. "Resolvida" é só a leitura da regra no novo resultado simulado; **não** é aprovação do SUS.
+
 ## Estação de captura simulada (RC-21 + RC-22)
 Contrato completo: [specs/016-iot-simulada/contracts/api-iot.md](../../specs/016-iot-simulada/contracts/api-iot.md). Simulador: [simulador-iot/README.md](../../simulador-iot/README.md). **Os sensores são simulados e os limites são demonstrativos, sem calibração**: toda telemetria traz `simulada: true` e o `aviso`; as leituras **não comprovam a legibilidade** do arquivo e nunca bloqueiam envio, salvamento ou exclusão do rascunho.
 
@@ -196,5 +220,18 @@ Sem sessão ou sem leitura a resposta é 200 com os sensores em `SEM_LEITURA` (`
 ## Pendência
 Uma por regra `PENDENTE` ou `NAO_VERIFICAVEL` da análise: `codigoRegra` e `descricaoRegra` (da versão do protocolo da análise), `tipo`, `explicacao` (mensagem da regra, se pendente; mensagem padrão de não verificável do protocolo, se não verificável), `motivo` (lista fechada, só não verificável: `CAMPO_ILEGIVEL`, `DOCUMENTO_NAO_LIDO`, `TRANSCRICAO_NAO_CONFERIDA`, `DIVERGENCIA_APONTADA`, `VALOR_NAO_INTERPRETAVEL`, `CONDICAO_INDETERMINADA`, `DOCUMENTOS_INSUFICIENTES`, `DEPENDE_DE_DOCUMENTO_AUSENTE`), `responsavel` ∈ {`PACIENTE`, `UNIDADE_EMISSORA`} e `evidencias[]` (`documentoId`, `campo`, `situacao` no momento da análise e `origem` `{pagina, trecho}` lida da leitura daquela revisão, quando houver). **Nenhum valor lido aparece na pendência.** Mensagens não diagnosticam, não definem urgência, não autorizam atendimento nem prometem vaga.
 
-## Submissão simulada
-`POST /solicitacoes/{id}/submissoes-simuladas` (201): só a partir de `SEM_PENDENCIAS_IDENTIFICADAS` vigente; repetir devolve a mesma submissão (idempotente). Resposta traz referência interna, data e o aviso `"SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS"`.
+## Submissão simulada (RC-17)
+Contrato completo: [specs/021-submeter-simulacao/contracts/api-submissao.md](../../specs/021-submeter-simulacao/contracts/api-submissao.md). Rotas só de `PACIENTE`. **A submissão é simulada**: nada é enviado ao SUS, não há fila real nem número oficial de protocolo.
+
+- **Concluir:** `POST /solicitacoes/{id}/submissoes-simuladas` (sem corpo) → 201 com o comprovante e o pedido em `SUBMETIDA_SIMULACAO` (só consulta), ou 200 com o **mesmo** comprovante se o pedido já tinha submissão (uma por pedido, também sob pedidos simultâneos). Exige, conferidos sob o bloqueio do pedido: análise **vigente** da revisão atual com `SEM_PENDENCIAS_IDENTIFICADAS`, nenhum critério `PENDENTE` ou `NAO_VERIFICAVEL` e o pedido em `SEM_PENDENCIAS_IDENTIFICADAS`. `NAO_APLICAVEL` e resumo ausente não impedem.
+- **Consultar:** `GET /solicitacoes/{id}/submissoes-simuladas` → 200 com o mesmo comprovante; pedido ainda não submetido tem o mesmo 404 de pedido inexistente ou alheio.
+- **Recusas:** 409 `CONFLITO_ESTADO`, nada registrado e estado igual: análise com pendência ou não verificável; sem análise vigente da versão atual (rascunho, nunca analisado, falha, ou documentos/conferência mudaram); análise em andamento; pedido já só para consulta sem registro. As recusas de completude dizem que **a restrição é do simulador acadêmico e não impede atendimento em serviço de saúde**.
+
+```json
+{ "solicitacaoId": "12", "referencia": "SIM-2026-000012", "submetidaEm": "2026-11-17T14:45:03.120Z", "simulada": true,
+  "destaque": "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS",
+  "servico": { "localidade": "Município Exemplo", "especialidade": "Consulta ambulatorial em cardiologia", "avisoFicticio": "…" },
+  "versaoAnalisada": { "analiseId": "31", "revisao": 6, "protocolo": { "identificador": "PROTOCOLO-ACADEMICO-FICTICIO", "versao": "v0.1" } },
+  "nota": "Este comprovante é de demonstração. Não é documento clínico, não é protocolo oficial e não coloca você em fila real." }
+```
+`referencia` = `SIM-{ano em Salvador}-{id do pedido com no mínimo 6 dígitos}`: única porque cada pedido tem no máximo uma submissão (`RC_SUBMISSAO_UK_SOLIC`, `RC_SUBMISSAO_UK_REF`) e diferente do formato da carga sintética (`SIM-2026-0001`). `destaque` e `nota` são textos fixos do servidor.

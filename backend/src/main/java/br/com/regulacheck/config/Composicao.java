@@ -28,6 +28,8 @@ import br.com.regulacheck.iot.controller.CapturaController;
 import br.com.regulacheck.iot.controller.LeituraSensorController;
 import br.com.regulacheck.iot.service.CapturaService;
 import br.com.regulacheck.protocolo.controller.ProtocoloController;
+import br.com.regulacheck.reenvio.controller.ReenvioController;
+import br.com.regulacheck.reenvio.service.ReenvioService;
 import br.com.regulacheck.resumo.controller.ResumoController;
 import br.com.regulacheck.resumo.service.GeradorResumoMockado;
 import br.com.regulacheck.resumo.service.ResumoService;
@@ -35,6 +37,8 @@ import br.com.regulacheck.protocolo.service.ProtocoloService;
 import br.com.regulacheck.saude.SaudeController;
 import br.com.regulacheck.solicitacao.controller.SolicitacaoController;
 import br.com.regulacheck.solicitacao.service.SolicitacaoService;
+import br.com.regulacheck.submissao.controller.SubmissaoController;
+import br.com.regulacheck.submissao.service.SubmissaoService;
 import br.com.regulacheck.saude.SaudeRepositoryMemoria;
 import br.com.regulacheck.saude.SaudeService;
 import br.com.regulacheck.usuario.entity.Perfil;
@@ -149,12 +153,18 @@ public final class Composicao {
         CapturaService capturas = new CapturaService(dependencias.capturas(), dependencias.relogio());
         MultipartConfigElement multipart = new MultipartConfigElement(conferencia.quarentena().toString(),
                 LimitesArquivo.MAXIMO_BYTES, LimitesArquivo.MAXIMO_BYTES + FOLGA_MULTIPART_BYTES, 0);
+        // RC-14: resumo simulado. RC-16: a verificacao da versao corrigida usa os mesmos casos de uso (leitura,
+        // conferencia, analise e resumo), sem regra propria; mesma entrega de subcaminho. RC-17: a submissao simulada
+        // (POST/GET /{id}/submissoes-simuladas) tambem e entregue pelo SolicitacaoController.
+        ResumoService resumos = new ResumoService(dependencias.analises(), new GeradorResumoMockado());
+        ReenvioService reenvio = new ReenvioService(solicitacoes, extracao, conferenciaDaLeitura, analises, resumos);
         rotas.registrar("/solicitacoes/*",
                 new SolicitacaoController(solicitacoes, new DocumentoController(documentos),
                         new ExtracaoController(extracao), new ConferenciaController(conferenciaDaLeitura),
                         new AnaliseController(analises), new CapturaController(capturas),
-                        new ResumoController(new ResumoService(dependencias.analises(),
-                                new GeradorResumoMockado()))), multipart,
+                        new ResumoController(resumos), new ReenvioController(reenvio),
+                        new SubmissaoController(new SubmissaoService(dependencias.submissoes(),
+                                dependencias.relogio()))), multipart,
                 Perfil.PACIENTE);
         // Telemetria do simulador (RC-21): so a chave X-Chave-Simulador, so esta rota.
         rotas.registrarTelemetria("/sessoes-captura/*", new LeituraSensorController(capturas));

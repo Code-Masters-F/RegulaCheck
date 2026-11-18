@@ -82,9 +82,12 @@ class SituacaoESemEstadoDoPedidoTest {
                     "NAO_VERIFICAVEL", "ATENDE", "\"regras\"", "\"estado\"", "\"revisao\""}) {
                 assertFalse(r.corpo().contains(proibido), proibido);
             }
-            // nenhuma rota de submissao nasce com esta historia
-            assertEquals(404, c.api.enviar("POST", "/solicitacoes/" + p.pedido() + "/submissoes-simuladas", null,
-                    c.authA).status());
+            // conferir nao libera submissao: desde a RC-17 a rota existe e recusa sem analise vigente, sem registrar
+            Resposta submissao = c.api.enviar("POST", "/solicitacoes/" + p.pedido() + "/submissoes-simuladas", null,
+                    c.authA);
+            assertEquals(409, submissao.status(), submissao.corpo());
+            assertEquals(0, c.cenario.submissoes.total());
+            assertEquals("RASCUNHO", c.api.get("/solicitacoes/" + p.pedido(), c.authA).json().get("estado").asText());
             assertEquals(404, c.api.enviar("POST", "/solicitacoes/" + p.pedido() + "/submissao", null, c.authA)
                     .status());
         }
