@@ -358,8 +358,11 @@ Se houver atraso, explicite o impacto e retire primeiro melhorias P1; não supri
 
 Na preparação inicial, acrescentar: backend compilável e inicializável, health técnico mínimo, versões registradas e pendências de banco/mobile/IA explícitas. Um health UP não comprova que o MVP está completo.
 
+## 17. Gbrain
+- Pontos relevantes devem ser sempre lembrados pelo gbrain ou lembrar o que foi implementado após o PR feito.
+
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/016-iot-simulada/plan.md
+specs/020-conjunto-sintetico-demonstracao/plan.md
 <!-- SPECKIT END -->

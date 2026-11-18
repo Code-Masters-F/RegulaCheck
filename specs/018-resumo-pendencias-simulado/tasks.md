@@ -34,7 +34,7 @@
 - [x] T010 Verificar contrato HTTP, autorização e vigência em memória em `backend/src/test/java/br/com/regulacheck/analise/ResumoEndpointTest.java`.
 - [x] T011 Atualizar `README.md`, `docs/decisoes.md`, `docs/api/openapi.yaml` e `docs/api/RegulaCheck.postman_collection.json`.
 - [x] T012 Executar verificação relevante e registrar evidência em `specs/018-resumo-pendencias-simulado/tasks.md`.
-- [ ] T013 Verificar gravação e consulta do resumo no Oracle real em `backend/src/test/java/br/com/regulacheck/analise/AnaliseOracleTest.java` após autorização explícita para criar e remover dados de teste na conta compartilhada.
+- [x] T013 Verificar gravação e consulta do resumo no Oracle real em `backend/src/test/java/br/com/regulacheck/analise/AnaliseOracleTest.java` após autorização explícita para criar e remover dados de teste na conta compartilhada.
 
 ## Dependencies
 
@@ -53,3 +53,4 @@ Entregar primeiro a orientação para análise vigente; acrescentar fallback, re
 - Teste Oracle ampliado com asserções de resumo, compilado com `mvn -DskipTests test-compile`; execução bloqueada pela revisão automática porque usa conta Oracle compartilhada para criar e remover dados.
 - OpenAPI YAML e coleção Postman JSON analisados sem erro de sintaxe; `git diff --check` sem erros.
 - **Pendente**: execução contra Oracle real. O teste opt-in cria/remove linhas sintéticas na conta compartilhada. A revisão automática rejeitou a execução por falta de autorização específica para essa operação.
+- **17/11/2026 — Oracle real**: `RC_TESTE_ORACLE=SIM mvnw test -Dtest=AnaliseOracleTest`: 2 testes, 0 falhas, 0 erros, 0 ignorados, BUILD SUCCESS (execução autorizada pelo responsável).
