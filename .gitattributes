@@ -6,3 +6,6 @@ mvnw text eol=lf
 *.jar binary
 *.png binary
 *.pdf binary
+
+# Amostras sinteticas: o SHA-256 do arquivo identifica a leitura simulada; nao normalizar fim de linha.
+samples/**/*.txt -text
