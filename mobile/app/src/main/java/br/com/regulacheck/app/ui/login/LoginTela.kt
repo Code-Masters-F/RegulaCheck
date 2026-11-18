@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /** Falhas que a tela de login distingue (E1.1). */
-enum class FalhaLogin { CREDENCIAIS_INVALIDAS, INDISPONIVEL, SEM_CONEXAO, CONTA_NAO_PACIENTE, DADOS_RECUSADOS }
+enum class FalhaLogin { CREDENCIAIS_INVALIDAS, INDISPONIVEL, SEM_CONEXAO, PERFIL_NAO_SUPORTADO, DADOS_RECUSADOS }
 
 /**
  * Estado do formulário. A senha só vive aqui, em memória: não vai para `SavedState`, log ou disco.
@@ -57,7 +57,7 @@ data class EstadoLogin(
 }
 
 /**
- * Lógica de E1.1. A navegação para "Meus pedidos" acontece pela mudança de sessão
+ * Lógica de E1.1. A navegação para a tela do perfil ("Meus pedidos" ou E4.2) acontece pela mudança de sessão
  * (`GerenciadorSessao`), não por esta classe.
  */
 class LoginViewModel(private val servico: ServicoSessao) : ViewModel() {
@@ -82,8 +82,8 @@ class LoginViewModel(private val servico: ServicoSessao) : ViewModel() {
             estadoMutavel.update {
                 when (resultado) {
                     is ResultadoEntrada.Entrou -> it.copy(enviando = false, senha = "")
-                    ResultadoEntrada.ContaNaoPaciente ->
-                        it.copy(enviando = false, senha = "", falha = FalhaLogin.CONTA_NAO_PACIENTE)
+                    ResultadoEntrada.PerfilNaoSuportado ->
+                        it.copy(enviando = false, senha = "", falha = FalhaLogin.PERFIL_NAO_SUPORTADO)
                     is ResultadoEntrada.Falhou -> when (resultado.erro) {
                         ErroApi.CredenciaisInvalidas ->
                             it.copy(enviando = false, senha = "", falha = FalhaLogin.CREDENCIAIS_INVALIDAS)
@@ -138,7 +138,7 @@ fun LoginTela(viewModel: LoginViewModel, sessaoExpirada: Boolean) {
             mensagemErro = when (estado.falha) {
                 FalhaLogin.CREDENCIAIS_INVALIDAS -> Textos.CREDENCIAIS_INVALIDAS
                 FalhaLogin.DADOS_RECUSADOS -> Textos.LOGIN_DADOS_RECUSADOS
-                FalhaLogin.CONTA_NAO_PACIENTE -> Textos.CONTA_NAO_PACIENTE
+                FalhaLogin.PERFIL_NAO_SUPORTADO -> Textos.PERFIL_NAO_SUPORTADO
                 else -> null
             },
             teclado = KeyboardOptions(

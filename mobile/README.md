@@ -1,8 +1,8 @@
 # Mobile
 
-**Android nativo com Kotlin.** O projeto está em [`app/`](app/) desde a RC-18 (spec [`specs/017-app-android-login-pedidos/`](../specs/017-app-android-login-pedidos/), issue #41); a RC-19 acrescentou envio de documentos, leitura, análise e resultado (spec [`specs/022-app-android-documentos-resultado/`](../specs/022-app-android-documentos-resultado/), issue #42). O app consome somente a API do backend ([contratos](../docs/api/contratos-dados.md), [erros](../docs/api/erros.md), [estados](../docs/api/estados-e-revisoes.md), [rotas](../CONTRATO_API.md)). Nenhuma credencial de banco, de IA ou do simulador no app.
+**Android nativo com Kotlin.** O projeto está em [`app/`](app/) desde a RC-18 (spec [`specs/017-app-android-login-pedidos/`](../specs/017-app-android-login-pedidos/), issue #41); a RC-19 acrescentou envio de documentos, leitura, análise e resultado (spec [`specs/022-app-android-documentos-resultado/`](../specs/022-app-android-documentos-resultado/), issue #42); a RC-20 acrescentou o login por perfil e a tela do administrador E4.2 (spec [`specs/024-app-admin-indicadores/`](../specs/024-app-admin-indicadores/), issue #43). O app consome somente a API do backend ([contratos](../docs/api/contratos-dados.md), [erros](../docs/api/erros.md), [estados](../docs/api/estados-e-revisoes.md), [rotas](../CONTRATO_API.md)). Nenhuma credencial de banco, de IA ou do simulador no app.
 
-## O que está implementado, verificado e só desenhado (17/11/2026)
+## O que está implementado, verificado e só desenhado (18/11/2026)
 
 | Parte | Situação |
 |---|---|
@@ -15,7 +15,8 @@
 | `rotuloResultado` e `orientacao` da RC-15 ("Quem pode resolver") | Implementado; verificado com o backend real atualizado (segunda execução, 17/11/2026). Sem esses campos (backend antigo), o app usa o rótulo local e omite a orientação |
 | 409 `ANALISE_EM_ANDAMENTO`, 503 da leitura/análise, E2.1 erro e "sem serviços" | Implementado; **só nos testes** (não reproduzidos com o backend real) |
 | Avaliação com ≥ 3 pessoas (SC-005 da spec 019) | **Não realizada** |
-| Conferência da leitura (E3.2), substituir/remover/excluir (E2.4–E2.6), "Abrir documento", "Fotografar" e condições da captura (E2.7 Origem, E4.1), correção e comparação (E3.5, RC-16), conclusão e comprovante (E3.6/E3.7, RC-17), administrador (E4.2) | **Só desenho** (`design/RegulaCheck.pen`); o app não mostra botões para elas e explica o limite em texto quando preciso |
+| RC-20: login por perfil (paciente → E1.2; administrador → E4.2; outro perfil recusado) e E4.2 Protocolo e indicadores (protocolo ativo e regras, total de pedidos, análises vigentes por resultado + pedidos em falha, 5 regras com mais pendências, nota de dados de demonstração, "Sair"; carregando, erro com "Tentar de novo", 403) consumindo `GET /admin/indicadores` | Implementado; testes JVM (API, ViewModel, sessão por perfil); conferido no emulador com o backend real e Oracle em 18/11/2026 (E4.2 igual a `GET /admin/indicadores`; paciente em "Meus pedidos" e 403 na rota; logcat sem token) — [evidência](../docs/evidencias/2026-11-18_rc20-indicadores-administrador.md). Carregando e erro de E4.2 só nos testes. A organização da tela difere do quadro `T8XMZ` (posição da nota, componentes do total e das linhas, seção "Regras do protocolo"); mantida assim por decisão de 18/11/2026, detalhes na evidência |
+| Conferência da leitura (E3.2), substituir/remover/excluir (E2.4–E2.6), "Abrir documento", "Fotografar" e condições da captura (E2.7 Origem, E4.1), correção e comparação (E3.5, RC-16), conclusão e comprovante (E3.6/E3.7, RC-17), outras telas de administrador | **Só desenho** (`design/RegulaCheck.pen`); o app não mostra botões para elas e explica o limite em texto quando preciso |
 | Fonte ampliada, TalkBack, modo escuro, tablet | Fora do épico (#40); não verificados |
 
 ## Como executar

@@ -252,3 +252,14 @@ Usados por `mobile/app/.../ui/Textos.kt` (spec 022). "Ajustado" = o texto do qua
 | E3.3, Sem pendências | sem o botão "Concluir simulação" (RC-17) | ajustado |
 | E3.4 | "Responsável registrado pela regra" (rótulo) · "Trecho lido: “{trecho}”" · evidência "Documento: {nome} · {campo} {situação} · página {n}" | criado (spec 019) |
 | E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · "Conferir a leitura está disponível só no desenho nesta versão." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |
+
+## App Android — textos criados ou ajustados na RC-20 (18/11/2026)
+
+Usados por `mobile/app/.../ui/Textos.kt` (spec 024). Os textos de E4.2 acima são usados como estão; "Falha" conta pedidos (a análise que falha não é gravada, clarify da spec 024).
+
+| Onde | Texto | Motivo |
+|---|---|---|
+| E1.1, perfil não atendido | "Esta conta não pode ser usada neste aplicativo. Entre com uma conta de paciente ou de administrador." | ajustado: substitui "Esta conta não é de paciente…" (RC-18), já que o administrador passou a entrar |
+| E4.2, base dos números | "Contam a verificação atual de cada pedido. \"Falha\" conta pedidos cuja última verificação não foi concluída." | criado (sem quadro) |
+| E4.2, estados sem quadro | "Nenhum protocolo ativo." · "Nenhuma pendência registrada." · "{n} pendência(s)" · linha de regra "{código} · {nome}" | criado |
+| E4.2, sem conexão e 403 | "Sem conexão com a internet." / "Verifique sua rede e tente de novo." · "Você não tem permissão para ver esta tela." (E1.5) | reaproveitado da RC-18 |
