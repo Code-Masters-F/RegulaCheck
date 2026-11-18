@@ -1,6 +1,6 @@
 # Catálogo dos conjuntos sintéticos (RC-23)
 
-> Material **fictício**, sem dado real. Leitura **simulada**. Resultado esperado não é aprovação do SUS. Data de referência da regressão: 2026-11-12. Gabaritos registrados em 2026-11-17, antes da primeira execução. Registro de commit do gabarito: **pendente** (commit não autorizado até a escrita deste arquivo).
+> Material **fictício**, sem dado real. Leitura **simulada**. Resultado esperado não é aprovação do SUS. Data de referência da regressão: 2026-11-12. Gabaritos registrados em 2026-11-17, antes da primeira execução. Commit do gabarito: `3fefe2e` (gabaritos dos conjuntos 13 e 14 revistos depois da primeira execução, ver research.md D9).
 
 | # | Conjunto | Situação coberta | Arquivos | Conferência | Resultado geral esperado | Original |
 |---|---|---|---|---|---|---|
@@ -16,6 +16,6 @@
 | 10 | [10-maioridade-limite](conjuntos/10-maioridade-limite/gabarito.md) | Regra condicional nao aplicavel na fronteira: a paciente completa 18 anos na data de referencia. | PDF, PNG | TUDO_CONFIRMADO | SEM_PENDENCIAS_IDENTIFICADAS | - |
 | 11 | [11-instrucao-no-documento](conjuntos/11-instrucao-no-documento/gabarito.md) | Texto no documento tentando dar ordens ao sistema: e so dado do campo de motivo. | PDF, PNG | TUDO_CONFIRMADO | SEM_PENDENCIAS_IDENTIFICADAS | - |
 | 12 | [12-formato-invalido](conjuntos/12-formato-invalido/gabarito.md) | Arquivos que a aplicacao deve recusar no envio: formato nao aceito e PDF com mais de 5 paginas. | TXT, PDF | - | recusa no envio | - |
-| 13 | [13-corrigido-de-04](conjuntos/13-corrigido-de-04/gabarito.md) | Reenvio do conjunto 04: encaminhamento completo e dentro da validade substitui o anterior e a identificacao e acrescentada. | PDF, PNG | TUDO_CONFIRMADO | SEM_PENDENCIAS_IDENTIFICADAS | 04 |
-| 14 | [14-corrigido-de-09](conjuntos/14-corrigido-de-09/gabarito.md) | Reenvio do conjunto 09: a autorizacao assinada do responsavel e acrescentada. | PDF | TUDO_CONFIRMADO | SEM_PENDENCIAS_IDENTIFICADAS | 09 |
+| 13 | [13-corrigido-de-04](conjuntos/13-corrigido-de-04/gabarito.md) | Reenvio parcial do conjunto 04: o encaminhamento e substituido por um completo e valido; a identificacao continua faltando. | PDF | TUDO_CONFIRMADO | COM_PENDENCIAS | 04 |
+| 14 | [14-corrigido-de-09](conjuntos/14-corrigido-de-09/gabarito.md) | Reenvio do conjunto 09: o encaminhamento e substituido por uma versao com a autorizacao assinada do responsavel. | PDF | TUDO_CONFIRMADO | SEM_PENDENCIAS_IDENTIFICADAS | 09 |
 | 15 | [15-nada-conferido](conjuntos/15-nada-conferido/gabarito.md) | Mesmos arquivos do conjunto 01, sem nenhuma conferencia: nenhum campo vale como evidencia. | PDF, PNG | NADA_CONFERIDO | REQUER_CONFERENCIA | - |

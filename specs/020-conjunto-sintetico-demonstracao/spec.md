@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-17
 
-**Status**: Draft
+**Status**: Implementado e verificado na regressão em memória (leitura simulada); pendentes: execução manual com Oracle, SC-004 (RC-26) e `/speckit-analyze` final
 
 **Backlog**: RC-23, issue #49 (Épico 8 — Qualidade e validação da proposta). P0 · E/B · 3 h · dependência RC-01.
 
@@ -92,7 +92,7 @@ Qualquer pessoa que abra um arquivo do conjunto deve perceber imediatamente que 
 - **FR-001**: O repositório MUST conter ao menos 12 conjuntos sintéticos de demonstração, cada um identificado de forma única e com objetivo de teste declarado.
 - **FR-002**: O catálogo MUST cobrir, no mínimo, estas situações: completo; requisito ausente; várias pendências; foto ilegível; foto cortada; documento de outra pessoa; regra condicional aplicável; regra condicional não aplicável; correção (versão corrigida); formato inválido; tentativa de instrução no documento.
 - **FR-003**: O catálogo MUST incluir ao menos um documento PDF com texto e ao menos uma fotografia/imagem.
-- **FR-004**: Cada conjunto MUST ter um gabarito com: o estado da conferência da transcrição pressuposto (todos os campos confirmados, divergência apontada em campo nomeado, ou nada conferido), pois só campo identificado **e confirmado** serve de evidência; resultado esperado para **todas** as regras RC-R01 a RC-R06 (atende, pendente, não verificável, não aplicável); campos esperados com situação (identificado, não localizado, ilegível) e valor/origem quando houver; e o resultado geral esperado.
+- **FR-004**: Cada conjunto MUST ter um gabarito com: o estado da conferência da transcrição pressuposto (todos os campos confirmados ou nada conferido; a variante de divergência apontada em campo nomeado fica reservada e não é usada nesta versão), pois só campo identificado **e confirmado** serve de evidência; resultado esperado para **todas** as regras RC-R01 a RC-R06 (atende, pendente, não verificável, não aplicável); campos esperados com situação (identificado, não localizado, ilegível) e valor/origem quando houver; e o resultado geral esperado.
 - **FR-005**: Cada gabarito MUST ter sido definido antes da primeira execução do conjunto, e o registro dessa ordem MUST ser verificável.
 - **FR-006**: Cada conjunto corrigido MUST indicar explicitamente o conjunto original a que se relaciona e descrever o que foi corrigido; o gabarito do original MUST permanecer inalterado.
 - **FR-007**: Todo arquivo do conjunto MUST exibir indicação visível de material fictício/sintético, e a documentação do conjunto MUST declarar o mesmo.

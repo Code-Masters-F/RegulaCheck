@@ -42,13 +42,19 @@
 - **Racional**: a spec 013 e o JavaDoc de RC-R03 tratam não localizado em documento claro como ausente; a distinção "não localizado ≠ ausente" da constituição vale para documento ilegível ou não lido. Os dois conjuntos passam a exercitar resultados diferentes.
 - **Alternativas**: modelar a foto cortada como `ILEGIVEL` (idêntica ao conjunto 05, sem ganho de cobertura).
 
+### D9 — Reenvio só por substituição (achado da primeira execução, 18/11/2026)
+- **Achado**: na primeira execução da regressão, `POST /solicitacoes/{id}/documentos` depois da análise respondeu `409 CONFLITO_ESTADO` ("Este pedido não pode mais receber documentos"): o pedido deixa de ser rascunho ao ser analisado. Substituir documento continua permitido (`201`, spec 010). A leitura inicial das notas ("acrescentar é possível") estava errada e foi corrigida por esta evidência.
+- **Decisão**: os corrigidos usam **só substituição**. O conjunto 13 substitui o encaminhamento do 04 por um completo e válido e **mantém a falta de identificação** (`COM_PENDENCIAS`, RC-R04 e RC-R05 resolvidas, RC-R03 ainda pendente: demonstra correção parcial). O conjunto 14 substitui o encaminhamento do 09 por uma versão que traz a autorização assinada (`SEM_PENDENCIAS_IDENTIFICADAS`).
+- **Transparência**: os gabaritos dos conjuntos 13 e 14 e seus arquivos foram **revistos depois da primeira execução**, por causa dessa restrição do sistema e não por ajuste ao resultado do motor; os resultados esperados por regra continuam derivados das definições das regras. O commit `3fefe2e` guarda a versão original. Os gabaritos dos demais conjuntos (01–12 e 15) não foram alterados e coincidiram com o motor na primeira execução.
+- **Alternativas**: adicionar a um pedido ainda rascunho (não é o fluxo de reenvio); abrir um segundo pedido (perde o histórico por revisão).
+
 ## T001–T003 — evidências (17/11/2026)
 
 - **T001**: `.\mvnw.cmd -DskipTests test-compile` (a partir de `backend/`): `BUILD SUCCESS`.
 - **T003**: `docs/api/erros.md`: PDF com mais de 5 páginas → `400 REQUISICAO_INVALIDA` (`detalhes.arquivo`); extensão não permitida ou incompatível com o conteúdo → `415 EXTENSAO_INCOMPATIVEL`; conteúdo que não é PDF/JPEG/PNG → `415 TIPO_NAO_SUPORTADO`.
 - **Data de referência**: `AvaliacaoService.dataDeReferencia` usa a **data do envio mais recente** dos documentos da leitura, no fuso `America/Bahia`. Nos testes, `CenarioAuth.relogio` é fixo em `2026-11-12T20:00:00Z` → referência **2026-11-12**. Em execução real é o dia do envio (a fronteira dos 18 anos só é exercitada na regressão).
 - **Precedência do resultado geral** (`ResultadoGeral.de`): alguma `PENDENTE` → `COM_PENDENCIAS`; senão alguma `NAO_VERIFICAVEL` → `REQUER_CONFERENCIA`; senão `SEM_PENDENCIAS_IDENTIFICADAS`; `NAO_APLICAVEL` não influencia.
-- **Reenvio (T028)**: `DocumentoService.enviar` só recusa pedido fora de `RASCUNHO`, chave de envio reutilizada e limite de 3 documentos; a análise não muda o estado do pedido. Logo é possível acrescentar documento (conjunto 14) e substituir (`CenarioDocumento.substituir`, conjunto 13) depois de uma análise; a nova revisão invalida a anterior (spec 010 FR-013). A restrição "não acrescentar após a primeira análise" do contrato da RC-15 é da **apresentação no app** (RC-16), não do backend.
+- **Reenvio (T028)**: `DocumentoService.enviar` recusa pedido fora de `RASCUNHO`. **Correção (D9)**: depois da análise o pedido não aceita documento novo (`409 CONFLITO_ESTADO`); só a substituição é aceita (spec 010 FR-013, `201`), e a nova revisão invalida a anterior.
 - **Documento de autorização**: `TipoDocumental.AUTORIZACAO_RESPONSAVEL` é um valor válido de `TIPO_DOCUMENTO`. Nele, `NOME` e `DATA_NASCIMENTO` ficam `NAO_LOCALIZADO` (o nome do responsável não pode entrar em `NOME`, para não gerar divergência em RC-R02).
 
 ## T002 — matriz das seis regras (derivada das definições, sem executar o motor)
@@ -69,8 +75,8 @@ Persona adulta: Maria Exemplo da Silva, nascida em 1990-04-12. Menor: Lia Exempl
 | 10 | maioridade-limite | TC | A | A | A | A | A | NA | SEM_PENDENCIAS_IDENTIFICADAS |
 | 11 | instrucao-no-documento | TC | A | A | A | A (conteúdo não é avaliado) | A | NA | SEM_PENDENCIAS_IDENTIFICADAS |
 | 12 | formato-invalido | — | recusado no envio, sem leitura e sem análise | | | | | | — |
-| 13 | corrigido-de-04 (substitui o encaminhamento e envia a identificação) | TC | A | A | A | A | A | NA | SEM_PENDENCIAS_IDENTIFICADAS (rev. 2) |
-| 14 | corrigido-de-09 (envia a autorização) | TC | A | A | A | A | A | A | SEM_PENDENCIAS_IDENTIFICADAS (rev. 2) |
+| 13 | corrigido-de-04 (substitui o encaminhamento; a identificação continua faltando — revisto em D9) | TC | A | NV | P (paciente) | A | A | NV | COM_PENDENCIAS (nova revisão) |
+| 14 | corrigido-de-09 (substitui o encaminhamento por um com a autorização — revisto em D9) | TC | A | A | A | A | A | A | SEM_PENDENCIAS_IDENTIFICADAS (nova revisão) |
 | 15 | nada-conferido (arquivos do 01) | NC | NV | NV | NV | NV | NV | NV | REQUER_CONFERENCIA |
 
 Notas de derivação:
@@ -82,4 +88,4 @@ Notas de derivação:
 
 ## Pendências
 
-Nenhum `NEEDS CLARIFICATION` aberto. O que precisa ser conferido na implementação, sem inventar: o código/mensagem exatos de recusa de formato (D7) e a célula de RC-R02 com um documento sem nome legível (D8), ambos contra a spec 013 e a documentação da API.
+Nenhum `NEEDS CLARIFICATION` aberto. Os pontos que dependiam da implementação foram resolvidos: recusa de formato (D7, conferida em `docs/api/erros.md` e na regressão), RC-R02 com documento cortado ou ilegível (matriz abaixo e D8) e reenvio só por substituição (D9).

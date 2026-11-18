@@ -52,8 +52,15 @@ final class EscritorDeGabaritos {
         t.append("- **Objetivo**: ").append(conjunto.objetivo()).append('\n');
         t.append("- **Data de referência**: ").append(ConjuntosSinteticos.DATA_REFERENCIA)
                 .append(" (regressão automática; em execução manual vale o dia do envio)\n");
-        t.append("- **Gabarito registrado em**: ").append(ConjuntosSinteticos.DATA_DO_REGISTRO)
-                .append(", antes da primeira execução do conjunto\n");
+        if (conjunto.originalDe() == null) {
+            t.append("- **Gabarito registrado em**: ").append(ConjuntosSinteticos.DATA_DO_REGISTRO)
+                    .append(", antes da primeira execução do conjunto (commit `3fefe2e`)\n");
+        } else {
+            t.append("- **Gabarito registrado em**: ").append(ConjuntosSinteticos.DATA_DO_REGISTRO)
+                    .append(" e **revisto em 2026-11-18, depois da primeira execução**, que recusou o acréscimo de"
+                            + " documento (409 `CONFLITO_ESTADO`); a versão original está no commit `3fefe2e`."
+                            + " Motivo e decisão em `specs/020-conjunto-sintetico-demonstracao/research.md` (D9)\n");
+        }
         t.append("- **Original**: ").append(conjunto.originalDe() == null ? "-" : "conjunto "
                 + conjunto.originalDe() + " (versão corrigida; o gabarito do original não muda)").append('\n');
         if (conjunto.arquivosDe() != null) {
@@ -126,8 +133,7 @@ final class EscritorDeGabaritos {
         t.append("> Material **fictício**, sem dado real. Leitura **simulada**. Resultado esperado não é aprovação do"
                 + " SUS. Data de referência da regressão: ").append(ConjuntosSinteticos.DATA_REFERENCIA)
                 .append(". Gabaritos registrados em ").append(ConjuntosSinteticos.DATA_DO_REGISTRO)
-                .append(", antes da primeira execução. Registro de commit do gabarito: **pendente** (commit não"
-                        + " autorizado até a escrita deste arquivo).\n\n");
+                .append(", antes da primeira execução. Commit do gabarito: `3fefe2e` (gabaritos dos conjuntos 13 e 14 revistos depois da primeira execução, ver research.md D9).\n\n");
         t.append("| # | Conjunto | Situação coberta | Arquivos | Conferência | Resultado geral esperado | Original |\n"
                 + "|---|---|---|---|---|---|---|\n");
         for (Conjunto c : ConjuntosSinteticos.todos()) {

@@ -16,7 +16,7 @@ Não há endpoint novo. Este contrato fixa o formato do material, para que qualq
 - **Objetivo**: <frase>
 - **Data de referência**: 2026-11-12
 - **Original**: <id ou "-">  (somente em versões corrigidas; descreve o que mudou)
-- **Conferência pressuposta**: <TUDO_CONFIRMADO | NADA_CONFERIDO | DIVERGENCIA(<campo>)>
+- **Conferência pressuposta**: <TUDO_CONFIRMADO | NADA_CONFERIDO>  (DIVERGENCIA(<campo>) reservada, sem uso nesta versão)
 - **Arquivos**: <nome> — SHA-256 `<hash>`
 
 ## Campos esperados

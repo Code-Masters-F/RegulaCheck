@@ -260,21 +260,24 @@ public final class ConjuntosSinteticos {
                                     "PDF com 6 paginas; o limite do MVP e 5 (docs/api/protecoes.md).")),
                     "Recusa no envio: nada e gravado, nao ha leitura nem analise, e nenhuma regra e avaliada."),
             corrigido("13", "corrigido-de-04", "04",
-                    "Reenvio do conjunto 04: encaminhamento completo e dentro da validade substitui o anterior e a"
-                            + " identificacao e acrescentada.",
-                    List.of(encaminhamento("13", MARIA, MARIA_NASC, MOTIVO, EMISSAO),
-                            identificacao("13", MARIA, MARIA_NASC, Variante.NORMAL)),
-                    new int[] {0, -1}, regras(ATENDE, ATENDE, ATENDE, ATENDE, ATENDE, NAO_APLICAVEL),
-                    ResultadoGeral.SEM_PENDENCIAS_IDENTIFICADAS,
-                    "Nova revisao: a analise do conjunto 04 deixa de ser vigente e continua no historico. O gabarito do"
-                            + " conjunto 04 nao muda."),
+                    "Reenvio parcial do conjunto 04: o encaminhamento e substituido por um completo e valido; a"
+                            + " identificacao continua faltando.",
+                    List.of(encaminhamento("13", MARIA, MARIA_NASC, MOTIVO, EMISSAO)), new int[] {0},
+                    regras(ATENDE, NAO_VERIFICAVEL, PENDENTE_PACIENTE, ATENDE, ATENDE, NAO_VERIFICAVEL),
+                    ResultadoGeral.COM_PENDENCIAS,
+                    "As pendencias RC-R04 e RC-R05 do conjunto 04 ficam resolvidas; RC-R03 continua pendente, entao o"
+                            + " corrigido nao e sem pendencias. So se substitui documento: depois da primeira analise"
+                            + " o pedido nao aceita documento novo (409 CONFLITO_ESTADO), achado registrado em"
+                            + " specs/020-conjunto-sintetico-demonstracao/research.md (D9). O gabarito do conjunto 04"
+                            + " nao muda."),
             corrigido("14", "corrigido-de-09", "09",
-                    "Reenvio do conjunto 09: a autorizacao assinada do responsavel e acrescentada.",
-                    List.of(autorizacao("14")), new int[] {-1},
+                    "Reenvio do conjunto 09: o encaminhamento e substituido por uma versao com a autorizacao assinada"
+                            + " do responsavel.",
+                    List.of(encaminhamento("14", LIA, LIA_NASC, MOTIVO, EMISSAO, "SIM")), new int[] {0},
                     regras(ATENDE, ATENDE, ATENDE, ATENDE, ATENDE, ATENDE),
                     ResultadoGeral.SEM_PENDENCIAS_IDENTIFICADAS,
-                    "Nova revisao: a analise do conjunto 09 deixa de ser vigente e continua no historico. O gabarito do"
-                            + " conjunto 09 nao muda."),
+                    "A autorizacao vem no proprio encaminhamento reemitido, porque nao se acrescenta documento depois"
+                            + " da analise (D9). O gabarito do conjunto 09 nao muda."),
             new Conjunto("15", "nada-conferido",
                     "Mesmos arquivos do conjunto 01, sem nenhuma conferencia: nenhum campo vale como evidencia.", null,
                     "01", Conferencia.NADA_CONFERIDO, List.of(), null,
@@ -366,6 +369,12 @@ public final class ConjuntosSinteticos {
 
     private static Arquivo encaminhamento(String numero, String nome, String nascimento, String motivo,
             String emissao) {
+        return encaminhamento(numero, nome, nascimento, motivo, emissao, null);
+    }
+
+    /** Encaminhamento; {@code autorizacao} igual a {@code "SIM"} acrescenta a autorizacao assinada do responsavel. */
+    private static Arquivo encaminhamento(String numero, String nome, String nascimento, String motivo,
+            String emissao, String autorizacao) {
         String titulo = "ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL";
         List<String> linhas = new ArrayList<>(List.of(titulo, MARCA, "Conjunto de teste " + numero,
                 "Paciente: " + nome, "Nascimento: " + brasileira(nascimento)));
@@ -381,7 +390,13 @@ public final class ConjuntosSinteticos {
         }
         linhas.add("Emissao: " + brasileira(emissao));
         campos.add(CampoLido.identificado(CodigoCampo.DATA_EMISSAO, emissao, 1, "Emissao: " + brasileira(emissao)));
-        campos.add(CampoLido.naoLocalizado(CodigoCampo.AUTORIZACAO_ASSINADA));
+        if (autorizacao == null) {
+            campos.add(CampoLido.naoLocalizado(CodigoCampo.AUTORIZACAO_ASSINADA));
+        } else {
+            linhas.add("Autorizacao assinada: " + autorizacao);
+            campos.add(CampoLido.identificado(CodigoCampo.AUTORIZACAO_ASSINADA, autorizacao, 1,
+                    "Autorizacao assinada: " + autorizacao));
+        }
         return new Arquivo("encaminhamento.pdf", Formato.PDF, 1, List.copyOf(linhas), "ENCAMINHAMENTO",
                 new LeituraDeDocumento(SituacaoLeitura.LIDO, List.copyOf(campos)), Path.of("."), true);
     }

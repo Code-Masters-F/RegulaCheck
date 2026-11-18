@@ -17,7 +17,7 @@ Não há tabela nem mudança de banco. O modelo é de material de teste (arquivo
 
 | Campo | Descrição |
 |---|---|
-| `conferencia` | Estado da conferência pressuposto: `TUDO_CONFIRMADO`, `NADA_CONFERIDO` ou `DIVERGENCIA(<campo>)`. Só campo identificado e confirmado vale como evidência (spec 013); sem isso as regras dependentes ficam `NAO_VERIFICAVEL`. |
+| `conferencia` | Estado da conferência pressuposto: `TUDO_CONFIRMADO` ou `NADA_CONFERIDO` (`DIVERGENCIA(<campo>)` fica reservada, sem uso nesta versão). Só campo identificado e confirmado vale como evidência (spec 013); sem isso as regras dependentes ficam `NAO_VERIFICAVEL`. |
 | `regras[RC-R01..RC-R06]` | **Todas as seis** preenchidas. |
 | `regras[RC-R01..RC-R06]` (detalhe) | `ATENDE`, `PENDENTE`, `NAO_VERIFICAVEL` ou `NAO_APLICAVEL`; para `PENDENTE`, o responsável esperado (`PACIENTE` ou `UNIDADE_EMISSORA`). |
 | `campos[arquivo][CAMPO]` | Situação (`IDENTIFICADO`, `NAO_LOCALIZADO`, `ILEGIVEL`), valor e origem (página/trecho) quando houver. Campos: `TIPO_DOCUMENTO`, `NOME`, `DATA_NASCIMENTO`, `MOTIVO_ENCAMINHAMENTO`, `DATA_EMISSAO`, `AUTORIZACAO_ASSINADA`. |

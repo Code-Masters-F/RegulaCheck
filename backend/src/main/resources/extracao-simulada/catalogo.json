@@ -736,56 +736,39 @@
       "situacao" : "NAO_LOCALIZADO"
     } ]
   }, {
-    "descricao" : "13-corrigido-de-04/identificacao.png",
-    "hash" : "5ea4c95b8628caaf0abf6633c5208d259c4574eeb72afd34bbc313178d52f6b4",
+    "descricao" : "14-corrigido-de-09/encaminhamento.pdf",
+    "hash" : "b596d6768aa0bd8a89c22b88a8f065099fe3f80aca6b4ae3f43c0ab2f7080f76",
     "situacao" : "LIDO",
     "campos" : [ {
       "codigo" : "TIPO_DOCUMENTO",
       "situacao" : "IDENTIFICADO",
-      "valor" : "IDENTIFICACAO",
-      "trecho" : "DOCUMENTO DE IDENTIFICACAO (SINTETICO)"
-    }, {
-      "codigo" : "NOME",
-      "situacao" : "IDENTIFICADO",
-      "valor" : "Maria Exemplo da Silva",
-      "trecho" : "Nome: Maria Exemplo da Silva"
-    }, {
-      "codigo" : "DATA_NASCIMENTO",
-      "situacao" : "IDENTIFICADO",
-      "valor" : "1990-04-12",
-      "trecho" : "Nascimento: 12/04/1990"
-    }, {
-      "codigo" : "MOTIVO_ENCAMINHAMENTO",
-      "situacao" : "NAO_LOCALIZADO"
-    }, {
-      "codigo" : "DATA_EMISSAO",
-      "situacao" : "NAO_LOCALIZADO"
-    }, {
-      "codigo" : "AUTORIZACAO_ASSINADA",
-      "situacao" : "NAO_LOCALIZADO"
-    } ]
-  }, {
-    "descricao" : "14-corrigido-de-09/autorizacao.pdf",
-    "hash" : "d886cc3a4326b523d925c343c25fa30605c101d895a32a0bdf2394c9faaa1da9",
-    "situacao" : "LIDO",
-    "campos" : [ {
-      "codigo" : "TIPO_DOCUMENTO",
-      "situacao" : "IDENTIFICADO",
-      "valor" : "AUTORIZACAO_RESPONSAVEL",
+      "valor" : "ENCAMINHAMENTO",
       "pagina" : 1,
-      "trecho" : "AUTORIZACAO DO RESPONSAVEL LEGAL (SINTETICA)"
+      "trecho" : "ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL"
     }, {
       "codigo" : "NOME",
-      "situacao" : "NAO_LOCALIZADO"
+      "situacao" : "IDENTIFICADO",
+      "valor" : "Lia Exemplo Souza",
+      "pagina" : 1,
+      "trecho" : "Paciente: Lia Exemplo Souza"
     }, {
       "codigo" : "DATA_NASCIMENTO",
-      "situacao" : "NAO_LOCALIZADO"
+      "situacao" : "IDENTIFICADO",
+      "valor" : "2012-06-20",
+      "pagina" : 1,
+      "trecho" : "Nascimento: 20/06/2012"
     }, {
       "codigo" : "MOTIVO_ENCAMINHAMENTO",
-      "situacao" : "NAO_LOCALIZADO"
+      "situacao" : "IDENTIFICADO",
+      "valor" : "Avaliacao cardiologica ambulatorial (texto sintetico)",
+      "pagina" : 1,
+      "trecho" : "Motivo: Avaliacao cardiologica ambulatorial (texto sintetico)"
     }, {
       "codigo" : "DATA_EMISSAO",
-      "situacao" : "NAO_LOCALIZADO"
+      "situacao" : "IDENTIFICADO",
+      "valor" : "2026-10-20",
+      "pagina" : 1,
+      "trecho" : "Emissao: 20/10/2026"
     }, {
       "codigo" : "AUTORIZACAO_ASSINADA",
       "situacao" : "IDENTIFICADO",
