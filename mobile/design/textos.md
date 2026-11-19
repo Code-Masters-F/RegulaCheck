@@ -214,7 +214,7 @@ Destaque: "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS". "Referência" / "{re
 ### E4.2 Protocolo e indicadores (administrador)
 | Estado | Textos |
 |---|---|
-| Padrão | Título: "Protocolo e indicadores". "Protocolo ativo" / "Protocolo acadêmico fictício · versão {versão} · {n} regras" e a lista das regras (código e nome). "Total de pedidos" / "{n}". "Análises por resultado": sem pendências identificadas, com pendências, confira a leitura, falha. "Regras com mais pendências". Nota: "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos." Cabeçalho: "Sair". |
+| Padrão | Título: "Protocolo e indicadores". "Protocolo ativo" / "Protocolo acadêmico fictício · versão {versão} · {n} regras" e a lista das regras (código e nome; no app, só o nome desde 19/11/2026). "Total de pedidos" / "{n}". "Análises por resultado": sem pendências identificadas, com pendências, confira a leitura, falha. "Regras com mais pendências". Nota: "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos." Cabeçalho: "Sair". |
 | Carregando | Esqueleto + "Carregando indicadores…" |
 | Erro | "Não foi possível carregar os indicadores." Botão: "Tentar de novo". |
 
@@ -277,6 +277,7 @@ Usados por `mobile/app/.../ui/Textos.kt` (spec 024). Os textos de E4.2 acima sã
 | Onde | Texto | Motivo |
 |---|---|---|
 | E1.1, perfil não atendido | "Esta conta não pode ser usada neste aplicativo. Entre com uma conta de paciente ou de administrador." | ajustado: substitui "Esta conta não é de paciente…" (RC-18), já que o administrador passou a entrar |
-| E4.2, base dos números | "Contam a verificação atual de cada pedido. \"Falha\" conta pedidos cuja última verificação não foi concluída." | criado (sem quadro) |
-| E4.2, estados sem quadro | "Nenhum protocolo ativo." · "Nenhuma pendência registrada." · "{n} pendência(s)" · linha de regra "{código} · {nome}" | criado |
+| E4.2, base dos números | "“Falha” mostra os pedidos cuja última verificação não terminou." | criado (sem quadro); encurtado em 19/11/2026 |
+| E4.2, estados sem quadro | "Nenhum protocolo ativo." · "Nenhuma pendência registrada." · "{n} pendência(s)" · linha de regra "{nome}" (sem o código desde 19/11/2026) | criado |
+| E4.2, parcelas por regra | abaixo do nome, só as parcelas maiores que zero: "{n} pendente(s)" · "{n} não verificável(is)" | criado em 19/11/2026 ([spec 024, Clarifications](../../specs/024-app-admin-indicadores/spec.md#clarifications)) |
 | E4.2, sem conexão e 403 | "Sem conexão com a internet." / "Verifique sua rede e tente de novo." · "Você não tem permissão para ver esta tela." (E1.5) | reaproveitado da RC-18 |

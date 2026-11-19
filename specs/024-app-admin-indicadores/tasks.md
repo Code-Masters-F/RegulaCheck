@@ -56,6 +56,16 @@ Sem tarefas: projetos, versões e dependências existentes são reaproveitados (
 - [X] T022 Verificação manual com o backend real (reinício pelo usuário a partir da branch): API com admin/paciente/sem token e E4.2 no emulador; registrar só em texto em `docs/evidencias/2026-11-18_rc20-indicadores-administrador.md`
 - [X] T023 Revisar o diff (sem segredos, sem capturas, sem `.env`) e atualizar `docs/ambiente.md` só se algum comando mudou
 
+## Phase 7: Ajuste de textos da E4.2 (19/11/2026)
+
+Decisão em spec.md, Clarifications, sessão 2026-11-19 (FR-010). Só o app muda; a rota e a resposta continuam iguais.
+
+- [X] T024 Regras só pelo nome no cartão do protocolo e em "Regras com mais pendências" (`ui/Textos.kt`, `ui/indicadores/IndicadoresTela.kt`)
+- [X] T025 Parcelas pendente e não verificável abaixo de cada regra com mais pendências, só as maiores que zero, e teste do texto (`ui/Textos.kt`, `ui/indicadores/IndicadoresTela.kt`, `TextosIndicadoresTest.kt`)
+- [X] T026 Nota da base dos números mais curta, só sobre "Falha" (`ui/Textos.kt`)
+- [X] T027 [P] Atualizar `mobile/design/textos.md`
+- [X] T028 `.\gradlew.bat assembleDebug testDebugUnitTest` verde e E4.2 conferida no emulador com o backend real — 123 testes, 0 falhas (19/11/2026, com o contorno de loopback de `docs/ambiente.md`); E4.2 com regras só pelo nome, parcelas abaixo de cada regra (ex.: "1 pendente · 5 não verificáveis") e a nota curta de "Falha"
+
 ## Dependencies
 
 - T001–T002 → US1. US1 (rota) → T022 (verificação real). US2 depende só do contrato (T012 pode começar com US1). US3 depende de T013–T014.

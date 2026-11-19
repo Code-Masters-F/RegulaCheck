@@ -140,7 +140,11 @@ private fun ConteudoIndicadores(dados: Indicadores) {
         Text(Textos.SEM_PENDENCIAS_REGISTRADAS, style = TiposRc.Corpo, color = CoresRc.TextoApoio)
     } else {
         dados.regrasComMaisPendencias.forEach { regra ->
-            LinhaNumero(Textos.regraLinha(regra.codigo, regra.descricao), Textos.quantidadePendencias(regra.total))
+            LinhaNumero(
+                regra.descricao,
+                Textos.quantidadePendencias(regra.total),
+                detalhe = Textos.parcelasPendencias(regra.pendentes, regra.naoVerificaveis),
+            )
         }
     }
 
@@ -148,7 +152,7 @@ private fun ConteudoIndicadores(dados: Indicadores) {
     NotaDemonstracao()
 }
 
-/** Cartão "Protocolo ativo": versão, quantidade e lista das regras (código e nome). */
+/** Cartão "Protocolo ativo": versão, quantidade e lista das regras pelo nome (sem o código desde 19/11/2026). */
 @Composable
 private fun CartaoProtocolo(protocolos: List<ProtocoloIndicadores>) {
     Column(
@@ -177,7 +181,7 @@ private fun CartaoProtocolo(protocolos: List<ProtocoloIndicadores>) {
             Spacer(Modifier.height(12.dp))
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 protocolo.regras.forEach { regra ->
-                    Text(Textos.regraLinha(regra.codigo, regra.descricao), style = TiposRc.Meta, color = CoresRc.Texto)
+                    Text(regra.descricao, style = TiposRc.Meta, color = CoresRc.Texto)
                 }
             }
         }
@@ -202,9 +206,9 @@ private fun LinhaResultado(rotulo: String, sinal: SinalEstado, quantidade: Long)
     }
 }
 
-/** Linha de texto com valor à direita (regras com mais pendências). */
+/** Linha de texto com valor à direita e, se houver, um detalhe abaixo do texto (regras com mais pendências). */
 @Composable
-private fun LinhaNumero(texto: String, valor: String) {
+private fun LinhaNumero(texto: String, valor: String, detalhe: String? = null) {
     Column(Modifier.fillMaxWidth()) {
         Row(
             Modifier
@@ -214,7 +218,10 @@ private fun LinhaNumero(texto: String, valor: String) {
                 .semantics(mergeDescendants = true) {},
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(texto, style = TiposRc.Corpo, color = CoresRc.Texto, modifier = Modifier.weight(1f))
+            Column(Modifier.weight(1f)) {
+                Text(texto, style = TiposRc.Corpo, color = CoresRc.Texto)
+                if (detalhe != null) Text(detalhe, style = TiposRc.Meta, color = CoresRc.TextoApoio)
+            }
             Spacer(Modifier.size(12.dp))
             Text(valor, style = TiposRc.MetaForte, color = CoresRc.Texto)
         }
