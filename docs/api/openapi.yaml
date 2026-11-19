@@ -989,6 +989,31 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+  /admin/indicadores:
+    get:
+      summary: Protocolo ativo e indicadores agregados do administrador (RC-20)
+      description: >
+        Somente ADMINISTRADOR; paciente recebe 403 antes de qualquer consulta. Só agregados e dados do protocolo:
+        nenhum nome, e-mail, identificador de paciente ou pedido, arquivo, trecho lido, resumo ou mensagem de pendência.
+        Análises e pendências contam só as análises vigentes; pedidos em FALHA_ANALISE são contados à parte (a análise
+        que falha não é gravada). Dados sintéticos de demonstração. Decisões: specs/024-app-admin-indicadores.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Indicadores do momento; zeros e listas vazias quando não há dados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Indicadores"
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "405":
+          description: METODO_NAO_PERMITIDO (só GET)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "503": { $ref: "#/components/responses/Indisponivel" }
 components:
   securitySchemes:
     bearerAuth:
@@ -1351,6 +1376,57 @@ components:
         especialidade: { type: string, example: Consulta ambulatorial em cardiologia }
         avisoFicticio: { type: string }
         simulacao: { type: boolean, enum: [true] }
+    Indicadores:
+      type: object
+      description: Indicadores agregados do administrador (RC-20). Nunca contém dado identificável.
+      required: [dadosSinteticos, aviso, consultadoEm, protocolosAtivos, totalPedidos, analisesPorResultado, pedidosEmFalhaAnalise, regrasComMaisPendencias]
+      properties:
+        dadosSinteticos: { type: boolean, enum: [true] }
+        aviso: { type: string, description: Frase fixa de dados de demonstração }
+        consultadoEm: { type: string, format: date-time, description: Instante da consulta (UTC) }
+        protocolosAtivos:
+          type: array
+          description: Protocolos ativos (a carga sintética tem um), por identificador e versão
+          items:
+            type: object
+            required: [protocoloId, identificador, versao, quantidadeRegras, regras]
+            properties:
+              protocoloId: { type: string, example: "PROTOCOLO-ACADEMICO-FICTICIO-v0.1" }
+              identificador: { type: string }
+              versao: { type: string, example: "v0.1" }
+              quantidadeRegras: { type: integer, minimum: 0 }
+              regras:
+                type: array
+                description: Regras na ordem do protocolo
+                items:
+                  type: object
+                  required: [codigo, descricao]
+                  properties:
+                    codigo: { type: string, example: "RC-R01" }
+                    descricao: { type: string, example: "Encaminhamento presente" }
+        totalPedidos: { type: integer, minimum: 0, description: Todos os pedidos, em qualquer estado }
+        analisesPorResultado:
+          type: object
+          description: Análises vigentes por resultado geral (as três chaves sempre presentes)
+          required: [semPendenciasIdentificadas, comPendencias, requerConferencia]
+          properties:
+            semPendenciasIdentificadas: { type: integer, minimum: 0 }
+            comPendencias: { type: integer, minimum: 0 }
+            requerConferencia: { type: integer, minimum: 0 }
+        pedidosEmFalhaAnalise: { type: integer, minimum: 0, description: Pedidos com estado atual FALHA_ANALISE }
+        regrasComMaisPendencias:
+          type: array
+          maxItems: 5
+          description: Pendências das análises vigentes por regra; só total maior que zero; total desc, código asc
+          items:
+            type: object
+            required: [codigo, descricao, total, pendentes, naoVerificaveis]
+            properties:
+              codigo: { type: string }
+              descricao: { type: string }
+              total: { type: integer, minimum: 1 }
+              pendentes: { type: integer, minimum: 0 }
+              naoVerificaveis: { type: integer, minimum: 0 }
     ListaProtocolos:
       type: object
       required: [itens]

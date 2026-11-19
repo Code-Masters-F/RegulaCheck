@@ -2,9 +2,9 @@ package br.com.regulacheck.app.ui
 
 /**
  * Textos exibidos pelas telas, copiados de `mobile/design/textos.md` (RC-18: E1.1–E1.5, F3, F4;
- * RC-19: E2.1, E2.2, E2.3, E2.7, E3.1, E3.3, E3.4, E3.8, E4.3). Alterou aqui, altere lá. Os textos
- * marcados "RC-18" ou "RC-19" foram criados (ou ajustados para não prometer ação ausente nesta
- * versão) nessas histórias e registrados em `textos.md`.
+ * RC-19: E2.1, E2.2, E2.3, E2.7, E3.1, E3.3, E3.4, E3.8, E4.3; RC-22: E2.7 Origem e E4.1). Alterou
+ * aqui, altere lá. Os textos marcados "RC-18", "RC-19" ou "RC-22" foram criados (ou ajustados para
+ * não prometer ação ausente nesta versão) nessas histórias e registrados em `textos.md`.
  */
 object Textos {
     const val MARCA = "RegulaCheck"
@@ -38,8 +38,8 @@ object Textos {
     const val SEM_CONEXAO_TEXTO = "Verifique sua rede e tente de novo."
     const val LOGIN_DADOS_RECUSADOS = "Confira o e-mail e a senha e tente de novo."
 
-    /** RC-18: recusa de conta que não é de paciente (#41). */
-    const val CONTA_NAO_PACIENTE = "Esta conta não é de paciente. Entre com uma conta de paciente."
+    /** RC-18/RC-20: recusa de conta com perfil que o app não atende (nem paciente nem administrador). */
+    const val PERFIL_NAO_SUPORTADO = "Esta conta não pode ser usada neste aplicativo. Entre com uma conta de paciente ou de administrador."
 
     // E1.4 Sessão expirada (mostrada no próprio login)
     const val SESSAO_EXPIRADA_TITULO = "Sua sessão terminou. Entre novamente."
@@ -258,4 +258,97 @@ object Textos {
     const val REENVIO_INDISPONIVEL = "O reenvio de arquivos ainda não está disponível nesta versão do app."
 
     const val CONFERENCIA_SO_DESENHO_CURTO = "Conferir a leitura está disponível só no desenho nesta versão."
+
+    // ---------------------------------------------------------------- RC-22 (spec 023)
+
+    // E2.7 Anexar (folha) — passo Origem
+    const val FOLHA_ORIGEM_TITULO = "Como você quer anexar?"
+    const val ORIGEM_FOTOGRAFAR = "Fotografar"
+
+    /** RC-22: era "Mostramos as condições da captura antes da foto"; o app não abre a câmera (research D2). */
+    const val ORIGEM_FOTOGRAFAR_APOIO = "Veja as condições da captura e depois escolha a foto"
+    const val ESCOLHER_ARQUIVO = "Escolher arquivo"
+    const val ORIGEM_ARQUIVO_APOIO = "PDF, JPEG ou PNG do seu aparelho"
+
+    // E4.1 Condições da captura
+    const val CAPTURA_TITULO = "Condições da captura"
+
+    /** RC-22: o desenho não diz como a foto é tirada; o app não abre a câmera (research D2). */
+    const val CAPTURA_APOIO = "Posicione o documento sob a estação de captura e fotografe com a câmera do aparelho. " +
+        "As leituras se atualizam enquanto esta tela está aberta."
+
+    /** RC-22: carregando (sem quadro próprio). */
+    const val CAPTURA_CARREGANDO = "Consultando os sensores…"
+    const val LUMINOSIDADE = "Luminosidade"
+    const val DISTANCIA = "Distância"
+    const val SITUACAO_ADEQUADA = "Adequada"
+    const val SITUACAO_ADEQUADA_DE_NOVO = "Adequada de novo"
+    const val SITUACAO_BAIXA = "Baixa"
+
+    /** RC-22: luminosidade acima da faixa (sem quadro próprio). */
+    const val SITUACAO_ALTA = "Alta"
+    const val SITUACAO_FORA_DO_IDEAL = "Fora do ideal"
+    const val SITUACAO_DESATUALIZADA = "Desatualizada"
+
+    /** RC-22: só um dos sensores sem leitura (sem quadro próprio). */
+    const val SITUACAO_SEM_LEITURA = "Sem leitura"
+    const val SENSORES_INDISPONIVEIS = "Sensores indisponíveis agora"
+    const val PODE_ANEXAR_NORMALMENTE = "Você pode anexar e salvar seus documentos normalmente."
+    const val CONDICOES_ADEQUADAS_DE_NOVO = "Condições adequadas de novo."
+    const val SEM_LEITURA_DISPONIVEL = "Sem leitura disponível · sensor simulado"
+
+    /** RC-22: leitura com instante ilegível (a idade não pode ser calculada). */
+    const val LEITURA_SENSOR_SIMULADO = "Leitura do sensor simulado"
+    const val NOTA_DEMONSTRACAO = "Valores de demonstração. Eles não comprovam que o documento ficará legível."
+
+    /** RC-22: era "Fotografar"; abre o seletor do sistema com imagens, não a câmera (research D2). */
+    const val ESCOLHER_FOTO = "Escolher a foto"
+
+    /** RC-22: era "Fotografar mesmo assim" (research D2). */
+    const val ESCOLHER_FOTO_MESMO_ASSIM = "Escolher a foto mesmo assim"
+    fun leituraHa(tempo: String) = "Leitura há $tempo · sensor simulado"
+    fun leituraHaAntes(tempo: String, antes: String) = "Leitura há $tempo · antes: $antes · sensor simulado"
+
+    /** Quadro `Cna25` (vale sobre "· desatualizada" de textos.md, research D7). */
+    fun ultimaLeituraHa(tempo: String) = "Última leitura há $tempo · sensor simulado"
+
+    /**
+     * RC-22: orientação local por código, usada só se a API não mandar `orientacao.mensagem`
+     * (research D7). `null` = sem orientação (condição adequada ou código desconhecido).
+     */
+    fun orientacaoLocal(codigo: String?): String? = when (codigo) {
+        "MELHORAR_ILUMINACAO" -> "Melhore a iluminação e tente de novo."
+        "REDUZIR_ILUMINACAO_OU_REFLEXO" -> "Reduza a luz direta ou o reflexo sobre o documento."
+        "AFASTAR_DOCUMENTO" -> "Afaste o celular do documento."
+        "APROXIMAR_DOCUMENTO" -> "Aproxime o celular do documento."
+        "VERIFICAR_ESTACAO" -> "Verifique se a estação de captura está ligada."
+        "CAPTURA_SEGUE_SEM_SENSOR" -> PODE_ANEXAR_NORMALMENTE
+        else -> null
+    }
+
+    // E4.2 Protocolo e indicadores (administrador, RC-20). Textos de mobile/design/textos.md; os
+    // marcados "criado" não têm quadro e estão registrados lá.
+    const val INDICADORES_TITULO = "Protocolo e indicadores"
+    const val PROTOCOLO_ATIVO = "Protocolo ativo"
+    fun protocoloAtivoResumo(versao: String, regras: Int) =
+        "Protocolo acadêmico fictício · versão $versao · $regras ${if (regras == 1) "regra" else "regras"}"
+    fun regraLinha(codigo: String, descricao: String) = "$codigo · $descricao"
+    const val TOTAL_PEDIDOS = "Total de pedidos"
+    const val ANALISES_POR_RESULTADO = "Análises por resultado"
+    const val RESULTADO_SEM_PENDENCIAS = "Sem pendências identificadas"
+    const val RESULTADO_COM_PENDENCIAS = "Com pendências"
+    const val RESULTADO_CONFIRA = "Confira a leitura"
+    const val RESULTADO_FALHA = "Falha"
+    const val REGRAS_MAIS_PENDENCIAS = "Regras com mais pendências"
+    const val INDICADORES_NOTA = "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos."
+    const val INDICADORES_CARREGANDO = "Carregando indicadores…"
+    const val INDICADORES_ERRO = "Não foi possível carregar os indicadores."
+
+    /** Criado (RC-20): diz o que cada número conta, já que a análise que falha não é gravada. */
+    const val INDICADORES_BASE =
+        "Contam a verificação atual de cada pedido. \"Falha\" conta pedidos cuja última verificação não foi concluída."
+    /** Criado (RC-20): estados sem quadro. */
+    const val SEM_PROTOCOLO_ATIVO = "Nenhum protocolo ativo."
+    const val SEM_PENDENCIAS_REGISTRADAS = "Nenhuma pendência registrada."
+    fun quantidadePendencias(total: Long) = "$total ${if (total == 1L) "pendência" else "pendências"}"
 }

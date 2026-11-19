@@ -5,8 +5,11 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeParseException
 import kotlinx.serialization.Serializable
 
-/** Perfil aceito pelo app (#41: conta que não é de paciente é recusada). */
+/** Perfil da paciente: abre "Meus pedidos" (RC-18). */
 const val PERFIL_PACIENTE = "PACIENTE"
+
+/** Perfil do administrador: abre só E4.2 Protocolo e indicadores (RC-20). Outro perfil é recusado no login. */
+const val PERFIL_ADMINISTRADOR = "ADMINISTRADOR"
 
 /**
  * Sessão aberta no aparelho: existe entre o login e o logout, um 401 ou a expiração local.

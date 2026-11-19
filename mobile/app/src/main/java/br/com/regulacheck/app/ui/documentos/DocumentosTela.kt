@@ -1,5 +1,6 @@
 package br.com.regulacheck.app.ui.documentos
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +42,8 @@ import br.com.regulacheck.app.api.Documento
 import br.com.regulacheck.app.api.ErroApi
 import br.com.regulacheck.app.ui.RotulosApi
 import br.com.regulacheck.app.ui.Textos
+import br.com.regulacheck.app.ui.captura.CondicoesCapturaTela
+import br.com.regulacheck.app.ui.captura.CondicoesCapturaViewModel
 import br.com.regulacheck.app.ui.componentes.BlocoRetorno
 import br.com.regulacheck.app.ui.componentes.BotaoContorno
 import br.com.regulacheck.app.ui.componentes.BotaoPrimario
@@ -62,11 +65,17 @@ import br.com.regulacheck.app.ui.tema.TiposRc
 /** Tipos aceitos pelo seletor do sistema (#42): PDF, JPEG e PNG. */
 private val TIPOS_ACEITOS = arrayOf("application/pdf", "image/jpeg", "image/png")
 
+/** "Escolher a foto" da E4.1 (RC-22, research D2): o mesmo seletor, só com imagens. */
+private val TIPOS_FOTO = arrayOf("image/jpeg", "image/png")
+
 /**
- * E2.2 Seus documentos (quadros t31hN, hHwfV, CvQRm, WPH7O, Leg44, FEqIA), com a folha E2.7
- * (fwOMP) e as recusas E2.3 (mNcfi). "Abrir", "Mais opções", "Fotografar", substituir e remover não
+ * E2.2 Seus documentos (quadros t31hN, hHwfV, CvQRm, WPH7O, Leg44, FEqIA), com a folha E2.7 em dois
+ * passos — tipo (fwOMP) e origem (ncnpi, RC-22) — e as recusas E2.3 (mNcfi). "Fotografar" abre a
+ * E4.1 Condições da captura como passo do anexar, no lugar da lista (spec 023, research D1); dela, a
+ * paciente segue para o mesmo seletor do sistema. "Abrir", "Mais opções", substituir e remover não
  * aparecem: são de outras histórias ou rotas fora da #42 (spec 022, FR-030).
  *
+ * @param condicoesCaptura ViewModel da E4.1 deste pedido (RC-22).
  * @param aoLer abre E3.1 (leitura simulada) deste pedido.
  * @param aoVerResultado abre E3.3 deste pedido.
  */
@@ -74,6 +83,7 @@ private val TIPOS_ACEITOS = arrayOf("application/pdf", "image/jpeg", "image/png"
 @Composable
 fun DocumentosTela(
     viewModel: DocumentosViewModel,
+    condicoesCaptura: CondicoesCapturaViewModel,
     pedidoId: String,
     aoVoltar: () -> Unit,
     aoLer: () -> Unit,
@@ -87,6 +97,10 @@ fun DocumentosTela(
     // Tipo escolhido na folha, guardado enquanto o seletor do sistema está aberto (sobrevive à rotação).
     var tipoPendente by rememberSaveable { mutableStateOf<String?>(null) }
     var folhaAberta by rememberSaveable { mutableStateOf(false) }
+    // Tipo escolhido no 1º passo da folha; `null` = a folha mostra o passo "tipo".
+    var tipoFolha by rememberSaveable { mutableStateOf<String?>(null) }
+    // E4.1 aberta para este tipo (RC-22); `null` = mostra a lista de documentos.
+    var capturaTipo by rememberSaveable { mutableStateOf<String?>(null) }
 
     val seletor = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         val tipo = tipoPendente
@@ -95,12 +109,45 @@ fun DocumentosTela(
         val fonte = FonteArquivoUri.de(contexto.contentResolver, uri)
         if (fonte != null) viewModel.arquivoEscolhido(tipo, fonte) else viewModel.arquivoInacessivel(tipo)
     }
-    val escolherArquivo = { tipo: String ->
+    val escolherArquivo = { tipo: String, tipos: Array<String> ->
         tipoPendente = tipo
-        seletor.launch(TIPOS_ACEITOS)
+        seletor.launch(tipos)
+    }
+    val fecharFolha = {
+        folhaAberta = false
+        tipoFolha = null
     }
 
     LaunchedEffect(Unit) { viewModel.carregar() }
+
+    // Voltar do sistema na E4.1 volta à lista, não à tela anterior da pilha.
+    BackHandler(enabled = capturaTipo != null) { capturaTipo = null }
+
+    val tipoCaptura = capturaTipo
+    if (tipoCaptura != null) {
+        CondicoesCapturaTela(
+            viewModel = condicoesCaptura,
+            pedidoId = pedidoId,
+            aoVoltar = { capturaTipo = null },
+            aoEscolherFoto = {
+                capturaTipo = null
+                escolherArquivo(tipoCaptura, TIPOS_FOTO)
+            },
+            aoEscolherArquivo = {
+                capturaTipo = null
+                escolherArquivo(tipoCaptura, TIPOS_ACEITOS)
+            },
+            aoPedidoFechado = {
+                capturaTipo = null
+                viewModel.carregar()
+            },
+            aoVoltarParaPedidos = {
+                capturaTipo = null
+                aoVoltar()
+            },
+        )
+        return
+    }
 
     EstruturaTela(
         avisos = avisos,
@@ -120,8 +167,11 @@ fun DocumentosTela(
             is EstadoTela.Sucesso -> ConteudoDocumentos(
                 dados = atual.dados,
                 envio = envio,
-                aoAnexar = { folhaAberta = true },
-                aoEscolherDeNovo = { tipo -> escolherArquivo(tipo) },
+                aoAnexar = {
+                    tipoFolha = null
+                    folhaAberta = true
+                },
+                aoEscolherDeNovo = { tipo -> escolherArquivo(tipo, TIPOS_ACEITOS) },
                 aoTentarDeNovo = viewModel::tentarDeNovo,
                 aoLer = aoLer,
                 aoVerResultado = aoVerResultado,
@@ -133,17 +183,27 @@ fun DocumentosTela(
     if (folhaAberta) {
         val folha = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         ModalBottomSheet(
-            onDismissRequest = { folhaAberta = false },
+            onDismissRequest = fecharFolha,
             sheetState = folha,
             containerColor = CoresRc.Fundo,
         ) {
-            FolhaTipoDocumento(
-                aoEscolher = { tipo ->
-                    folhaAberta = false
-                    escolherArquivo(tipo)
-                },
-                aoCancelar = { folhaAberta = false },
-            )
+            val tipo = tipoFolha
+            if (tipo == null) {
+                FolhaTipoDocumento(aoEscolher = { tipoFolha = it }, aoCancelar = fecharFolha)
+            } else {
+                FolhaOrigem(
+                    aoFotografar = {
+                        fecharFolha()
+                        condicoesCaptura.novaVisita()
+                        capturaTipo = tipo
+                    },
+                    aoEscolherArquivo = {
+                        fecharFolha()
+                        escolherArquivo(tipo, TIPOS_ACEITOS)
+                    },
+                    aoCancelar = fecharFolha,
+                )
+            }
         }
     }
 }
@@ -339,7 +399,7 @@ private fun LinhaEnvio(envio: EnvioEmCurso) {
     }
 }
 
-/** Folha E2.7 "Que documento você vai anexar?" (fwOMP); depois dela abre o seletor do sistema. */
+/** Folha E2.7, passo 1, "Que documento você vai anexar?" (fwOMP); depois vem a origem. */
 @Composable
 private fun FolhaTipoDocumento(aoEscolher: (String) -> Unit, aoCancelar: () -> Unit) {
     Column(
@@ -360,6 +420,42 @@ private fun FolhaTipoDocumento(aoEscolher: (String) -> Unit, aoCancelar: () -> U
             if (indice > 0) HorizontalDivider(color = CoresRc.Divisor)
             OpcaoEscolha(titulo = titulo, apoio = apoio, selecionada = false, aoEscolher = { aoEscolher(codigo) })
         }
+        HorizontalDivider(color = CoresRc.Divisor)
+        Spacer(Modifier.height(8.dp))
+        TextButton(
+            onClick = aoCancelar,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp),
+        ) {
+            Text(Textos.CANCELAR, style = TiposRc.Acao, color = CoresRc.Acao)
+        }
+    }
+}
+
+/**
+ * Folha E2.7, passo 2, "Como você quer anexar?" (ncnpi, RC-22). "Fotografar" abre a E4.1; o app não
+ * abre a câmera (research D2). "Escolher arquivo" vai direto ao seletor do sistema.
+ */
+@Composable
+private fun FolhaOrigem(aoFotografar: () -> Unit, aoEscolherArquivo: () -> Unit, aoCancelar: () -> Unit) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .padding(horizontal = MARGEM_TELA)
+            .padding(bottom = 16.dp),
+    ) {
+        Text(
+            Textos.FOLHA_ORIGEM_TITULO,
+            style = TiposRc.Secao,
+            color = CoresRc.Texto,
+            modifier = Modifier.semantics { heading() },
+        )
+        Spacer(Modifier.height(16.dp))
+        OpcaoEscolha(Textos.ORIGEM_FOTOGRAFAR, Textos.ORIGEM_FOTOGRAFAR_APOIO, selecionada = false, aoEscolher = aoFotografar)
+        HorizontalDivider(color = CoresRc.Divisor)
+        OpcaoEscolha(Textos.ESCOLHER_ARQUIVO, Textos.ORIGEM_ARQUIVO_APOIO, selecionada = false, aoEscolher = aoEscolherArquivo)
         HorizontalDivider(color = CoresRc.Divisor)
         Spacer(Modifier.height(8.dp))
         TextButton(
