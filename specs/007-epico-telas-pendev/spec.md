@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-12
 
-**Status**: Em andamento — identidade visual aprovada em 13/11/2026; transposição dos três exemplos autorizada. Inventário completo de estados ainda pendente (ver tasks.md e `design/README.md`).
+**Status**: Concluída (issue #14 fechada em 16/11/2026). O protótipo foi consolidado no arquivo único `design/RegulaCheck.pen` (identidade aprovada pelo responsável em 13/11/2026, design system v1.0), e o inventário final de telas é o da [feature 015](../015-fluxo-telas-app/spec.md), que substituiu o plano inicial por arquivos separados. Protótipo visual adicional ao escopo da disciplina ([decisões](../../docs/decisoes.md#adotadas)).
 
 **Backlog**: novo épico "Telas do aplicativo (pen.dev)" a ser registrado em Code-Masters-F/ClickBus depois da aprovação deste texto. Cobre a parte de **tela** das histórias RC-07, RC-08, RC-09, RC-11, RC-15, RC-16, RC-17, RC-18, RC-19, RC-20 e RC-22. A parte de **API** dessas histórias continua nas issues originais.
 

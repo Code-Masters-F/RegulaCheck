@@ -4,7 +4,7 @@
 
 **Created**: 17/11/2026
 
-**Status**: Draft
+**Status**: Implementada e verificada em 17/11/2026 (PR #71): testes JVM verdes, conferência no emulador e roteiro manual com backend real e Oracle (12 de 12 passos); ver [evidência](../../docs/evidencias/2026-11-17_rc18-app-android.md), [roteiro](../../docs/evidencias/2026-11-17_rc18-roteiro-manual.md) e `tasks.md`
 
 **Input**: User description: "RC-18 (issue #41, Épico 6 #40) — App Android em Kotlin: base do projeto (Gradle, rede, sessão), login e meus pedidos (lista e detalhe). Sem RC-19/RC-20, sem alterar o backend."
 

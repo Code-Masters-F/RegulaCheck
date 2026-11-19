@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-16
 
-**Status**: Em implementação — recorte backend autorizado em 17/11/2026; apresentação Android e validação de usabilidade permanecem pendentes
+**Status**: Implementada e verificada: backend no PR #70 (17/11/2026; 695 testes, 0 falhas; ver `quickstart.md`) e apresentação no app pela RC-19 ([spec 022](../022-app-android-documentos-resultado/spec.md), PR #74), verificada com o backend real em 17/11/2026. O SC-005 (avaliação com pessoas) acompanha a RC-26
 
 **Input**: Issue [RC-15 #37](https://github.com/Code-Masters-F/RegulaCheck/issues/37): como paciente, entender cada pendência e distinguir o que posso resolver do que exige retorno à UBS. Exibir resultado, resumo e pendências sem depender só de cor; mostrar critério, versão do protocolo e trecho de origem quando disponível; orientar reenvio para foto cortada ou arquivo ausente e procura da unidade emissora para informação clínica ausente ou documento médico incorreto; esclarecer que ausência de pendências não garante aceitação e que o protocolo é demonstrativo.
 

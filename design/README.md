@@ -4,7 +4,7 @@
 
 ## Situação atual
 
-O responsável aprovou **seguir com a identidade dos três exemplos inspirados no Headspace** e levá-la ao pen.dev. A identidade está aprovada como direção. **Em 13/11 os fundamentos e o catálogo foram refeitos como design system v1.0.** Em 14/11 a feature 015 desenhou **os 94 quadros do fluxo de telas**, alinhados ao backend, em quatro faixas (RC-36 a RC-39). Eles estão listados em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Os quadros foram revisados por quem desenhou, mas ainda não foram aprovados pelo grupo nem percorridos por outra pessoa (T060). O trabalho é somente desenho: não há aplicativo Android implementado por ele.
+O responsável aprovou **seguir com a identidade dos três exemplos inspirados no Headspace** e levá-la ao pen.dev. A identidade está aprovada como direção. **Em 13/11 os fundamentos e o catálogo foram refeitos como design system v1.0.** Em 14/11 a feature 015 desenhou **os 94 quadros do fluxo de telas**, alinhados ao backend, em quatro faixas (RC-36 a RC-39). Eles estão listados em [mobile/design/INDEX.md](../mobile/design/INDEX.md). Os quadros foram revisados e servem de protótipo visual (material adicional ao escopo); o app Android foi implementado depois, no Épico 6, a partir deles ([escopo do app](../docs/decisoes.md#adotadas)).
 
 - Workspace: `RegulaCheck`; branch: `codex/007-design-system-exploracao`, enviada ao GitHub. Preservar o trabalho existente.
 - Fonte nativa: **`design/RegulaCheck.pen`**. Não ler, buscar ou editar `.pen` como texto; usar exclusivamente o MCP `pencil`.

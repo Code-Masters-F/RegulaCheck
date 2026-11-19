@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-17
 
-**Status**: Implementada no backend e verificada **sem banco** em 17/11/2026 (`clean verify`: 757 testes, 0 falhas, 35 ignorados; ver "Resultado da verificação" em `tasks.md`). Verificada também no Oracle real em 17/11/2026 (`SubmissaoOracleTest` 3 testes verdes, com regressão de `AnaliseOracleTest` e `ReenvioOracleTest`). **Não verificada** na tela do comprovante (épico 6)
+**Status**: Implementada no backend e verificada **sem banco** em 17/11/2026 (`clean verify`: 757 testes, 0 falhas, 35 ignorados; ver "Resultado da verificação" em `tasks.md`). Verificada também no Oracle real em 17/11/2026 (`SubmissaoOracleTest` 3 testes verdes, com regressão de `AnaliseOracleTest` e `ReenvioOracleTest`). Usada pela API (OpenAPI e Postman); as telas E3.6 e E3.7 estão no protótipo visual ([escopo do app](../../docs/decisoes.md#adotadas))
 
 **Backlog**: RC-17 — [Code-Masters-F/RegulaCheck#39](https://github.com/Code-Masters-F/RegulaCheck/issues/39) · Épico 5 (Orientação por IA e reenvio, #35) · História · P0 · A/C · 2 h · até 16/11/2026 · depende de RC-05 (perfis e isolamento) e RC-16 (reenvio e verificação da versão corrigida), concluídas no backend
 

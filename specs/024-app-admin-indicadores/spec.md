@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-18
 
-**Status**: Draft
+**Status**: Implementada e verificada em 18/11/2026 (PR #78): `GET /admin/indicadores` com `IndicadorEndpointTest` 7/7; app com 90 testes, 0 falhas; E4.2 conferida no emulador com backend real e Oracle ([evidência](../../docs/evidencias/2026-11-18_rc20-indicadores-administrador.md)). Textos da E4.2 ajustados em 19/11/2026 (PR #83; 123 testes, 0 falhas, conferido no emulador com o backend real)
 
 **Input**: User description: "RC-20 (issue #43, Épico 6 #40): o administrador entra no app Android e vê, numa tela simples (E4.2 Protocolo e indicadores), o protocolo ativo com as regras e indicadores agregados (total de pedidos, análises por resultado e regras com mais pendências). Cria a rota GET /admin/indicadores (só ADMINISTRADOR; paciente 403; sem sessão 401; só agregados). No app, o login passa a encaminhar por perfil: PACIENTE → Meus pedidos; ADMINISTRADOR → E4.2. Fora do escopo: editar protocolo/regras, ver pedidos/documentos individuais, outras telas de administrador."
 
