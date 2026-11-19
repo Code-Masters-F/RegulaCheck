@@ -10,6 +10,12 @@
 
 Os critérios de aceite da #42 são a fonte da verdade e não são copiados aqui; esta spec organiza-os em histórias e explicita os limites desta versão. Referência visual: `mobile/design/INDEX.md` (E2.1, E2.2, E2.3, E2.7, E3.1, E3.8, E3.3, E3.4) e textos exatos em `mobile/design/textos.md`.
 
+## Clarifications
+
+### Session 2026-11-19
+
+- Q: A tela de resultado repete o aviso de simulação e mostra informações técnicas (revisão, código da regra, "só no desenho nesta versão") que não ajudam a paciente. O que fica? → A (decisão do responsável, 19/11/2026, depois da gravação da demo): a simulação fica identificada uma vez por tela, pelo selo SIMULADO do cabeçalho e pelo rodapé acadêmico. Saem: o selo próprio do resumo e a nota genérica de simulação dele (a nota do resumo padrão, `PADRAO`, continua), a revisão em "Verificado em" (o "Resultado anterior" ainda identifica a revisão avaliada, FR-017), o aviso da API fora de "Sem pendências identificadas", as frases "só no desenho nesta versão" (resultado, leitura e detalhe) e o código da regra na visão da paciente. Os avisos que negam aprovação do SUS e garantia de aceitação permanecem (FR-021). Só texto: nenhum comportamento nem chamada à API muda.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Criar um pedido com o serviço demonstrativo (Priority: P1)
@@ -76,10 +82,10 @@ A paciente vê o resultado da análise vigente em texto e ícone, o resumo simul
 
 **Acceptance Scenarios**:
 
-1. **Given** uma análise vigente, **When** abre o resultado, **Then** vê `rotuloResultado` com ícone, data, revisão, versão do protocolo, selo SIMULADO, aviso da API e só os dados da análise vigente.
+1. **Given** uma análise vigente, **When** abre o resultado, **Then** vê `rotuloResultado` com ícone, data, versão do protocolo, selo SIMULADO no cabeçalho e só os dados da análise vigente.
 2. **Given** a análise vigente não tem resumo, **When** abre o resultado, **Then** vê "O resumo não está disponível agora. Os critérios abaixo continuam valendo." e "Tentar de novo"; resultado e pendências continuam visíveis.
 3. **Given** o resumo veio como padrão (`PADRAO`), **When** abre o resultado, **Then** vê a explicação padrão identificada como SIMULADO e "Tentar de novo".
-4. **Given** resultado "Confira a leitura", **When** abre o resultado, **Then** vê que informação não verificável não significa falta e que a conferência está disponível só no desenho nesta versão.
+4. **Given** resultado "Confira a leitura", **When** abre o resultado, **Then** vê que informação não verificável não significa falta.
 5. **Given** resultado sem pendências identificadas, **When** abre o resultado, **Then** vê que isso não é aprovação do SUS, que os critérios são demonstrativos e que não há garantia de vaga nem prazo.
 6. **Given** uma pendência, **When** abre o detalhe, **Then** vê critério, versão, situação, "Responsável registrado pela regra", a orientação da API como texto puro, o documento de origem e página/trecho apenas se existirem, e nenhum botão de ação indisponível nesta versão.
 7. **Given** não há análise vigente, a análise está em andamento ou a consulta falhou, **When** abre o resultado, **Then** vê o estado em texto, sem conclusão nova, com opção de consultar de novo quando cabível; análises antigas só aparecem como "Resultado anterior".
@@ -144,18 +150,18 @@ Em todas as operações novas, sem conexão, tempo esgotado, sessão expirada, a
 **Resultado e pendência (E3.3, E3.4 — contrato da spec 019)**
 
 - **FR-017**: O resultado MUST usar somente a análise com `vigente=true` cujo `id` é `vigenteId`; análises não vigentes só aparecem como "Resultado anterior", com a revisão avaliada.
-- **FR-018**: O resultado MUST exibir `rotuloResultado` com ícone, data de `executadaEm`, revisão, versão do protocolo, selo SIMULADO, aviso da API, a lista "O que falta" (critério, tipo, quem resolve) e os demais critérios (Atende, Não se aplica).
-- **FR-019**: Resumo presente MUST aparecer com selo SIMULADO; ausente MUST mostrar o texto de indisponível com "Tentar de novo"; `PADRAO` MUST mostrar a explicação padrão identificada com "Tentar de novo"; 409 no resumo MUST reconsultar o histórico antes de reapresentar; falha do resumo MUST NOT esconder resultado ou pendências.
-- **FR-020**: "Confira a leitura" MUST informar que informação não verificável não significa falta e que a conferência está disponível só no desenho nesta versão.
+- **FR-018**: O resultado MUST exibir `rotuloResultado` com ícone, data de `executadaEm` (sem a revisão), versão do protocolo, selo SIMULADO no cabeçalho, a lista "O que falta" (critério, tipo, quem resolve) e os demais critérios (Atende, Não se aplica), sem o código da regra; o aviso da API aparece só em "Sem pendências identificadas" (ajuste de 19/11/2026).
+- **FR-019**: Resumo presente MUST aparecer sob o selo SIMULADO do cabeçalho da tela, sem selo próprio nem nota genérica de simulação (a nota de `PADRAO` permanece); ausente MUST mostrar o texto de indisponível com "Tentar de novo"; `PADRAO` MUST mostrar a explicação padrão identificada com "Tentar de novo"; 409 no resumo MUST reconsultar o histórico antes de reapresentar; falha do resumo MUST NOT esconder resultado ou pendências.
+- **FR-020**: "Confira a leitura" MUST informar que informação não verificável não significa falta. A frase "só no desenho nesta versão" saiu do resultado, da leitura e do detalhe em 19/11/2026.
 - **FR-021**: Todo resultado MUST manter o aviso permanente de que nenhuma pendência identificada não garante aceitação pela regulação e de que os critérios são demonstrativos; "Sem pendências identificadas" MUST negar aprovação do SUS, vaga e prazo.
-- **FR-022**: O detalhe da pendência MUST mostrar `codigoRegra`/`descricaoRegra`, versão do protocolo, tipo e motivo, explicação, "Responsável registrado pela regra" (valor da API, sem reescrever), `orientacao` da API e, por evidência, o nome do arquivo obtido de `documentos[]` pelo `documentoId`, o campo, a situação e página/trecho apenas quando existirem.
+- **FR-022**: O detalhe da pendência MUST mostrar `descricaoRegra` (sem o `codigoRegra` desde 19/11/2026), versão do protocolo, tipo e motivo, explicação, "Responsável registrado pela regra" (valor da API, sem reescrever), `orientacao` da API e, por evidência, o nome do arquivo obtido de `documentos[]` pelo `documentoId`, o campo, a situação e página/trecho apenas quando existirem.
 - **FR-023**: O detalhe MUST distinguir o que a paciente resolve do que exige a unidade emissora sem afirmar qual original está errado e MUST NOT oferecer edição do original, reenvio, substituição ou qualquer botão inoperante; quando a correção depender de arquivo novo, MUST explicar que o reenvio não está disponível nesta versão.
 - **FR-024**: Sem análise, em andamento, em falha da análise, e em 401/403/404/503/rede, o resultado MUST seguir a tabela do contrato de apresentação, sem apresentar conclusão não confirmada.
 
 **Transversais**
 
 - **FR-025**: Todo texto vindo da API MUST ser exibido como texto puro.
-- **FR-026**: Toda tela nova MUST ter o rodapé acadêmico; leitura, resultado, resumo e detalhe MUST ter o selo SIMULADO.
+- **FR-026**: Toda tela nova MUST ter o rodapé acadêmico; leitura, resultado e detalhe MUST ter o selo SIMULADO no cabeçalho, que também cobre o resumo.
 - **FR-027**: Falhas recuperáveis MUST preservar o que a paciente escolheu (serviço, tipo, arquivo); dado indisponível MUST NOT aparecer como resultado negativo.
 - **FR-028**: Nenhum log MUST conter token, senha, cabeçalho, corpo de requisição/resposta ou conteúdo de documento.
 - **FR-029**: As ações da RC-18 que avisavam "etapa ainda não disponível" MUST navegar para as telas desta história.

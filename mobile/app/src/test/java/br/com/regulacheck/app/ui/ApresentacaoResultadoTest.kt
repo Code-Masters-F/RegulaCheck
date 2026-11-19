@@ -8,6 +8,7 @@ import br.com.regulacheck.app.api.historico
 import br.com.regulacheck.app.ui.leitura.DecisaoAposFalha
 import br.com.regulacheck.app.ui.leitura.decidirAposFalhaDaAnalise
 import br.com.regulacheck.app.ui.resultado.ApresentacaoHistorico
+import br.com.regulacheck.app.ui.resultado.apoioItemPendencia
 import br.com.regulacheck.app.ui.resultado.apresentarHistorico
 import br.com.regulacheck.app.ui.resultado.detalheDe
 import br.com.regulacheck.app.ui.resultado.linhasEvidencia
@@ -119,6 +120,21 @@ class ApresentacaoResultadoTest {
 
         assertNull(linha.trecho)
         assertFalse(linha.documento.contains("página"))
+    }
+
+    @Test
+    fun `linha do que falta mostra tipo e arquivo sem o codigo da regra`() {
+        val analise = historicoDe(historico(analiseGravada(), vigenteId = "31")).analises.single()
+        val nomes = analise.documentos.associate { it.documentoId to it.nomeArquivo }
+
+        assertEquals("Pendente · encaminhamento-sintetico.pdf", apoioItemPendencia(analise.pendencias.single(), nomes))
+    }
+
+    @Test
+    fun `transcricao nao conferida nao recebe orientacao sobre o desenho`() {
+        val textos = orientacoesDoApp(pendencia("RC-R04", tipo = "NAO_VERIFICAVEL", motivo = "TRANSCRICAO_NAO_CONFERIDA"))
+
+        assertTrue(textos.isEmpty())
     }
 
     private fun pendencia(

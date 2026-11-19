@@ -88,6 +88,16 @@ Caminhos relativos a `mobile/app/src/` salvo indicação; `A/` = `main/java/br/c
 - [X] T038 [P] Registrar os textos RC-19 em `mobile/design/textos.md`
 - [X] T039 Revisar o diff (sem segredo, sem log sensível, sem código morto) e marcar tarefas com o resultado real
 
+## Phase 9: Ajuste de textos (19/11/2026)
+
+Decisão em spec.md, Clarifications, sessão 2026-11-19 (FR-018, FR-019, FR-020, FR-022, FR-026). Só texto; nenhuma chamada à API muda.
+
+- [X] T040 Resultado: tirar a revisão de "Verificado em", o selo e a nota genérica do resumo (a nota de `PADRAO` fica), o aviso da API fora de "Sem pendências identificadas" e a frase "só no desenho" (`ui/Textos.kt`, `ui/resultado/ResultadoTela.kt`)
+- [X] T041 Tirar o código da regra das linhas de "O que falta" e "Outros critérios" e do apoio do detalhe; teste da linha sem código (`ui/resultado/ApresentacaoResultado.kt`, `ui/resultado/ResultadoTela.kt`, `ui/pendencia/PendenciaTela.kt`, `ApresentacaoResultadoTest.kt`)
+- [X] T042 Tirar as frases "só no desenho" da leitura e das orientações do detalhe (`ui/leitura/LeituraTela.kt`, `ui/resultado/ApresentacaoResultado.kt`)
+- [X] T043 [P] Atualizar `mobile/design/textos.md` e `mobile/README.md`
+- [X] T044 `.\gradlew.bat assembleDebug testDebugUnitTest` verde e telas conferidas no emulador — 123 testes, 0 falhas (19/11/2026, com o contorno de loopback de `docs/ambiente.md`); resultado "Confira a leitura" (pedido 148), "Com pendências" e detalhe da RC-R04 (pedido 2) conferidos com o backend real: sem revisão, sem código da regra, resumo sem selo e sem nota, aviso permanente e rodapé mantidos
+
 ## Dependencies & Execution Order
 
 - Setup → Foundational (T002–T010) → US1 → US2 → US3 → US4 → US5 → Polish. US1–US4 compartilham `AppRegulaCheck.kt` e `PedidoTela.kt`, por isso seguem em sequência; os testes [P] de cada fase podem rodar em paralelo à tela da mesma fase.
@@ -107,4 +117,4 @@ MVP = US1 + US2 (pedido com documentos confirmados). Em seguida US3 e US4, que c
 
 ## Rastreabilidade
 
-RC-19 (#42) ↔ spec 022 (FR-001–FR-030, SC-001–SC-008) ↔ T001–T039. FR-001–004 → T011–T013 · FR-005–011 → T014–T019 · FR-012–016 → T020–T025 · FR-017–024 → T026–T031 · FR-025–030 → T008, T032, T033, T036 · SC-001–006 → T036 · SC-007 → T010, T018, T024 · SC-008 → T036 (avaliação com pessoas: registrada como realizada ou não).
+RC-19 (#42) ↔ spec 022 (FR-001–FR-030, SC-001–SC-008) ↔ T001–T039. FR-001–004 → T011–T013 · FR-005–011 → T014–T019 · FR-012–016 → T020–T025 · FR-017–024 → T026–T031 · FR-025–030 → T008, T032, T033, T036 · SC-001–006 → T036 · SC-007 → T010, T018, T024 · SC-008 → T036 (avaliação com pessoas: registrada como realizada ou não). Ajuste de textos de 19/11/2026 (FR-018, FR-019, FR-020, FR-022, FR-026) → T040–T044.
