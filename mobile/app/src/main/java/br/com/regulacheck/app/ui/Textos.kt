@@ -182,8 +182,6 @@ object Textos {
     /** RC-19: resultado da leitura sem a conferência (E3.2 fica só no desenho, #40). */
     const val O_QUE_FOI_LIDO = "O que foi lido"
     fun informacoesIdentificadas(identificadas: Int, total: Int) = "$identificadas de $total informações identificadas"
-    const val CONFERENCIA_SO_DESENHO =
-        "A conferência da leitura está disponível só no desenho nesta versão. Informações não conferidas contam como não verificadas."
 
     // E3.8 Verificar critérios (diálogo)
     const val VERIFICAR_CRITERIOS = "Verificar critérios"
@@ -209,18 +207,14 @@ object Textos {
 
     // E3.3 Resultado da verificação
     const val RESULTADO_TITULO = "Resultado da verificação"
-    fun verificadoEm(dataHora: String, revisao: Int) = "Verificado em $dataHora · revisão $revisao"
+    fun verificadoEm(dataHora: String) = "Verificado em $dataHora"
     const val RESUMO_TITULO = "Resumo das pendências"
-    const val RESUMO_NOTA = "Gerado por simulação, sem inteligência artificial real. A lista de critérios prevalece."
     const val RESUMO_INDISPONIVEL = "O resumo não está disponível agora. Os critérios abaixo continuam valendo."
     const val RESUMO_PADRAO_NOTA = "Resumo padrão: o resumo simulado falhou; a lista de critérios continua valendo."
     const val O_QUE_FALTA = "O que falta"
     const val OUTROS_CRITERIOS = "Outros critérios"
     const val CRITERIOS = "Critérios"
     const val CONFIRA_TEXTO = "Alguma informação não pôde ser verificada. Isso não significa que ela esteja faltando."
-
-    /** RC-19: "Conferir leitura" é só desenho nesta versão (#42). */
-    const val CONFIRA_SO_DESENHO = "Confira a leitura: essa etapa está disponível só no desenho nesta versão."
     const val SEM_PENDENCIAS_AVISO = "Isso não é aprovação do SUS. Os critérios são demonstrativos e não garantem vaga nem prazo."
 
     /** RC-19: aviso permanente da RC-15 (#42, spec 019 FR-009). */
@@ -240,7 +234,6 @@ object Textos {
 
     // E3.4 Detalhe da pendência
     const val PENDENCIA_TITULO = "O que falta resolver"
-    fun apoioPendencia(codigo: String, versao: String) = "$codigo · Protocolo acadêmico fictício, versão $versao"
     const val SITUACAO = "Situação"
     const val RESPONSAVEL_REGISTRADO = "Responsável registrado pela regra"
     const val QUEM_PODE_RESOLVER = "Quem pode resolver"
@@ -256,8 +249,6 @@ object Textos {
 
     /** RC-19: sem botão de reenvio (RC-16) nem de substituição. */
     const val REENVIO_INDISPONIVEL = "O reenvio de arquivos ainda não está disponível nesta versão do app."
-
-    const val CONFERENCIA_SO_DESENHO_CURTO = "Conferir a leitura está disponível só no desenho nesta versão."
 
     // ---------------------------------------------------------------- RC-22 (spec 023)
 

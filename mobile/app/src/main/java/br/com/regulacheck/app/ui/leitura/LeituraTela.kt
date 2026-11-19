@@ -167,8 +167,6 @@ private fun LeituraConcluida(
             LinhaDocumentoLido(documento)
         }
     }
-    Spacer(Modifier.height(16.dp))
-    Text(Textos.CONFERENCIA_SO_DESENHO, style = TiposRc.Meta, color = CoresRc.TextoApoio)
     Spacer(Modifier.height(24.dp))
 
     when (analise) {

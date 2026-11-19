@@ -50,7 +50,7 @@ fun PendenciaTela(detalhe: DetalhePendencia, aoVoltar: () -> Unit) {
         avisos = avisos,
         cabecalho = { CabecalhoVoltar(aoVoltar, titulo = Textos.pedidoNumero(detalhe.pedidoId), simulado = true) },
     ) {
-        TituloTela(Textos.PENDENCIA_TITULO, abaixo = Textos.apoioPendencia(pendencia.codigoRegra, detalhe.versaoProtocolo))
+        TituloTela(Textos.PENDENCIA_TITULO, abaixo = Textos.protocoloVersao(detalhe.versaoProtocolo))
 
         if (!detalhe.vigente) {
             Spacer(Modifier.height(16.dp))

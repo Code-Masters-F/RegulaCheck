@@ -139,9 +139,6 @@ fun orientacoesDoApp(pendencia: PendenciaGravada): List<String> = buildList {
     // Sem a orientação da RC-15 (backend antigo), a RC-R02 ainda precisa da frase condicional.
     if (pendencia.codigoRegra == "RC-R02" && pendencia.orientacao.isNullOrBlank()) add(Textos.ORIENTACAO_RC_R02)
     if (pendencia.responsavel == "UNIDADE_EMISSORA") add(Textos.UNIDADE_CORRIGE)
-    when (pendencia.motivo) {
-        "TRANSCRICAO_NAO_CONFERIDA", "DIVERGENCIA_APONTADA" -> add(Textos.CONFERENCIA_SO_DESENHO_CURTO)
-    }
     // Arquivo ilegível, não lido ou ausente: a correção é enviar um arquivo novo (RC-16, no backend);
     // o app ainda não oferece esse reenvio e diz isso, sem botão inoperante.
     val precisaArquivoNovo = pendencia.motivo in setOf("CAMPO_ILEGIVEL", "DOCUMENTO_NAO_LIDO") ||
@@ -149,8 +146,11 @@ fun orientacoesDoApp(pendencia: PendenciaGravada): List<String> = buildList {
     if (precisaArquivoNovo) add(Textos.REENVIO_INDISPONIVEL)
 }
 
-/** Linha de apoio de um item de "O que falta": "{código} · {tipo} · {primeiro arquivo}". */
+/**
+ * Linha de apoio de um item de "O que falta": "{tipo} · {primeiro arquivo}". O código da regra não
+ * aparece para a paciente (ajuste de 19/11/2026); ele continua na tela do administrador.
+ */
 fun apoioItemPendencia(pendencia: PendenciaGravada, nomesArquivos: Map<String, String>): String {
     val arquivo = pendencia.evidencias.firstNotNullOfOrNull { nomesArquivos[it.documentoId] }
-    return listOfNotNull(pendencia.codigoRegra, RotulosApi.resultadoRegra(pendencia.tipo), arquivo).joinToString(" · ")
+    return listOfNotNull(RotulosApi.resultadoRegra(pendencia.tipo), arquivo).joinToString(" · ")
 }
