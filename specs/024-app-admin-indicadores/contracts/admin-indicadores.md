@@ -51,8 +51,8 @@ Fonte publicada: `docs/api/openapi.yaml` (este arquivo é o desenho da feature 0
 | Elemento da tela | Origem |
 |---|---|
 | "Protocolo acadêmico fictício · versão {versão} · {n} regras" | `versao` (sem o "v"), `quantidadeRegras` |
-| Lista das regras | `regras[].codigo` + `regras[].descricao` |
+| Lista das regras | `regras[].descricao` (o `codigo` não é exibido desde 19/11/2026; spec, Clarifications) |
 | "Total de pedidos" | `totalPedidos` |
 | "Análises por resultado" | `analisesPorResultado.*` e `pedidosEmFalhaAnalise` ("Falha", explicada em texto) |
 | Nota de demonstração | texto fixo do app (`mobile/design/textos.md`); o `aviso` da API não é exibido (o backend escreve sem acento, como suas demais mensagens) |
-| "Regras com mais pendências" | `regrasComMaisPendencias[]` (`codigo`, `descricao`, `total`) |
+| "Regras com mais pendências" | `regrasComMaisPendencias[]`: `descricao` e `total`; abaixo, as parcelas `pendentes` e `naoVerificaveis` maiores que zero (desde 19/11/2026; o `codigo` não é exibido) |
