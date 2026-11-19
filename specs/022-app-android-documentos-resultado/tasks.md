@@ -92,7 +92,7 @@ Caminhos relativos a `mobile/app/src/` salvo indicação; `A/` = `main/java/br/c
 
 Decisão em spec.md, Clarifications, sessão 2026-11-19 (FR-018, FR-019, FR-020, FR-022, FR-026). Só texto; nenhuma chamada à API muda.
 
-- [X] T040 Resultado: tirar a revisão de "Verificado em", o selo e a nota do resumo, o aviso da API fora de "Sem pendências identificadas" e a frase "só no desenho" (`ui/Textos.kt`, `ui/resultado/ResultadoTela.kt`)
+- [X] T040 Resultado: tirar a revisão de "Verificado em", o selo e a nota genérica do resumo (a nota de `PADRAO` fica), o aviso da API fora de "Sem pendências identificadas" e a frase "só no desenho" (`ui/Textos.kt`, `ui/resultado/ResultadoTela.kt`)
 - [X] T041 Tirar o código da regra das linhas de "O que falta" e "Outros critérios" e do apoio do detalhe; teste da linha sem código (`ui/resultado/ApresentacaoResultado.kt`, `ui/resultado/ResultadoTela.kt`, `ui/pendencia/PendenciaTela.kt`, `ApresentacaoResultadoTest.kt`)
 - [X] T042 Tirar as frases "só no desenho" da leitura e das orientações do detalhe (`ui/leitura/LeituraTela.kt`, `ui/resultado/ApresentacaoResultado.kt`)
 - [X] T043 [P] Atualizar `mobile/design/textos.md` e `mobile/README.md`
