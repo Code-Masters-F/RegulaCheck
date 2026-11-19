@@ -148,7 +148,7 @@ fun orientacoesDoApp(pendencia: PendenciaGravada): List<String> = buildList {
 
 /**
  * Linha de apoio de um item de "O que falta": "{tipo} · {primeiro arquivo}". O código da regra não
- * aparece para a paciente (ajuste de 19/11/2026); ele continua na tela do administrador.
+ * aparece para a paciente (ajuste de 19/11/2026).
  */
 fun apoioItemPendencia(pendencia: PendenciaGravada, nomesArquivos: Map<String, String>): String {
     val arquivo = pendencia.evidencias.firstNotNullOfOrNull { nomesArquivos[it.documentoId] }
