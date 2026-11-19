@@ -1,3 +1,7 @@
+# Contrato de testes: cenários mínimos
+
+Cenários mínimos T01 a T16 da issue #50, mantidos como **origem** do plano. O plano executável, com os 94 casos e as diferenças em relação a esta tabela, está em [docs/testes/plano-de-testes.md](docs/testes/plano-de-testes.md); os resultados reais, em [docs/testes/resultado-da-rodada.md](docs/testes/resultado-da-rodada.md). Não duplicar casos aqui.
+
 ## Cenários mínimos de teste
 
 | ID  | Cenário e entrada                                                     | Resultado esperado                                                               | Histórias      |

@@ -364,5 +364,5 @@ Na preparação inicial, acrescentar: backend compilável e inicializável, heal
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/023-app-android-condicoes-captura/plan.md
+specs/025-normalizar-documentacao/plan.md
 <!-- SPECKIT END -->
