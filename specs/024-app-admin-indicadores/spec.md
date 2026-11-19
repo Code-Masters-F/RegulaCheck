@@ -12,6 +12,10 @@
 
 ## Clarifications
 
+### Session 2026-11-19
+
+- Q: A E4.2 mostra o código de cada regra ("RC-R03 · Documento de identificação") e só o total de pendências, embora a resposta já traga as parcelas; o total de "não verificável" (leitura não conferida) parece documento faltando. O que muda? → A (decisão do responsável, 19/11/2026, depois da gravação da demo): as regras aparecem só pelo nome, sem o código; em "Regras com mais pendências" cada regra mostra o total e, abaixo, as parcelas pendente e não verificável que forem maiores que zero; a nota da base dos números passa a dizer só o que "Falha" conta. Só o app muda; a rota e a resposta continuam iguais.
+
 ### Session 2026-11-18
 
 Decididas pelo agente com a recomendação, por pedido do usuário ("decida e registre o que contar"), sem rodada de perguntas.
@@ -97,7 +101,7 @@ Uma conta de paciente nunca chega à tela de indicadores e uma conta de administ
 - **FR-007**: A resposta MUST identificar os dados como sintéticos/de demonstração e a hora da consulta (UTC).
 - **FR-008**: Falha de acesso aos dados MUST responder 503 `DEPENDENCIA_INDISPONIVEL`, no formato padrão, sem detalhe interno.
 - **FR-009**: O app MUST encaminhar pelo perfil da conta após o login e ao reabrir com sessão guardada: PACIENTE → "Meus pedidos"; ADMINISTRADOR → E4.2. Perfil desconhecido continua recusado sem guardar sessão.
-- **FR-010**: A tela E4.2 MUST mostrar, com os textos de `mobile/design/textos.md`: "Protocolo e indicadores", o cartão do protocolo ativo com a lista de regras, "Total de pedidos", "Análises por resultado", "Regras com mais pendências", a nota "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos.", o rodapé acadêmico e "Sair".
+- **FR-010**: A tela E4.2 MUST mostrar, com os textos de `mobile/design/textos.md`: "Protocolo e indicadores", o cartão do protocolo ativo com a lista de regras, "Total de pedidos", "Análises por resultado", "Regras com mais pendências", a nota "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos.", o rodapé acadêmico e "Sair". Desde 19/11/2026: regras só pelo nome (sem o código); em "Regras com mais pendências", o total e, abaixo, as parcelas pendente e não verificável maiores que zero; a nota da base dos números diz só o que "Falha" conta.
 - **FR-011**: A tela E4.2 MUST tratar carregando (esqueleto + "Carregando indicadores…"), erro ("Não foi possível carregar os indicadores." + "Tentar de novo"), 401 (volta ao login) e 403 (sem permissão), sem retentativa automática.
 - **FR-012**: Nenhum texto da API ou do app MUST afirmar redução real de filas, aprovação, autorização ou diagnóstico; estado nunca é comunicado só por cor.
 - **FR-013**: A documentação da API (`docs/api/openapi.yaml`, `docs/api/autorizacao.md`) MUST descrever a rota, os campos e as respostas 200/401/403/503.

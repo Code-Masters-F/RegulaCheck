@@ -332,7 +332,6 @@ object Textos {
     const val PROTOCOLO_ATIVO = "Protocolo ativo"
     fun protocoloAtivoResumo(versao: String, regras: Int) =
         "Protocolo acadêmico fictício · versão $versao · $regras ${if (regras == 1) "regra" else "regras"}"
-    fun regraLinha(codigo: String, descricao: String) = "$codigo · $descricao"
     const val TOTAL_PEDIDOS = "Total de pedidos"
     const val ANALISES_POR_RESULTADO = "Análises por resultado"
     const val RESULTADO_SEM_PENDENCIAS = "Sem pendências identificadas"
@@ -344,11 +343,23 @@ object Textos {
     const val INDICADORES_CARREGANDO = "Carregando indicadores…"
     const val INDICADORES_ERRO = "Não foi possível carregar os indicadores."
 
-    /** Criado (RC-20): diz o que cada número conta, já que a análise que falha não é gravada. */
-    const val INDICADORES_BASE =
-        "Contam a verificação atual de cada pedido. \"Falha\" conta pedidos cuja última verificação não foi concluída."
+    /**
+     * Criado (RC-20): "Falha" conta pedidos, não análises, porque a análise que falha não é gravada.
+     * Encurtado em 19/11/2026 (spec 024, Clarifications).
+     */
+    const val INDICADORES_BASE = "“Falha” mostra os pedidos cuja última verificação não terminou."
     /** Criado (RC-20): estados sem quadro. */
     const val SEM_PROTOCOLO_ATIVO = "Nenhum protocolo ativo."
     const val SEM_PENDENCIAS_REGISTRADAS = "Nenhuma pendência registrada."
     fun quantidadePendencias(total: Long) = "$total ${if (total == 1L) "pendência" else "pendências"}"
+
+    /**
+     * Parcelas de uma regra com pendências (ajuste de 19/11/2026): separa o que é pendente do que é
+     * não verificável (leitura não conferida), que não significa documento faltando. Só as parcelas
+     * maiores que zero; sem parcelas (resposta antiga), devolve `null`.
+     */
+    fun parcelasPendencias(pendentes: Long, naoVerificaveis: Long): String? = listOfNotNull(
+        if (pendentes > 0) "$pendentes ${if (pendentes == 1L) "pendente" else "pendentes"}" else null,
+        if (naoVerificaveis > 0) "$naoVerificaveis ${if (naoVerificaveis == 1L) "não verificável" else "não verificáveis"}" else null,
+    ).joinToString(" · ").ifEmpty { null }
 }
