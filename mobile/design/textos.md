@@ -183,7 +183,7 @@ Título: "Verificar critérios?" Textos (conforme o caso): "{n} informações li
 | Unidade emissora | `Pendência/Orientação` "Quem pode resolver" / "Se o motivo estiver ausente, peça à unidade que emitiu o encaminhamento para completar o documento." "Você confere a transcrição aqui. O documento clínico é corrigido pela unidade emissora." Botões: "Abrir documento", "Já tenho uma nova versão". |
 | Substituir arquivo | Motivo: "Uma informação está ilegível". Botão: "Substituir arquivo". |
 | Conferir leitura | Motivo: "A leitura ainda não foi conferida" ou "Você apontou uma diferença". Botão: "Conferir leitura". |
-| Documento ausente | "Depois da primeira verificação, o app só permite trocar documentos já enviados." Botão: "Substituir um documento". **Desatualizado pela RC-16 (17/11/2026):** o backend passou a aceitar a inclusão do documento que faltava depois da análise (exceto em pedido submetido); o texto e a ação desta tela precisam ser revistos no épico 6 ([decisões](../../docs/decisoes.md)). |
+| Documento ausente | "Depois da primeira verificação, o app só permite trocar documentos já enviados." Botão: "Substituir um documento". **Desde a RC-16 (17/11/2026)** o backend aceita incluir o documento que faltava depois da análise (exceto em pedido submetido), pela rota de documentos; este quadro registra a versão anterior do protótipo ([decisões](../../docs/decisoes.md#adotadas)). |
 
 ### E3.5 Correção e comparação
 | Estado | Textos |

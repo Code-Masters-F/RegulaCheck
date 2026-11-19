@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-13
 
-**Status**: Draft
+**Status**: Desenho concluído: 94 telas e estados desenhados e revisados no `design/RegulaCheck.pen` (PR #66; aviso acadêmico ajustado em 17/11/2026). Protótipo visual de apoio ao app ([decisões](../../docs/decisoes.md#adotadas))
 
 **Input**: User description: "Planejar o fluxo de telas do aplicativo da paciente (e do administrador) e as informações de cada tela, alinhado ao design system v1.0 e às rotas reais da API (specs 008–013 já no main), resolvendo ambiguidades do épico 007."
 

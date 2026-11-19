@@ -2,9 +2,9 @@
 
 > **Fonte:** [specs/015-fluxo-telas-app/contracts/inventario-quadros.md](../../specs/015-fluxo-telas-app/contracts/inventario-quadros.md). As ações de cada tela estão em [telas-operacoes.md](../../specs/015-fluxo-telas-app/contracts/telas-operacoes.md), os textos em [textos.md](textos.md), os dados em [dados-ficticios.md](dados-ficticios.md) e os percursos em [mapa-de-percursos.md](mapa-de-percursos.md).
 >
-> **Situação em 14/11/2026:** os 94 quadros estão desenhados no `design/RegulaCheck.pen` e foram revisados por quem desenhou: screenshot, consulta de limites, aviso acadêmico, selo SIMULADO e no máximo uma ação principal. Nenhum foi **aprovado** pelo grupo, e nenhum passou pelo percurso com uma pessoa que não desenhou (T060). Nenhuma tela chama a API: a coluna "Operação" diz o que o app vai usar. † indica rota contratada e ainda não implementada no backend; esses quadros levam a nota "contrato provisório".
+> **Situação:** os 94 quadros estão desenhados no `design/RegulaCheck.pen` e revisados (screenshot, consulta de limites, aviso acadêmico, selo SIMULADO e no máximo uma ação principal). O protótipo é material de apoio e não chama a API: a coluna "Operação" diz qual rota cada tela usa. O que o app implementa está em [mobile/README.md](../README.md) e na decisão "Escopo do app Android" de [docs/decisoes.md](../../docs/decisoes.md#adotadas).
 
-Legenda de situação: *desenhado* → *revisado* (por quem desenhou) → *aprovado* (pelo grupo). ID: quadro no `design/RegulaCheck.pen`, aberto pelo pen.dev (as prévias PNG foram retiradas do repositório em 18/11/2026). Na coluna "Operação", † marca rota contratada e ainda não publicada; as rotas de análises (RC-13) estão na `main` desde 15/11/2026 e perderam a marca aqui, mas os quadros no `.pen` ainda a mostram até a T073.
+Legenda de situação: *desenhado* → *revisado*. ID: quadro no `design/RegulaCheck.pen`, aberto pelo pen.dev (as prévias PNG foram retiradas do repositório em 18/11/2026). Na coluna "Operação", † marca a rota que ainda não estava publicada quando o quadro foi desenhado (14/11/2026); todas foram publicadas no backend até 18/11/2026.
 
 ## Como o canvas está organizado (research D20)
 

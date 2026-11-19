@@ -4,7 +4,7 @@
 
 **Created**: 17/11/2026
 
-**Status**: Draft
+**Status**: Implementada e verificada em 17/11/2026 (PR #74): 82 testes; percurso com backend real e Oracle em cerca de 4 min, 3 pedidos conferidos com `GET …/analises`, arquivo inválido, rede cortada e logcat ([evidência](../../docs/evidencias/2026-11-17_rc19-app-documentos-resultado.md)). Textos do resultado ajustados em 19/11/2026 (PR #82; 123 testes, 0 falhas, conferido no emulador)
 
 **Input**: Issue [RC-19 #42](https://github.com/Code-Masters-F/RegulaCheck/issues/42) (Épico 6, [#40](https://github.com/Code-Masters-F/RegulaCheck/issues/40)), incluindo a seção "Acrescentado em 17/11/2026" (tela da RC-15, [#37](https://github.com/Code-Masters-F/RegulaCheck/issues/37)). Base: app da RC-18 ([spec 017](../017-app-android-login-pedidos/spec.md)). Contrato de apresentação do resultado: [spec 019 — apresentacao-resultado.md](https://github.com/Code-Masters-F/RegulaCheck/blob/main/specs/019-exibir-resultado-correcao/contracts/apresentacao-resultado.md) (na `main`).
 

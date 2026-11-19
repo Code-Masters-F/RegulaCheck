@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-15
 
-**Status**: Implementada e verificada **sem banco** em 16/11/2026 (`clean verify`: 686 testes, 0 falhas, 32 ignorados; ver "Resultado da verificação" em `tasks.md`). **Não verificada no Oracle real** (`CapturaOracleTest`, casos 32 e 33 do `04_` e o script `11_`). A tela do app depende do Épico 6
+**Status**: Implementada e verificada **sem banco** em 16/11/2026 (`clean verify`: 686 testes, 0 falhas, 32 ignorados; ver "Resultado da verificação" em `tasks.md`). **Não verificada no Oracle real** (`CapturaOracleTest`, casos 32 e 33 do `04_` e o script `11_`). A tela do app (E4.1) foi entregue em 18/11/2026 pela [spec 023](../023-app-android-condicoes-captura/spec.md) (PR #80)
 
 **Backlog**: Épico 7 (IoT simulada)
 - **RC-21** — Gerar leituras de dois sensores (#46) · Tarefa técnica · P0 · D · 2 h · até 15/11/2026 · depende de RC-02 (projeto executável e contratos), RC-05 (perfis e isolamento) e RC-07 (rascunho do pedido)
