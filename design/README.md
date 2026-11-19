@@ -8,7 +8,7 @@ O responsável aprovou **seguir com a identidade dos três exemplos inspirados n
 
 - Workspace: `RegulaCheck`; branch: `codex/007-design-system-exploracao`, enviada ao GitHub. Preservar o trabalho existente.
 - Fonte nativa: **`design/RegulaCheck.pen`**. Não ler, buscar ou editar `.pen` como texto; usar exclusivamente o MCP `pencil`.
-- URI do MCP nesta máquina: `file:///C:/Users/Eliseu%20Santos/Desktop/fiap-faculdade/RegulaCheck/design/RegulaCheck.pen`.
+- URI do MCP: `file:///<caminho-do-repositorio>/design/RegulaCheck.pen` (o caminho depende da máquina; abrir o arquivo pelo MCP `pencil`).
 - Rastreabilidade: `specs/007-epico-telas-pendev/`, recorte **T040–T043**. Reutilizar este épico, sem criar outra feature para pequenas alterações.
 
 ## Direção aprovada

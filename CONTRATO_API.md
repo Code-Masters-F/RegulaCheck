@@ -1,53 +1,59 @@
-## Contrato mínimo de API proposto
+# Contrato de API: mapa de rotas e perfis
 
-Situação em 12/11/2026: `GET /health` e as três rotas `/auth/*` (RC-04, ver [contrato de autenticação](specs/004-login-sessao/contracts/api-auth.md)) estão implementadas, assim como o **mecanismo de autorização por perfil e por dona** (RC-05, ver [docs/api/autorizacao.md](docs/api/autorizacao.md)); as **proteções de entrada e de arquivos** (RC-06, ver [docs/api/protecoes.md](docs/api/protecoes.md): conferência por tipo real, extensão, tamanho e páginas, área privada, download seguro, texto puro, segredos e HTTPS) também estão implementadas como mecanismo; a **RC-07** implementou `GET /protocolos` e o rascunho da solicitação (`GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}`; contrato em [specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md](specs/008-rascunho-selecionar-servico/contracts/api-solicitacoes.md)); a **RC-08** implementou o envio, a lista e o download dos documentos do pedido (`POST/GET /solicitacoes/{id}/documentos`, `GET …/documentos/{docId}`; contrato em [specs/009-enviar-consultar-documentos/contracts/api-documentos.md](specs/009-enviar-consultar-documentos/contracts/api-documentos.md)); a **RC-09** implementou remover documento, substituir documento e excluir rascunho com confirmação (`DELETE …/documentos/{docId}`, `PUT …/documentos/{docId}`, `DELETE /solicitacoes/{id}`; contrato em [specs/010-substituir-excluir-documentos/contracts/api-alteracao-documentos.md](specs/010-substituir-excluir-documentos/contracts/api-alteracao-documentos.md)); a **RC-10** implementou a leitura **simulada** dos documentos (`POST/GET /solicitacoes/{id}/extracoes`; contrato em [specs/011-extrair-informacoes-arquivos/contracts/api-extracao.md](specs/011-extrair-informacoes-arquivos/contracts/api-extracao.md)); a **RC-11** implementou a conferência da transcrição (`GET/PUT /solicitacoes/{id}/extracoes/{extracaoId}/conferencia`; contrato em [specs/012-conferir-transcricao/contracts/api-conferencia.md](specs/012-conferir-transcricao/contracts/api-conferencia.md)); a **RC-13** implementou as análises (`POST/GET /solicitacoes/{id}/analises`); a **RC-21 + RC-22** (Épico 7) implementaram a estação de captura **simulada** (`POST /solicitacoes/{id}/sessoes-captura`, `POST /sessoes-captura/{id}/leituras` e `GET /solicitacoes/{id}/leituras`; contrato em [specs/016-iot-simulada/contracts/api-iot.md](specs/016-iot-simulada/contracts/api-iot.md)); as demais rotas abaixo estão **planejadas** e, quando forem implementadas, devem cumprir a tabela de perfis ao final deste arquivo. Formatos de dados, erros e estados: [docs/api](docs/api/README.md).
+Mapa resumido das rotas do RegulaCheck e do perfil que pode acessar cada uma. **Fonte de verdade das respostas, dos códigos HTTP e dos formatos:** [docs/api/openapi.yaml](docs/api/openapi.yaml), [docs/api/contratos-dados.md](docs/api/contratos-dados.md) e [docs/api/erros.md](docs/api/erros.md). **Situação de cada rota e verificação por história (RC-XX):** [docs/api/README.md](docs/api/README.md#situação-das-rotas). Contratos por feature: `specs/*/contracts/`.
 
-As rotas são uma proposta para manter um domínio só e orientar a implementação; ajustar nomes sem perder comportamentos.
+Dados exclusivamente sintéticos. Leitura de documentos, resumo de pendências e sensores são **simulados**.
 
-| Método | Recurso                                               | Acesso e finalidade                        |
-| ------ | ----------------------------------------------------- | ------------------------------------------ |
-| POST   | /auth/login                                           | Autenticar conta demonstrativa (**implementada**, RC-04) |
-| GET    | /auth/sessao                                          | Identidade e expiração da sessão atual (**implementada**, RC-04) |
-| POST   | /auth/logout                                          | Encerrar a sessão do token enviado (**implementada**, RC-04) |
-| GET    | /protocolos                                           | Paciente autenticada consulta os serviços (protocolos) ativos (**implementada**, RC-07) |
-| GET    | /solicitacoes                                         | Lista somente pedidos próprios, até 50, do mais recente ao mais antigo (**implementada**, RC-07) |
-| POST   | /solicitacoes                                         | Cria rascunho ligado ao serviço escolhido (**implementada**, RC-07) |
-| GET    | /solicitacoes/{id}                                    | Detalhes próprios (**implementada**, RC-07) |
-| PUT    | /solicitacoes/{id}                                    | Troca o serviço de um rascunho; revisão +1 se mudou (**implementada**, RC-07) |
-| DELETE | /solicitacoes/{id}                                    | Exclui o **rascunho** (só `RASCUNHO`) com o cabeçalho obrigatório `X-Confirmar-Exclusao: EXCLUIR`: apaga pedido, revisões, documentos e arquivos; 204; sem confirmação 400; submetido ou fora de rascunho 409 (**implementada**, RC-09) |
-| POST   | /solicitacoes/{id}/documentos                         | Envia **um** arquivo (multipart: `arquivo` e `tipoDocumental`; cabeçalho opcional `X-Chave-Envio`) ao rascunho próprio: PDF até 5 páginas, JPEG/PNG, 5 MB, até 3 por pedido, conferido pelo conteúdo; revisão +1; não inicia análise (**implementada**, RC-08) |
-| GET    | /solicitacoes/{id}/documentos                         | Lista os documentos disponíveis do pedido próprio, com estado do envio (**implementada**, RC-08) |
-| GET    | /solicitacoes/{id}/documentos/{docId}                 | Download protegido (autenticado, só a dona e só pelo pedido ao qual o documento pertence, como anexo) (**implementada**, RC-08) |
-| PUT    | /solicitacoes/{id}/documentos/{docId}                 | Substitui o documento por outro arquivo numa só operação (multipart como o envio; `X-Chave-Envio` opcional): 201 com o documento novo, 200 se repetição; recusa deixa o antigo intacto; uma revisão (`DOCUMENTO_SUBSTITUIDO`); não inicia análise (**implementada**, RC-09) |
-| DELETE | /solicitacoes/{id}/documentos/{docId}                 | Remove o documento (libera a vaga e apaga o arquivo): 200 com `versaoConjuntoDocumental` e `documentosDisponiveis`; revisão `DOCUMENTO_REMOVIDO`; repetir é 404; pedido submetido em simulação é 409 (**implementada**, RC-09) |
-| POST   | /solicitacoes/{id}/extracoes                          | Lê (**leitura SIMULADA**, dados sintéticos) os documentos disponíveis da versão atual do pedido próprio e guarda o resultado: 201 nova, 200 se já existe para a versão; 422 `SEM_DOCUMENTOS`; 409 se submetido em simulação; 503 `LEITURA_INDISPONIVEL` (nada é gravado). Não muda o estado nem gera análise (**implementada**, RC-10) |
-| GET    | /solicitacoes/{id}/extracoes                          | Devolve a leitura mais recente, por documento (campos `IDENTIFICADO`, `NAO_LOCALIZADO`, `ILEGIVEL`; motivo e reenvio quando não lido), `ATUAL` ou `DESATUALIZADA`; 404 se nunca houve leitura (**implementada**, RC-10) |
-| GET    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | Devolve a conferência da leitura: campos com origem, destaque dos **não verificados**, decisões da paciente, orientações fixas (sem diagnóstico, urgência ou promessa) e a situação calculada (`PENDENTE`, `REQUER_CONFERENCIA`, `CONFERIDA`, `DESATUALIZADA`); `liberadoParaSubmissao` é sempre `false`; leitura desatualizada só consulta; 404 idêntico se o pedido ou a leitura não for da paciente (**implementada**, RC-11) |
-| PUT    | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | A paciente **só confirma ou marca divergência**, campo a campo (`{"decisoes":[{documentoId, codigo, decisao, motivo}]}`, 1 a 18; **nenhum valor digitado é aceito**: chave desconhecida é 400). Lote tudo ou nada; decidir de novo substitui; 409 se a leitura estiver desatualizada ou o pedido submetido; 422 `DECISAO_NAO_APLICAVEL`. Não muda o estado nem a revisão do pedido e nunca libera submissão (**implementada**, RC-11) |
-| POST   | /solicitacoes/{id}/analises                           | Executa e grava as regras (RC-13, implementada; resumo de IA na RC-14) |
-| GET    | /solicitacoes/{id}/analises                           | Consulta resultados e histórico (RC-13, implementada) |
-| POST   | /solicitacoes/{id}/analises/{analiseId}/resumo        | Repete resumo em caso de falha             |
-| POST   | /solicitacoes/{id}/submissoes-simuladas               | Conclui **só no simulador** o pedido com análise vigente sem pendências nem não verificáveis: 201 com o comprovante (referência `SIM-…`, data, serviço, versão analisada, destaque "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS") e pedido em `SUBMETIDA_SIMULACAO`; 200 com o mesmo comprovante ao repetir; 409 se não estiver pronto (restrição do simulador, não impede atendimento) (**implementada**, RC-17) |
-| GET    | /solicitacoes/{id}/submissoes-simuladas               | Consulta o comprovante da submissão simulada; 404 idêntico se o pedido não foi submetido, não existe ou é de outra paciente (**implementada**, RC-17) |
-| POST   | /solicitacoes/{id}/sessoes-captura                    | A paciente abre a sessão de captura (estação **simulada**) do próprio pedido: 201 nova; 200 se já havia uma aberta (no máximo uma por pedido); 409 se submetido. Não muda estado nem revisão (**implementada**, RC-21) |
-| POST   | /sessoes-captura/{id}/leituras                        | O **simulador** (`X-Chave-Simulador`) envia uma leitura de luminosidade (lux) ou distância (cm) de uma sessão aberta: 201; 404 sessão inexistente ou encerrada (antes de ler o corpo); 400 leitura inválida (**implementada**, RC-21) |
-| GET    | /solicitacoes/{id}/leituras                           | Paciente consulta a telemetria própria: dois sensores com situação (faixa demonstrativa, desatualizada após 60 s, sem leitura) e orientação; leituras simuladas, sem calibração, não comprovam legibilidade nem bloqueiam envio (**implementada**, RC-22) |
-| GET    | /admin/indicadores                                    | Administrador consulta agregados           |
+## Rotas
+
+Todas as rotas abaixo estão **implementadas**, exceto `GET /admin/indicadores`, **planejada** (RC-20).
+
+| Método | Recurso | Finalidade | História |
+| ------ | ------- | ---------- | -------- |
+| GET | /health | Estado técnico (não consulta o banco) | Fundação |
+| POST | /auth/login | Autenticar conta demonstrativa | RC-04 |
+| GET | /auth/sessao | Identidade e expiração da sessão atual | RC-04 |
+| POST | /auth/logout | Encerrar a sessão do token enviado | RC-04 |
+| GET | /protocolos | Serviços (protocolos) ativos | RC-07 |
+| GET | /solicitacoes | Pedidos próprios, até 50, do mais recente ao mais antigo | RC-07 |
+| POST | /solicitacoes | Cria rascunho ligado ao serviço escolhido | RC-07 |
+| GET | /solicitacoes/{id} | Detalhes próprios | RC-07 |
+| PUT | /solicitacoes/{id} | Troca o serviço de um rascunho; revisão +1 se mudou | RC-07 |
+| DELETE | /solicitacoes/{id} | Exclui o **rascunho** com `X-Confirmar-Exclusao: EXCLUIR`; 204; sem confirmação 400; fora de rascunho 409 | RC-09 |
+| POST | /solicitacoes/{id}/documentos | Envia **um** arquivo ao rascunho (multipart `arquivo` e `tipoDocumental`; `X-Chave-Envio` opcional); limites em [protecoes.md](docs/api/protecoes.md); revisão +1; não inicia análise | RC-08 |
+| GET | /solicitacoes/{id}/documentos | Lista os documentos do pedido, com estado do envio | RC-08 |
+| GET | /solicitacoes/{id}/documentos/{docId} | Download protegido como anexo, só da dona e só pelo pedido do documento | RC-08 |
+| PUT | /solicitacoes/{id}/documentos/{docId} | Substitui o documento numa só operação; 201 novo, 200 se repetição; recusa deixa o antigo intacto | RC-09 |
+| DELETE | /solicitacoes/{id}/documentos/{docId} | Remove o documento (200 com `versaoConjuntoDocumental`); repetir é 404; pedido submetido é 409 | RC-09 |
+| POST | /solicitacoes/{id}/extracoes | Lê (**simulada**) os documentos da versão atual e guarda o resultado; 201 nova, 200 se já existe; 422 `SEM_DOCUMENTOS`; 503 `LEITURA_INDISPONIVEL` | RC-10 |
+| GET | /solicitacoes/{id}/extracoes | Leitura mais recente por documento (`IDENTIFICADO`, `NAO_LOCALIZADO`, `ILEGIVEL`), `ATUAL` ou `DESATUALIZADA` | RC-10 |
+| GET | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | Conferência da leitura: campos com origem, destaque dos **não verificados**, decisões, orientações e situação; `liberadoParaSubmissao` sempre `false` | RC-11 |
+| PUT | /solicitacoes/{id}/extracoes/{extracaoId}/conferencia | A paciente **só confirma ou marca divergência**; nenhum valor digitado é aceito (400); lote tudo ou nada; 409 se desatualizada | RC-11 |
+| POST | /solicitacoes/{id}/analises | Executa e grava as regras da versão atual; 201 nova, 200 se vigente, 409 `ANALISE_EM_ANDAMENTO`, 503 `ANALISE_INDISPONIVEL` | RC-13 |
+| GET | /solicitacoes/{id}/analises | Resultados e histórico, com a vigente marcada | RC-13 |
+| POST | /solicitacoes/{id}/resumo | Resumo **simulado** da análise vigente; repete em caso de falha | RC-14 |
+| POST | /solicitacoes/{id}/reenvio | Verifica a versão corrigida (leitura → conferência → análise → resumo) e compara com a anterior | RC-16 |
+| POST | /solicitacoes/{id}/submissoes-simuladas | Conclui **só no simulador** o pedido com análise vigente sem pendências; 201 com comprovante `SIM-…`; 200 ao repetir; 409 se não estiver pronto | RC-17 |
+| GET | /solicitacoes/{id}/submissoes-simuladas | Consulta o comprovante; 404 idêntico se não submetido ou de outra paciente | RC-17 |
+| POST | /solicitacoes/{id}/sessoes-captura | Abre a sessão de captura (estação **simulada**); no máximo uma aberta por pedido; 409 se submetido | RC-21 |
+| POST | /sessoes-captura/{id}/leituras | O **simulador** (`X-Chave-Simulador`) envia leitura de luminosidade (lux) ou distância (cm); 201; 404 sessão inexistente ou encerrada; 400 leitura inválida | RC-21 |
+| GET | /solicitacoes/{id}/leituras | Telemetria própria: dois sensores com situação e orientação; não comprova legibilidade nem bloqueia envio | RC-22 |
+| GET | /admin/indicadores | Administrador consulta agregados (**planejada**) | RC-20 |
 
 ## Perfil permitido por rota (RC-05)
 
 | Rota | Perfil permitido | Dona verificada |
 |---|---|---|
-| `GET/POST /solicitacoes`, `GET/PUT /solicitacoes/{id}` (RC-07) e `DELETE /solicitacoes/{id}` (RC-09), implementadas | PACIENTE | sim (a lista traz só as próprias) |
-| `POST/GET /solicitacoes/{id}/documentos[/{docId}]` (RC-08) e `PUT/DELETE …/documentos/{docId}` (RC-09), implementadas | PACIENTE | sim (documento **e** solicitação) |
-| `POST/GET /solicitacoes/{id}/extracoes` (RC-10) e `GET/PUT …/extracoes/{extracaoId}/conferencia` (RC-11), implementadas | PACIENTE | sim (pedido **e** leitura) |
-| `POST/GET /solicitacoes/{id}/analises`, `POST …/analises/{analiseId}/resumo` | PACIENTE | sim |
-| `POST/GET /solicitacoes/{id}/submissoes-simuladas` (RC-17, implementadas) | PACIENTE | sim (administrador e chave do simulador recebem 403) |
-| `POST /solicitacoes/{id}/sessoes-captura` e `GET /solicitacoes/{id}/leituras` (RC-21/RC-22, implementadas) | PACIENTE | sim (administrador e chave do simulador recebem 403) |
-| `GET /protocolos` | PACIENTE | não se aplica (protocolo acadêmico, sem dado de paciente). Decisão da RC-07: o catálogo serve ao formulário da paciente; o administrador não o usa nesta fase e recebe 403 |
+| `GET/POST /solicitacoes`, `GET/PUT/DELETE /solicitacoes/{id}` | PACIENTE | sim (a lista traz só as próprias) |
+| `POST/GET /solicitacoes/{id}/documentos[/{docId}]`, `PUT/DELETE …/documentos/{docId}` | PACIENTE | sim (documento **e** solicitação) |
+| `POST/GET /solicitacoes/{id}/extracoes` e `GET/PUT …/extracoes/{extracaoId}/conferencia` | PACIENTE | sim (pedido **e** leitura) |
+| `POST/GET /solicitacoes/{id}/analises`, `POST …/resumo`, `POST …/reenvio` | PACIENTE | sim |
+| `POST/GET /solicitacoes/{id}/submissoes-simuladas` | PACIENTE | sim (administrador e chave do simulador recebem 403) |
+| `POST /solicitacoes/{id}/sessoes-captura` e `GET /solicitacoes/{id}/leituras` | PACIENTE | sim (administrador e chave do simulador recebem 403) |
+| `GET /protocolos` | PACIENTE | não se aplica (protocolo acadêmico, sem dado de paciente); o administrador recebe 403 (decisão da RC-07) |
 | `GET /admin/indicadores` | ADMINISTRADOR | não se aplica (somente agregados, sem dado identificável) |
-| `POST /sessoes-captura/{id}/leituras` (RC-21, implementada) | simulador (cabeçalho `X-Chave-Simulador`) | sessão de captura existente e aberta (conta de paciente ou administrador recebe 403) |
+| `POST /sessoes-captura/{id}/leituras` | simulador (cabeçalho `X-Chave-Simulador`) | sessão de captura existente e aberta (conta de paciente ou administrador recebe 403) |
 | `GET /auth/sessao`, `POST /auth/logout` | PACIENTE e ADMINISTRADOR | a própria sessão |
 | `GET /health`, `POST /auth/login` | públicas | não se aplica |
 
-Regras comuns: 401 sem identidade válida; 403 perfil sem permissão; 404 recurso inexistente **ou** de outra paciente (resposta idêntica); 400 só depois dessas conferências. A paciente é sempre a da sessão, nunca um identificador enviado no corpo. O administrador **não** acessa documentos, análises, resumos nem submissões individuais por padrão. Detalhes e ordem de verificação: [docs/api/erros.md](docs/api/erros.md).
+Regras comuns: 401 sem identidade válida; 403 perfil sem permissão; 404 recurso inexistente **ou** de outra paciente (resposta idêntica); 400 só depois dessas conferências. A paciente é sempre a da sessão, nunca um identificador enviado no corpo. O administrador **não** acessa documentos, análises, resumos nem submissões individuais por padrão. Detalhes e ordem de verificação: [docs/api/erros.md](docs/api/erros.md) e [docs/api/autorizacao.md](docs/api/autorizacao.md).
