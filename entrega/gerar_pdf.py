@@ -17,7 +17,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 SAIDA = RAIZ / "entrega" / "RegulaCheck-entregaveis.pdf"
 CASOS = ["T01-01", "T01-02", "T01-03", "T01-04", "T01-05", "T02-01", "T02-02", "T04-01", "T04-02", "T04-03"]
 TELAS = [("login.png", "Login"), ("pedidos.png", "Meus pedidos"), ("pedido.png", "Detalhe do pedido"),
-         ("documentos.png", "Envio de documentos"), ("resultado.png", "Resultado da análise")]
+         ("documentos.png", "Envio de documentos"), ("resultado.png", "Resultado da análise"),
+         ("erro-conexao.png", "Falha de conexão com a API (tratamento de erro)")]
 INTEGRANTES = [("557517", "Guilherme Carneiro Avellar"), ("557577", "João Vitor Oliveira Santos"),
                ("98493", "Eliseu Fernando Mendes dos Santos"), ("557449", "Victor Martins Ferreira Brandão Ameno"),
                ("556357", "Mere Angela da Silva")]
@@ -105,6 +106,13 @@ def trecho(caso, arquivo, limite=900):
     return esc(texto[:limite])
 
 
+def swagger():
+    p = RAIZ / "entrega" / "prints" / "swagger.png"
+    if not p.exists():
+        return '<p><b>INSERIR CAPTURA</b> entrega/prints/swagger.png</p>'
+    return '<figure style="width:62%;margin:8px auto;display:block"><img src="' + p.as_uri() + '" style="width:100%;border:1px solid #999"><figcaption>Swagger UI (GET /docs) da API RegulaCheck</figcaption></figure>'
+
+
 def telas():
     blocos = []
     for arquivo, nome in TELAS:
@@ -125,7 +133,7 @@ CORPO = """
 <h3>Problema, cidadã e ODS</h3>
 <p>A paciente que precisa enviar um encaminhamento a um serviço de saúde não sabe se a documentação está completa; a falta só aparece depois, e o retorno custa tempo e deslocamento. O RegulaCheck confere critérios documentais antes do envio, explica as pendências, permite corrigir e reenviar e simula a submissão. ODS: <b>3</b> (saúde e bem-estar), <b>10</b> (redução das desigualdades) e <b>9</b> (inovação).</p>
 <h3>Pitch e código</h3>
-<p>Vídeo pitch: <b>&lt;PREENCHER o link&gt;</b> · Execução passo a passo: README do projeto (.zip).</p>
+<p>Vídeo pitch: <b><a href="https://youtu.be/QoO99xVV-2s">https://youtu.be/QoO99xVV-2s</a></b> · Execução passo a passo: README do projeto (.zip).</p>
 </div>
 
 <h2>Parte 1 — Banco de dados (Oracle)</h2>
@@ -140,6 +148,8 @@ CORPO = """
 <h2 class="quebra">Parte 2 — API RESTful (Java, Jakarta Servlet + Jetty, JDBC)</h2>
 <p><b>Camadas:</b> Controller (HTTP, validação de contrato) → Service (casos de uso, autorização por recurso) → Repository (JDBC com SQL parametrizado). Sem Spring e sem JPA em produção. Motor de regras determinístico, independente de HTTP e de banco.</p>
 <p><b>Documentação:</b> <code>docs/api/openapi.yaml</code> e <code>docs/api/RegulaCheck.postman_collection.json</code>. Erros no formato padrão (<code>codigo</code>, <code>mensagem</code>, <code>detalhes[]</code>), sem stack trace nem SQL.</p>
+<p><b>Swagger UI:</b> com a API no ar, abra <code>http://localhost:8080/docs</code>. A página é servida pela própria API, sem CDN, e lê o contrato OpenAPI 3.0 em <code>/docs/openapi.yaml</code> (idêntico a <code>docs/api/openapi.yaml</code>). Faça <code>POST /auth/login</code>, copie o token e informe em Authorize para executar as rotas. A captura abaixo foi tirada da API real em execução em 2026-11-19.</p>
+@@SWAGGER@@
 <table><tr><th>Método</th><th>Rota</th><th>Finalidade</th><th>Status HTTP</th></tr>@@ENDPOINTS@@</table>
 <p>Mais de 20 endpoints cobrindo GET, POST, PUT e DELETE; mapa completo e perfil por rota em <code>CONTRATO_API.md</code>. Validação no servidor: corpo inválido → 400, serviço inexistente → 422, recurso alheio ou inexistente → 404 idêntico, formato de arquivo inválido → 415, arquivo grande → 413.</p>
 
@@ -179,7 +189,7 @@ def montar():
     corpo = (CORPO.replace("@@INTEGRANTES@@", integrantes).replace("@@ER@@", secao_er())
              .replace("@@CONSULTAS@@", consultas()).replace("@@ENDPOINTS@@", eps)
              .replace("@@CASOS@@", tabela_casos()).replace("@@EV1@@", trecho("T01-02", "01-login-errada.txt"))
-             .replace("@@EV2@@", trecho("T02-01", "02-detalhe-b.txt")).replace("@@TELAS@@", telas())
+             .replace("@@EV2@@", trecho("T02-01", "02-detalhe-b.txt")).replace("@@TELAS@@", telas()).replace("@@SWAGGER@@", swagger())
              .replace("@@IOT@@", trecho("IOT-simulacao", "02-simulador-saida.txt", 1600)))
     cabeca = ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>RegulaCheck - Entregáveis</title><style>'
               + CSS + "</style>"

@@ -6,6 +6,8 @@ Scripts para **Oracle 19c** (SQL Developer, SQLcl ou SQL*Plus). `;` encerra inst
 
 ## Ordem de execução
 
+**Atalho para banco novo:** rode só [`rodar_tudo.sql`](rodar_tudo.sql) (F5 no SQL Developer; `@rodar_tudo.sql` no SQLcl/SQL*Plus, a partir desta pasta). Ele chama `01_`, `02_` e `05_` nessa ordem com `@@`. Não inclui `03_`/`04_` (opcionais) nem os scripts aditivos e o `90_`.
+
 | Ordem | Arquivo | O que faz | Muda dados? |
 |---|---|---|---|
 | 1 | [`01_criar_esquema.sql`](01_criar_esquema.sql) | Cria as 17 tabelas `RC_*` (12 da RC-03, as 3 de extração da RC-10, `RC_CONFERENCIA_CAMPO` da RC-11 e `RC_PENDENCIA_EVIDENCIA` da RC-13), restrições e índices, já com as colunas da RC-13 | Só cria; falha com ORA-00955 se já existir |

@@ -1,0 +1,41 @@
+## PACIENTE | PEDIDOS | 
+   Paciente A (fictícia) | 3 | 
+   Paciente B (fictícia) | 1 | 
+
+## PEDIDO | PACIENTE | REVISAO | RESULTADO_GERAL | PROTOCOLO | VIGENTE | 
+   1 | Paciente A (fictícia) | 1 | COM_PENDENCIAS | PROTOCOLO-ACADEMICO-FICTICIO v0.1 | NAO | 
+   1 | Paciente A (fictícia) | 2 | SEM_PENDENCIAS_IDENTIFICADAS | PROTOCOLO-ACADEMICO-FICTICIO v0.1 | SIM | 
+   2 | Paciente A (fictícia) | 1 | COM_PENDENCIAS | PROTOCOLO-ACADEMICO-FICTICIO v0.1 | SIM | 
+   3 | Paciente B (fictícia) | 1 | REQUER_CONFERENCIA | PROTOCOLO-ACADEMICO-FICTICIO v0.1 | NAO | 
+   3 | Paciente B (fictícia) | 2 | REQUER_CONFERENCIA | PROTOCOLO-ACADEMICO-FICTICIO v0.1 | SIM | 
+
+## ESTADO | PEDIDOS | 
+   COM_PENDENCIAS | 1 | 
+   RASCUNHO | 1 | 
+   REQUER_CONFERENCIA | 1 | 
+   SUBMETIDA_SIMULACAO | 1 | 
+
+## CODIGO | RESPONSAVEL | TIPO | PENDENCIAS | 
+   RC-R02 | PACIENTE | NAO_VERIFICAVEL | 2 | 
+   RC-R03 | PACIENTE | NAO_VERIFICAVEL | 2 | 
+   RC-R03 | PACIENTE | PENDENTE | 1 | 
+   RC-R04 | UNIDADE_EMISSORA | PENDENTE | 1 | 
+   RC-R05 | UNIDADE_EMISSORA | PENDENTE | 1 | 
+   RC-R06 | PACIENTE | NAO_VERIFICAVEL | 1 | 
+
+## PEDIDO | REGRA | REVISAO_COM_PENDENCIA | REVISAO_SEM_PENDENCIA | 
+   1 | RC-R02 | 1 | 2 | 
+   1 | RC-R03 | 1 | 2 | 
+   3 | RC-R02 | 1 | 2 | 
+   3 | RC-R06 | 1 | 2 | 
+
+## CODIGO | DESCRICAO | RESULTADO | RESPONSAVEL | 
+   RC-R01 | Encaminhamento presente | ATENDE | PACIENTE | 
+   RC-R02 | Identificação coerente entre documentos | ATENDE | PACIENTE | 
+   RC-R03 | Documento de identificação | ATENDE | PACIENTE | 
+   RC-R04 | Motivo do encaminhamento informado | ATENDE | UNIDADE_EMISSORA | 
+   RC-R05 | Encaminhamento dentro da validade | ATENDE | UNIDADE_EMISSORA | 
+   RC-R06 | Autorização do responsável legal | NAO_APLICAVEL | PACIENTE | 
+
+
+== RESUMO: instrucoes OK=6 ERROS=0

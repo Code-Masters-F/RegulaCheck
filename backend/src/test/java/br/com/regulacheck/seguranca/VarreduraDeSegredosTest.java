@@ -112,8 +112,12 @@ class VarreduraDeSegredosTest {
         Resultado r = VarreduraDeSegredos.varrer(raiz, valoresReais);
 
         assertTrue(r.arquivosVarridos() > 50, "a varredura deveria cobrir o repositorio: " + r.arquivosVarridos());
-        assertTrue(r.pastasDeNivelUm().containsAll(Set.of("backend", "docs", "mobile", "specs", "database")),
-                "pastas varridas: " + r.pastasDeNivelUm());
+        // "specs" so e exigida quando existe: o pacote ZIP de entrega nao a inclui.
+        Set<String> exigidas = new HashSet<>(Set.of("backend", "docs", "mobile", "database"));
+        if (Files.isDirectory(raiz.resolve("specs"))) {
+            exigidas.add("specs");
+        }
+        assertTrue(r.pastasDeNivelUm().containsAll(exigidas), "pastas varridas: " + r.pastasDeNivelUm());
         assertEquals(List.of(), r.achados(), "segredos (sem valor) encontrados: " + r.achados());
     }
 
