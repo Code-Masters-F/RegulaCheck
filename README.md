@@ -68,7 +68,7 @@ Pré-requisito comum: **JDK 21+**. As variáveis ficam no shell ou na IDE; a apl
 
 ### 1. Banco (Oracle)
 
-1. Com o seu cliente SQL (SQL Developer: **F5**, "Executar script"), rode **o arquivo inteiro**, em ordem: [`01_criar_esquema.sql`](database/scripts/01_criar_esquema.sql), [`02_carga_sintetica.sql`](database/scripts/02_carga_sintetica.sql) e [`05_sessao_login.sql`](database/scripts/05_sessao_login.sql). Opcionais: `03_consultas_uso.sql` (consultas) e `04_testes_restricoes.sql` (testes de restrições, não deixa dados).
+1. Com o seu cliente SQL (SQL Developer: **F5**, "Executar script"), rode **um único arquivo**: [`rodar_tudo.sql`](database/scripts/rodar_tudo.sql), que executa em ordem [`01_criar_esquema.sql`](database/scripts/01_criar_esquema.sql), [`02_carga_sintetica.sql`](database/scripts/02_carga_sintetica.sql) e [`05_sessao_login.sql`](database/scripts/05_sessao_login.sql) (em banco novo, sem erro). Se preferir, rode esses três arquivos inteiros, um a um, nessa ordem. Opcionais: `03_consultas_uso.sql` (consultas) e `04_testes_restricoes.sql` (testes de restrições, não deixa dados).
 2. Os scripts `06_` a `11_` são só para banco criado antes de cada história; o `01_` atual já traz o que eles acrescentam. Detalhes e ordem em [database/scripts/README.md](database/scripts/README.md).
 3. Conta e senha do Oracle: pedir ao grupo; **nunca** versionar.
 4. Contas de demonstração criadas pela carga: `paciente.a@exemplo.invalid` e `paciente.b@exemplo.invalid` (`PACIENTE`) e `admin@exemplo.invalid` (`ADMINISTRADOR`), todas com a senha fictícia `RegulaCheck#Demo2026`.
@@ -129,8 +129,8 @@ Importe [`docs/api/RegulaCheck.postman_collection.json`](docs/api/RegulaCheck.po
 |---|---|
 | API (autenticação, pedidos, documentos, leitura simulada, conferência, motor de regras, análise, resumo simulado, reenvio, submissão simulada, sensores) | Implementada; verificada com repositórios em memória e, em 13 a 17/11/2026, em boa parte com o Oracle da faculdade. O que foi verificado em cada história está em `specs/*/tasks.md` |
 | App Android | Login, meus pedidos, pedido, envio de documentos, leitura e resultado da análise implementados. Conferência da leitura, substituição/remoção, comprovante da submissão e telas do administrador são **só desenho** (ver [mobile/README.md](mobile/README.md)) |
-| Sensores | Implementados e verificados como processo; `CapturaOracleTest` ainda não executado no Oracle |
-| Plano de testes | Plano escrito (94 casos); **a rodada de execução com evidências ainda está pendente** (ver [resultado-da-rodada.md](docs/testes/resultado-da-rodada.md)) |
+| Sensores | Implementados e verificados como processo; demonstração ponta a ponta com a API e o Oracle em 19/11/2026 ([evidência](docs/evidencias/IOT-simulacao/registro.md)); `CapturaOracleTest` ainda não executado no Oracle |
+| Plano de testes | Plano escrito (94 casos). Em 19/11/2026 foram **executados 10 casos, todos Aprovados**, contra a API real e o Oracle, com evidências em [`docs/evidencias/`](docs/evidencias/) (mais a demonstração dos sensores). Os outros 84 continuam **não executados**; revisão por outro integrante pendente (ver [resultado-da-rodada.md](docs/testes/resultado-da-rodada.md)) |
 
 Detalhes por rota e por história: [docs/api/README.md](docs/api/README.md). Decisões e pendências: [docs/decisoes.md](docs/decisoes.md). Recorte do demonstrador: [docs/protocolo-academico.md](docs/protocolo-academico.md) e [docs/escopo-e-limitacoes.md](docs/escopo-e-limitacoes.md).
 

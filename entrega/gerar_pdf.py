@@ -17,7 +17,8 @@ RAIZ = Path(__file__).resolve().parent.parent
 SAIDA = RAIZ / "entrega" / "RegulaCheck-entregaveis.pdf"
 CASOS = ["T01-01", "T01-02", "T01-03", "T01-04", "T01-05", "T02-01", "T02-02", "T04-01", "T04-02", "T04-03"]
 TELAS = [("login.png", "Login"), ("pedidos.png", "Meus pedidos"), ("pedido.png", "Detalhe do pedido"),
-         ("documentos.png", "Envio de documentos"), ("resultado.png", "Resultado da análise")]
+         ("documentos.png", "Envio de documentos"), ("resultado.png", "Resultado da análise"),
+         ("erro-conexao.png", "Falha de conexão com a API (tratamento de erro)")]
 INTEGRANTES = [("557517", "Guilherme Carneiro Avellar"), ("557577", "João Vitor Oliveira Santos"),
                ("98493", "Eliseu Fernando Mendes dos Santos"), ("557449", "Victor Martins Ferreira Brandão Ameno"),
                ("556357", "Mere Angela da Silva")]
