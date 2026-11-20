@@ -183,7 +183,7 @@ Título: "Verificar critérios?" Textos (conforme o caso): "{n} informações li
 | Unidade emissora | `Pendência/Orientação` "Quem pode resolver" / "Se o motivo estiver ausente, peça à unidade que emitiu o encaminhamento para completar o documento." "Você confere a transcrição aqui. O documento clínico é corrigido pela unidade emissora." Botões: "Abrir documento", "Já tenho uma nova versão". |
 | Substituir arquivo | Motivo: "Uma informação está ilegível". Botão: "Substituir arquivo". |
 | Conferir leitura | Motivo: "A leitura ainda não foi conferida" ou "Você apontou uma diferença". Botão: "Conferir leitura". |
-| Documento ausente | "Depois da primeira verificação, o app só permite trocar documentos já enviados." Botão: "Substituir um documento". **Desatualizado pela RC-16 (17/11/2026):** o backend passou a aceitar a inclusão do documento que faltava depois da análise (exceto em pedido submetido); o texto e a ação desta tela precisam ser revistos no épico 6 ([decisões](../../docs/decisoes.md)). |
+| Documento ausente | "Depois da primeira verificação, o app só permite trocar documentos já enviados." Botão: "Substituir um documento". **Desde a RC-16 (17/11/2026)** o backend aceita incluir o documento que faltava depois da análise (exceto em pedido submetido), pela rota de documentos; este quadro registra a versão anterior do protótipo ([decisões](../../docs/decisoes.md#adotadas)). |
 
 ### E3.5 Correção e comparação
 | Estado | Textos |
@@ -207,14 +207,14 @@ Destaque: "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS". "Referência" / "{re
 | Normal | Título: "Condições da captura". "Luminosidade" / "{lux} lux" — "Adequada". "Distância" / "{cm} cm" — "Adequada". "Leitura há {tempo} · sensor simulado". Nota: "Valores de demonstração. Eles não comprovam que o documento ficará legível." Botão: "Fotografar". |
 | Luminosidade fora | "Baixa" / "Melhore a iluminação e tente de novo." |
 | Distância fora | "Fora do ideal" / "Aproxime ou afaste o celular do documento." |
-| Recuperada | "Condições adequadas de novo." |
-| Desatualizada | "Última leitura há {tempo} · desatualizada". Botão: "Fotografar mesmo assim". |
-| Indisponível | "Sensores indisponíveis agora." / "Você pode anexar e salvar seus documentos normalmente." Botão: "Fotografar mesmo assim". |
+| Recuperada | "Adequada de novo" / "Condições adequadas de novo." · "Leitura há {tempo} · antes: {valor} {unidade} · sensor simulado" (quadro `DGf2T`). |
+| Desatualizada | "Desatualizada" / "Última leitura há {tempo} · sensor simulado" (quadro `Cna25`). Botão: "Fotografar mesmo assim". |
+| Indisponível | "Sensores indisponíveis agora." / "Você pode anexar e salvar seus documentos normalmente." Valor "—" e "Sem leitura disponível · sensor simulado" (quadro `kaHJz`). Botão: "Fotografar mesmo assim". |
 
 ### E4.2 Protocolo e indicadores (administrador)
 | Estado | Textos |
 |---|---|
-| Padrão | Título: "Protocolo e indicadores". "Protocolo ativo" / "Protocolo acadêmico fictício · versão {versão} · {n} regras" e a lista das regras (código e nome). "Total de pedidos" / "{n}". "Análises por resultado": sem pendências identificadas, com pendências, confira a leitura, falha. "Regras com mais pendências". Nota: "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos." Cabeçalho: "Sair". |
+| Padrão | Título: "Protocolo e indicadores". "Protocolo ativo" / "Protocolo acadêmico fictício · versão {versão} · {n} regras" e a lista das regras (código e nome; no app, só o nome desde 19/11/2026). "Total de pedidos" / "{n}". "Análises por resultado": sem pendências identificadas, com pendências, confira a leitura, falha. "Regras com mais pendências". Nota: "Dados agregados de demonstração. Documentos e pedidos individuais não são exibidos." Cabeçalho: "Sair". |
 | Carregando | Esqueleto + "Carregando indicadores…" |
 | Erro | "Não foi possível carregar os indicadores." Botão: "Tentar de novo". |
 
@@ -242,13 +242,42 @@ Usados por `mobile/app/.../ui/Textos.kt` (spec 022). "Ajustado" = o texto do qua
 | E2.2, Não enviado sem conexão | "Sem conexão com a internet. O arquivo ainda não foi enviado. Toque em “Tentar de novo”." | ajustado (E4.3 fala em "o que você digitou") |
 | E2.3, todas as recusas | título "“{nome do arquivo}” não foi enviado.", mensagem da API, "Nada foi salvo."; arquivo inacessível ou chave reutilizada: "Escolha o arquivo outra vez." | criado conforme a #42 (mensagem da API) |
 | E3.1, carga e botão | "Lendo os documentos…" · botão "Lendo…" | criado |
-| E3.1, leitura concluída | "O que foi lido" · "Lido" / "Não lido" / "Não lido: PDF protegido" · "{n} de {total} informações identificadas" · "A conferência da leitura está disponível só no desenho nesta versão. Informações não conferidas contam como não verificadas." | criado (E3.2 fica só no desenho, #40) |
+| E3.1, leitura concluída | "O que foi lido" · "Lido" / "Não lido" / "Não lido: PDF protegido" · "{n} de {total} informações identificadas" | criado (E3.2 fica só no desenho, #40); a frase "só no desenho" saiu em 19/11/2026 |
 | E3.8 | "As informações lidas que não foram conferidas contarão como não verificadas." · botão "Analisando…" | ajustado: sem a contagem e sem a frase sobre não poder anexar depois (deixou de valer com a RC-16) |
 | E3.8, 409 em andamento | "Já há uma verificação em andamento. Aguarde cerca de {n} segundos e consulte o resultado." · "Consultar resultado" | criado (#42) |
 | E3.8, queda na análise | título de E4.3 + "Consultar de novo" (consulta só o histórico) | criado (research D6 da spec 022) |
-| E3.3, Confira a leitura | "Confira a leitura: essa etapa está disponível só no desenho nesta versão." | ajustado (sem o botão "Conferir leitura") |
+| E3.3, Confira a leitura | só "Alguma informação não pôde ser verificada. Isso não significa que ela esteja faltando." | ajustado (sem o botão "Conferir leitura"; a frase "só no desenho" saiu em 19/11/2026) |
+| E3.3 e E3.4, ajuste de 19/11/2026 | "Verificado em {data e hora}" (sem a revisão) · resumo sem selo e sem a nota "Gerado por simulação…" (a nota do resumo padrão continua) · aviso da API só em "Sem pendências identificadas" · linhas e detalhe sem o código da regra (apoio do detalhe: "Protocolo acadêmico fictício, versão {versão}") | ajustado: a simulação fica identificada pelo selo do cabeçalho e pelo rodapé ([spec 022, Clarifications](../../specs/022-app-android-documentos-resultado/spec.md#clarifications)) |
 | E3.3, aviso permanente | "Um resultado sem pendências não garante aceitação pela regulação. Os critérios deste protocolo são demonstrativos." | criado (RC-15) |
 | E3.3, estados sem quadro | "Carregando o resultado…" · "Não foi possível consultar o resultado agora." · "Este pedido ainda não tem verificação concluída." · "Ainda não há resultado para a versão atual dos documentos." · "Ver resultado anterior" · "Resultado anterior" / "Revisão {n}. Este resultado não vale para a revisão atual dos documentos." | criado (contrato de apresentação da spec 019) |
 | E3.3, Sem pendências | sem o botão "Concluir simulação" (RC-17) | ajustado |
 | E3.4 | "Responsável registrado pela regra" (rótulo) · "Trecho lido: “{trecho}”" · evidência "Documento: {nome} · {campo} {situação} · página {n}" | criado (spec 019) |
-| E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · "Conferir a leitura está disponível só no desenho nesta versão." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |
+| E3.4, orientações do app | "O documento clínico é corrigido pela unidade emissora. Ele não pode ser alterado no aplicativo." · "O reenvio de arquivos ainda não está disponível nesta versão do app." · RC-R02 sem orientação da API: "Se o erro estiver no documento médico original, solicite a correção à unidade emissora." | ajustados (sem os botões "Abrir documento", "Já tenho uma nova versão", "Substituir arquivo", "Conferir leitura") |
+
+## App Android — textos criados ou ajustados na RC-22 (18/11/2026)
+
+Usados por `mobile/app/.../ui/Textos.kt` (spec 023). O app não abre a câmera: "Fotografar" leva à E4.1 e, dela, ao seletor do sistema da RC-19 ([research D2](../../specs/023-app-android-condicoes-captura/research.md)). Nos três estados da E4.1 acima, as linhas de leitura seguem os quadros revisados (research D7).
+
+| Onde | Texto | Motivo |
+|---|---|---|
+| E2.7 Origem, apoio de "Fotografar" | "Veja as condições da captura e depois escolha a foto" | ajustado (era "Mostramos as condições da captura antes da foto"; o app não tira a foto) |
+| E4.1, apoio do título | "Posicione o documento sob a estação de captura e fotografe com a câmera do aparelho. As leituras se atualizam enquanto esta tela está aberta." | ajustado (diz como a foto é tirada) |
+| E4.1, ação principal | "Escolher a foto" · "Escolher a foto mesmo assim" | ajustado (era "Fotografar" · "Fotografar mesmo assim"; abre o seletor com JPEG/PNG) |
+| E4.1, orientação | a `orientacao.mensagem` da API, como texto puro; só se vier vazia: "Melhore a iluminação e tente de novo." · "Reduza a luz direta ou o reflexo sobre o documento." · "Afaste o celular do documento." · "Aproxime o celular do documento." · "Verifique se a estação de captura está ligada." · "Você pode anexar e salvar seus documentos normalmente." | ajustado (a API é a fonte; textos locais por código) |
+| E4.1, luminosidade acima da faixa | "Alta" | criado (sem quadro) |
+| E4.1, um só sensor sem leitura | "Sem leitura" | criado (sem quadro) |
+| E4.1, carregando | "Consultando os sensores…" | criado (sem quadro) |
+| E4.1, instante ilegível | "Leitura do sensor simulado" | criado (resposta fora do contrato) |
+| E4.1, 409 ao abrir a sessão | "Este pedido já foi submetido e só pode ser consultado." / "Este pedido não pode mais receber documentos." Botão: "Voltar". | reaproveitado (E2.2) |
+
+## App Android — textos criados ou ajustados na RC-20 (18/11/2026)
+
+Usados por `mobile/app/.../ui/Textos.kt` (spec 024). Os textos de E4.2 acima são usados como estão; "Falha" conta pedidos (a análise que falha não é gravada, clarify da spec 024).
+
+| Onde | Texto | Motivo |
+|---|---|---|
+| E1.1, perfil não atendido | "Esta conta não pode ser usada neste aplicativo. Entre com uma conta de paciente ou de administrador." | ajustado: substitui "Esta conta não é de paciente…" (RC-18), já que o administrador passou a entrar |
+| E4.2, base dos números | "“Falha” mostra os pedidos cuja última verificação não terminou." | criado (sem quadro); encurtado em 19/11/2026 |
+| E4.2, estados sem quadro | "Nenhum protocolo ativo." · "Nenhuma pendência registrada." · "{n} pendência(s)" · linha de regra "{nome}" (sem o código desde 19/11/2026) | criado |
+| E4.2, parcelas por regra | abaixo do nome, só as parcelas maiores que zero: "{n} pendente(s)" · "{n} não verificável(is)" | criado em 19/11/2026 ([spec 024, Clarifications](../../specs/024-app-admin-indicadores/spec.md#clarifications)) |
+| E4.2, sem conexão e 403 | "Sem conexão com a internet." / "Verifique sua rede e tente de novo." · "Você não tem permissão para ver esta tela." (E1.5) | reaproveitado da RC-18 |

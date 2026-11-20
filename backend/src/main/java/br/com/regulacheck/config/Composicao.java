@@ -18,12 +18,15 @@ import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
 import br.com.regulacheck.common.http.CabecalhosSegurosFiltro;
 import br.com.regulacheck.common.http.RotaNaoEncontradaController;
+import br.com.regulacheck.documentacao.DocumentacaoController;
 import br.com.regulacheck.documento.controller.DocumentoController;
 import br.com.regulacheck.documento.service.DocumentoService;
 import br.com.regulacheck.extracao.controller.ConferenciaController;
 import br.com.regulacheck.extracao.controller.ExtracaoController;
 import br.com.regulacheck.extracao.service.ConferenciaService;
 import br.com.regulacheck.extracao.service.ExtracaoService;
+import br.com.regulacheck.indicador.controller.IndicadorController;
+import br.com.regulacheck.indicador.service.IndicadorService;
 import br.com.regulacheck.iot.controller.CapturaController;
 import br.com.regulacheck.iot.controller.LeituraSensorController;
 import br.com.regulacheck.iot.service.CapturaService;
@@ -166,9 +169,15 @@ public final class Composicao {
                         new SubmissaoController(new SubmissaoService(dependencias.submissoes(),
                                 dependencias.relogio()))), multipart,
                 Perfil.PACIENTE);
+        // RC-20: protocolo e indicadores agregados, somente ADMINISTRADOR (paciente 403 antes do controller).
+        rotas.registrar("/admin/indicadores", new IndicadorController(new IndicadorService(dependencias.indicadores(),
+                dependencias.protocolos(), dependencias.relogio())), Perfil.ADMINISTRADOR);
         // Telemetria do simulador (RC-21): so a chave X-Chave-Simulador, so esta rota.
         rotas.registrarTelemetria("/sessoes-captura/*", new LeituraSensorController(capturas));
         extensao.accept(rotas);
+
+        // RC-28: documentacao da API (Swagger UI + contrato OpenAPI), publica e somente leitura (RotasPrivadas.PUBLICAS).
+        contexto.addServlet(new ServletHolder(new DocumentacaoController()), "/docs/*");
 
         // Rota coringa: qualquer caminho sem controller devolve 404 no formato padrao.
         contexto.addServlet(new ServletHolder(new RotaNaoEncontradaController()), "/*");

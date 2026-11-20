@@ -1,12 +1,12 @@
 # Contrato de API: mapa de rotas e perfis
 
-Mapa resumido das rotas do RegulaCheck e do perfil que pode acessar cada uma. **Fonte de verdade das respostas, dos códigos HTTP e dos formatos:** [docs/api/openapi.yaml](docs/api/openapi.yaml), [docs/api/contratos-dados.md](docs/api/contratos-dados.md) e [docs/api/erros.md](docs/api/erros.md). **Situação de cada rota e verificação por história (RC-XX):** [docs/api/README.md](docs/api/README.md#situação-das-rotas). Contratos por feature: `specs/*/contracts/`.
+Mapa resumido das rotas do RegulaCheck e do perfil que pode acessar cada uma. **Documentação interativa (Swagger UI, RC-28):** `GET /docs` com a API em execução; percurso do login ao comprovante em [docs/api/roteiro-avaliacao.md](docs/api/roteiro-avaliacao.md). **Fonte de verdade das respostas, dos códigos HTTP e dos formatos:** [docs/api/openapi.yaml](docs/api/openapi.yaml), [docs/api/contratos-dados.md](docs/api/contratos-dados.md) e [docs/api/erros.md](docs/api/erros.md). **Situação de cada rota e verificação por história (RC-XX):** [docs/api/README.md](docs/api/README.md#situação-das-rotas). Contratos por feature: `specs/*/contracts/`.
 
 Dados exclusivamente sintéticos. Leitura de documentos, resumo de pendências e sensores são **simulados**.
 
 ## Rotas
 
-Todas as rotas abaixo estão **implementadas**, exceto `GET /admin/indicadores`, **planejada** (RC-20).
+Todas as rotas abaixo estão **implementadas**. A tabela é conferida automaticamente contra o `openapi.yaml` (`ContratoDaApiTest`, RC-28): os pares método + caminho precisam ser os mesmos.
 
 | Método | Recurso | Finalidade | História |
 | ------ | ------- | ---------- | -------- |
@@ -38,7 +38,9 @@ Todas as rotas abaixo estão **implementadas**, exceto `GET /admin/indicadores`,
 | POST | /solicitacoes/{id}/sessoes-captura | Abre a sessão de captura (estação **simulada**); no máximo uma aberta por pedido; 409 se submetido | RC-21 |
 | POST | /sessoes-captura/{id}/leituras | O **simulador** (`X-Chave-Simulador`) envia leitura de luminosidade (lux) ou distância (cm); 201; 404 sessão inexistente ou encerrada; 400 leitura inválida | RC-21 |
 | GET | /solicitacoes/{id}/leituras | Telemetria própria: dois sensores com situação e orientação; não comprova legibilidade nem bloqueia envio | RC-22 |
-| GET | /admin/indicadores | Administrador consulta agregados (**planejada**) | RC-20 |
+| GET | /admin/indicadores | Administrador consulta protocolo ativo e indicadores agregados, sem dado identificável | RC-20 |
+| GET | /docs | Documentação interativa (Swagger UI) servida pela API; pública, só GET | RC-28 |
+| GET | /docs/openapi.yaml | Este contrato OpenAPI, idêntico a `docs/api/openapi.yaml` | RC-28 |
 
 ## Perfil permitido por rota (RC-05)
 
@@ -54,6 +56,6 @@ Todas as rotas abaixo estão **implementadas**, exceto `GET /admin/indicadores`,
 | `GET /admin/indicadores` | ADMINISTRADOR | não se aplica (somente agregados, sem dado identificável) |
 | `POST /sessoes-captura/{id}/leituras` | simulador (cabeçalho `X-Chave-Simulador`) | sessão de captura existente e aberta (conta de paciente ou administrador recebe 403) |
 | `GET /auth/sessao`, `POST /auth/logout` | PACIENTE e ADMINISTRADOR | a própria sessão |
-| `GET /health`, `POST /auth/login` | públicas | não se aplica |
+| `GET /health`, `POST /auth/login`, `GET /docs`, `GET /docs/openapi.yaml` | públicas | não se aplica (a documentação só expõe o contrato, sem dado de paciente) |
 
 Regras comuns: 401 sem identidade válida; 403 perfil sem permissão; 404 recurso inexistente **ou** de outra paciente (resposta idêntica); 400 só depois dessas conferências. A paciente é sempre a da sessão, nunca um identificador enviado no corpo. O administrador **não** acessa documentos, análises, resumos nem submissões individuais por padrão. Detalhes e ordem de verificação: [docs/api/erros.md](docs/api/erros.md) e [docs/api/autorizacao.md](docs/api/autorizacao.md).

@@ -43,7 +43,6 @@ import br.com.regulacheck.app.ui.componentes.CabecalhoVoltar
 import br.com.regulacheck.app.ui.componentes.Esqueleto
 import br.com.regulacheck.app.ui.componentes.EstruturaTela
 import br.com.regulacheck.app.ui.componentes.RotuloEstado
-import br.com.regulacheck.app.ui.componentes.SeloSimulado
 import br.com.regulacheck.app.ui.componentes.SinalTexto
 import br.com.regulacheck.app.ui.componentes.SuperficieTarefa
 import br.com.regulacheck.app.ui.componentes.TipoRetorno
@@ -185,7 +184,7 @@ private fun ResultadoDaAnalise(
     val versao = RotulosApi.versaoProtocolo(analise.protocolo.versao)
     TituloTela(Textos.RESULTADO_TITULO)
     Spacer(Modifier.height(8.dp))
-    Text(Textos.verificadoEm(formatarDataHora(analise.executadaEm), analise.revisao), style = TiposRc.Meta, color = CoresRc.TextoApoio)
+    Text(Textos.verificadoEm(formatarDataHora(analise.executadaEm)), style = TiposRc.Meta, color = CoresRc.TextoApoio)
     Text(Textos.protocoloVersao(versao), style = TiposRc.Meta, color = CoresRc.TextoApoio)
 
     if (!vigente) {
@@ -199,18 +198,16 @@ private fun ResultadoDaAnalise(
 
     ResumoDaAnalise(analise, vigente, resumo, aoPedirResumo)
 
-    Spacer(Modifier.height(16.dp))
-    // Aviso de simulação vindo da API, como texto puro.
-    Text(analise.aviso, style = TiposRc.Meta, color = CoresRc.TextoApoio)
-
     when (analise.resultadoGeral) {
         "REQUER_CONFERENCIA" -> {
             Spacer(Modifier.height(16.dp))
             Text(Textos.CONFIRA_TEXTO, style = TiposRc.Corpo, color = CoresRc.Texto)
-            Spacer(Modifier.height(8.dp))
-            Text(Textos.CONFIRA_SO_DESENHO, style = TiposRc.Meta, color = CoresRc.TextoApoio)
         }
         "SEM_PENDENCIAS_IDENTIFICADAS" -> {
+            // O aviso da API (texto puro) nega a aprovação do SUS; nos demais resultados ele só
+            // repetiria a identificação de simulação já feita pelo selo e pelo rodapé (ajuste de 19/11/2026).
+            Spacer(Modifier.height(16.dp))
+            Text(analise.aviso, style = TiposRc.Meta, color = CoresRc.TextoApoio)
             Spacer(Modifier.height(16.dp))
             BlocoRetorno(TipoRetorno.AVISO, Textos.SEM_PENDENCIAS_AVISO)
         }
@@ -235,20 +232,19 @@ private fun ResultadoDaAnalise(
     Text(Textos.AVISO_RESULTADO, style = TiposRc.Meta, color = CoresRc.TextoApoio)
 }
 
-/** `Resumo/Simulado`: texto da RC-14 com SIMULADO; ausente ou `PADRAO` oferece "Tentar de novo". */
+/**
+ * `Resumo/Simulado`: texto da RC-14, identificado pelo selo SIMULADO do cabeçalho da tela (sem selo
+ * próprio desde 19/11/2026); ausente ou `PADRAO` oferece "Tentar de novo".
+ */
 @Composable
 private fun ResumoDaAnalise(analise: AnaliseGravada, vigente: Boolean, estado: EstadoResumo, aoPedir: () -> Unit) {
     val resumo = analise.resumo
-    SuperficieTarefa(Textos.RESUMO_TITULO, acaoTitulo = { SeloSimulado() }) {
+    SuperficieTarefa(Textos.RESUMO_TITULO) {
         // Texto do resumo como texto puro: `<` e `&` aparecem literalmente.
         Text(resumo?.texto ?: Textos.RESUMO_INDISPONIVEL, style = TiposRc.Corpo, color = CoresRc.Texto)
-        if (resumo != null) {
+        if (resumo?.origem == "PADRAO") {
             Spacer(Modifier.height(12.dp))
-            Text(
-                if (resumo.origem == "PADRAO") Textos.RESUMO_PADRAO_NOTA else Textos.RESUMO_NOTA,
-                style = TiposRc.Legenda,
-                color = CoresRc.TextoApoio,
-            )
+            Text(Textos.RESUMO_PADRAO_NOTA, style = TiposRc.Legenda, color = CoresRc.TextoApoio)
         }
     }
     val podeTentar = vigente && (resumo == null || resumo.origem == "PADRAO")
@@ -271,7 +267,7 @@ private fun ResumoDaAnalise(analise: AnaliseGravada, vigente: Boolean, estado: E
     }
 }
 
-/** `Pendência/Linha`: critério, código · tipo · arquivo, quem resolve; a linha toda abre o detalhe. */
+/** `Pendência/Linha`: critério, tipo · arquivo, quem resolve; a linha toda abre o detalhe. */
 @Composable
 private fun ItemPendencia(pendencia: PendenciaGravada, nomes: Map<String, String>, aoAbrir: () -> Unit) {
     val (icone, cor) = iconeDoResultado(pendencia.tipo)
@@ -296,7 +292,7 @@ private fun ItemPendencia(pendencia: PendenciaGravada, nomes: Map<String, String
     }
 }
 
-/** `Critério/Linha`: descrição e código, resultado em texto + ícone à direita. */
+/** `Critério/Linha`: descrição, resultado em texto + ícone à direita (sem o código da regra). */
 @Composable
 private fun LinhaCriterio(resultado: ResultadoRegra) {
     val (icone, cor) = iconeDoResultado(resultado.resultado)
@@ -304,7 +300,6 @@ private fun LinhaCriterio(resultado: ResultadoRegra) {
         Row(Modifier.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(resultado.descricao, style = TiposRc.Corpo, color = CoresRc.Texto)
-                Text(resultado.codigoRegra, style = TiposRc.Meta, color = CoresRc.TextoApoio)
             }
             Spacer(Modifier.width(12.dp))
             SinalTexto(icone, cor, RotulosApi.resultadoRegra(resultado.resultado))

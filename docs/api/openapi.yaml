@@ -1,28 +1,80 @@
 openapi: 3.0.3
 info:
   title: RegulaCheck API (acadêmica, dados sintéticos)
-  version: 0.9.0
-  description: >
-    Documentação escrita à mão. Proteções (RC-06): toda resposta traz X-Content-Type-Options nosniff,
-    Cache-Control no-store, Content-Security-Policy restritiva e Referrer-Policy no-referrer; textos
-    derivados de entrada saem como texto puro (esquema TextoSimulado). As regras de arquivo (tipo real,
-    extensão, 5 MB, 5 páginas, 3 arquivos) e o download seguro estão em docs/api/protecoes.md; desde a
-    RC-08 são usadas pelas rotas de documentos do pedido (envio, lista e download).
-    Demais notas: Nesta etapa estão implementados GET /health, GET /protocolos, o rascunho de solicitação (GET/POST /solicitacoes e GET/PUT /solicitacoes/{id}, RC-07), os documentos do pedido (POST/GET /solicitacoes/{id}/documentos e GET /solicitacoes/{id}/documentos/{docId}, RC-08), remover e substituir documento (DELETE e PUT /solicitacoes/{id}/documentos/{docId}) e excluir rascunho com confirmação (DELETE /solicitacoes/{id}, RC-09), a leitura SIMULADA dos documentos (POST/GET /solicitacoes/{id}/extracoes, RC-10), a conferência da transcrição (GET/PUT /solicitacoes/{id}/extracoes/{extracaoId}/conferencia, RC-11) e as rotas de
-    autenticação POST /auth/login, GET /auth/sessao e POST /auth/logout (RC-04); os demais
-    caminhos estão em CONTRATO_API.md e nos contratos Markdown. As rotas de autenticação
-    dependem do banco Oracle: sem DB_* configuradas respondem 503. Autorização (RC-05): 401 sem
-    identidade válida, 403 perfil sem permissão, 404 recurso inexistente ou de outra paciente
-    (resposta idêntica), nessa ordem; a tabela de perfis por rota está em CONTRATO_API.md. O
-    sistema não diagnostica, não define urgência nem autoriza atendimento.
+  version: 1.0.0
+  description: |
+    API do RegulaCheck, MVP acadêmico. **Dados exclusivamente sintéticos** e protocolo acadêmico fictício. A leitura
+    dos documentos, o resumo de pendências e a estação de captura (sensores) são **simulados**, e a submissão é só uma
+    **simulação acadêmica**: nada é enviado ao SUS. O sistema não diagnostica, não define urgência e não autoriza
+    atendimento.
+
+    Contrato escrito à mão (fonte única: `docs/api/openapi.yaml`), servido por esta API em `GET /docs/openapi.yaml` e
+    exibido em `GET /docs` (RC-28). O percurso completo, do login ao comprovante, está em `docs/api/roteiro-avaliacao.md`.
+
+    **Como executar por esta página:** faça `POST /auth/login` com uma conta de demonstração
+    (`paciente.a@exemplo.invalid`, `paciente.b@exemplo.invalid` ou `admin@exemplo.invalid`; senha em
+    `database/scripts/README.md`), copie o `token` e informe-o em **Authorize** (`bearerAuth`). O token fica só na
+    memória desta aba. Use o servidor `/` (mesma origem). Sem banco configurado (`DB_*`), as rotas que dependem dele
+    respondem 503 `DEPENDENCIA_INDISPONIVEL`.
+
+    **Códigos de sucesso:** 200 (consulta, repetição idempotente ou situação já existente), 201 (algo novo foi
+    gravado, com `Location` quando há recurso endereçável) e 204 (logout e exclusão de rascunho, sem corpo).
+    **Nenhuma rota usa 202:** leitura, análise, resumo, reenvio e submissão são síncronos e só respondem depois de
+    gravar o resultado.
+
+    **Erros** (corpo padrão `Erro`; catálogo em `docs/api/erros.md`): 400 entrada inválida; 401 sem sessão válida;
+    403 perfil sem permissão; 404 recurso inexistente ou de outra paciente (resposta idêntica); 405 método não
+    permitido; 409 conflito de estado ou de revisão; 413 arquivo acima de 5 MB; 415 tipo de corpo ou de arquivo não
+    suportado; 422 regra de negócio; 503 falha de dependência (banco `DEPENDENCIA_INDISPONIVEL`, leitor simulado
+    `LEITURA_INDISPONIVEL`, avaliação `ANALISE_INDISPONIVEL`); 500 `ERRO_INTERNO` genérico, sem detalhe. Ordem nas
+    rotas privadas (RC-05): 401 → 403 → 404 → 400/413/415 → 409/422/503. A falha do adaptador simulado de resumo
+    **não** é erro: a resposta é 201 com `resumo.origem = PADRAO`, e as pendências ficam preservadas.
+
+    **Proteções (RC-06):** toda resposta traz `X-Content-Type-Options: nosniff`, `Cache-Control: no-store`,
+    `Referrer-Policy: no-referrer` e `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`. A única
+    exceção é a das respostas 200 de `/docs`, que precisam executar o Swagger UI. Textos derivados de entrada saem
+    como texto puro. Regras de arquivo (tipo real, extensão, 5 MB, 5 páginas, 3 arquivos) em `docs/api/protecoes.md`;
+    perfis por rota em `CONTRATO_API.md`.
 servers:
+  - url: /
+    description: Mesma origem desta página (use este ao executar pelo Swagger UI em /docs)
   - url: http://localhost:8080
     description: Computador de desenvolvimento
   - url: http://10.0.2.2:8080
     description: Emulador Android apontando para o computador
+tags:
+  - name: Saúde
+    description: Estado técnico da API (não consulta o banco)
+  - name: Autenticação
+    description: Login, sessão e logout das contas de demonstração (RC-04)
+  - name: Serviços
+    description: Protocolos acadêmicos fictícios ativos (RC-07)
+  - name: Pedidos
+    description: Rascunho da solicitação da paciente (RC-07, RC-09)
+  - name: Documentos
+    description: Envio, consulta, download, substituição e remoção de arquivos sintéticos (RC-08, RC-09, RC-16)
+  - name: Leitura simulada
+    description: Leitura SIMULADA dos documentos (RC-10)
+  - name: Conferência
+    description: A paciente confirma ou aponta divergência na transcrição (RC-11)
+  - name: Análises
+    description: Critérios do protocolo acadêmico e histórico por revisão (RC-13)
+  - name: Resumo simulado
+    description: Resumo de pendências por adaptador mockado, identificado como simulado (RC-14)
+  - name: Reenvio
+    description: Verificação da versão corrigida e comparação com a anterior (RC-16)
+  - name: Submissão simulada
+    description: Conclusão só no simulador acadêmico; nada é enviado ao SUS (RC-17)
+  - name: Estação de captura
+    description: Sessão de captura e sensores SIMULADOS de luminosidade e distância (RC-21, RC-22)
+  - name: Administração
+    description: Indicadores agregados, sem dado identificável (RC-20)
+  - name: Documentação
+    description: Esta documentação interativa e o contrato OpenAPI (RC-28)
 paths:
   /health:
     get:
+      tags: [Saúde]
       summary: Estado técnico da API
       responses:
         "200":
@@ -31,6 +83,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Saude"
+              example:
+                status: UP
         "404":
           description: Rota inexistente em outras URLs
           content:
@@ -39,6 +93,7 @@ paths:
                 $ref: "#/components/schemas/Erro"
   /auth/login:
     post:
+      tags: [Autenticação]
       summary: Autentica a conta e abre uma sessão
       description: >
         Senha errada, e-mail inexistente, conta desativada e senha acima de 72 bytes devolvem a
@@ -49,9 +104,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/LoginRequest"
+            example:
+              email: paciente.a@exemplo.invalid
+              senha: '<senha de demonstração: database/scripts/README.md>'
       responses:
         "200":
-          description: Sessão aberta (prazo padrão de 30 minutos)
+          description: Sessão aberta (prazo padrão de 30 minutos, configurável por SESSION_TTL_MINUTES de 1 a 1440)
           headers:
             Cache-Control:
               schema: { type: string, example: no-store }
@@ -59,6 +117,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LoginResponse"
+              example:
+                token: EXEMPLO-token-ficticio-nao-e-valido-0000000
+                tipo: Bearer
+                expiraEm: '2026-11-12T20:30:00Z'
+                usuario:
+                  nome: Paciente A (fictícia)
+                  perfil: PACIENTE
         "400":
           description: Corpo ilegível, ou e-mail/senha ausentes ou fora do tamanho (REQUISICAO_INVALIDA)
           content:
@@ -71,6 +136,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Erro"
+              example:
+                codigo: CREDENCIAIS_INVALIDAS
+                mensagem: E-mail ou senha inválidos.
         "415":
           description: Content-Type diferente de application/json (TIPO_NAO_SUPORTADO)
           content:
@@ -83,8 +151,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Erro"
+              example:
+                codigo: DEPENDENCIA_INDISPONIVEL
+                mensagem: Servico temporariamente indisponivel. Tente novamente em instantes.
   /auth/sessao:
     get:
+      tags: [Autenticação]
       summary: Identidade e expiração da sessão atual
       security:
         - bearerAuth: []
@@ -117,6 +189,7 @@ paths:
                 $ref: "#/components/schemas/Erro"
   /auth/logout:
     post:
+      tags: [Autenticação]
       summary: Encerra a sessão do token enviado
       description: As outras sessões da mesma conta continuam válidas. Repetir com o mesmo token devolve 401.
       security:
@@ -144,6 +217,7 @@ paths:
                 $ref: "#/components/schemas/Erro"
   /protocolos:
     get:
+      tags: [Serviços]
       summary: Serviços (protocolos acadêmicos fictícios) ativos que a paciente pode escolher (RC-07)
       security:
         - bearerAuth: []
@@ -154,11 +228,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListaProtocolos"
+              example:
+                itens:
+                - protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
+                  identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                  versao: v0.1
+                  localidade: Município Exemplo
+                  especialidade: Consulta ambulatorial em cardiologia
+                  avisoFicticio: Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.
+                  simulacao: true
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
   /solicitacoes:
     get:
+      tags: [Pedidos]
       summary: Lista os pedidos da paciente da sessão (RC-07)
       description: Só os pedidos próprios, do mais recente ao mais antigo, no máximo 50 (sem paginação).
       security:
@@ -174,6 +258,7 @@ paths:
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     post:
+      tags: [Pedidos]
       summary: Cria um rascunho ligado ao serviço escolhido (RC-07)
       description: >
         A paciente é a da sessão; campos extras (dono, estado, revisão) são ignorados. Cada chamada
@@ -186,6 +271,8 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/SolicitacaoRequest"
+            example:
+              protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
       responses:
         "201":
           description: Rascunho criado na revisão 1
@@ -196,11 +283,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solicitacao"
+              example:
+                id: '1'
+                protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
+                servico:
+                  localidade: Município Exemplo
+                  especialidade: Consulta ambulatorial em cardiologia
+                  avisoFicticio: Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.
+                estado: RASCUNHO
+                revisao: 1
+                criadaEm: '2026-11-12T20:00:00Z'
+                atualizadaEm: '2026-11-12T20:00:00Z'
+                simulacao: true
+                versaoConjuntoDocumental: 1
+                documentosDisponiveis: 0
+                analise:
+                  situacao: NAO_REALIZADA
+                  mensagem: Nenhuma análise foi realizada para esta versão dos documentos.
         "400":
           description: Corpo ou `protocoloId` inválido (REQUISICAO_INVALIDA, com `detalhes[].campo`)
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: REQUISICAO_INVALIDA
+                mensagem: Verifique os campos informados.
+                detalhes:
+                - campo: protocoloId
+                  mensagem: O serviço deve ser informado como texto.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "415":
@@ -208,11 +318,20 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: TIPO_NAO_SUPORTADO
+                mensagem: Envie o corpo como application/json.
         "422":
           description: Serviço inexistente ou inativo (REGRA_DE_NEGOCIO, campo `protocoloId`)
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: REGRA_DE_NEGOCIO
+                mensagem: Verifique os campos informados.
+                detalhes:
+                - campo: protocoloId
+                  mensagem: Escolha um dos serviços da lista.
         "503": { $ref: "#/components/responses/Indisponivel" }
   /solicitacoes/{id}:
     parameters:
@@ -222,6 +341,7 @@ paths:
         description: Número decimal positivo devolvido pela criação; outro formato responde 404.
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     get:
+      tags: [Pedidos]
       summary: Reabre um pedido próprio (RC-07)
       security:
         - bearerAuth: []
@@ -232,11 +352,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Solicitacao"
+              example:
+                id: '1'
+                protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
+                servico:
+                  localidade: Município Exemplo
+                  especialidade: Consulta ambulatorial em cardiologia
+                  avisoFicticio: Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.
+                estado: RASCUNHO
+                revisao: 1
+                criadaEm: '2026-11-12T20:00:00Z'
+                atualizadaEm: '2026-11-12T20:00:00Z'
+                simulacao: true
+                versaoConjuntoDocumental: 1
+                documentosDisponiveis: 0
+                analise:
+                  situacao: NAO_REALIZADA
+                  mensagem: Nenhuma análise foi realizada para esta versão dos documentos.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     put:
+      tags: [Pedidos]
       summary: Troca o serviço de um rascunho (RC-07)
       description: >
         Só em RASCUNHO. Serviço diferente: revisão +1, `atualizadaEm` atualizado e revisão registrada com o
@@ -250,6 +388,8 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/SolicitacaoRequest"
+            example:
+              protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
       responses:
         "200":
           description: Pedido no estado final
@@ -270,6 +410,9 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: CONFLITO_ESTADO
+                mensagem: Este pedido não pode mais ser alterado.
         "415":
           description: Corpo que não é application/json (TIPO_NAO_SUPORTADO)
           content:
@@ -282,6 +425,7 @@ paths:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     delete:
+      tags: [Pedidos]
       summary: Exclui um rascunho próprio, com confirmação explícita (RC-09)
       description: >
         Exige o cabeçalho `X-Confirmar-Exclusao: EXCLUIR` (valor exato). Sem ele, ou com outro valor, responde 400
@@ -304,6 +448,12 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: REQUISICAO_INVALIDA
+                mensagem: A exclusão precisa ser confirmada.
+                detalhes:
+                - campo: confirmacao
+                  mensagem: Envie o cabeçalho X-Confirmar-Exclusao com o valor EXCLUIR para confirmar a exclusão.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
@@ -315,6 +465,9 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: CONFLITO_ESTADO
+                mensagem: Somente rascunhos podem ser excluídos.
         "503": { $ref: "#/components/responses/Indisponivel" }
   /solicitacoes/{id}/documentos:
     parameters:
@@ -324,6 +477,7 @@ paths:
         description: Número decimal positivo do pedido; outro formato responde 404.
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     get:
+      tags: [Documentos]
       summary: Lista os documentos disponíveis do pedido próprio (RC-08)
       description: Na ordem de envio, no máximo 3. Lista vazia é 200.
       security:
@@ -334,11 +488,28 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ListaDocumentos" }
+              example:
+                documentos:
+                - id: '1'
+                  solicitacaoId: '1'
+                  nomeArquivo: encaminhamento-sintetico.pdf
+                  tipoDocumental: ENCAMINHAMENTO
+                  formato: PDF
+                  tamanhoBytes: 999
+                  paginas: 1
+                  estadoEnvio: ENVIADO
+                  revisaoEntrada: 2
+                  enviadoEm: '2026-11-12T20:00:00Z'
+                  simulacao: true
+                total: 1
+                maximo: 3
+                versaoConjuntoDocumental: 2
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     post:
+      tags: [Documentos]
       summary: Envia um arquivo ao pedido (RC-08; inclusão após a análise desde a RC-16)
       description: >
         Um arquivo por requisição, em qualquer estado exceto SUBMETIDA_SIMULACAO (RC-16: o documento que faltava pode
@@ -378,6 +549,20 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/DocumentoEnviado" }
+              example:
+                id: '1'
+                solicitacaoId: '1'
+                nomeArquivo: encaminhamento-sintetico.pdf
+                tipoDocumental: ENCAMINHAMENTO
+                formato: PDF
+                tamanhoBytes: 999
+                paginas: 1
+                estadoEnvio: ENVIADO
+                revisaoEntrada: 2
+                enviadoEm: '2026-11-12T20:00:00Z'
+                simulacao: true
+                versaoConjuntoDocumental: 2
+                documentosDisponiveis: 1
         "400":
           description: >
             REQUISICAO_INVALIDA com `detalhes[].campo` = tipoDocumental, arquivo, arquivos ou chaveEnvio; PDF com mais
@@ -398,11 +583,17 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: ARQUIVO_MUITO_GRANDE
+                mensagem: O arquivo excede 5 MB.
         "415":
           description: TIPO_NAO_SUPORTADO (corpo que não é multipart/form-data ou conteúdo que não é PDF/JPEG/PNG) ou EXTENSAO_INCOMPATIVEL
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: TIPO_NAO_SUPORTADO
+                mensagem: Envie um arquivo PDF, JPEG ou PNG.
         "422":
           description: REGRA_DE_NEGOCIO, campo `documentos` (o pedido já tem 3 documentos)
           content:
@@ -421,6 +612,7 @@ paths:
         description: Número decimal positivo devolvido pelo envio; só abre pelo pedido ao qual pertence.
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     get:
+      tags: [Documentos]
       summary: Baixa o arquivo de um documento próprio, como anexo (RC-08)
       description: >
         Conteúdo exatamente como foi guardado. Documento alheio, de outro pedido, inexistente ou id mal formado:
@@ -447,6 +639,7 @@ paths:
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     put:
+      tags: [Documentos]
       summary: Substitui um documento por outro arquivo, numa só operação (RC-09)
       description: >
         Mesmo multipart do envio (`arquivo`, `tipoDocumental`, `X-Chave-Envio` opcional). O documento antigo sai e o
@@ -516,6 +709,7 @@ paths:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     delete:
+      tags: [Documentos]
       summary: Remove um documento do pedido próprio (RC-09)
       description: >
         Sem corpo. Revisão +1 (motivo DOCUMENTO_REMOVIDO); o documento some da lista e do download, a vaga é liberada e o
@@ -546,6 +740,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Leitura simulada]
       summary: Lê os documentos do pedido próprio (leitura SIMULADA, RC-10)
       description: >
         Lê os documentos disponíveis da versão atual do conjunto documental e guarda o resultado. A leitura é
@@ -562,6 +757,50 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Extracao" }
+              example:
+                id: '1'
+                situacao: ATUAL
+                versaoConjuntoDocumental: 2
+                simulada: true
+                aviso: Leitura simulada com dados sintéticos; não é leitura real dos documentos.
+                criadaEm: '2026-11-12T20:00:00Z'
+                documentos:
+                - documentoId: '1'
+                  tipoDocumental: ENCAMINHAMENTO
+                  situacao: LIDO
+                  campos:
+                  - codigo: TIPO_DOCUMENTO
+                    situacao: IDENTIFICADO
+                    valor: ENCAMINHAMENTO
+                    origem:
+                      pagina: 1
+                      trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                  - codigo: NOME
+                    situacao: IDENTIFICADO
+                    valor: Maria Exemplo da Silva
+                    origem:
+                      pagina: 1
+                      trecho: 'Paciente: Maria Exemplo da Silva'
+                  - codigo: DATA_NASCIMENTO
+                    situacao: IDENTIFICADO
+                    valor: '1990-04-12'
+                    origem:
+                      pagina: 1
+                      trecho: 'Nascimento: 12/04/1990'
+                  - codigo: MOTIVO_ENCAMINHAMENTO
+                    situacao: IDENTIFICADO
+                    valor: Avaliacao cardiologica ambulatorial (texto sintetico)
+                    origem:
+                      pagina: 1
+                      trecho: 'Motivo: Avaliacao cardiologica ambulatorial (texto sintetico)'
+                  - codigo: DATA_EMISSAO
+                    situacao: IDENTIFICADO
+                    valor: '2026-10-20'
+                    origem:
+                      pagina: 1
+                      trecho: 'Emissao: 20/10/2026'
+                  - codigo: AUTORIZACAO_ASSINADA
+                    situacao: NAO_LOCALIZADO
         "200":
           description: Já existia leitura para a versão atual; nada novo foi gravado
           content:
@@ -580,12 +819,16 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: SEM_DOCUMENTOS
+                mensagem: Este pedido ainda não tem documentos para ler. Envie um documento primeiro.
         "503":
           description: LEITURA_INDISPONIVEL (o leitor falhou ou respondeu fora do contrato; nada é gravado; pode tentar de novo) ou DEPENDENCIA_INDISPONIVEL (banco ou área de arquivos)
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
     get:
+      tags: [Leitura simulada]
       summary: Consulta a leitura mais recente do pedido próprio (RC-10)
       description: >
         Devolve a leitura mais recente, ATUAL (feita na versão atual dos documentos) ou DESATUALIZADA (depois de
@@ -614,6 +857,7 @@ paths:
         description: Identificador da leitura (campo id devolvido por /extracoes)
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     get:
+      tags: [Conferência]
       summary: Consulta a conferência da transcrição de uma leitura do pedido próprio (RC-11)
       description: >
         Mostra o que foi lido (SIMULADO), com a origem, destacando os campos não verificados, as decisões da paciente,
@@ -628,11 +872,68 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Conferencia" }
+              example:
+                extracaoId: '1'
+                situacao: PENDENTE
+                liberadoParaSubmissao: false
+                simulada: true
+                aviso: Leitura simulada com dados sintéticos; não é leitura real dos documentos.
+                atualizadaEm: '2026-11-12T20:00:00Z'
+                resumo:
+                  camposNaoVerificados: 1
+                  camposSemDecisao: 5
+                  divergencias: 0
+                documentos:
+                - documentoId: '1'
+                  tipoDocumental: ENCAMINHAMENTO
+                  situacao: LIDO
+                  campos:
+                  - codigo: TIPO_DOCUMENTO
+                    situacao: IDENTIFICADO
+                    valor: ENCAMINHAMENTO
+                    origem:
+                      pagina: 1
+                      trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                    naoVerificado: false
+                  - codigo: NOME
+                    situacao: IDENTIFICADO
+                    valor: Maria Exemplo da Silva
+                    origem:
+                      pagina: 1
+                      trecho: 'Paciente: Maria Exemplo da Silva'
+                    naoVerificado: false
+                  - codigo: DATA_NASCIMENTO
+                    situacao: IDENTIFICADO
+                    valor: '1990-04-12'
+                    origem:
+                      pagina: 1
+                      trecho: 'Nascimento: 12/04/1990'
+                    naoVerificado: false
+                  - codigo: MOTIVO_ENCAMINHAMENTO
+                    situacao: IDENTIFICADO
+                    valor: Avaliacao cardiologica ambulatorial (texto sintetico)
+                    origem:
+                      pagina: 1
+                      trecho: 'Motivo: Avaliacao cardiologica ambulatorial (texto sintetico)'
+                    naoVerificado: false
+                  - codigo: DATA_EMISSAO
+                    situacao: IDENTIFICADO
+                    valor: '2026-10-20'
+                    origem:
+                      pagina: 1
+                      trecho: 'Emissao: 20/10/2026'
+                    naoVerificado: false
+                  - codigo: AUTORIZACAO_ASSINADA
+                    situacao: NAO_LOCALIZADO
+                    naoVerificado: true
+                    orientacao: Esta informação não consta no documento lido. Se ela for necessária, peça um documento corrigido
+                      à unidade emissora. Não é possível preencher aqui.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     put:
+      tags: [Conferência]
       summary: Registra as decisões da paciente sobre os campos lidos (RC-11)
       description: >
         A paciente só confirma ou marca divergência, campo a campo; nenhum valor digitado é aceito (qualquer chave
@@ -647,12 +948,100 @@ paths:
         content:
           application/json:
             schema: { $ref: "#/components/schemas/ConferenciaRequest" }
+            example:
+              decisoes:
+              - documentoId: '1'
+                codigo: TIPO_DOCUMENTO
+                decisao: CONFIRMADA
+              - documentoId: '1'
+                codigo: NOME
+                decisao: CONFIRMADA
+              - documentoId: '1'
+                codigo: DATA_NASCIMENTO
+                decisao: CONFIRMADA
+              - documentoId: '1'
+                codigo: MOTIVO_ENCAMINHAMENTO
+                decisao: CONFIRMADA
+              - documentoId: '1'
+                codigo: DATA_EMISSAO
+                decisao: CONFIRMADA
       responses:
         "200":
           description: Decisões registradas; devolve a conferência com a situação nova
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Conferencia" }
+              example:
+                extracaoId: '1'
+                situacao: CONFERIDA
+                liberadoParaSubmissao: false
+                simulada: true
+                aviso: Leitura simulada com dados sintéticos; não é leitura real dos documentos.
+                atualizadaEm: '2026-11-12T20:00:00Z'
+                resumo:
+                  camposNaoVerificados: 1
+                  camposSemDecisao: 0
+                  divergencias: 0
+                documentos:
+                - documentoId: '1'
+                  tipoDocumental: ENCAMINHAMENTO
+                  situacao: LIDO
+                  campos:
+                  - codigo: TIPO_DOCUMENTO
+                    situacao: IDENTIFICADO
+                    valor: ENCAMINHAMENTO
+                    origem:
+                      pagina: 1
+                      trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                    naoVerificado: false
+                    decisao:
+                      tipo: CONFIRMADA
+                      decididaEm: '2026-11-12T20:00:00Z'
+                  - codigo: NOME
+                    situacao: IDENTIFICADO
+                    valor: Maria Exemplo da Silva
+                    origem:
+                      pagina: 1
+                      trecho: 'Paciente: Maria Exemplo da Silva'
+                    naoVerificado: false
+                    decisao:
+                      tipo: CONFIRMADA
+                      decididaEm: '2026-11-12T20:00:00Z'
+                  - codigo: DATA_NASCIMENTO
+                    situacao: IDENTIFICADO
+                    valor: '1990-04-12'
+                    origem:
+                      pagina: 1
+                      trecho: 'Nascimento: 12/04/1990'
+                    naoVerificado: false
+                    decisao:
+                      tipo: CONFIRMADA
+                      decididaEm: '2026-11-12T20:00:00Z'
+                  - codigo: MOTIVO_ENCAMINHAMENTO
+                    situacao: IDENTIFICADO
+                    valor: Avaliacao cardiologica ambulatorial (texto sintetico)
+                    origem:
+                      pagina: 1
+                      trecho: 'Motivo: Avaliacao cardiologica ambulatorial (texto sintetico)'
+                    naoVerificado: false
+                    decisao:
+                      tipo: CONFIRMADA
+                      decididaEm: '2026-11-12T20:00:00Z'
+                  - codigo: DATA_EMISSAO
+                    situacao: IDENTIFICADO
+                    valor: '2026-10-20'
+                    origem:
+                      pagina: 1
+                      trecho: 'Emissao: 20/10/2026'
+                    naoVerificado: false
+                    decisao:
+                      tipo: CONFIRMADA
+                      decididaEm: '2026-11-12T20:00:00Z'
+                  - codigo: AUTORIZACAO_ASSINADA
+                    situacao: NAO_LOCALIZADO
+                    naoVerificado: true
+                    orientacao: Esta informação não consta no documento lido. Se ela for necessária, peça um documento corrigido
+                      à unidade emissora. Não é possível preencher aqui.
         "400":
           description: REQUISICAO_INVALIDA (corpo ausente ou ilegível, lista vazia ou maior que 18, chave desconhecida como valor, valor fora da lista, motivo ausente em divergência ou presente em confirmação, par repetido, documentoId malformado); nada é gravado
           content:
@@ -684,6 +1073,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Análises]
       summary: Pede a análise do pedido próprio e grava o resultado (RC-13; leitura SIMULADA)
       description: >
         Síncrono, sem corpo. Avalia as regras da versão do protocolo do pedido sobre a leitura atual e a conferência
@@ -700,6 +1090,94 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/AnaliseGravada" }
+              example:
+                id: '1'
+                revisao: 2
+                vigente: true
+                executadaEm: '2026-11-12T20:00:00Z'
+                protocolo:
+                  identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                  versao: v0.1
+                conferenciaConsiderada: '2026-11-12T20:00:00Z'
+                dataReferencia: '2026-11-12'
+                resultadoGeral: COM_PENDENCIAS
+                rotuloResultado: Com pendências
+                simulada: true
+                aviso: 'Análise simulada: leitura simulada dos documentos e protocolo acadêmico fictício. "Sem pendências identificadas"
+                  não é aprovação do SUS.'
+                documentos:
+                - documentoId: '1'
+                  nomeArquivo: encaminhamento-sintetico.pdf
+                  tipoDeclarado: ENCAMINHAMENTO
+                  disponivel: true
+                resultados:
+                - codigoRegra: RC-R01
+                  descricao: Encaminhamento presente
+                  resultado: ATENDE
+                - codigoRegra: RC-R02
+                  descricao: Identificação coerente entre documentos
+                  resultado: NAO_VERIFICAVEL
+                  motivo: DOCUMENTOS_INSUFICIENTES
+                - codigoRegra: RC-R03
+                  descricao: Documento de identificação
+                  resultado: PENDENTE
+                - codigoRegra: RC-R04
+                  descricao: Motivo do encaminhamento informado
+                  resultado: ATENDE
+                - codigoRegra: RC-R05
+                  descricao: Encaminhamento dentro da validade
+                  resultado: ATENDE
+                - codigoRegra: RC-R06
+                  descricao: Autorização do responsável legal
+                  resultado: NAO_VERIFICAVEL
+                  motivo: CONDICAO_INDETERMINADA
+                pendencias:
+                - codigoRegra: RC-R02
+                  descricaoRegra: Identificação coerente entre documentos
+                  tipo: NAO_VERIFICAVEL
+                  explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                    Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                  motivo: DOCUMENTOS_INSUFICIENTES
+                  responsavel: PACIENTE
+                  orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                    reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                  evidencias:
+                  - documentoId: '1'
+                    campo: NOME
+                    situacao: CONFIRMADO
+                    origem:
+                      pagina: 1
+                      trecho: 'Paciente: Maria Exemplo da Silva'
+                  - documentoId: '1'
+                    campo: DATA_NASCIMENTO
+                    situacao: CONFIRMADO
+                    origem:
+                      pagina: 1
+                      trecho: 'Nascimento: 12/04/1990'
+                - codigoRegra: RC-R03
+                  descricaoRegra: Documento de identificação
+                  tipo: PENDENTE
+                  explicacao: Envie um documento de identificação ou o cartão do SUS.
+                  responsavel: PACIENTE
+                  orientacao: Obtenha o documento solicitado e envie ou substitua o arquivo quando essa ação estiver disponível
+                    no pedido.
+                  evidencias:
+                  - documentoId: '1'
+                    campo: TIPO_DOCUMENTO
+                    situacao: CONFIRMADO
+                    origem:
+                      pagina: 1
+                      trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                - codigoRegra: RC-R06
+                  descricaoRegra: Autorização do responsável legal
+                  tipo: NAO_VERIFICAVEL
+                  explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                    Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                  motivo: CONDICAO_INDETERMINADA
+                  responsavel: PACIENTE
+                  orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                    reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                  evidencias: []
         "200":
           description: Já havia análise vigente da versão atual dos documentos e da conferência atual; nada foi gravado
           content:
@@ -720,12 +1198,16 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: CONFLITO_ESTADO
+                mensagem: Leia os documentos antes de pedir a análise.
         "503":
           description: ANALISE_INDISPONIVEL (avaliação falhou; nada gravado; pedido em FALHA_ANALISE; pode tentar de novo) ou DEPENDENCIA_INDISPONIVEL (banco)
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
     get:
+      tags: [Análises]
       summary: Histórico de análises do pedido próprio, com a vigente marcada (RC-13)
       description: >
         Todas as análises gravadas, da mais recente para a mais antiga (até 50); no máximo uma vigente; cada uma com a
@@ -740,6 +1222,100 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/HistoricoAnalises" }
+              example:
+                solicitacaoId: '1'
+                estado: COM_PENDENCIAS
+                versaoConjuntoDocumental: 2
+                vigenteId: '1'
+                limite: 50
+                analises:
+                - id: '1'
+                  revisao: 2
+                  vigente: true
+                  executadaEm: '2026-11-12T20:00:00Z'
+                  protocolo:
+                    identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                    versao: v0.1
+                  conferenciaConsiderada: '2026-11-12T20:00:00Z'
+                  dataReferencia: '2026-11-12'
+                  resultadoGeral: COM_PENDENCIAS
+                  rotuloResultado: Com pendências
+                  simulada: true
+                  aviso: 'Análise simulada: leitura simulada dos documentos e protocolo acadêmico fictício. "Sem pendências identificadas"
+                    não é aprovação do SUS.'
+                  documentos:
+                  - documentoId: '1'
+                    nomeArquivo: encaminhamento-sintetico.pdf
+                    tipoDeclarado: ENCAMINHAMENTO
+                    disponivel: true
+                  resultados:
+                  - codigoRegra: RC-R01
+                    descricao: Encaminhamento presente
+                    resultado: ATENDE
+                  - codigoRegra: RC-R02
+                    descricao: Identificação coerente entre documentos
+                    resultado: NAO_VERIFICAVEL
+                    motivo: DOCUMENTOS_INSUFICIENTES
+                  - codigoRegra: RC-R03
+                    descricao: Documento de identificação
+                    resultado: PENDENTE
+                  - codigoRegra: RC-R04
+                    descricao: Motivo do encaminhamento informado
+                    resultado: ATENDE
+                  - codigoRegra: RC-R05
+                    descricao: Encaminhamento dentro da validade
+                    resultado: ATENDE
+                  - codigoRegra: RC-R06
+                    descricao: Autorização do responsável legal
+                    resultado: NAO_VERIFICAVEL
+                    motivo: CONDICAO_INDETERMINADA
+                  pendencias:
+                  - codigoRegra: RC-R02
+                    descricaoRegra: Identificação coerente entre documentos
+                    tipo: NAO_VERIFICAVEL
+                    explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                      Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                    motivo: DOCUMENTOS_INSUFICIENTES
+                    responsavel: PACIENTE
+                    orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                      reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                    evidencias:
+                    - documentoId: '1'
+                      campo: NOME
+                      situacao: CONFIRMADO
+                      origem:
+                        pagina: 1
+                        trecho: 'Paciente: Maria Exemplo da Silva'
+                    - documentoId: '1'
+                      campo: DATA_NASCIMENTO
+                      situacao: CONFIRMADO
+                      origem:
+                        pagina: 1
+                        trecho: 'Nascimento: 12/04/1990'
+                  - codigoRegra: RC-R03
+                    descricaoRegra: Documento de identificação
+                    tipo: PENDENTE
+                    explicacao: Envie um documento de identificação ou o cartão do SUS.
+                    responsavel: PACIENTE
+                    orientacao: Obtenha o documento solicitado e envie ou substitua o arquivo quando essa ação estiver disponível
+                      no pedido.
+                    evidencias:
+                    - documentoId: '1'
+                      campo: TIPO_DOCUMENTO
+                      situacao: CONFIRMADO
+                      origem:
+                        pagina: 1
+                        trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                  - codigoRegra: RC-R06
+                    descricaoRegra: Autorização do responsável legal
+                    tipo: NAO_VERIFICAVEL
+                    explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                      Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                    motivo: CONDICAO_INDETERMINADA
+                    responsavel: PACIENTE
+                    orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                      reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                    evidencias: []
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
@@ -751,6 +1327,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Estação de captura]
       summary: Abre a sessão de captura do pedido próprio (RC-21; estação de captura SIMULADA)
       description: >
         Sem corpo. No máximo uma sessão aberta por pedido; se já houver, devolve a existente (200) sem gravar nada,
@@ -787,6 +1364,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     get:
+      tags: [Estação de captura]
       summary: Telemetria dos dois sensores simulados do pedido próprio, com orientação (RC-22)
       description: >
         Sempre os dois sensores (luminosidade, distância), com a última leitura da sessão mais recente, a situação e a
@@ -812,6 +1390,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Estação de captura]
       summary: O simulador envia uma leitura de sensor (RC-21; só a chave do simulador)
       description: >
         Uma leitura por requisição. Ordem 401 (sem chave ou chave errada), 403 (conta de paciente ou administrador),
@@ -855,6 +1434,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Resumo simulado]
       summary: Gera resumo simulado da analise vigente (RC-14)
       description: >
         Sem corpo. Usa somente pendencias e resultados verificados. Saida invalida ou falha do adaptador
@@ -868,6 +1448,221 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/AnaliseGravada" }
+              examples:
+                gerado:
+                  summary: "Resumo gerado pelo adaptador mockado (simulado)"
+                  value:
+                    id: '1'
+                    revisao: 2
+                    vigente: true
+                    executadaEm: '2026-11-12T20:00:00Z'
+                    protocolo:
+                      identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                      versao: v0.1
+                    conferenciaConsiderada: '2026-11-12T20:00:00Z'
+                    dataReferencia: '2026-11-12'
+                    resultadoGeral: COM_PENDENCIAS
+                    rotuloResultado: Com pendências
+                    simulada: true
+                    aviso: 'Análise simulada: leitura simulada dos documentos e protocolo acadêmico fictício. "Sem pendências identificadas"
+                      não é aprovação do SUS.'
+                    documentos:
+                    - documentoId: '1'
+                      nomeArquivo: encaminhamento-sintetico.pdf
+                      tipoDeclarado: ENCAMINHAMENTO
+                      disponivel: true
+                    resultados:
+                    - codigoRegra: RC-R01
+                      descricao: Encaminhamento presente
+                      resultado: ATENDE
+                    - codigoRegra: RC-R02
+                      descricao: Identificação coerente entre documentos
+                      resultado: NAO_VERIFICAVEL
+                      motivo: DOCUMENTOS_INSUFICIENTES
+                    - codigoRegra: RC-R03
+                      descricao: Documento de identificação
+                      resultado: PENDENTE
+                    - codigoRegra: RC-R04
+                      descricao: Motivo do encaminhamento informado
+                      resultado: ATENDE
+                    - codigoRegra: RC-R05
+                      descricao: Encaminhamento dentro da validade
+                      resultado: ATENDE
+                    - codigoRegra: RC-R06
+                      descricao: Autorização do responsável legal
+                      resultado: NAO_VERIFICAVEL
+                      motivo: CONDICAO_INDETERMINADA
+                    pendencias:
+                    - codigoRegra: RC-R02
+                      descricaoRegra: Identificação coerente entre documentos
+                      tipo: NAO_VERIFICAVEL
+                      explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                        Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                      motivo: DOCUMENTOS_INSUFICIENTES
+                      responsavel: PACIENTE
+                      orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                        reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                      evidencias:
+                      - documentoId: '1'
+                        campo: NOME
+                        situacao: CONFIRMADO
+                        origem:
+                          pagina: 1
+                          trecho: 'Paciente: Maria Exemplo da Silva'
+                      - documentoId: '1'
+                        campo: DATA_NASCIMENTO
+                        situacao: CONFIRMADO
+                        origem:
+                          pagina: 1
+                          trecho: 'Nascimento: 12/04/1990'
+                    - codigoRegra: RC-R03
+                      descricaoRegra: Documento de identificação
+                      tipo: PENDENTE
+                      explicacao: Envie um documento de identificação ou o cartão do SUS.
+                      responsavel: PACIENTE
+                      orientacao: Obtenha o documento solicitado e envie ou substitua o arquivo quando essa ação estiver disponível
+                        no pedido.
+                      evidencias:
+                      - documentoId: '1'
+                        campo: TIPO_DOCUMENTO
+                        situacao: CONFIRMADO
+                        origem:
+                          pagina: 1
+                          trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                    - codigoRegra: RC-R06
+                      descricaoRegra: Autorização do responsável legal
+                      tipo: NAO_VERIFICAVEL
+                      explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                        Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                      motivo: CONDICAO_INDETERMINADA
+                      responsavel: PACIENTE
+                      orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                        reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                      evidencias: []
+                    resumo:
+                      texto: Esta análise identificou pendências documentais. Confira as ações por regra antes de reenviar os documentos.
+                        A avaliação usa um protocolo acadêmico fictício.
+                      origem: ADAPTADOR_MOCKADO
+                      simulado: true
+                      itens:
+                      - codigoRegra: RC-R02
+                        acao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                          Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                        responsavel: PACIENTE
+                      - codigoRegra: RC-R03
+                        acao: Envie um documento de identificação ou o cartão do SUS.
+                        responsavel: PACIENTE
+                      - codigoRegra: RC-R06
+                        acao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                          Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                        responsavel: PACIENTE
+                padrao:
+                  summary: "Adaptador simulado falhou ou saiu do contrato: resumo PADRAO, pendências preservadas"
+                  value:
+                    id: '1'
+                    revisao: 2
+                    vigente: true
+                    executadaEm: '2026-11-12T20:00:00Z'
+                    protocolo:
+                      identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                      versao: v0.1
+                    conferenciaConsiderada: '2026-11-12T20:00:00Z'
+                    dataReferencia: '2026-11-12'
+                    resultadoGeral: COM_PENDENCIAS
+                    rotuloResultado: Com pendências
+                    simulada: true
+                    aviso: 'Análise simulada: leitura simulada dos documentos e protocolo acadêmico fictício. "Sem pendências identificadas"
+                      não é aprovação do SUS.'
+                    documentos:
+                    - documentoId: '1'
+                      nomeArquivo: encaminhamento-sintetico.pdf
+                      tipoDeclarado: ENCAMINHAMENTO
+                      disponivel: true
+                    resultados:
+                    - codigoRegra: RC-R01
+                      descricao: Encaminhamento presente
+                      resultado: ATENDE
+                    - codigoRegra: RC-R02
+                      descricao: Identificação coerente entre documentos
+                      resultado: NAO_VERIFICAVEL
+                      motivo: DOCUMENTOS_INSUFICIENTES
+                    - codigoRegra: RC-R03
+                      descricao: Documento de identificação
+                      resultado: PENDENTE
+                    - codigoRegra: RC-R04
+                      descricao: Motivo do encaminhamento informado
+                      resultado: ATENDE
+                    - codigoRegra: RC-R05
+                      descricao: Encaminhamento dentro da validade
+                      resultado: ATENDE
+                    - codigoRegra: RC-R06
+                      descricao: Autorização do responsável legal
+                      resultado: NAO_VERIFICAVEL
+                      motivo: CONDICAO_INDETERMINADA
+                    pendencias:
+                    - codigoRegra: RC-R02
+                      descricaoRegra: Identificação coerente entre documentos
+                      tipo: NAO_VERIFICAVEL
+                      explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                        Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                      motivo: DOCUMENTOS_INSUFICIENTES
+                      responsavel: PACIENTE
+                      orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                        reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                      evidencias:
+                      - documentoId: '1'
+                        campo: NOME
+                        situacao: CONFIRMADO
+                        origem:
+                          pagina: 1
+                          trecho: 'Paciente: Maria Exemplo da Silva'
+                      - documentoId: '1'
+                        campo: DATA_NASCIMENTO
+                        situacao: CONFIRMADO
+                        origem:
+                          pagina: 1
+                          trecho: 'Nascimento: 12/04/1990'
+                    - codigoRegra: RC-R03
+                      descricaoRegra: Documento de identificação
+                      tipo: PENDENTE
+                      explicacao: Envie um documento de identificação ou o cartão do SUS.
+                      responsavel: PACIENTE
+                      orientacao: Obtenha o documento solicitado e envie ou substitua o arquivo quando essa ação estiver disponível
+                        no pedido.
+                      evidencias:
+                      - documentoId: '1'
+                        campo: TIPO_DOCUMENTO
+                        situacao: CONFIRMADO
+                        origem:
+                          pagina: 1
+                          trecho: ENCAMINHAMENTO PARA CONSULTA AMBULATORIAL
+                    - codigoRegra: RC-R06
+                      descricaoRegra: Autorização do responsável legal
+                      tipo: NAO_VERIFICAVEL
+                      explicacao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                        Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                      motivo: CONDICAO_INDETERMINADA
+                      responsavel: PACIENTE
+                      orientacao: Confira a transcrição. Se o arquivo estiver ilegível ou incompleto, obtenha uma versão legível para
+                        reenviar quando essa ação estiver disponível. Informação não verificável não comprova ausência.
+                      evidencias: []
+                    resumo:
+                      texto: Resumo simulado indisponível. Consulte as pendências por regra e tente gerar o resumo novamente. Nenhuma
+                        conclusão adicional foi tirada.
+                      origem: PADRAO
+                      simulado: true
+                      itens:
+                      - codigoRegra: RC-R02
+                        acao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                          Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                        responsavel: PACIENTE
+                      - codigoRegra: RC-R03
+                        acao: Envie um documento de identificação ou o cartão do SUS.
+                        responsavel: PACIENTE
+                      - codigoRegra: RC-R06
+                        acao: Não conseguimos ler esta informação no documento enviado. Isso não significa que ela esteja faltando.
+                          Envie uma foto ou arquivo mais nítido ou confira a transcrição.
+                        responsavel: PACIENTE
         "200":
           description: Resumo gerado ja existente
           content:
@@ -889,6 +1684,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Submissão simulada]
       summary: Conclui a simulação do pedido próprio (RC-17; SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS)
       description: >
         Sem corpo (ignorado). Exige, sob o bloqueio do pedido, análise vigente da revisão atual com
@@ -903,11 +1699,47 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ComprovanteSimulado" }
+              example:
+                solicitacaoId: '1'
+                referencia: SIM-2026-000001
+                submetidaEm: '2026-11-12T20:00:00Z'
+                simulada: true
+                destaque: SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS
+                servico:
+                  localidade: Município Exemplo
+                  especialidade: Consulta ambulatorial em cardiologia
+                  avisoFicticio: Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.
+                versaoAnalisada:
+                  analiseId: '2'
+                  revisao: 3
+                  protocolo:
+                    identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                    versao: v0.1
+                nota: Este comprovante é de demonstração. Não é documento clínico, não é protocolo oficial e não coloca você em
+                  fila real.
         "200":
           description: O pedido já tinha submissão; o mesmo comprovante, nada novo registrado
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ComprovanteSimulado" }
+              example:
+                solicitacaoId: '1'
+                referencia: SIM-2026-000001
+                submetidaEm: '2026-11-12T20:00:00Z'
+                simulada: true
+                destaque: SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS
+                servico:
+                  localidade: Município Exemplo
+                  especialidade: Consulta ambulatorial em cardiologia
+                  avisoFicticio: Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.
+                versaoAnalisada:
+                  analiseId: '2'
+                  revisao: 3
+                  protocolo:
+                    identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                    versao: v0.1
+                nota: Este comprovante é de demonstração. Não é documento clínico, não é protocolo oficial e não coloca você em
+                  fila real.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
@@ -921,6 +1753,7 @@ paths:
               schema: { $ref: "#/components/schemas/Erro" }
         "503": { $ref: "#/components/responses/Indisponivel" }
     get:
+      tags: [Submissão simulada]
       summary: Consulta o comprovante da submissão simulada do pedido próprio (RC-17)
       description: Mesmo comprovante da conclusão. Pedido não submetido, inexistente ou alheio → o mesmo 404.
       security:
@@ -931,6 +1764,24 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ComprovanteSimulado" }
+              example:
+                solicitacaoId: '1'
+                referencia: SIM-2026-000001
+                submetidaEm: '2026-11-12T20:00:00Z'
+                simulada: true
+                destaque: SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS
+                servico:
+                  localidade: Município Exemplo
+                  especialidade: Consulta ambulatorial em cardiologia
+                  avisoFicticio: Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS.
+                versaoAnalisada:
+                  analiseId: '2'
+                  revisao: 3
+                  protocolo:
+                    identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                    versao: v0.1
+                nota: Este comprovante é de demonstração. Não é documento clínico, não é protocolo oficial e não coloca você em
+                  fila real.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
@@ -942,6 +1793,7 @@ paths:
         required: true
         schema: { type: string, pattern: "^[1-9][0-9]{0,17}$" }
     post:
+      tags: [Reenvio]
       summary: Verifica a versão corrigida do pedido próprio (RC-16; leitura e resumo SIMULADOS)
       description: >
         Sem corpo (ignorado). Para a revisão atual: leitura (reaproveita a existente) -> conferência -> análise (RC-13)
@@ -957,11 +1809,103 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Reenvio" }
+              example:
+                solicitacaoId: '1'
+                etapa: CONCLUIDA
+                revisao: 3
+                extracaoId: '2'
+                leituraCriada: false
+                camposSemDecisao: 0
+                analiseCriada: true
+                simulada: true
+                orientacao: Nova verificação concluída. Compare com o resultado anterior. "Sem pendências identificadas" não é aprovação
+                  do SUS.
+                analise:
+                  id: '2'
+                  revisao: 3
+                  vigente: true
+                  executadaEm: '2026-11-12T20:00:00Z'
+                  protocolo:
+                    identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                    versao: v0.1
+                  conferenciaConsiderada: '2026-11-12T20:00:00Z'
+                  dataReferencia: '2026-11-12'
+                  resultadoGeral: SEM_PENDENCIAS_IDENTIFICADAS
+                  rotuloResultado: Sem pendências identificadas
+                  simulada: true
+                  aviso: 'Análise simulada: leitura simulada dos documentos e protocolo acadêmico fictício. "Sem pendências identificadas"
+                    não é aprovação do SUS.'
+                  documentos:
+                  - documentoId: '1'
+                    nomeArquivo: encaminhamento-sintetico.pdf
+                    tipoDeclarado: ENCAMINHAMENTO
+                    disponivel: true
+                  - documentoId: '2'
+                    nomeArquivo: identificacao-sintetica.png
+                    tipoDeclarado: IDENTIFICACAO
+                    disponivel: true
+                  resultados:
+                  - codigoRegra: RC-R01
+                    descricao: Encaminhamento presente
+                    resultado: ATENDE
+                  - codigoRegra: RC-R02
+                    descricao: Identificação coerente entre documentos
+                    resultado: ATENDE
+                  - codigoRegra: RC-R03
+                    descricao: Documento de identificação
+                    resultado: ATENDE
+                  - codigoRegra: RC-R04
+                    descricao: Motivo do encaminhamento informado
+                    resultado: ATENDE
+                  - codigoRegra: RC-R05
+                    descricao: Encaminhamento dentro da validade
+                    resultado: ATENDE
+                  - codigoRegra: RC-R06
+                    descricao: Autorização do responsável legal
+                    resultado: NAO_APLICAVEL
+                  pendencias: []
+                  resumo:
+                    texto: Nenhuma pendência foi identificada nesta revisão. Isso não significa aprovação do SUS. Os critérios são
+                      demonstrativos.
+                    origem: ADAPTADOR_MOCKADO
+                    simulado: true
+                    itens: []
+                  comparacao:
+                    analiseAnteriorId: '1'
+                    revisaoAnterior: 2
+                    executadaEmAnterior: '2026-11-12T20:00:00Z'
+                    itens:
+                    - codigoRegra: RC-R02
+                      descricaoRegra: Identificação coerente entre documentos
+                      situacao: RESOLVIDA
+                      resultadoAnterior: NAO_VERIFICAVEL
+                      resultadoAtual: ATENDE
+                    - codigoRegra: RC-R03
+                      descricaoRegra: Documento de identificação
+                      situacao: RESOLVIDA
+                      resultadoAnterior: PENDENTE
+                      resultadoAtual: ATENDE
+                    - codigoRegra: RC-R06
+                      descricaoRegra: Autorização do responsável legal
+                      situacao: RESOLVIDA
+                      resultadoAnterior: NAO_VERIFICAVEL
+                      resultadoAtual: NAO_APLICAVEL
         "200":
           description: Parou na conferência (etapa CONFERENCIA) ou devolveu a análise vigente que já valia
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Reenvio" }
+              example:
+                solicitacaoId: '1'
+                etapa: CONFERENCIA
+                revisao: 3
+                extracaoId: '2'
+                leituraCriada: true
+                camposSemDecisao: 8
+                analiseCriada: false
+                simulada: true
+                orientacao: Confira a leitura dos documentos da revisão 3 antes do novo resultado. Nenhuma pendência foi marcada
+                  como resolvida.
         "401": { $ref: "#/components/responses/NaoAutenticado" }
         "403": { $ref: "#/components/responses/AcessoNegado" }
         "404": { $ref: "#/components/responses/NaoEncontrado" }
@@ -989,6 +1933,106 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+  /admin/indicadores:
+    get:
+      tags: [Administração]
+      summary: Protocolo ativo e indicadores agregados do administrador (RC-20)
+      description: >
+        Somente ADMINISTRADOR; paciente recebe 403 antes de qualquer consulta. Só agregados e dados do protocolo:
+        nenhum nome, e-mail, identificador de paciente ou pedido, arquivo, trecho lido, resumo ou mensagem de pendência.
+        Análises e pendências contam só as análises vigentes; pedidos em FALHA_ANALISE são contados à parte (a análise
+        que falha não é gravada). Dados sintéticos de demonstração. Decisões: specs/024-app-admin-indicadores.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Indicadores do momento; zeros e listas vazias quando não há dados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Indicadores"
+              example:
+                dadosSinteticos: true
+                aviso: Indicadores agregados de demonstracao, calculados sobre dados sinteticos. Nao representam pacientes, filas
+                  ou servicos reais.
+                consultadoEm: '2026-11-12T20:00:00Z'
+                protocolosAtivos:
+                - protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
+                  identificador: PROTOCOLO-ACADEMICO-FICTICIO
+                  versao: v0.1
+                  quantidadeRegras: 6
+                  regras:
+                  - codigo: RC-R01
+                    descricao: Encaminhamento presente
+                  - codigo: RC-R02
+                    descricao: Identificação coerente entre documentos
+                  - codigo: RC-R03
+                    descricao: Documento de identificação
+                  - codigo: RC-R04
+                    descricao: Motivo do encaminhamento informado
+                  - codigo: RC-R05
+                    descricao: Encaminhamento dentro da validade
+                  - codigo: RC-R06
+                    descricao: Autorização do responsável legal
+                totalPedidos: 0
+                analisesPorResultado:
+                  semPendenciasIdentificadas: 0
+                  comPendencias: 0
+                  requerConferencia: 0
+                pedidosEmFalhaAnalise: 0
+                regrasComMaisPendencias: []
+        "401": { $ref: "#/components/responses/NaoAutenticado" }
+        "403": { $ref: "#/components/responses/AcessoNegado" }
+        "405":
+          description: METODO_NAO_PERMITIDO (só GET)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: METODO_NAO_PERMITIDO
+                mensagem: Metodo HTTP nao permitido para este recurso.
+        "503": { $ref: "#/components/responses/Indisponivel" }
+  /docs:
+    get:
+      tags: [Documentação]
+      summary: Esta documentação interativa (Swagger UI), servida pela própria API (RC-28)
+      description: >
+        Pública, sem sessão, somente GET; também em /docs/ e /docs/index.html. Página e arquivos vêm da própria API
+        (Swagger UI de versão fixa, sem CDN). Política de conteúdo própria só nas respostas 200 desta rota; outros
+        caminhos sob /docs respondem 404 NAO_ENCONTRADO e outros métodos, 405 METODO_NAO_PERMITIDO.
+      security: []
+      responses:
+        "200":
+          description: Página HTML do Swagger UI
+          content:
+            text/html:
+              schema: { type: string }
+        "404":
+          description: Caminho fora da lista fixa de arquivos (NAO_ENCONTRADO)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+        "405":
+          description: Método diferente de GET (METODO_NAO_PERMITIDO; cabeçalho Allow GET)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
+  /docs/openapi.yaml:
+    get:
+      tags: [Documentação]
+      summary: Este contrato OpenAPI em YAML, idêntico a docs/api/openapi.yaml (RC-28)
+      security: []
+      responses:
+        "200":
+          description: Contrato OpenAPI 3.0.3
+          content:
+            application/yaml:
+              schema: { type: string }
+        "405":
+          description: Método diferente de GET (METODO_NAO_PERMITIDO)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Erro" }
 components:
   securitySchemes:
     bearerAuth:
@@ -1008,21 +2052,33 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Erro" }
+          example:
+            codigo: NAO_AUTENTICADO
+            mensagem: Sessão ausente ou expirada. Entre novamente.
     AcessoNegado:
       description: Perfil sem permissão, por exemplo administrador ou chave do simulador (ACESSO_NEGADO)
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Erro" }
+          example:
+            codigo: ACESSO_NEGADO
+            mensagem: Voce nao tem permissao para esta operacao.
     NaoEncontrado:
       description: Pedido inexistente, de outra paciente ou id inválido (NAO_ENCONTRADO, resposta idêntica)
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Erro" }
+          example:
+            codigo: NAO_ENCONTRADO
+            mensagem: Recurso nao encontrado.
     Indisponivel:
-      description: Banco indisponível (DEPENDENCIA_INDISPONIVEL)
+      description: Falha de dependência - banco indisponível ou não configurado (DEPENDENCIA_INDISPONIVEL)
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Erro" }
+          example:
+            codigo: DEPENDENCIA_INDISPONIVEL
+            mensagem: Servico temporariamente indisponivel. Tente novamente em instantes.
   schemas:
     AnaliseGravada:
       type: object
@@ -1248,7 +2304,7 @@ components:
       properties:
         codigo: { type: string, enum: [TIPO_DOCUMENTO, NOME, DATA_NASCIMENTO, MOTIVO_ENCAMINHAMENTO, DATA_EMISSAO, AUTORIZACAO_ASSINADA] }
         situacao: { type: string, enum: [IDENTIFICADO, NAO_LOCALIZADO, ILEGIVEL] }
-        valor: { type: string, maxLength: 200, description: Só em IDENTIFICADO; dado do documento, nunca instrução }
+        valor: { type: string, maxLength: 200, description: "Só em IDENTIFICADO; dado do documento, nunca instrução" }
         origem: { $ref: "#/components/schemas/Origem" }
     Origem:
       type: object
@@ -1297,7 +2353,7 @@ components:
         liberadoParaSubmissao: { type: boolean, enum: [false] }
         simulada: { type: boolean, enum: [true] }
         aviso: { type: string, example: "Leitura simulada com dados sintéticos; não é leitura real dos documentos." }
-        atualizadaEm: { type: string, format: date-time, description: Instante da decisão mais recente ou, sem decisão, o da leitura }
+        atualizadaEm: { type: string, format: date-time, description: "Instante da decisão mais recente ou, sem decisão, o da leitura" }
         resumo: { $ref: "#/components/schemas/ResumoConferencia" }
         documentos:
           type: array
@@ -1328,11 +2384,11 @@ components:
       properties:
         codigo: { type: string, enum: [TIPO_DOCUMENTO, NOME, DATA_NASCIMENTO, MOTIVO_ENCAMINHAMENTO, DATA_EMISSAO, AUTORIZACAO_ASSINADA] }
         situacao: { type: string, enum: [IDENTIFICADO, NAO_LOCALIZADO, ILEGIVEL] }
-        valor: { type: string, maxLength: 200, description: Só em IDENTIFICADO; dado do documento, nunca instrução }
+        valor: { type: string, maxLength: 200, description: "Só em IDENTIFICADO; dado do documento, nunca instrução" }
         origem: { $ref: "#/components/schemas/Origem" }
-        naoVerificado: { type: boolean, description: true para ilegível, não localizado ou com divergência apontada }
+        naoVerificado: { type: boolean, description: "true para ilegível, não localizado ou com divergência apontada" }
         decisao: { $ref: "#/components/schemas/DecisaoConferida" }
-        orientacao: { type: string, description: Texto fixo do servidor; sem diagnóstico, urgência ou promessa }
+        orientacao: { type: string, description: "Texto fixo do servidor; sem diagnóstico, urgência ou promessa" }
     DecisaoConferida:
       type: object
       required: [tipo, decididaEm]
@@ -1351,6 +2407,57 @@ components:
         especialidade: { type: string, example: Consulta ambulatorial em cardiologia }
         avisoFicticio: { type: string }
         simulacao: { type: boolean, enum: [true] }
+    Indicadores:
+      type: object
+      description: Indicadores agregados do administrador (RC-20). Nunca contém dado identificável.
+      required: [dadosSinteticos, aviso, consultadoEm, protocolosAtivos, totalPedidos, analisesPorResultado, pedidosEmFalhaAnalise, regrasComMaisPendencias]
+      properties:
+        dadosSinteticos: { type: boolean, enum: [true] }
+        aviso: { type: string, description: Frase fixa de dados de demonstração }
+        consultadoEm: { type: string, format: date-time, description: Instante da consulta (UTC) }
+        protocolosAtivos:
+          type: array
+          description: Protocolos ativos (a carga sintética tem um), por identificador e versão
+          items:
+            type: object
+            required: [protocoloId, identificador, versao, quantidadeRegras, regras]
+            properties:
+              protocoloId: { type: string, example: "PROTOCOLO-ACADEMICO-FICTICIO-v0.1" }
+              identificador: { type: string }
+              versao: { type: string, example: "v0.1" }
+              quantidadeRegras: { type: integer, minimum: 0 }
+              regras:
+                type: array
+                description: Regras na ordem do protocolo
+                items:
+                  type: object
+                  required: [codigo, descricao]
+                  properties:
+                    codigo: { type: string, example: "RC-R01" }
+                    descricao: { type: string, example: "Encaminhamento presente" }
+        totalPedidos: { type: integer, minimum: 0, description: "Todos os pedidos, em qualquer estado" }
+        analisesPorResultado:
+          type: object
+          description: Análises vigentes por resultado geral (as três chaves sempre presentes)
+          required: [semPendenciasIdentificadas, comPendencias, requerConferencia]
+          properties:
+            semPendenciasIdentificadas: { type: integer, minimum: 0 }
+            comPendencias: { type: integer, minimum: 0 }
+            requerConferencia: { type: integer, minimum: 0 }
+        pedidosEmFalhaAnalise: { type: integer, minimum: 0, description: Pedidos com estado atual FALHA_ANALISE }
+        regrasComMaisPendencias:
+          type: array
+          maxItems: 5
+          description: Pendências das análises vigentes por regra; só total maior que zero; total desc, código asc
+          items:
+            type: object
+            required: [codigo, descricao, total, pendentes, naoVerificaveis]
+            properties:
+              codigo: { type: string }
+              descricao: { type: string }
+              total: { type: integer, minimum: 1 }
+              pendentes: { type: integer, minimum: 0 }
+              naoVerificaveis: { type: integer, minimum: 0 }
     ListaProtocolos:
       type: object
       required: [itens]

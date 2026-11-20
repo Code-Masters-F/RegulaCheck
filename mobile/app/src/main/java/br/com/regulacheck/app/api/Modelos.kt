@@ -305,3 +305,123 @@ data class Origem(val pagina: Int? = null, val trecho: String? = null)
  */
 @Serializable
 data class ResumoSimulado(val texto: String, val origem: String, val simulado: Boolean = true)
+
+// RC-22 (spec 023): estação de captura SIMULADA. Contrato: specs/016-iot-simulada/contracts/api-iot.md.
+
+/**
+ * Resposta 201 (criada agora) ou 200 (já estava aberta) de `POST /solicitacoes/{id}/sessoes-captura`.
+ * O app trata as duas igualmente: só precisa saber que a sessão existe.
+ */
+@Serializable
+data class SessaoCaptura(
+    val id: String,
+    val solicitacaoId: String? = null,
+    val iniciadaEm: String? = null,
+    val aberta: Boolean? = null,
+    val criada: Boolean? = null,
+    val simulada: Boolean = true,
+)
+
+/**
+ * Resposta de `GET /solicitacoes/{id}/leituras`: sempre os dois sensores, com situação e orientação
+ * calculadas pela API (faixas demonstrativas e prazo de 60 s da spec 016).
+ *
+ * @property sessao omitida quando o pedido ainda não tem sessão de captura.
+ * @property consultadaEm relógio do servidor; base da idade das leituras (research D4).
+ */
+@Serializable
+data class Telemetria(
+    val solicitacaoId: String? = null,
+    val sessao: SessaoTelemetria? = null,
+    val consultadaEm: String,
+    val prazoAtualidadeSegundos: Int? = null,
+    val simulada: Boolean = true,
+    val aviso: String? = null,
+    val sensores: List<SensorTelemetria>,
+)
+
+/** Sessão mais recente do pedido, como vem na telemetria. */
+@Serializable
+data class SessaoTelemetria(val id: String, val iniciadaEm: String? = null, val aberta: Boolean? = null)
+
+/**
+ * Um sensor da telemetria.
+ *
+ * @property tipo `LUMINOSIDADE` ou `DISTANCIA`.
+ * @property unidade `LUX` ou `CM`.
+ * @property situacao `DENTRO_DA_FAIXA`, `ABAIXO_DA_FAIXA`, `ACIMA_DA_FAIXA`, `DESATUALIZADA` ou
+ * `SEM_LEITURA`; valor desconhecido é exibido como sem leitura.
+ * @property ultimaLeitura omitida quando o sensor não tem leitura.
+ */
+@Serializable
+data class SensorTelemetria(
+    val tipo: String,
+    val unidade: String,
+    val faixa: FaixaSensor? = null,
+    val ultimaLeitura: UltimaLeitura? = null,
+    val situacao: String,
+    val orientacao: OrientacaoSensor? = null,
+)
+
+/** Faixa demonstrativa do sensor (sem calibração). */
+@Serializable
+data class FaixaSensor(val minimo: Double? = null, val maximo: Double? = null)
+
+/** Última leitura do sensor: valor na unidade do sensor e instante da medição (ISO-8601). */
+@Serializable
+data class UltimaLeitura(val valor: Double, val medidaEm: String)
+
+/** Orientação da API: o [codigo] é o contrato; a [mensagem] é exibida como texto puro. */
+@Serializable
+data class OrientacaoSensor(val codigo: String, val mensagem: String? = null)
+
+// RC-20 (specs/024-app-admin-indicadores/contracts/admin-indicadores.md): só agregados, sem dado de pessoa.
+
+/**
+ * Resposta de `GET /admin/indicadores` (só administrador).
+ *
+ * @property pedidosEmFalhaAnalise pedidos cujo estado atual é falha na análise (contados à parte:
+ * a análise que falha não é gravada).
+ */
+@Serializable
+data class Indicadores(
+    val dadosSinteticos: Boolean = true,
+    val consultadoEm: String? = null,
+    val protocolosAtivos: List<ProtocoloIndicadores> = emptyList(),
+    val totalPedidos: Long,
+    val analisesPorResultado: AnalisesPorResultado,
+    val pedidosEmFalhaAnalise: Long = 0,
+    val regrasComMaisPendencias: List<RegraComPendencias> = emptyList(),
+)
+
+/** Protocolo ativo com as regras na ordem do protocolo. */
+@Serializable
+data class ProtocoloIndicadores(
+    val protocoloId: String,
+    val identificador: String,
+    val versao: String,
+    val quantidadeRegras: Int,
+    val regras: List<RegraProtocolo> = emptyList(),
+)
+
+/** Regra do protocolo: código e nome curto ([descricao]). */
+@Serializable
+data class RegraProtocolo(val codigo: String, val descricao: String)
+
+/** Análises vigentes por resultado geral. */
+@Serializable
+data class AnalisesPorResultado(
+    val semPendenciasIdentificadas: Long = 0,
+    val comPendencias: Long = 0,
+    val requerConferencia: Long = 0,
+)
+
+/** Regra com pendências nas análises vigentes; [total] = pendentes + não verificáveis. */
+@Serializable
+data class RegraComPendencias(
+    val codigo: String,
+    val descricao: String,
+    val total: Long,
+    val pendentes: Long = 0,
+    val naoVerificaveis: Long = 0,
+)

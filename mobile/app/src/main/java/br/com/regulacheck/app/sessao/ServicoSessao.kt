@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 /** Resultado de uma tentativa de entrar. */
 sealed interface ResultadoEntrada {
     data class Entrou(val sessao: SessaoLocal) : ResultadoEntrada
-    /** O servidor aceitou a conta, mas ela não é de paciente; nada foi guardado. */
-    data object ContaNaoPaciente : ResultadoEntrada
+    /** O servidor aceitou a conta, mas o perfil não é de paciente nem de administrador; nada foi guardado. */
+    data object PerfilNaoSuportado : ResultadoEntrada
     data class Falhou(val erro: ErroApi) : ResultadoEntrada
 }
 
@@ -28,17 +28,18 @@ class ServicoSessao(
 ) {
 
     /**
-     * Autentica e abre a sessão. Conta que não é de paciente é recusada (#41): a sessão aberta no
-     * servidor é encerrada com o próprio token (falha ignorada) e nada é guardado no aparelho.
+     * Autentica e abre a sessão de paciente ou de administrador (RC-20; a tela inicial sai do perfil,
+     * `telaDaSessao`). Outro perfil é recusado: a sessão aberta no servidor é encerrada com o próprio
+     * token (falha ignorada) e nada é guardado no aparelho.
      */
     suspend fun entrar(email: String, senha: String): ResultadoEntrada =
         when (val resposta = api.entrar(email.trim(), senha)) {
             is Resultado.Falha -> ResultadoEntrada.Falhou(resposta.erro)
             is Resultado.Sucesso -> {
                 val login = resposta.valor
-                if (login.usuario.perfil != PERFIL_PACIENTE) {
+                if (login.usuario.perfil != PERFIL_PACIENTE && login.usuario.perfil != PERFIL_ADMINISTRADOR) {
                     api.sair(login.token)
-                    ResultadoEntrada.ContaNaoPaciente
+                    ResultadoEntrada.PerfilNaoSuportado
                 } else {
                     val sessao = SessaoLocal(login.token, login.usuario.nome, login.usuario.perfil, login.expiraEm)
                     gerenciador.abrir(sessao)

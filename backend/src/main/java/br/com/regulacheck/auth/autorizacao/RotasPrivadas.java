@@ -34,10 +34,11 @@ import org.eclipse.jetty.ee10.servlet.ServletMapping;
 public final class RotasPrivadas {
 
     /**
-     * Caminhos que dispensam sessao: saude tecnica, login e a rota coringa que responde 404 padrao.
-     * Qualquer outro caminho publicado precisa estar declarado neste registro.
+     * Caminhos que dispensam sessao: saude tecnica, login, documentacao da API (RC-28: Swagger UI e o contrato
+     * OpenAPI, que ja e publico no repositorio e nao traz dado de paciente) e a rota coringa que responde 404
+     * padrao. Qualquer outro caminho publicado precisa estar declarado neste registro.
      */
-    public static final Set<String> PUBLICAS = Set.of("/health", "/auth/login", "/*");
+    public static final Set<String> PUBLICAS = Set.of("/health", "/auth/login", "/docs/*", "/*");
 
     private final ServletContextHandler contexto;
     private final AutenticacaoFiltro autenticacao;

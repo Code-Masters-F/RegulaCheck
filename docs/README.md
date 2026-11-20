@@ -9,5 +9,5 @@
 | [ambiente.md](ambiente.md) | Configuração, comandos, acesso do app à API e problemas comuns |
 | [protocolo-academico.md](protocolo-academico.md) | Recorte, regras e resultados do protocolo fictício |
 | [escopo-e-limitacoes.md](escopo-e-limitacoes.md) | Tecnologias com status e limitações do protótipo |
-| [api/](api/README.md) | Contratos de dados, erros, estados, OpenAPI e Postman |
+| [api/](api/README.md) | Contratos de dados, erros, estados, OpenAPI (servido como Swagger UI em `/docs`), Postman e roteiro de avaliação |
 | `testes/`, `evidencias/` | Plano de testes e evidências reais de execução |
