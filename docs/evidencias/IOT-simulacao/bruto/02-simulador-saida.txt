@@ -1,0 +1,32 @@
+$ java simulador-iot/SimuladorSensores.java --sessao 66 --sequencia fora-da-faixa
+Simulador de sensores (valores demonstrativos, sem calibracao), sessao 66
+LUMINOSIDADE 120 LUX -> 201
+DISTANCIA 55 CM -> 201
+LUMINOSIDADE 90 LUX -> 201
+DISTANCIA 12 CM -> 201
+LUMINOSIDADE 150 LUX -> 201
+DISTANCIA 60 CM -> 201
+LUMINOSIDADE 80 LUX -> 201
+DISTANCIA 15 CM -> 201
+LUMINOSIDADE 110 LUX -> 201
+DISTANCIA 58 CM -> 201
+Todas as leituras foram aceitas.
+(codigo de saida 0)
+
+$ java simulador-iot/SimuladorSensores.java --sessao 66 --sequencia recuperacao
+Simulador de sensores (valores demonstrativos, sem calibracao), sessao 66
+LUMINOSIDADE 100 LUX -> 201
+DISTANCIA 60 CM -> 201
+LUMINOSIDADE 180 LUX -> 201
+DISTANCIA 50 CM -> 201
+LUMINOSIDADE 250 LUX -> 201
+DISTANCIA 45 CM -> 201
+LUMINOSIDADE 350 LUX -> 201
+DISTANCIA 38 CM -> 201
+LUMINOSIDADE 500 LUX -> 201
+DISTANCIA 30 CM -> 201
+LUMINOSIDADE 650 LUX -> 201
+DISTANCIA 28 CM -> 201
+Todas as leituras foram aceitas.
+(codigo de saida 0)
+

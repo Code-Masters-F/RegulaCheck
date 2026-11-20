@@ -160,15 +160,15 @@ Legenda do **Tipo de execução**: `API real + Oracle` · `API em memória (sem 
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API com Oracle; carga sintética aplicada; conta `paciente.a@exemplo.invalid` ativa |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | e-mail da conta A e a senha de demonstração (seção 5.2) |
 | Passos | 1. PB-1 com a conta A. 2. `GET $API/auth/sessao` com o token |
 | Resultado esperado | Login: **200** com `token`, `tipo` "Bearer", `expiraEm` e `usuario.perfil` = `PACIENTE`. Sessão: 200 com a mesma identidade e `expiraEm`. A resposta **não** traz senha, hash nem id interno |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | Login 200 (Bearer, expiraEm, PACIENTE) e sessão 200 com a mesma identidade; sem senha nem hash na resposta. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T01-01/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T01-02 — Senha incorreta
 | Campo | Conteúdo |
@@ -178,15 +178,15 @@ Legenda do **Tipo de execução**: `API real + Oracle` · `API em memória (sem 
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API com Oracle; conta A ativa |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | e-mail da conta A com senha errada |
 | Passos | 1. `POST $API/auth/login` com a senha errada. 2. Guardar status e corpo. 3. Tentar `GET $API/auth/sessao` sem token |
 | Resultado esperado | **401** `CREDENCIAIS_INVALIDAS`, mensagem "E-mail ou senha inválidos."; nenhum token emitido; corpo sem senha, hash ou detalhe interno; sessão sem token → 401 `NAO_AUTENTICADO` |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | 401 CREDENCIAIS_INVALIDAS sem token; sessão sem token 401 NAO_AUTENTICADO. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T01-02/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T01-03 — E-mail inexistente (resposta idêntica à senha errada)
 | Campo | Conteúdo |
@@ -196,15 +196,15 @@ Legenda do **Tipo de execução**: `API real + Oracle` · `API em memória (sem 
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API com Oracle; resposta de T01-02 guardada |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | e-mail `ninguem@exemplo.invalid` (inexistente) e qualquer senha |
 | Passos | 1. `POST $API/auth/login` com esse e-mail. 2. Comparar status e corpo com o de T01-02 |
 | Resultado esperado | **401** `CREDENCIAIS_INVALIDAS` com **corpo idêntico** ao de T01-02 (nenhuma diferença que revele se a conta existe) |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | 401 CREDENCIAIS_INVALIDAS com corpo idêntico ao da senha errada. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T01-03/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T01-04 — Login com campos ausentes ou vazios
 | Campo | Conteúdo |
@@ -214,15 +214,15 @@ Legenda do **Tipo de execução**: `API real + Oracle` · `API em memória (sem 
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API no ar |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | (a) `{}`; (b) `{"email":"","senha":""}`; (c) corpo que não é JSON; (d) `Content-Type: text/plain` |
 | Passos | 1. Enviar cada variação a `POST $API/auth/login`. 2. Guardar status e corpo |
 | Resultado esperado | (a) e (b): **400** `REQUISICAO_INVALIDA` com `detalhes` por campo; (c): 400; (d): **415** `TIPO_NAO_SUPORTADO`; em nenhuma há sessão aberta |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | (a),(b) 400 REQUISICAO_INVALIDA com detalhes; (c) 400; (d) 415 TIPO_NAO_SUPORTADO; nenhuma sessão aberta. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T01-04/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T01-05 — Rota privada sem sessão, com token inválido e depois do logout
 | Campo | Conteúdo |
@@ -232,15 +232,15 @@ Legenda do **Tipo de execução**: `API real + Oracle` · `API em memória (sem 
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API com Oracle; conta A com token válido |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | requisições a `GET $API/solicitacoes` |
 | Passos | 1. Chamar sem `Authorization`. 2. Chamar com token inventado. 3. Entrar (PB-1), `POST $API/auth/logout` e chamar de novo com o mesmo token |
 | Resultado esperado | Passos 1 e 2: **401** `NAO_AUTENTICADO` com a mesma resposta; logout: **204**; repetir com o token encerrado: 401 `NAO_AUTENTICADO` |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | 401 sem token e com token inventado (iguais); logout 204; token encerrado 401. (TTL de 1 min não exercitado aqui: fica para T15-03.) |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T01-05/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T01-06 — Resposta e log não vazam senha, hash ou token
 | Campo | Conteúdo |
@@ -310,15 +310,15 @@ Preparação comum: com a conta **B**, criar um pedido (PB-2) e enviar o conjunt
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | Preparação comum; contas A e B |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | token de A; `idB` |
 | Passos | 1. `GET /solicitacoes` como A. 2. `GET /solicitacoes/<idB>` como A. 3. `GET /solicitacoes/999999999` como A. 4. Comparar os passos 2 e 3 |
 | Resultado esperado | Listagem de A **sem** o pedido `idB`; passo 2: **404** `NAO_ENCONTRADO` com mensagem "Recurso nao encontrado."; passos 2 e 3 com corpo **idêntico** |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | Listagem de A sem o pedido de B; detalhe alheio 404 NAO_ENCONTRADO idêntico ao de inexistente. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T02-01/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T02-02 — A não altera nem exclui pedido de B
 | Campo | Conteúdo |
@@ -328,15 +328,15 @@ Preparação comum: com a conta **B**, criar um pedido (PB-2) e enviar o conjunt
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | Preparação comum; um **rascunho** de B (PB-2) chamado `rascB` |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | token de A; `rascB` |
 | Passos | 1. `PUT /solicitacoes/<rascB>` como A com o serviço válido. 2. `DELETE /solicitacoes/<rascB>` como A com `X-Confirmar-Exclusao: EXCLUIR`. 3. Como B, `GET /solicitacoes/<rascB>` |
 | Resultado esperado | Passos 1 e 2: **404** `NAO_ENCONTRADO` idêntico ao de inexistente; passo 3: o rascunho de B continua existindo, sem alteração (`revisao`, `atualizadaEm` iguais) |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | PUT e DELETE de A no rascunho de B → 404 idêntico ao de inexistente; rascunho de B intacto. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T02-02/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T02-03 — A não baixa nem lista documento de B
 | Campo | Conteúdo |
@@ -498,15 +498,15 @@ Preparação comum: com a conta **B**, criar um pedido (PB-2) e enviar o conjunt
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API com Oracle; token da conta A; `GET /protocolos` lista `PROTOCOLO-ACADEMICO-FICTICIO-v0.1` |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | `{"protocoloId":"PROTOCOLO-ACADEMICO-FICTICIO-v0.1"}` |
 | Passos | 1. PB-2. 2. `GET /solicitacoes/<id>`. 3. `GET /solicitacoes` |
 | Resultado esperado | **201** com `Location: /solicitacoes/<id>`, `estado` `RASCUNHO`, `revisao` 1, `simulacao` true, `servico` com o aviso fictício; o GET devolve os mesmos dados (persistidos); o pedido aparece na listagem da paciente A e **só** nela |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | 201 + Location, RASCUNHO, revisao 1, simulacao true; GET igual; aparece só na listagem de A. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T04-01/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T04-02 — Campo obrigatório ausente, vazio ou inválido
 | Campo | Conteúdo |
@@ -516,15 +516,15 @@ Preparação comum: com a conta **B**, criar um pedido (PB-2) e enviar o conjunt
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | API com Oracle; token da conta A; contagem de pedidos de A antes (`GET /solicitacoes`) |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | `POST /solicitacoes` e `PUT /solicitacoes/<id>` (rascunho existente) com `{}`, `{"protocoloId":""}`, `{"protocoloId":null}`, `{"protocoloId":123}` e `{"protocoloId":"<101 caracteres>"}` |
 | Passos | 1. Enviar cada corpo por `POST`. 2. Enviar cada corpo por `PUT` no rascunho existente. 3. Conferir a contagem de pedidos de A e o `GET` do rascunho (`protocoloId`, `revisao`, `atualizadaEm`) |
 | Resultado esperado | **400** `REQUISICAO_INVALIDA` com `detalhes[].campo` = `protocoloId` em todos; **nenhum pedido criado** (contagem igual); no `PUT`, a alteração inválida **não é persistida** (serviço, `revisao` e `atualizadaEm` iguais aos de antes) |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | 10 corpos inválidos (5 POST e 5 PUT) → 400 REQUISICAO_INVALIDA com campo protocoloId; nada criado nem alterado. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T04-02/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T04-03 — Serviço inexistente
 | Campo | Conteúdo |
@@ -534,15 +534,15 @@ Preparação comum: com a conta **B**, criar um pedido (PB-2) e enviar o conjunt
 | Regra | não se aplica |
 | Tipo de execução | API real + Oracle |
 | Pré-condições | Rascunho da conta A (PB-2) |
-| Ambiente | commit/versão: ___ · API: ___ · dispositivo: ___ (sem credenciais) |
+| Ambiente | commit 7532440 · API: regulacheck-backend.jar + Oracle da faculdade · dispositivo: n/a |
 | Entrada | `{"protocoloId":"SERVICO-QUE-NAO-EXISTE-v9"}` |
 | Passos | 1. `POST /solicitacoes` com esse valor. 2. `PUT /solicitacoes/<id>` com esse valor |
 | Resultado esperado | **422** `REGRA_DE_NEGOCIO` com `detalhes[].campo` = `protocoloId` (a mesma resposta para serviço inexistente ou inativo); o rascunho existente permanece com o serviço e a `revisao` anteriores |
 | Impedimento conhecido | nenhum |
-| Resultado obtido | |
-| Status | Não executado |
-| Evidência | |
-| Responsável e data | |
+| Resultado obtido | POST e PUT com serviço inexistente → 422 REGRA_DE_NEGOCIO (protocoloId); rascunho intacto. |
+| Status | Aprovado |
+| Evidência | [registro](../evidencias/T04-03/registro.md) |
+| Responsável e data | grupo CodeMasters (com apoio do Claude Code) · 2026-11-19 |
 
 #### T04-04 — Trocar o serviço do rascunho (único campo editável)
 | Campo | Conteúdo |

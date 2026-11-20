@@ -1,0 +1,12 @@
+HTTP 200
+Content-Type: application/json;charset=utf-8
+
+{
+  "token": "<TOKEN>",
+  "tipo": "Bearer",
+  "expiraEm": "2026-11-20T01:23:18Z",
+  "usuario": {
+    "nome": "Paciente A (fictícia)",
+    "perfil": "PACIENTE"
+  }
+}

@@ -1,0 +1,7 @@
+HTTP 415
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "TIPO_NAO_SUPORTADO",
+  "mensagem": "Envie o corpo como application/json."
+}

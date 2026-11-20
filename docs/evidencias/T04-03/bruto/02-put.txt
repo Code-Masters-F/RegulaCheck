@@ -1,0 +1,13 @@
+HTTP 422
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "REGRA_DE_NEGOCIO",
+  "mensagem": "Verifique os campos informados.",
+  "detalhes": [
+    {
+      "campo": "protocoloId",
+      "mensagem": "Escolha um dos serviços da lista."
+    }
+  ]
+}

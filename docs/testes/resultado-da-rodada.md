@@ -7,9 +7,9 @@
 | Item | Valor |
 |---|---|
 | Commit testado | `385b1fe` (main com o plano da RC-24, PR #77) + branch `024-executar-testes-evidencias` (só `docs/` e `specs/` alterados) |
-| Data | 2026-11-18 |
+| Data | 2026-11-18 (ambiente) e 2026-11-19 (execução dos 10 casos, commit `7532440` + alterações locais só em `docs/`, `README.md` e `entrega/`) |
 | JDK | Temurin 25.0.2 (backend); app exige JDK 21 do Android Studio só na sessão |
-| API / Oracle | `regulacheck-backend.jar` sobe e `/health` responde 200; **sem `DB_*` as rotas de negócio respondem 503** (tentativa registrada em `docs/evidencias/_ambiente/`). Oracle: aguardando o responsável |
+| API / Oracle | `regulacheck-backend.jar` sobe e `/health` responde 200; **sem `DB_*` as rotas de negócio respondem 503** (tentativa registrada em `docs/evidencias/_ambiente/`). Em 2026-11-19 a API subiu com `DB_*` do `.env` local (gitignored) e o Oracle da faculdade respondeu ao login; os 10 casos abaixo rodaram contra ele |
 | Emulador | `adb` 36.0.2 em `Android/Sdk/platform-tools`; **nenhum dispositivo conectado** no início; AVD ainda não iniciado |
 | Variáveis | `DB_*`, `DOCUMENT_STORAGE_PATH`, `IOT_API_KEY` ausentes no ambiente do agente (só presença verificada, valores nunca registrados) |
 
@@ -17,26 +17,26 @@
 
 | Status | Casos |
 |---|---|
-| Aprovado | 0 |
+| Aprovado | 10 |
 | Reprovado | 0 |
 | Bloqueado | 0 |
-| Não executado | 94 |
+| Não executado | 84 |
 | **Total** | **94** |
 
 ## 3. Casos
 
 | Caso | Título | Status | Evidência |
 |---|---|---|---|
-| T01-01 | Login com credenciais válidas | Não executado | |
-| T01-02 | Senha incorreta | Não executado | |
-| T01-03 | E-mail inexistente (resposta idêntica à senha errada) | Não executado | |
-| T01-04 | Login com campos ausentes ou vazios | Não executado | |
-| T01-05 | Rota privada sem sessão, com token inválido e depois do logout | Não executado | |
+| T01-01 | Login com credenciais válidas | Aprovado | [registro](../evidencias/T01-01/registro.md) |
+| T01-02 | Senha incorreta | Aprovado | [registro](../evidencias/T01-02/registro.md) |
+| T01-03 | E-mail inexistente (resposta idêntica à senha errada) | Aprovado | [registro](../evidencias/T01-03/registro.md) |
+| T01-04 | Login com campos ausentes ou vazios | Aprovado | [registro](../evidencias/T01-04/registro.md) |
+| T01-05 | Rota privada sem sessão, com token inválido e depois do logout | Aprovado | [registro](../evidencias/T01-05/registro.md) |
 | T01-06 | Resposta e log não vazam senha, hash ou token | Não executado | |
 | T01-07 | App: login com senha incorreta | Não executado | |
 | T01-08 | App: conta administrador não entra no app | Não executado | |
-| T02-01 | A não vê pedidos de B na listagem nem no detalhe | Não executado | |
-| T02-02 | A não altera nem exclui pedido de B | Não executado | |
+| T02-01 | A não vê pedidos de B na listagem nem no detalhe | Aprovado | [registro](../evidencias/T02-01/registro.md) |
+| T02-02 | A não altera nem exclui pedido de B | Aprovado | [registro](../evidencias/T02-02/registro.md) |
 | T02-03 | A não baixa nem lista documento de B | Não executado | |
 | T02-04 | A não acessa leitura, conferência, análise, resumo nem submissão de B | Não executado | |
 | T02-05 | Corpo inválido em pedido alheio continua 404 | Não executado | |
@@ -45,9 +45,9 @@
 | T03-02 | Administrador recebe somente agregados | Não executado | |
 | T03-03 | Administrador não acessa pedido individual de paciente | Não executado | |
 | T03-04 | Administrador não baixa documento, análise nem submissão | Não executado | |
-| T04-01 | Criar rascunho válido | Não executado | |
-| T04-02 | Campo obrigatório ausente, vazio ou inválido | Não executado | |
-| T04-03 | Serviço inexistente | Não executado | |
+| T04-01 | Criar rascunho válido | Aprovado | [registro](../evidencias/T04-01/registro.md) |
+| T04-02 | Campo obrigatório ausente, vazio ou inválido | Aprovado | [registro](../evidencias/T04-02/registro.md) |
+| T04-03 | Serviço inexistente | Aprovado | [registro](../evidencias/T04-03/registro.md) |
 | T04-04 | Trocar o serviço do rascunho (único campo editável) | Não executado | |
 | T04-05 | Editar pedido que já saiu de rascunho | Não executado | |
 | T05-01 | Enviar PDF válido | Não executado | |
