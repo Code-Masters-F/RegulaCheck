@@ -39,7 +39,7 @@ Nome do grupo: CodeMasters. A lista completa também vai no `.txt` da entrega.
 | Parte | Onde está |
 |---|---|
 | 1. Banco de dados (Oracle) | Scripts em [`database/scripts/`](database/scripts/README.md): `01_` cria o esquema, `02_` carga inicial, `03_` consultas de uso com JOIN e agregação, `04_` testes de restrições. Modelo em [docs/modelo-de-dados.md](docs/modelo-de-dados.md) |
-| 2. API RESTful (Java, Controller/Service/Repository) | [`backend/`](backend/). Documentação: [OpenAPI](docs/api/openapi.yaml) e [coleção Postman](docs/api/RegulaCheck.postman_collection.json). Mapa de rotas em [CONTRATO_API.md](CONTRATO_API.md) |
+| 2. API RESTful (Java, Controller/Service/Repository) | [`backend/`](backend/). Documentação: **Swagger UI em `http://localhost:8080/docs`** (ver [Executar, item 5](#5-documentação-da-api-swagger)), [OpenAPI](docs/api/openapi.yaml), [roteiro de avaliação](docs/api/roteiro-avaliacao.md) e [coleção Postman](docs/api/RegulaCheck.postman_collection.json). Mapa de rotas em [CONTRATO_API.md](CONTRATO_API.md) |
 | 3. Plano de testes | [docs/testes/plano-de-testes.md](docs/testes/plano-de-testes.md), resultados em [docs/testes/resultado-da-rodada.md](docs/testes/resultado-da-rodada.md), evidências em [docs/evidencias/](docs/evidencias/) |
 | 4. Frontend mobile (Android/Kotlin) | [`mobile/`](mobile/README.md) |
 | 5. Segurança | Senha com BCrypt, perfis `PACIENTE` e `ADMINISTRADOR`, SQL parametrizado, validação de entrada e de arquivos. Ver [docs/api/autorizacao.md](docs/api/autorizacao.md) e [docs/api/protecoes.md](docs/api/protecoes.md) |
@@ -119,15 +119,35 @@ java simulador-iot/SimuladorSensores.java --sessao 1 --sequencia fora-da-faixa
 
 Sequências, faixas e códigos de saída em [simulador-iot/README.md](simulador-iot/README.md). As faixas (300–1000 lux, 20–40 cm) são **demonstrativas**, sem calibração; as leituras orientam a captura, não comprovam legibilidade e nunca bloqueiam o envio.
 
-### 5. Documentação da API
+### 5. Documentação da API (Swagger)
 
-Importe [`docs/api/RegulaCheck.postman_collection.json`](docs/api/RegulaCheck.postman_collection.json) no Postman, ou abra [`docs/api/openapi.yaml`](docs/api/openapi.yaml) em um visualizador OpenAPI. A API não usa Spring, então não há Swagger gerado em execução.
+Com a API no ar, abra **`http://localhost:8080/docs`** no navegador. É o Swagger UI servido pela própria API (RC-28), sem CDN e sem rede externa. A rota `/docs` é pública e só aceita GET, mas pela página é possível executar todas as rotas, inclusive as que alteram dados (com o token informado em **Authorize**). Ele mostra todas as rotas agrupadas por assunto, com perfil exigido, parâmetros, códigos de resposta e exemplos de entrada e saída. Os exemplos usam só dados fictícios.
+
+| Endereço | Conteúdo |
+|---|---|
+| `GET /docs` | Página do Swagger UI (também `/docs/` e `/docs/index.html`) |
+| `GET /docs/openapi.yaml` | O contrato OpenAPI 3.0, idêntico a [docs/api/openapi.yaml](docs/api/openapi.yaml) |
+
+**Como executar as rotas pela página**
+1. Em `POST /auth/login`, clique em **Try it out**, informe uma conta de demonstração (`paciente.a@exemplo.invalid` ou `admin@exemplo.invalid`) e a senha de demonstração de [database/scripts/README.md](database/scripts/README.md#contas-e-senhas-de-demonstração), e clique em **Execute**.
+2. Copie o `token` da resposta, clique em **Authorize** (`bearerAuth`), cole o token e confirme.
+3. Em qualquer rota, use **Try it out** → **Execute**. Mantenha o servidor `/`, que é a mesma origem da página.
+
+Siga o percurso completo (autenticar, criar rascunho, enviar arquivo, analisar, consultar, corrigir e submeter em simulação) em [docs/api/roteiro-avaliacao.md](docs/api/roteiro-avaliacao.md), com as amostras de `samples/`.
+
+**Limites**
+- As rotas de negócio precisam do banco Oracle com a carga sintética. Sem `DB_*`, a página abre normalmente, mas essas rotas respondem 503 `DEPENDENCIA_INDISPONIVEL`.
+- A execução só funciona pela própria API, porque não há CORS. Um Swagger Editor externo serve apenas para ler o contrato.
+- O token fica só na memória da aba e some quando ela é fechada. A sessão expira em 30 minutos por padrão, prazo configurável por `SESSION_TTL_MINUTES` (1 a 1440 minutos).
+- Leitura, resumo e submissão são **simulados**: nada é enviado ao SUS, e nenhum resultado é aprovação ou diagnóstico.
+
+**Manutenção**: o contrato é escrito à mão em `docs/api/openapi.yaml`, a única fonte. O build o copia para o jar, então depois de editá-lo basta gerar o jar de novo, a partir de `backend/` (`./mvnw clean package`). O `ContratoDaApiTest` confere se o mapa de rotas de [CONTRATO_API.md](CONTRATO_API.md) e o contrato listam as mesmas rotas. Os arquivos do Swagger UI vêm da dependência `org.webjars:swagger-ui` (versão fixa no `backend/pom.xml`). A alternativa à página é a coleção [Postman](docs/api/RegulaCheck.postman_collection.json); o índice completo está em [docs/api/README.md](docs/api/README.md).
 
 ## Estado real
 
 | Parte | Situação |
 |---|---|
-| API (autenticação, pedidos, documentos, leitura simulada, conferência, motor de regras, análise, resumo simulado, reenvio, submissão simulada, sensores) | Implementada; verificada com repositórios em memória e, em 13 a 17/11/2026, em boa parte com o Oracle da faculdade. O que foi verificado em cada história está em `specs/*/tasks.md` |
+| API (autenticação, pedidos, documentos, leitura simulada, conferência, motor de regras, análise, resumo simulado, reenvio, submissão simulada, sensores) | Implementada; verificada com repositórios em memória e, em 13 a 17/11/2026, em boa parte com o Oracle da faculdade. Documentação interativa (Swagger UI) em `/docs` desde a RC-28, verificada sem banco em 19/11/2026. O que foi verificado em cada história está em `specs/*/tasks.md` |
 | App Android | Login, meus pedidos, pedido, envio de documentos, leitura e resultado da análise implementados. Conferência da leitura, substituição/remoção, comprovante da submissão e telas do administrador são **só desenho** (ver [mobile/README.md](mobile/README.md)) |
 | Sensores | Implementados e verificados como processo; `CapturaOracleTest` ainda não executado no Oracle |
 | Plano de testes | Plano escrito (94 casos); **a rodada de execução com evidências ainda está pendente** (ver [resultado-da-rodada.md](docs/testes/resultado-da-rodada.md)) |

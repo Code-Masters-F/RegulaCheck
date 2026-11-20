@@ -42,6 +42,8 @@ Corpo JSON malformado, vazio ou acima de 4 KB continua sendo 400 (contrato da RC
 ## Cabeçalhos em todas as respostas
 `X-Content-Type-Options: nosniff` · `Cache-Control: no-store` · `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'` · `Referrer-Policy: no-referrer` · `Strict-Transport-Security` quando `API_PUBLIC_URL` é `https`.
 
+**Única exceção (RC-28):** nas respostas 200 da documentação interativa (`GET /docs` e seus arquivos), o `DocumentacaoController` troca a política por `default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`. O Swagger UI precisa executar os próprios scripts (sempre em arquivo, nunca inline), aplicar estilos inline e chamar a API na mesma origem. Os demais cabeçalhos continuam iguais, os 404/405 de `/docs` mantêm a política estrita e nenhuma outra rota muda (`DocumentacaoEndpointTest`, `CabecalhosSegurosTest`).
+
 ## Configuração
 - `DOCUMENT_STORAGE_PATH`: raiz da área privada (fora do repositório e de qualquer pasta pública). Opcional para iniciar; sem ela a conferência funciona (quarentena temporária privada) e `guardar` falha com 503 `DEPENDENCIA_INDISPONIVEL`.
 - `API_PUBLIC_URL`: endereço usado pelo app na demonstração remota. Se for remoto, tem de ser `https`; a API **recusa iniciar** com `http` remoto, URL inválida ou URL com usuário e senha. `http` só é aceito em `localhost`, `127.0.0.1`, `[::1]` e `10.0.2.2`.

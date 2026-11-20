@@ -33,7 +33,7 @@ Guia para quem implementa uma rota privada. Contrato completo: [specs/005-perfis
 
 ## O que o build acusa
 - `RotasPrivadas.registrar` recusa lista de perfis vazia, caminho repetido e caminho público.
-- `Composicao.montar` termina chamando `exigirTudoDeclarado()`: se algum servlet foi publicado fora do registro (e não é `/health`, `/auth/login` nem o coringa 404), a API **não sobe** e `RotasPrivadasTest` falha.
+- `Composicao.montar` termina chamando `exigirTudoDeclarado()`: se algum servlet foi publicado fora do registro (e não é `/health`, `/auth/login`, a documentação `/docs/*` da RC-28 nem o coringa 404), a API **não sobe** e `RotasPrivadasTest` falha.
 
 ## Limites conhecidos
 - Não existe guarda genérica em tempo de execução; a proteção contra rota esquecida é a falha na montagem e nos testes.
