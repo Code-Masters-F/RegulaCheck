@@ -70,7 +70,7 @@ Pré-requisito comum: **JDK 21+**. As variáveis ficam no shell ou na IDE; a apl
 
 1. Com o seu cliente SQL (SQL Developer: **F5**, "Executar script"), rode **um único arquivo**: [`rodar_tudo.sql`](database/scripts/rodar_tudo.sql), que executa em ordem [`01_criar_esquema.sql`](database/scripts/01_criar_esquema.sql), [`02_carga_sintetica.sql`](database/scripts/02_carga_sintetica.sql) e [`05_sessao_login.sql`](database/scripts/05_sessao_login.sql) (em banco novo, sem erro). Se preferir, rode esses três arquivos inteiros, um a um, nessa ordem. Opcionais: `03_consultas_uso.sql` (consultas) e `04_testes_restricoes.sql` (testes de restrições, não deixa dados).
 2. Os scripts `06_` a `11_` são só para banco criado antes de cada história; o `01_` atual já traz o que eles acrescentam. Detalhes e ordem em [database/scripts/README.md](database/scripts/README.md).
-3. Conta e senha do Oracle: pedir ao grupo; **nunca** versionar.
+3. **Use o seu próprio Oracle 19c.** Conecte com o seu usuário e rode o script no seu esquema: ele cria só tabelas com prefixo `RC_` e não toca em outros objetos. O banco do grupo não é necessário e as credenciais dele não acompanham o pacote. Nada de credencial é versionado.
 4. Contas de demonstração criadas pela carga: `paciente.a@exemplo.invalid` e `paciente.b@exemplo.invalid` (`PACIENTE`) e `admin@exemplo.invalid` (`ADMINISTRADOR`), todas com a senha fictícia `RegulaCheck#Demo2026`.
 
 ### 2. API
@@ -78,9 +78,9 @@ Pré-requisito comum: **JDK 21+**. As variáveis ficam no shell ou na IDE; a apl
 Variáveis (PowerShell; em Bash use `export`):
 
 ```powershell
-$env:DB_URL = 'jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl'
-$env:DB_USERNAME = '<usuario>'
-$env:DB_PASSWORD = '<senha>'
+$env:DB_URL = 'jdbc:oracle:thin:@<host>:<porta>:<sid>'   # o seu Oracle (exemplo: jdbc:oracle:thin:@localhost:1521:orcl)
+$env:DB_USERNAME = '<seu usuario>'
+$env:DB_PASSWORD = '<sua senha>'
 $env:DOCUMENT_STORAGE_PATH = '<pasta fora do repositório>'   # para enviar documentos
 $env:IOT_API_KEY = '<chave qualquer, igual à do simulador>'  # para os sensores
 ```
