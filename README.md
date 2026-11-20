@@ -20,8 +20,32 @@ Pré-requisito: JDK 21+. A partir de `backend/` (sem banco e sem variáveis):
 - Windows: `.\mvnw.cmd clean verify` e depois `java -jar target\regulacheck-backend.jar`
 - Linux/macOS: `./mvnw clean verify` e depois `java -jar target/regulacheck-backend.jar`
 - Conferir: `curl http://localhost:8080/health` -> `{"status":"UP"}` (UP não prova que o MVP está completo nem que o banco está acessível)
+- Documentação da API: `http://localhost:8080/docs` (ver [Documentação da API (Swagger)](#documentação-da-api-swagger))
 
 Detalhes, acesso do emulador (`10.0.2.2`) e problemas comuns em [docs/ambiente.md](docs/ambiente.md).
+
+## Documentação da API (Swagger)
+Com a API no ar, abra **`http://localhost:8080/docs`** no navegador. É o Swagger UI servido pela própria API (RC-28): público, somente leitura, sem CDN e sem rede externa. Ele mostra todas as rotas agrupadas por assunto, com perfil exigido, parâmetros, códigos de resposta e exemplos de entrada e saída. Os exemplos usam só dados fictícios.
+
+| Endereço | Conteúdo |
+|---|---|
+| `GET /docs` | Página do Swagger UI (também `/docs/` e `/docs/index.html`) |
+| `GET /docs/openapi.yaml` | O contrato OpenAPI 3.0, idêntico a [docs/api/openapi.yaml](docs/api/openapi.yaml) |
+
+**Como executar as rotas pela página**
+1. Em `POST /auth/login`, clique em **Try it out**, informe uma conta de demonstração (`paciente.a@exemplo.invalid` ou `admin@exemplo.invalid`) e a senha de demonstração de [database/scripts/README.md](database/scripts/README.md#contas-e-senhas-de-demonstração), e clique em **Execute**.
+2. Copie o `token` da resposta, clique em **Authorize** (`bearerAuth`), cole o token e confirme.
+3. Em qualquer rota, use **Try it out** → **Execute**. Mantenha o servidor `/`, que é a mesma origem da página.
+
+Siga o percurso completo (autenticar, criar rascunho, enviar arquivo, analisar, consultar, corrigir e submeter em simulação) em [docs/api/roteiro-avaliacao.md](docs/api/roteiro-avaliacao.md), com as amostras de `samples/`.
+
+**Limites**
+- As rotas de negócio precisam do banco Oracle com a carga sintética. Sem `DB_*`, a página abre normalmente, mas essas rotas respondem 503 `DEPENDENCIA_INDISPONIVEL`.
+- A execução só funciona pela própria API, porque não há CORS. Um Swagger Editor externo serve apenas para ler o contrato.
+- O token fica só na memória da aba e some quando ela é fechada; a sessão expira em 30 minutos.
+- Leitura, resumo e submissão são **simulados**: nada é enviado ao SUS, e nenhum resultado é aprovação ou diagnóstico.
+
+**Manutenção**: o contrato é escrito à mão em `docs/api/openapi.yaml`, a única fonte. O build o copia para o jar, então depois de editá-lo basta gerar o jar de novo (`./mvnw clean package`). O `ContratoDaApiTest` confere se o mapa de rotas de [CONTRATO_API.md](CONTRATO_API.md) e o contrato listam as mesmas rotas. Os arquivos do Swagger UI vêm da dependência `org.webjars:swagger-ui` (versão fixa no `backend/pom.xml`). A alternativa à página é a coleção [Postman](docs/api/RegulaCheck.postman_collection.json); o índice completo está em [docs/api/README.md](docs/api/README.md).
 
 ## Estrutura
 `backend/` API | `mobile/` | `simulador-iot/` | `database/` | `docs/` | `samples/` | `entrega/`. Arquitetura em [docs/arquitetura.md](docs/arquitetura.md).

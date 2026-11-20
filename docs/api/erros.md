@@ -44,7 +44,7 @@ Toda resposta de erro tem o mesmo corpo, com `Content-Type: application/json`:
 ### Etapa da verificação da versão corrigida (RC-16)
 `POST /solicitacoes/{id}/reenvio` repassa a falha da etapa com o **mesmo** `status` e `codigo` (`SEM_DOCUMENTOS`, `LEITURA_INDISPONIVEL`, `CONFLITO_ESTADO`, `ANALISE_EM_ANDAMENTO`, `ANALISE_INDISPONIVEL`, `DEPENDENCIA_INDISPONIVEL`), troca a `mensagem` pelo que foi preservado e pelo que a paciente precisa repetir e identifica a etapa em `detalhes`: `[{ "campo": "etapa", "mensagem": "LEITURA" | "CONFERENCIA" | "ANALISE" }]`. Aqui `detalhes` não aponta campo de entrada, e sim a etapa do processamento. O 404 continua idêntico e sem detalhe. Falha ao gravar o resumo depois da análise **não** é erro: a resposta é 201/200 com `etapa: "RESUMO"`. Contrato: [specs/020-reenviar-versao-corrigida/contracts/api-reenvio.md](../../specs/020-reenviar-versao-corrigida/contracts/api-reenvio.md).
 
-Rotas inexistentes devolvem 404 `NAO_ENCONTRADO` no mesmo formato. Falha da IA ou da extração simuladas não é erro HTTP: preserva o resultado determinístico e devolve resumo padrão identificado.
+Rotas inexistentes devolvem 404 `NAO_ENCONTRADO` no mesmo formato, inclusive qualquer caminho fora da lista fixa da documentação `/docs/*`, onde métodos diferentes de GET recebem 405 (RC-28). **Nenhuma rota usa 202**: leitura, análise, resumo, reenvio e submissão são síncronos e só respondem depois de gravar. Falha da IA ou da extração simuladas não é erro HTTP: preserva o resultado determinístico e devolve resumo padrão identificado.
 
 ## Ordem de verificação (RC-05)
 
