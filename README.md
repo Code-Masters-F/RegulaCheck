@@ -121,7 +121,7 @@ Sequências, faixas e códigos de saída em [simulador-iot/README.md](simulador-
 
 ### 5. Documentação da API (Swagger)
 
-Com a API no ar, abra **`http://localhost:8080/docs`** no navegador. É o Swagger UI servido pela própria API (RC-28): público, somente leitura, sem CDN e sem rede externa. Ele mostra todas as rotas agrupadas por assunto, com perfil exigido, parâmetros, códigos de resposta e exemplos de entrada e saída. Os exemplos usam só dados fictícios.
+Com a API no ar, abra **`http://localhost:8080/docs`** no navegador. É o Swagger UI servido pela própria API (RC-28), sem CDN e sem rede externa. A rota `/docs` é pública e só aceita GET, mas pela página é possível executar todas as rotas, inclusive as que alteram dados (com o token informado em **Authorize**). Ele mostra todas as rotas agrupadas por assunto, com perfil exigido, parâmetros, códigos de resposta e exemplos de entrada e saída. Os exemplos usam só dados fictícios.
 
 | Endereço | Conteúdo |
 |---|---|
@@ -141,7 +141,7 @@ Siga o percurso completo (autenticar, criar rascunho, enviar arquivo, analisar, 
 - O token fica só na memória da aba e some quando ela é fechada; a sessão expira em 30 minutos.
 - Leitura, resumo e submissão são **simulados**: nada é enviado ao SUS, e nenhum resultado é aprovação ou diagnóstico.
 
-**Manutenção**: o contrato é escrito à mão em `docs/api/openapi.yaml`, a única fonte. O build o copia para o jar, então depois de editá-lo basta gerar o jar de novo (`./mvnw clean package`). O `ContratoDaApiTest` confere se o mapa de rotas de [CONTRATO_API.md](CONTRATO_API.md) e o contrato listam as mesmas rotas. Os arquivos do Swagger UI vêm da dependência `org.webjars:swagger-ui` (versão fixa no `backend/pom.xml`). A alternativa à página é a coleção [Postman](docs/api/RegulaCheck.postman_collection.json); o índice completo está em [docs/api/README.md](docs/api/README.md).
+**Manutenção**: o contrato é escrito à mão em `docs/api/openapi.yaml`, a única fonte. O build o copia para o jar, então depois de editá-lo basta gerar o jar de novo, a partir de `backend/` (`./mvnw clean package`). O `ContratoDaApiTest` confere se o mapa de rotas de [CONTRATO_API.md](CONTRATO_API.md) e o contrato listam as mesmas rotas. Os arquivos do Swagger UI vêm da dependência `org.webjars:swagger-ui` (versão fixa no `backend/pom.xml`). A alternativa à página é a coleção [Postman](docs/api/RegulaCheck.postman_collection.json); o índice completo está em [docs/api/README.md](docs/api/README.md).
 
 ## Estado real
 

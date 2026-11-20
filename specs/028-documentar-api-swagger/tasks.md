@@ -55,7 +55,7 @@ description: "Tarefas da RC-28 — Documentar API e respostas HTTP"
 - [X] T010 [US1] Validar `docs/api/openapi.yaml` com `npx @redocly/cli` descartável (estrutura OpenAPI 3.0 e `no-invalid-media-type-examples`), executado no scratchpad; corrigir até dar 0 erros
 - [ ] T011 [US1] **Parcial (19/11/2026):** executado tudo, exceto o login válido → Authorize → `GET /solicitacoes` no navegador com repositórios em memória (não feito por falta de tempo no dia da entrega; o percurso pela API está coberto pelo T012). Rodar `DocumentacaoEndpointTest` e verificar a página no Chrome headless contra a API empacotada (operações renderizadas, 0 violações de CSP, 0 requisições externas, `GET /health` executado pela página) e, contra a API com repositórios em memória, o "Try it out" de `POST /auth/login` → Authorize → `GET /solicitacoes` (200), conferindo que `localStorage` e `sessionStorage` não guardam o token
 
-**Checkpoint**: US1 entregue e verificada isoladamente.
+**Checkpoint**: US1 entregue; verificada isoladamente, exceto o fluxo autenticado no navegador (login → Authorize → `GET /solicitacoes`), pendente no T011.
 
 ---
 
@@ -93,6 +93,8 @@ description: "Tarefas da RC-28 — Documentar API e respostas HTTP"
 - [X] T021 Registrar a evidência em `docs/evidencias/2026-11-19_rc28-documentacao-api.md` (testes, Chrome headless e Redocly, só texto, sem token)
 - [X] T022 Revisar o diff, marcar as tarefas concluídas, atualizar o status de `specs/028-documentar-api-swagger/spec.md` e registrar as pendências (Oracle real opt-in não executado sem autorização; SC-002, de 15 minutos com uma pessoa, só pode ser medido manualmente)
 - [X] T023 Seção "Documentação da API (Swagger)" em `README.md` (endereços, como autenticar e executar, limites, manutenção do contrato), a pedido do usuário em 19/11/2026
+- [X] T024 Ajustes da revisão automática (cubic) do PR #86: RC-R03 conferida especificamente como `RESOLVIDA` no `RoteiroAvaliacaoTest`; Postman com consulta e confirmação da nova leitura e segundo reenvio antes da submissão, e logout do administrador; `viewport` na página; texto de "somente leitura" corrigido no README e em `docs/ambiente.md`; `cd backend` no README; `--path-as-is` no quickstart; data de referência da RC-R05 no roteiro; `package-info`, plano, checklist e checkpoint; saídas brutas na evidência
+- [X] T025 Executar a coleção Postman em ordem (com os arquivos de `samples/`) até o comprovante, conferindo que a exclusão só atinge o rascunho descartável. **Executado em 19/11/2026** com `npx newman@6.2.1` (descartável) contra a API com repositórios em memória (servidor de teste temporário, não versionado): 46 requisições; reenvio 200 `CONFERENCIA` → confirmação 200 → reenvio 201 `CONCLUIDA` `SEM_PENDENCIAS_IDENTIFICADAS` → submissão 201 `SIM-…` → comprovante 200; remoção 200 e exclusão 204 só no rascunho descartável; logouts do administrador e da paciente 204. As duas requisições do simulador deram 401 porque `chaveSimulador` fica vazia na coleção e o servidor em memória não tinha chave. Oracle real não executado
 
 ---
 
@@ -127,4 +129,5 @@ MVP = US1, que entrega o Swagger UI com o contrato completo. Depois vem a US2 (r
 - **T011**: Chrome headless com 31 operações, 0 violações de CSP, 0 requisições externas, "Try it out" na mesma origem (`/health` 200, `/auth/login` 503 sem banco) e armazenamento do navegador vazio. Parcial, ver a tarefa.
 - **T012**: `RoteiroAvaliacaoTest` 2/2. **T014**: `ContratoDaApiTest` 3/3.
 - **T020**: `clean verify` depois da mudança: 799 testes, 0 falhas, 35 ignorados, 75 s. A primeira execução falhou na `VarreduraDeSegredosTest` (variável `TOKEN=` no roteiro), que foi renomeada sem mudar a regra. Quickstart com o jar conferido.
-- **Pendências**: roteiro com o Oracle real (opt-in, não autorizado) e SC-002 (15 minutos, medição manual); Postman reorganizado, mas não executado; script `curl` do roteiro não executado como script (os mesmos passos rodaram no T012).
+- **Revisão do PR #86 (T024/T025)**: ajustes aplicados; coleção Postman executada em ordem com newman contra a API em memória (46 requisições até o comprovante).
+- **Pendências**: roteiro com o Oracle real (opt-in, não autorizado) e SC-002 (15 minutos, medição manual); script `curl` do roteiro não executado como script (os mesmos passos rodaram no T012).

@@ -8,7 +8,7 @@
 
 - [x] No implementation details (languages, frameworks, APIs)
 - [x] Focused on user value and business needs
-- [x] Written for non-technical stakeholders
+- [ ] Written for non-technical stakeholders — não se aplica: o público desta história é técnico (quem avalia a API), e a spec usa os termos HTTP, OpenAPI e CSP do próprio critério de aceite (ajuste da revisão do PR #86)
 - [x] All mandatory sections completed
 
 ## Requirement Completeness

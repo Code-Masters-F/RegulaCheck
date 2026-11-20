@@ -33,7 +33,7 @@ Abordagem técnica (detalhes em [research.md](research.md)):
 
 **Constraints**: sem CDN nem recurso externo; sem CORS; sem mudar comportamento, status, formato ou autorização de rota existente; política de conteúdo estrita mantida fora de `/docs`; versões fixas
 
-**Scale/Scope**: 29 rotas existentes e 2 novas de documentação; 1 contrato com cerca de 1.700 linhas; 1 roteiro; 1 coleção Postman
+**Scale/Scope**: 29 rotas existentes e 2 novas de documentação; 1 contrato com cerca de 1.700 linhas antes da história e cerca de 2.700 depois dos exemplos e grupos; 1 roteiro; 1 coleção Postman
 
 ## Constitution Check
 

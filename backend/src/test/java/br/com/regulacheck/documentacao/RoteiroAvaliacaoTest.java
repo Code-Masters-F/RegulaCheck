@@ -117,7 +117,14 @@ class RoteiroAvaliacaoTest {
         assertEquals("CONCLUIDA", verificada.json().get("etapa").asText());
         JsonNode nova = verificada.json().get("analise");
         assertEquals("SEM_PENDENCIAS_IDENTIFICADAS", nova.get("resultadoGeral").asText());
-        assertTrue(nova.get("comparacao").get("itens").toString().contains("\"RESOLVIDA\""));
+        JsonNode identificacao = null;
+        for (JsonNode item : nova.get("comparacao").get("itens")) {
+            if ("RC-R03".equals(item.get("codigoRegra").asText())) {
+                identificacao = item;
+            }
+        }
+        assertTrue(identificacao != null, "RC-R03 na comparacao: " + nova.get("comparacao"));
+        assertEquals("RESOLVIDA", identificacao.get("situacao").asText());
 
         Resposta submissao = c.api.enviar("POST", "/solicitacoes/" + pedido + "/submissoes-simuladas", null,
                 paciente);

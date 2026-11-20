@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "RegulaCheck API - percurso completo (dados sinteticos)",
-    "description": "Dados sinteticos; leitura, resumo e submissao SIMULADOS. Defina a variavel senhaDemo com a senha de demonstracao ficticia de database/scripts/README.md (nao a versione preenchida). Executada em ordem, segue o percurso do login ao comprovante da submissao simulada; a remocao de documento e a exclusao de rascunho usam um rascunho descartavel no fim, e o logout e o ultimo passo. Roteiro detalhado: docs/api/roteiro-avaliacao.md. Documentacao interativa: GET /docs (RC-28).",
+    "description": "Dados sinteticos; leitura, resumo e submissao SIMULADOS. Defina a variavel senhaDemo com a senha de demonstracao ficticia de database/scripts/README.md (nao a versione preenchida). Executada em ordem, segue o percurso do login ao comprovante da submissao simulada; depois do reenvio que para na conferencia, a colecao confirma os campos da nova leitura e verifica de novo antes da submissao; a remocao de documento e a exclusao de rascunho usam um rascunho descartavel no fim, e os logouts do administrador e da paciente encerram as duas sessoes. Os arquivos (partes \"arquivo\") sao escolhidos no Postman: use samples/encaminhamento-sintetico.pdf e samples/identificacao-sintetica.png. Roteiro detalhado: docs/api/roteiro-avaliacao.md. Documentacao interativa: GET /docs (RC-28).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -67,6 +67,10 @@
     },
     {
       "key": "documentoDescartavelId",
+      "value": ""
+    },
+    {
+      "key": "loteConfirmacao",
       "value": ""
     }
   ],
@@ -743,6 +747,77 @@
       ]
     },
     {
+      "name": "RC-16 Consultar a conferencia da nova leitura (200; monta em {{loteConfirmacao}} a confirmacao de todos os campos IDENTIFICADO)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) { var decisoes = []; pm.response.json().documentos.forEach(function (d) { (d.campos || []).forEach(function (f) { if (f.situacao === 'IDENTIFICADO') { decisoes.push({ documentoId: d.documentoId, codigo: f.codigo, decisao: 'CONFIRMADA' }); } }); }); pm.collectionVariables.set('loteConfirmacao', JSON.stringify({ decisoes: decisoes })); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "description": "Depois do reenvio que parou em etapa CONFERENCIA ({{extracaoId}} e a leitura da revisao atual). A paciente so confirma o que foi lido; nenhum valor e digitado."
+      }
+    },
+    {
+      "name": "RC-16 Confirmar os campos lidos da nova leitura (200 situacao CONFERIDA)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/extracoes/{{extracaoId}}/conferencia",
+        "body": {
+          "mode": "raw",
+          "raw": "{{loteConfirmacao}}"
+        }
+      }
+    },
+    {
+      "name": "RC-16 Verificar a versao corrigida de novo (201 etapa CONCLUIDA; com as amostras de samples/, SEM_PENDENCIAS_IDENTIFICADAS)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/solicitacoes/{{solicitacaoId}}/reenvio",
+        "description": "Sem corpo. Le a revisao atual (SIMULADA), confere, analisa e resume. etapa CONFERENCIA: confirme os campos da leitura extracaoId (RC-11) e chame de novo. etapa CONCLUIDA: analise com resumo SIMULADO e comparacao (RESOLVIDA/CONTINUA/NOVA) com a anterior. etapa RESUMO: analise registrada sem resumo; gere o resumo de novo. Falhas: mesmo codigo da etapa e detalhes[0].campo = etapa. Resolvida nao e aprovacao do SUS."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200 || pm.response.code === 201) { var corpo = pm.response.json(); pm.collectionVariables.set('extracaoId', corpo.extracaoId); if (corpo.analise) { pm.collectionVariables.set('analiseId', corpo.analise.id); } }"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "RC-17 Concluir a simulacao (201 comprovante SIM-...; 200 o mesmo ao repetir; 409 se nao estiver pronto)",
       "request": {
         "method": "POST",
@@ -930,7 +1005,20 @@
       }
     },
     {
-      "name": "Logout (204; ultimo passo: o token deixa de valer)",
+      "name": "RC-20 Logout do administrador (204; encerra a sessao de {{tokenAdmin}})",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{tokenAdmin}}"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/logout"
+      }
+    },
+    {
+      "name": "Logout da paciente (204; ultimo passo: o token deixa de valer)",
       "request": {
         "method": "POST",
         "header": [

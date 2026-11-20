@@ -30,9 +30,69 @@ Ambiente: Linux, OpenJDK 25.0.5.1 (`maven.compiler.release=21`), Maven Wrapper (
 
 Os exemplos de resposta do contrato vêm de uma execução real do percurso em memória (registro temporário no scratchpad, removido do teste depois). O exemplo `PADRAO` do resumo usa o texto fixo do `ResumoService`, com as mesmas pendências, e o 503 veio do jar sem banco.
 
+## Saídas brutas (19/11/2026, sem token nem senha)
+
+Resumo do Surefire no `clean verify` depois do merge da `main` (soma dos `target/surefire-reports/*.txt`):
+
+```text
+testes=799 falhas=0 erros=0 ignorados=35
+rc=0 tempo=73s
+```
+
+Quickstart com o jar em `http://127.0.0.1:18080`, sem `DB_*`:
+
+```text
+diff contrato: identico
+GET /docs: 200 text/html;charset=utf-8
+POST /docs: 405
+GET /docs/../pom.xml: 404
+GET /docs/swagger-ui.js: 404
+CSP /health: Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+CSP /docs: Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+CSP GET /docs: Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
+HEAD /docs: 405 (so GET; HEAD = 405 com politica estrita)
+```
+
+Chrome headless (script CDP descartável): "Try it out" e verificações da página:
+
+```text
+GET /health -> {"status":"200","url":"http://127.0.0.1:18080/health","corpo":"{ \"status\": \"UP\" }"}
+POST /auth/login -> {"status":"503","url":"http://127.0.0.1:18080/auth/login","corpo":"{ \"codigo\": \"DEPENDENCIA_INDISPONIVEL\", \"mensagem\": \"Servico temporariamente indisponivel. Tente novamente em instantes.\" }"}
+storage -> {"local":0,"sessao":0}
+externas -> []
+csp -> []
+```
+
+Redocly (`npx @redocly/cli@2.11.1 lint`, regras `struct`, `no-invalid-media-type-examples` e `no-invalid-schema-examples` como erro):
+
+```text
+validated in 272ms
+Woohoo! Your API description is valid. 🎉
+```
+
+## Coleção Postman (executada depois da revisão do PR #86)
+
+`npx newman@6.2.1 run` (descartável, no scratchpad) sobre uma cópia da coleção, com as partes `arquivo` apontando para `samples/encaminhamento-sintetico.pdf` e `samples/identificacao-sintetica.png`, contra a API com repositórios em memória (servidor de teste temporário, não versionado) e a senha do cenário de teste:
+
+```text
+requisicoes 46
+200 RC-16 Verificar a versao corrigida ... {'etapa': 'CONFERENCIA'}
+200 RC-16 Consultar a conferencia da nova leitura ...
+200 RC-16 Confirmar os campos lidos da nova leitura ...
+201 RC-16 Verificar a versao corrigida de novo ... {'etapa': 'CONCLUIDA'} resultado=SEM_PENDENCIAS_IDENTIFICADAS
+201 RC-17 Concluir a simulacao ... referencia SIM-2026-…
+200 RC-17 Consultar o comprovante da submissao simulada ...
+200 RC-09 Remover documento (rascunho descartavel)
+400 RC-09 Excluir rascunho SEM confirmacao
+204 RC-09 Excluir rascunho com confirmacao (rascunho descartavel)
+204 RC-20 Logout do administrador
+204 Logout da paciente
+401 Sessao com chave do simulador / Simulador envia leitura (chaveSimulador vazia e servidor sem chave)
+```
+
 ## Não executado
 
 - Roteiro com o **Oracle real** (opt-in e manual; não autorizado nesta história) e o tempo de 15 minutos do SC-002, que só pode ser medido com uma pessoa.
 - No navegador, login com conta válida → Authorize → rota da paciente contra a API com repositórios em memória (previsto no T011). O percurso pela API está coberto pelo `RoteiroAvaliacaoTest`, e o "Try it out" na mesma origem foi conferido com `GET /health` e `POST /auth/login`.
 - Os comandos `curl` do roteiro não foram executados como script; os mesmos passos foram executados pelo `RoteiroAvaliacaoTest`.
-- A coleção Postman não foi executada (só reorganizada e conferida como JSON).
+- A coleção Postman contra o Oracle real. Ela foi executada em ordem só contra a API com repositórios em memória (ver acima).

@@ -103,5 +103,5 @@ curl -s -o /dev/null -w '%{http_code}\n' "$API/admin/indicadores" -H "$AUTH"    
 - **401 `NAO_AUTENTICADO`**: a sessão expirou (30 minutos) ou o token não foi informado; faça o login de novo.
 - **503 `DEPENDENCIA_INDISPONIVEL`**: banco não configurado ou inacessível ([docs/ambiente.md](../ambiente.md)).
 - **409 `CONFLITO_ESTADO`** na análise: falta a leitura da versão atual; repita o passo 5 (ou o reenvio, que lê de novo).
-- **`RC-R05` pendente**: o encaminhamento sintético foi emitido em 20/10/2026, e a regra de validade conta 180 dias a partir do dia da análise.
+- **`RC-R05` pendente**: o encaminhamento sintético foi emitido em 20/10/2026, e a regra de validade conta 180 dias até a **data de referência**, que é a data (horário de Salvador) do envio mais recente entre os documentos lidos, e não a data da análise. Ela aparece em `dataReferencia` na análise.
 - Os demais códigos e mensagens estão em [erros.md](erros.md).
