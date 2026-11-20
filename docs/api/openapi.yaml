@@ -109,10 +109,14 @@ paths:
               senha: '<senha de demonstração: database/scripts/README.md>'
       responses:
         "200":
-          description: Sessão aberta (prazo padrão de 30 minutos)
+          description: Sessão aberta (prazo padrão de 30 minutos, configurável por SESSION_TTL_MINUTES de 1 a 1440)
           headers:
             Cache-Control:
               schema: { type: string, example: no-store }
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
               example:
                 token: EXEMPLO-token-ficticio-nao-e-valido-0000000
                 tipo: Bearer
@@ -120,10 +124,6 @@ paths:
                 usuario:
                   nome: Paciente A (fictícia)
                   perfil: PACIENTE
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
         "400":
           description: Corpo ilegível, ou e-mail/senha ausentes ou fora do tamanho (REQUISICAO_INVALIDA)
           content:
@@ -279,6 +279,10 @@ paths:
           headers:
             Location:
               schema: { type: string, example: /solicitacoes/12 }
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Solicitacao"
               example:
                 id: '1'
                 protocoloId: PROTOCOLO-ACADEMICO-FICTICIO-v0.1
@@ -296,10 +300,6 @@ paths:
                 analise:
                   situacao: NAO_REALIZADA
                   mensagem: Nenhuma análise foi realizada para esta versão dos documentos.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Solicitacao"
         "400":
           description: Corpo ou `protocoloId` inválido (REQUISICAO_INVALIDA, com `detalhes[].campo`)
           content:
@@ -546,6 +546,9 @@ paths:
           headers:
             Location:
               schema: { type: string, example: /solicitacoes/12/documentos/41 }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DocumentoEnviado" }
               example:
                 id: '1'
                 solicitacaoId: '1'
@@ -560,9 +563,6 @@ paths:
                 simulacao: true
                 versaoConjuntoDocumental: 2
                 documentosDisponiveis: 1
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/DocumentoEnviado" }
         "400":
           description: >
             REQUISICAO_INVALIDA com `detalhes[].campo` = tipoDocumental, arquivo, arquivos ou chaveEnvio; PDF com mais
@@ -1195,12 +1195,12 @@ paths:
             Retry-After:
               description: Só em ANALISE_EM_ANDAMENTO; segundos até o limite da análise em andamento
               schema: { type: integer, minimum: 1 }
-              example:
-                codigo: CONFLITO_ESTADO
-                mensagem: Leia os documentos antes de pedir a análise.
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Erro" }
+              example:
+                codigo: CONFLITO_ESTADO
+                mensagem: Leia os documentos antes de pedir a análise.
         "503":
           description: ANALISE_INDISPONIVEL (avaliação falhou; nada gravado; pedido em FALHA_ANALISE; pode tentar de novo) ou DEPENDENCIA_INDISPONIVEL (banco)
           content:

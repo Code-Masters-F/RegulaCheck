@@ -138,7 +138,7 @@ Siga o percurso completo (autenticar, criar rascunho, enviar arquivo, analisar, 
 **Limites**
 - As rotas de negócio precisam do banco Oracle com a carga sintética. Sem `DB_*`, a página abre normalmente, mas essas rotas respondem 503 `DEPENDENCIA_INDISPONIVEL`.
 - A execução só funciona pela própria API, porque não há CORS. Um Swagger Editor externo serve apenas para ler o contrato.
-- O token fica só na memória da aba e some quando ela é fechada; a sessão expira em 30 minutos.
+- O token fica só na memória da aba e some quando ela é fechada. A sessão expira em 30 minutos por padrão, prazo configurável por `SESSION_TTL_MINUTES` (1 a 1440 minutos).
 - Leitura, resumo e submissão são **simulados**: nada é enviado ao SUS, e nenhum resultado é aprovação ou diagnóstico.
 
 **Manutenção**: o contrato é escrito à mão em `docs/api/openapi.yaml`, a única fonte. O build o copia para o jar, então depois de editá-lo basta gerar o jar de novo, a partir de `backend/` (`./mvnw clean package`). O `ContratoDaApiTest` confere se o mapa de rotas de [CONTRATO_API.md](CONTRATO_API.md) e o contrato listam as mesmas rotas. Os arquivos do Swagger UI vêm da dependência `org.webjars:swagger-ui` (versão fixa no `backend/pom.xml`). A alternativa à página é a coleção [Postman](docs/api/RegulaCheck.postman_collection.json); o índice completo está em [docs/api/README.md](docs/api/README.md).
