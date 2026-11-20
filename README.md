@@ -4,7 +4,7 @@
 
 ## Vídeo pitch
 
-**Link público:** `<PREENCHER: URL do YouTube, Drive ou Vimeo com acesso aberto>` (até 3 minutos; testar em aba anônima antes de entregar).
+**Link público:** https://youtu.be/QoO99xVV-2s (até 3 minutos; testar em aba anônima antes de entregar).
 
 ## Grupo
 
