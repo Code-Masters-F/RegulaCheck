@@ -18,6 +18,7 @@ import br.com.regulacheck.auth.service.GeradorToken;
 import br.com.regulacheck.auth.service.VerificadorSenha;
 import br.com.regulacheck.common.http.CabecalhosSegurosFiltro;
 import br.com.regulacheck.common.http.RotaNaoEncontradaController;
+import br.com.regulacheck.documentacao.DocumentacaoController;
 import br.com.regulacheck.documento.controller.DocumentoController;
 import br.com.regulacheck.documento.service.DocumentoService;
 import br.com.regulacheck.extracao.controller.ConferenciaController;
@@ -174,6 +175,9 @@ public final class Composicao {
         // Telemetria do simulador (RC-21): so a chave X-Chave-Simulador, so esta rota.
         rotas.registrarTelemetria("/sessoes-captura/*", new LeituraSensorController(capturas));
         extensao.accept(rotas);
+
+        // RC-28: documentacao da API (Swagger UI + contrato OpenAPI), publica e somente leitura (RotasPrivadas.PUBLICAS).
+        contexto.addServlet(new ServletHolder(new DocumentacaoController()), "/docs/*");
 
         // Rota coringa: qualquer caminho sem controller devolve 404 no formato padrao.
         contexto.addServlet(new ServletHolder(new RotaNaoEncontradaController()), "/*");
