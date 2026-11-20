@@ -1,0 +1,49 @@
+HTTP 200
+{
+  "solicitacaoId": "153",
+  "sessao": {
+    "id": "66",
+    "iniciadaEm": "2026-11-20T00:55:29.137Z",
+    "aberta": true
+  },
+  "consultadaEm": "2026-11-20T00:55:34.390Z",
+  "prazoAtualidadeSegundos": 60,
+  "simulada": true,
+  "aviso": "Leituras simuladas, com limites demonstrativos e sem calibração. Elas não comprovam a legibilidade do arquivo e não impedem o envio de documentos.",
+  "sensores": [
+    {
+      "tipo": "LUMINOSIDADE",
+      "unidade": "LUX",
+      "faixa": {
+        "minimo": 300,
+        "maximo": 1000
+      },
+      "ultimaLeitura": {
+        "valor": 110,
+        "medidaEm": "2026-11-20T00:55:33.267Z"
+      },
+      "situacao": "ABAIXO_DA_FAIXA",
+      "orientacao": {
+        "codigo": "MELHORAR_ILUMINACAO",
+        "mensagem": "Ilumine melhor o documento antes de capturar."
+      }
+    },
+    {
+      "tipo": "DISTANCIA",
+      "unidade": "CM",
+      "faixa": {
+        "minimo": 20,
+        "maximo": 40
+      },
+      "ultimaLeitura": {
+        "valor": 58,
+        "medidaEm": "2026-11-20T00:55:33.613Z"
+      },
+      "situacao": "ACIMA_DA_FAIXA",
+      "orientacao": {
+        "codigo": "APROXIMAR_DOCUMENTO",
+        "mensagem": "Aproxime um pouco a câmera do documento."
+      }
+    }
+  ]
+}

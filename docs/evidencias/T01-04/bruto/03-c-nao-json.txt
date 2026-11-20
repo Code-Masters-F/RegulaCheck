@@ -1,0 +1,7 @@
+HTTP 400
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "REQUISICAO_INVALIDA",
+  "mensagem": "O corpo da requisição é inválido."
+}

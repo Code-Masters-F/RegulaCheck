@@ -1,0 +1,7 @@
+HTTP 404
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "NAO_ENCONTRADO",
+  "mensagem": "Recurso nao encontrado."
+}

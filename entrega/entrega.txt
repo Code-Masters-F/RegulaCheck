@@ -1,0 +1,13 @@
+GLOBAL SOLUTION 2026/2 - CITIZENTECH - 3ESOA
+Projeto: RegulaCheck
+Grupo: CodeMasters
+
+Integrantes (RM - Nome):
+557517 - Guilherme Carneiro Avellar
+557577 - Joao Vitor Oliveira Santos
+98493 - Eliseu Fernando Mendes dos Santos
+557449 - Victor Martins Ferreira Brandao Ameno
+556357 - Mere Angela da Silva
+
+Link do video pitch (publico, ate 3 minutos):
+<PREENCHER>

@@ -1,0 +1,7 @@
+HTTP 401
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "NAO_AUTENTICADO",
+  "mensagem": "Sessão ausente ou expirada. Entre novamente."
+}
