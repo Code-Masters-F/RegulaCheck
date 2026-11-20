@@ -1,0 +1,7 @@
+HTTP 401
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "CREDENCIAIS_INVALIDAS",
+  "mensagem": "E-mail ou senha inválidos."
+}

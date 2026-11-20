@@ -1,0 +1,13 @@
+HTTP 400
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "REQUISICAO_INVALIDA",
+  "mensagem": "Verifique os campos informados.",
+  "detalhes": [
+    {
+      "campo": "protocoloId",
+      "mensagem": "O serviço deve ser informado como texto."
+    }
+  ]
+}

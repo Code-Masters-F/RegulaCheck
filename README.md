@@ -1,27 +1,139 @@
 # RegulaCheck
 
-Verificador de completude documental de encaminhamentos (MVP acadêmico, **dados sintéticos**, submissão **simulada**). O sistema não diagnostica, não define urgência e não autoriza atendimento.
+> **Global Solution 2026/2 — CitizenTech (FIAP, 3ESOA).** MVP acadêmico com **dados sintéticos** e **protocolo fictício**; a submissão é **simulada**. O sistema não diagnostica, não define urgência, não autoriza atendimento e não coloca ninguém em fila real do SUS.
 
-## Decisões de tecnologia (12/11/2026)
-- Backend em **Java puro** (Jakarta Servlet em servidor embutido), **sem Spring e sem JPA** em produção; Spring Boot só em testes automatizados.
-- Banco **Oracle fornecido pela faculdade**, acesso por JDBC.
-- **2 sensores simulados por script Java**, enviando leituras em JSON por HTTP.
-- **IA e extração/OCR mockadas**, sempre identificadas como simuladas.
-- Mobile: Android nativo com Kotlin (decidido, não criado).
-- Desenvolvimento conduzido com o GitHub Spec Kit (ver `CLAUDE.md` e `.specify/`).
+## Vídeo pitch
 
-Detalhes e pendências em [docs/decisoes.md](docs/decisoes.md). Recorte e regras do demonstrador em [docs/protocolo-academico.md](docs/protocolo-academico.md); tecnologias e limitações em [docs/escopo-e-limitacoes.md](docs/escopo-e-limitacoes.md).
+**Link público:** `<PREENCHER: URL do YouTube, Drive ou Vimeo com acesso aberto>` (até 3 minutos; testar em aba anônima antes de entregar).
+
+## Grupo
+
+| RM | Nome |
+|---|---|
+| 557517 | Guilherme Carneiro Avellar |
+| 557577 | João Vitor Oliveira Santos |
+| 98493 | Eliseu Fernando Mendes dos Santos |
+| 557449 | Victor Martins Ferreira Brandão Ameno |
+| 556357 | Mere Angela da Silva |
+
+Nome do grupo: CodeMasters. A lista completa também vai no `.txt` da entrega.
+
+## O problema e o cidadão
+
+**Cidadã beneficiada:** a paciente que precisa enviar um encaminhamento a um serviço de saúde e não sabe se a documentação está completa. Documento faltando ou ilegível só é descoberto depois, e o retorno custa tempo e deslocamento.
+
+**O que o RegulaCheck faz:** a paciente envia os documentos, acompanha a leitura, confere a transcrição, recebe uma avaliação de critérios documentais e um resumo das pendências, corrige, reenvia e faz uma submissão **simulada**. Dois sensores simulados (luminosidade e distância) orientam a captura da foto do documento.
+
+**Limites declarados:** informação clínica errada ou ausente exige revisão pela unidade emissora; a paciente não altera o documento original. "Sem pendências identificadas" não é aprovação do SUS. Não prometemos redução real de filas com base em testes sintéticos.
+
+## ODS da ONU
+
+| ODS | Como o projeto contribui |
+|---|---|
+| **3 — Saúde e bem-estar** | Reduz idas e voltas por documentação incompleta no acesso a serviços de saúde (meta 3.8, acesso a serviços essenciais). |
+| **10 — Redução das desigualdades** | Orienta quem tem menos familiaridade com a burocracia a corrigir pendências sozinha, em linguagem simples. |
+| **9 — Indústria, inovação e infraestrutura** | Motor de regras determinístico, leitura de documentos e sensores como apoio à decisão (simulados no MVP). |
+
+## Como o projeto atende às 6 partes da entrega
+
+| Parte | Onde está |
+|---|---|
+| 1. Banco de dados (Oracle) | Scripts em [`database/scripts/`](database/scripts/README.md): `01_` cria o esquema, `02_` carga inicial, `03_` consultas de uso com JOIN e agregação, `04_` testes de restrições. Modelo em [docs/modelo-de-dados.md](docs/modelo-de-dados.md) |
+| 2. API RESTful (Java, Controller/Service/Repository) | [`backend/`](backend/). Documentação: [OpenAPI](docs/api/openapi.yaml) e [coleção Postman](docs/api/RegulaCheck.postman_collection.json). Mapa de rotas em [CONTRATO_API.md](CONTRATO_API.md) |
+| 3. Plano de testes | [docs/testes/plano-de-testes.md](docs/testes/plano-de-testes.md), resultados em [docs/testes/resultado-da-rodada.md](docs/testes/resultado-da-rodada.md), evidências em [docs/evidencias/](docs/evidencias/) |
+| 4. Frontend mobile (Android/Kotlin) | [`mobile/`](mobile/README.md) |
+| 5. Segurança | Senha com BCrypt, perfis `PACIENTE` e `ADMINISTRADOR`, SQL parametrizado, validação de entrada e de arquivos. Ver [docs/api/autorizacao.md](docs/api/autorizacao.md) e [docs/api/protecoes.md](docs/api/protecoes.md) |
+| 6. Simulação de IoT | [`simulador-iot/`](simulador-iot/README.md): dois sensores simulados enviam JSON por HTTP à API; o app mostra a orientação |
+
+## Tecnologias
+
+- **Backend:** Java 21+, Jakarta Servlet com Jetty embutido, JDBC. **Sem Spring e sem JPA/Hibernate** em produção (Spring Boot só nos testes automatizados, escopo `test`).
+- **Banco:** Oracle (fornecido pela faculdade), SQL parametrizado.
+- **Mobile:** Android nativo, Kotlin, Jetpack Compose.
+- **IoT:** script Java (`java.net.http.HttpClient`) enviando JSON por HTTP.
+- **Leitura de documentos (OCR) e resumo de pendências:** **simulados** (adaptadores mockados atrás de contrato). Não há provedor de IA real em execução e isso é sempre identificado como simulado na interface, na API e na documentação.
+
+## Declaração de uso de IA generativa
+
+| Ferramenta | Para quê foi usada |
+|---|---|
+| **Claude Code (Anthropic)** | Apoio à implementação do código (backend, app, simulador), dos testes, dos scripts SQL e da documentação, conduzido por especificações e revisado pelo grupo |
+| **GitHub Spec Kit** | Fluxo de especificação, plano e tarefas de cada história (diretórios `.specify/` e `specs/`) |
+
+O código e os textos gerados com apoio de IA foram revisados pelo grupo. A IA generativa **não** faz parte do funcionamento do produto: o resumo e a leitura de documentos são simulações determinísticas.
+
+## Executar
+
+Pré-requisito comum: **JDK 21+**. As variáveis ficam no shell ou na IDE; a aplicação **não** lê `.env` sozinha (modelo em [`.env.example`](.env.example)).
+
+### 1. Banco (Oracle)
+
+1. Com o seu cliente SQL (SQL Developer: **F5**, "Executar script"), rode **o arquivo inteiro**, em ordem: [`01_criar_esquema.sql`](database/scripts/01_criar_esquema.sql), [`02_carga_sintetica.sql`](database/scripts/02_carga_sintetica.sql) e [`05_sessao_login.sql`](database/scripts/05_sessao_login.sql). Opcionais: `03_consultas_uso.sql` (consultas) e `04_testes_restricoes.sql` (testes de restrições, não deixa dados).
+2. Os scripts `06_` a `11_` são só para banco criado antes de cada história; o `01_` atual já traz o que eles acrescentam. Detalhes e ordem em [database/scripts/README.md](database/scripts/README.md).
+3. Conta e senha do Oracle: pedir ao grupo; **nunca** versionar.
+4. Contas de demonstração criadas pela carga: `paciente.a@exemplo.invalid` e `paciente.b@exemplo.invalid` (`PACIENTE`) e `admin@exemplo.invalid` (`ADMINISTRADOR`), todas com a senha fictícia `RegulaCheck#Demo2026`.
+
+### 2. API
+
+Variáveis (PowerShell; em Bash use `export`):
+
+```powershell
+$env:DB_URL = 'jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl'
+$env:DB_USERNAME = '<usuario>'
+$env:DB_PASSWORD = '<senha>'
+$env:DOCUMENT_STORAGE_PATH = '<pasta fora do repositório>'   # para enviar documentos
+$env:IOT_API_KEY = '<chave qualquer, igual à do simulador>'  # para os sensores
+```
+
+A partir de `backend/`:
+
+```powershell
+.\mvnw.cmd clean verify
+java -jar target\regulacheck-backend.jar
+curl http://localhost:8080/health    # {"status":"UP"}
+```
+
+Linux/macOS: `./mvnw clean verify` e `java -jar target/regulacheck-backend.jar`. Sem `DB_*`, a API sobe e `/health` responde, mas as rotas de negócio respondem 503. `UP` não prova que o banco está acessível. Os testes contra o Oracle real são opt-in (`RC_TESTE_ORACLE=SIM`); sem isso são ignorados e **não** contam como verificados.
+
+### 3. App Android
+
+Requisitos: Android Studio (SDK 34 e um emulador) e a API no ar. O JDK 25 não serve ao Android Gradle Plugin: use o JDK do Android Studio só nesta sessão.
+
+```powershell
+cd mobile\app
+$env:JAVA_HOME = 'C:\Program Files\Android\Android Studio\jbr'
+.\gradlew.bat assembleDebug testDebugUnitTest
+adb install -r build\outputs\apk\debug\regulacheck-app-debug.apk
+```
+
+No emulador a API é `http://10.0.2.2:8080` (padrão). `localhost` **não** funciona no emulador. Aparelho físico e envio de documentos de exemplo: [mobile/README.md](mobile/README.md) e [docs/ambiente.md](docs/ambiente.md). Entre com `paciente.a@exemplo.invalid`; a conta de administrador não entra no app.
+
+### 4. Sensores simulados
+
+Com a API no ar e uma sessão de captura aberta pela paciente (`POST /solicitacoes/{id}/sessoes-captura`), da raiz do repositório:
+
+```powershell
+$env:IOT_API_KEY = '<a mesma chave da API>'
+java simulador-iot/SimuladorSensores.java --sessao 1 --sequencia fora-da-faixa
+```
+
+Sequências, faixas e códigos de saída em [simulador-iot/README.md](simulador-iot/README.md). As faixas (300–1000 lux, 20–40 cm) são **demonstrativas**, sem calibração; as leituras orientam a captura, não comprovam legibilidade e nunca bloqueiam o envio.
+
+### 5. Documentação da API
+
+Importe [`docs/api/RegulaCheck.postman_collection.json`](docs/api/RegulaCheck.postman_collection.json) no Postman, ou abra [`docs/api/openapi.yaml`](docs/api/openapi.yaml) em um visualizador OpenAPI. A API não usa Spring, então não há Swagger gerado em execução.
 
 ## Estado real
-A base técnica de `backend/` já está em Java puro (Jetty + Servlet, sem Spring/JPA) e expõe `GET /health`, a autenticação (`/auth/*`), o catálogo de serviços (`GET /protocolos`), o rascunho da solicitação (`/solicitacoes`, RC-07), o envio, a lista e o download dos documentos do pedido (`/solicitacoes/{id}/documentos`, RC-08) e, na RC-09, remover e substituir documento (`DELETE`/`PUT …/documentos/{docId}`) e excluir o rascunho com confirmação (`DELETE /solicitacoes/{id}` com o cabeçalho `X-Confirmar-Exclusao: EXCLUIR`); a RC-09 não tem script SQL novo e seu teste contra o Oracle (`AlteracaoDocumentoOracleTest`) é opt-in e **ainda não foi executado**. Dentro do código estão implementados e verificados com repositórios em memória; a RC-07 também foi verificada em 13/11/2026 contra o Oracle da faculdade, na conta usada pelo grupo, com o script `database/scripts/06_motivo_revisao_protocolo.sql` aplicado (ver [docs/decisoes.md](docs/decisoes.md)). Desde a RC-12 existe o **motor de regras** (seis critérios do protocolo acadêmico, resultado por regra, pendências e resultado geral) e a montagem da avaliação a partir da leitura e da conferência. Na RC-13, `POST /solicitacoes/{id}/analises` faz a análise (síncrona; o pedido fica em `PROCESSANDO` só enquanto ela roda, com limite de 1 minuto), **grava** resultados, pendências e evidências, muda o estado para o resultado geral e devolve a análise; `GET /solicitacoes/{id}/analises` mostra o histórico com a vigente marcada. A análise é simulada (leitura simulada, protocolo fictício) e "sem pendências identificadas" não é aprovação do SUS. A RC-13 exige o script `database/scripts/10_analise_historico.sql` em banco criado antes dela e foi verificada contra o Oracle da faculdade em 14/11/2026 (script aplicado, `04_` com 32 OK e `AnaliseOracleTest` com 2 testes verdes). Na RC-21 + RC-22 (Épico 7) existe a **estação de captura simulada**: a paciente abre a sessão de captura do pedido (`POST /solicitacoes/{id}/sessoes-captura`), o simulador Java [`simulador-iot/SimuladorSensores.java`](simulador-iot/README.md) envia leituras de luminosidade (lux) e distância (cm) com a chave `IOT_API_KEY` (`POST /sessoes-captura/{id}/leituras`) e a paciente vê a orientação de cada sensor em `GET /solicitacoes/{id}/leituras`; os limites são demonstrativos, sem calibração, as leituras não comprovam a legibilidade do arquivo e nunca bloqueiam o envio. Exige o script `database/scripts/11_iot_sessao_captura.sql` em banco criado antes dela; foi verificada sem banco (o `CapturaOracleTest` é opt-in e ainda não foi executado). A RC-14 acrescenta resumo de pendências **simulado** pela rota `POST /solicitacoes/{id}/resumo`, com fallback recuperável e consulta pelo histórico; ver [contrato](specs/018-resumo-pendencias-simulado/contracts/api-resumo.md). A RC-16 fecha o ciclo de correção: o documento que faltava pode ser **incluído** depois da análise (exceto em pedido submetido), `POST /solicitacoes/{id}/reenvio` verifica a versão corrigida (leitura → conferência → análise → resumo, parando enquanto a paciente precisa conferir) e toda análise traz a `comparacao` com a anterior (resolvida, continua, nova), sem nunca marcar pendência como resolvida pelo simples envio; sem script SQL novo, verificada sem banco e, em 17/11/2026, no Oracle da faculdade (`ReenvioOracleTest` e `AnaliseOracleTest` verdes); ver [contrato](specs/020-reenviar-versao-corrigida/contracts/api-reenvio.md). A RC-17 conclui a **submissão simulada**: `POST /solicitacoes/{id}/submissoes-simuladas` aceita só pedido com análise vigente sem pendências nem critérios não verificáveis, registra a submissão e devolve o comprovante (referência `SIM-…`, data, serviço, versão analisada e o destaque "SIMULAÇÃO ACADÊMICA — NÃO ENVIADO AO SUS"); repetir devolve o mesmo comprovante e `GET` na mesma rota o recupera; nada é enviado ao SUS e não há fila real nem protocolo oficial; ver [contrato](specs/021-submeter-simulacao/contracts/api-submissao.md). O app mobile ainda não está implementado. A RC-08 ainda **não foi verificada contra o Oracle real**: depende do script `database/scripts/07_documento_tipo_e_tentativa.sql` e do `DocumentoOracleTest`. Os contratos de dados, erros e estados estão em [docs/api](docs/api/README.md). Desde a RC-10, `POST/GET /solicitacoes/{id}/extracoes` fazem a **leitura simulada** (dados sintéticos predefinidos, sem leitura real) dos documentos do pedido. Na RC-11, `GET/PUT /solicitacoes/{id}/extracoes/{extracaoId}/conferencia` mostram o que foi lido e deixam a paciente **só confirmar ou marcar divergência**, campo a campo (nenhum valor digitado é aceito); a conferência não muda o estado nem a revisão do pedido e nunca libera submissão. A RC-11 exige o script `database/scripts/09_conferencia.sql` e foi verificada contra o Oracle da faculdade em 13/11/2026 (script aplicado e `ConferenciaOracleTest` com 3 testes verdes).
 
-## Executar (verificado em 12/11/2026)
-Pré-requisito: JDK 21+. A partir de `backend/` (sem banco e sem variáveis):
-- Windows: `.\mvnw.cmd clean verify` e depois `java -jar target\regulacheck-backend.jar`
-- Linux/macOS: `./mvnw clean verify` e depois `java -jar target/regulacheck-backend.jar`
-- Conferir: `curl http://localhost:8080/health` -> `{"status":"UP"}` (UP não prova que o MVP está completo nem que o banco está acessível)
+| Parte | Situação |
+|---|---|
+| API (autenticação, pedidos, documentos, leitura simulada, conferência, motor de regras, análise, resumo simulado, reenvio, submissão simulada, sensores) | Implementada; verificada com repositórios em memória e, em 13 a 17/11/2026, em boa parte com o Oracle da faculdade. O que foi verificado em cada história está em `specs/*/tasks.md` |
+| App Android | Login, meus pedidos, pedido, envio de documentos, leitura e resultado da análise implementados. Conferência da leitura, substituição/remoção, comprovante da submissão e telas do administrador são **só desenho** (ver [mobile/README.md](mobile/README.md)) |
+| Sensores | Implementados e verificados como processo; `CapturaOracleTest` ainda não executado no Oracle |
+| Plano de testes | Plano escrito (94 casos); **a rodada de execução com evidências ainda está pendente** (ver [resultado-da-rodada.md](docs/testes/resultado-da-rodada.md)) |
 
-Detalhes, acesso do emulador (`10.0.2.2`) e problemas comuns em [docs/ambiente.md](docs/ambiente.md).
+Detalhes por rota e por história: [docs/api/README.md](docs/api/README.md). Decisões e pendências: [docs/decisoes.md](docs/decisoes.md). Recorte do demonstrador: [docs/protocolo-academico.md](docs/protocolo-academico.md) e [docs/escopo-e-limitacoes.md](docs/escopo-e-limitacoes.md).
 
 ## Estrutura
-`backend/` API | `mobile/` | `simulador-iot/` | `database/` | `docs/` | `samples/` | `entrega/`. Arquitetura em [docs/arquitetura.md](docs/arquitetura.md).
+
+`backend/` API | `mobile/` app | `simulador-iot/` sensores | `database/` SQL | `docs/` documentação | `samples/` documentos sintéticos | `specs/` e `.specify/` Spec Kit | `entrega/` pacote final. Arquitetura em [docs/arquitetura.md](docs/arquitetura.md).

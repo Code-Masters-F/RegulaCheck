@@ -1,0 +1,9 @@
+HTTP 201
+{
+  "id": "66",
+  "solicitacaoId": "153",
+  "iniciadaEm": "2026-11-20T00:55:29.137Z",
+  "aberta": true,
+  "criada": true,
+  "simulada": true
+}

@@ -1,0 +1,215 @@
+HTTP 200
+Content-Type: application/json;charset=utf-8
+
+{
+  "itens": [
+    {
+      "id": "151",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "RASCUNHO",
+      "revisao": 1,
+      "criadaEm": "2026-11-20T00:53:19.336Z",
+      "atualizadaEm": "2026-11-20T00:53:19.336Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 1,
+      "documentosDisponiveis": 0,
+      "analise": {
+        "situacao": "NAO_REALIZADA",
+        "mensagem": "Nenhuma análise foi realizada para esta versão dos documentos."
+      }
+    },
+    {
+      "id": "150",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "RASCUNHO",
+      "revisao": 1,
+      "criadaEm": "2026-11-20T00:53:19.081Z",
+      "atualizadaEm": "2026-11-20T00:53:19.081Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 1,
+      "documentosDisponiveis": 0,
+      "analise": {
+        "situacao": "NAO_REALIZADA",
+        "mensagem": "Nenhuma análise foi realizada para esta versão dos documentos."
+      }
+    },
+    {
+      "id": "149",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "REQUER_CONFERENCIA",
+      "revisao": 3,
+      "criadaEm": "2026-11-19T18:46:40.460Z",
+      "atualizadaEm": "2026-11-19T18:48:08.389Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 3,
+      "documentosDisponiveis": 2,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "REQUER_CONFERENCIA"
+      }
+    },
+    {
+      "id": "148",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "REQUER_CONFERENCIA",
+      "revisao": 3,
+      "criadaEm": "2026-11-19T18:00:10.444Z",
+      "atualizadaEm": "2026-11-19T18:01:39.832Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 3,
+      "documentosDisponiveis": 2,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "REQUER_CONFERENCIA"
+      }
+    },
+    {
+      "id": "118",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "REQUER_CONFERENCIA",
+      "revisao": 3,
+      "criadaEm": "2026-11-18T02:39:28.582Z",
+      "atualizadaEm": "2026-11-18T02:40:25.757Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 3,
+      "documentosDisponiveis": 2,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "REQUER_CONFERENCIA"
+      }
+    },
+    {
+      "id": "112",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "REQUER_CONFERENCIA",
+      "revisao": 2,
+      "criadaEm": "2026-11-17T21:41:40.418Z",
+      "atualizadaEm": "2026-11-17T21:44:01.629Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 2,
+      "documentosDisponiveis": 1,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "REQUER_CONFERENCIA"
+      }
+    },
+    {
+      "id": "111",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "REQUER_CONFERENCIA",
+      "revisao": 3,
+      "criadaEm": "2026-11-17T21:37:25.454Z",
+      "atualizadaEm": "2026-11-17T21:39:10.297Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 3,
+      "documentosDisponiveis": 2,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "REQUER_CONFERENCIA"
+      }
+    },
+    {
+      "id": "4",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "RASCUNHO",
+      "revisao": 1,
+      "criadaEm": "2026-11-12T22:13:08.359Z",
+      "atualizadaEm": "2026-11-12T22:13:08.359Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 1,
+      "documentosDisponiveis": 1,
+      "analise": {
+        "situacao": "NAO_REALIZADA",
+        "mensagem": "Nenhuma análise foi realizada para esta versão dos documentos."
+      }
+    },
+    {
+      "id": "2",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "COM_PENDENCIAS",
+      "revisao": 1,
+      "criadaEm": "2026-11-12T22:13:08.352Z",
+      "atualizadaEm": "2026-11-12T22:13:08.352Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 1,
+      "documentosDisponiveis": 2,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "COM_PENDENCIAS"
+      }
+    },
+    {
+      "id": "1",
+      "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+      "servico": {
+        "localidade": "Município Exemplo",
+        "especialidade": "Consulta ambulatorial em cardiologia",
+        "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+      },
+      "estado": "SUBMETIDA_SIMULACAO",
+      "revisao": 2,
+      "criadaEm": "2026-11-12T22:13:08.272Z",
+      "atualizadaEm": "2026-11-12T22:13:08.272Z",
+      "simulacao": true,
+      "versaoConjuntoDocumental": 2,
+      "documentosDisponiveis": 2,
+      "analise": {
+        "situacao": "CONCLUIDA",
+        "mensagem": "Há uma análise simulada para esta versão dos documentos.",
+        "resultadoGeral": "SEM_PENDENCIAS_IDENTIFICADAS"
+      }
+    }
+  ],
+  "limite": 50
+}

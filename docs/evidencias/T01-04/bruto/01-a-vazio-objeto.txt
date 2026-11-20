@@ -1,0 +1,17 @@
+HTTP 400
+Content-Type: application/json;charset=utf-8
+
+{
+  "codigo": "REQUISICAO_INVALIDA",
+  "mensagem": "Verifique os campos informados.",
+  "detalhes": [
+    {
+      "campo": "email",
+      "mensagem": "Informe o e-mail."
+    },
+    {
+      "campo": "senha",
+      "mensagem": "Informe a senha."
+    }
+  ]
+}

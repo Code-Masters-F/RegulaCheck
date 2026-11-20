@@ -1,0 +1,23 @@
+HTTP 200
+Content-Type: application/json;charset=utf-8
+
+{
+  "id": "152",
+  "protocoloId": "PROTOCOLO-ACADEMICO-FICTICIO-v0.1",
+  "servico": {
+    "localidade": "Município Exemplo",
+    "especialidade": "Consulta ambulatorial em cardiologia",
+    "avisoFicticio": "Documento acadêmico fictício. Não é exigência oficial de nenhum serviço de saúde ou do SUS."
+  },
+  "estado": "RASCUNHO",
+  "revisao": 1,
+  "criadaEm": "2026-11-20T00:53:22.125Z",
+  "atualizadaEm": "2026-11-20T00:53:22.125Z",
+  "simulacao": true,
+  "versaoConjuntoDocumental": 1,
+  "documentosDisponiveis": 0,
+  "analise": {
+    "situacao": "NAO_REALIZADA",
+    "mensagem": "Nenhuma análise foi realizada para esta versão dos documentos."
+  }
+}

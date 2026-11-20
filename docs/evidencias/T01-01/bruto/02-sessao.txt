@@ -1,0 +1,10 @@
+HTTP 200
+Content-Type: application/json;charset=utf-8
+
+{
+  "usuario": {
+    "nome": "Paciente A (fictícia)",
+    "perfil": "PACIENTE"
+  },
+  "expiraEm": "2026-11-20T01:23:17Z"
+}
