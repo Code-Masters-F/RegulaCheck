@@ -7,7 +7,7 @@ Tipo de execução: Oracle real da faculdade, esquema do grupo (tabelas `RC_*`),
 | Data | 2026-11-19 |
 | Versão | `database/scripts/rodar_tudo.sql` (alteração local ainda não commitada) |
 | Responsável | grupo CodeMasters · executado com apoio do Claude Code |
-| Resultado bruto | `bruto/01-rodar_tudo.log`, `bruto/02-04_testes_restricoes.log`, `bruto/03-consultas-resultado.txt` |
+| Resultado bruto | `bruto/01-rodar_tudo.txt`, `bruto/02-04_testes_restricoes.txt`, `bruto/03-consultas-resultado.txt` |
 
 ## Passos
 1. Antes: 18 tabelas `RC_*` no esquema. Limpeza com uma cópia temporária de `90_limpeza_DESTRUTIVA.sql` com a confirmação `SIM` (o arquivo do repositório continua com `NAO`): 18 tabelas removidas, 0 restantes.
