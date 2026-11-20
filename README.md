@@ -4,7 +4,7 @@
 
 ## Vídeo pitch
 
-**Link público:** https://youtu.be/QoO99xVV-2s (até 3 minutos; testar em aba anônima antes de entregar).
+**Link público:** https://youtu.be/QoO99xVV-2s (vídeo público, 2 min 32 s).
 
 ## Grupo
 
